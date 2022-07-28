@@ -1,3 +1,20 @@
+## 1.0.0 (2022-07-28)
+
+
+### Bug Fixes
+
+* **deps:** update kotest to v5.4.1 ([82a08c0](https://github.com/DanySK/code-plagiarism-detector/commit/82a08c008e12c4a52f123d63346ea50a7973ec2d))
+
+
+### Build and continuous integration
+
+* update the project's name ([9aecef0](https://github.com/DanySK/code-plagiarism-detector/commit/9aecef00d84861cd1fbac45c8f44e99b98bedd97))
+
+
+### General maintenance
+
+* update descriptions in build.gradle.kts ([bb6bea7](https://github.com/DanySK/code-plagiarism-detector/commit/bb6bea7f6c2c25c31ab253490175e612266106bf))
+
 ## [0.1.3](https://github.com/DanySK/Template-for-Kotlin-JVM-Projects/compare/0.1.2...0.1.3) (2022-07-07)
 
 
