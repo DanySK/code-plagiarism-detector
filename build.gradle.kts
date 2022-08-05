@@ -17,6 +17,7 @@ repositories {
 
 dependencies {
     implementation(libs.kotlin.stdlib)
+    implementation("org.kohsuke:github-api:1.307")
     testImplementation(libs.bundles.kotlin.testing)
 }
 
