@@ -1,7 +1,5 @@
 package provider
 
-private const val BASE_URL: String = "https://api.bitbucket.org/2.0/repositories/"
-
 /**
  * An interface modeling search criteria for searching Bitbucket repositories.
  */
@@ -11,7 +9,7 @@ interface BitbucketSearchCriteria : SearchCriteria<String>
  * A criteria matching by username.
  */
 class ByBitbucketUser(private val username: String) : BitbucketSearchCriteria {
-    override fun apply(): String = BASE_URL.plus("$username?")
+    override fun apply(): String = "/$username?"
 }
 
 /**
