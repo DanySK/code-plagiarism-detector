@@ -18,6 +18,8 @@ repositories {
 dependencies {
     implementation(libs.kotlin.stdlib)
     implementation("org.kohsuke:github-api:1.307")
+    implementation("com.mashape.unirest:unirest-java:1.4.9")
+    implementation("org.json:json:20220320")
     testImplementation(libs.bundles.kotlin.testing)
 }
 
