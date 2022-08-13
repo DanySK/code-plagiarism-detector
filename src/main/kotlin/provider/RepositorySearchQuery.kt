@@ -5,49 +5,26 @@ import java.net.URL
 /**
  * An interface modeling a repository search query.
  */
-interface RepositorySearchQuery {
+interface RepositorySearchQuery<T, in C : SearchCriteria<T>> {
     /**
      * Search a repository by a given link.
-     * @param url the [URL] address of the public repository.
-     * @return the [RepositoryQueryResult]
+     * @param url the [URL] address of the public repository to retrieve.
      */
-    fun byLink(url: URL): RepositoryQueryResult
+    fun byLink(url: URL): Iterable<Repository>
 
     /**
      * Search a repository according to criteria.
-     * @return [RepositoryQueryCriteria]
      */
-    fun byCriteria(): RepositoryQueryCriteria
+    fun byCriteria(criteria: C): Iterable<Repository>
+}
 
+/**
+ * An interface modeling a search criteria.
+ * @param T
+ */
+interface SearchCriteria<T> {
     /**
-     * An interface modeling the search criteria for repositories.
+     * Apply the criteria.
      */
-    interface RepositoryQueryCriteria {
-        /**
-         * Search repositories by the given name.
-         * @return this
-         */
-        fun byName(repositoryName: String): RepositoryQueryCriteria
-
-        /**
-         * Search repositories in the list of the given user.
-         * @return this
-         */
-        fun byUser(user: String): RepositoryQueryCriteria
-
-        /**
-         * @return the [RepositoryQueryResult]
-         */
-        fun search(): RepositoryQueryResult
-    }
-
-    /**
-     * An interface holding the result of the search query.
-     */
-    interface RepositoryQueryResult {
-        /**
-         * The [Iterable] of [Repository] matching the query.
-         */
-        val result: Iterable<Repository>
-    }
+    fun apply(): T
 }
