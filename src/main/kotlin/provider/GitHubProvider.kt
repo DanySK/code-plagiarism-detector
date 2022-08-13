@@ -9,16 +9,11 @@ class GitHubProvider : ProjectsProvider {
     private val _repositories: Iterable<Repository>
 
     constructor(url: URL) {
-        _repositories = GitHubSearchQuery().byLink(url).result
+        _repositories = GitHubSearchQuery().byLink(url)
     }
 
-    constructor(repositoryName: String, user: String) {
-        _repositories = GitHubSearchQuery()
-            .byCriteria()
-            .byName(repositoryName)
-            .byUser(user)
-            .search()
-            .result
+    constructor(criteria: GitHubSearchCriteria) {
+        _repositories = GitHubSearchQuery().byCriteria(criteria)
     }
 
     override val repositories: Iterable<Repository>
