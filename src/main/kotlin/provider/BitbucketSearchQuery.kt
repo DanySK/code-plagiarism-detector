@@ -42,12 +42,12 @@ class BitbucketSearchQuery : RepositorySearchQuery<String, BitbucketSearchCriter
 
     private fun extractRepositories(responseObject: JSONObject): Iterable<Repository> {
         return if (isError(responseObject)) {
+            emptySet()
+        } else {
             responseObject.getJSONArray(VALUES_FIELD)
                 .asSequence()
                 .map { BitbucketRepository(JSONObject(it.toString())) }
                 .toSet()
-        } else {
-            emptySet()
         }
     }
 
