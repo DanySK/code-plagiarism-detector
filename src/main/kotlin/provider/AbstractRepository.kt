@@ -1,9 +1,16 @@
 package provider
 
+import org.apache.commons.io.FileUtils
+import org.apache.commons.io.filefilter.DirectoryFileFilter
+import org.apache.commons.io.filefilter.SuffixFileFilter
+import org.eclipse.jgit.api.Git
 import org.json.JSONArray
 import org.json.JSONObject
 import org.json.JSONTokener
+import java.io.File
+import java.io.FileInputStream
 import java.io.InputStream
+import java.nio.file.Files
 
 private const val LANGUAGES_EXT_FILE_NAME = "Programming_Languages_Extensions.json"
 private const val LANGUAGE_NAME_FIELD = "name"
@@ -14,13 +21,24 @@ private const val EXTENSIONS_FIELD = "extensions"
  */
 abstract class AbstractRepository : Repository {
 
+    /**
+     * Get the url for clone the repository.
+     */
+    abstract fun getCloneUrl(): String
+
     override fun getSources(language: String): Iterable<InputStream> {
         val extensions = getExtensionsOfLanguage(language)
-        if (extensions.any()) {
-            return extractSources(extensions)
-        } else {
+        if (!extensions.any()) {
             throw java.lang.IllegalArgumentException("Not recognized language $language.")
         }
+        val cloneUrl = getCloneUrl()
+        val repoDir = cloneRepo(cloneUrl)
+        val sources = listSources(repoDir, extensions)
+            .asSequence()
+            .map { FileInputStream(it) }
+            .toSet()
+        repoDir.deleteRecursively()
+        return sources
     }
 
     private fun getExtensionsOfLanguage(language: String): Iterable<String> {
@@ -36,9 +54,20 @@ abstract class AbstractRepository : Repository {
         return emptySet()
     }
 
-    /**
-     * Extract sources by language extensions.
-     * @param languageExtensions an [Iterable] of string representing file extensions of sources to extract.
-     */
-    abstract fun extractSources(languageExtensions: Iterable<String>): Iterable<InputStream>
+    private fun cloneRepo(url: String): File {
+        val tmpDir = Files.createTempDirectory(this.name).toFile()
+        Git.cloneRepository()
+            .setURI(url)
+            .setDirectory(tmpDir)
+            .call()
+        return tmpDir
+    }
+
+    private fun listSources(from: File, admittedExtensions: Iterable<String>): Collection<File> {
+        return FileUtils.listFiles(
+            from,
+            SuffixFileFilter(admittedExtensions.toList()),
+            DirectoryFileFilter.DIRECTORY
+        )
+    }
 }

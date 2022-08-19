@@ -17,7 +17,7 @@ repositories {
 
 dependencies {
     implementation(libs.kotlin.stdlib)
-    implementation("org.kohsuke:github-api:1.307")
+    implementation("com.jcabi:jcabi-github:1.2.0")
     implementation("com.mashape.unirest:unirest-java:1.4.9")
     implementation("org.json:json:20220320")
     implementation("org.eclipse.jgit:org.eclipse.jgit:5.13.1.202206130422-r")
