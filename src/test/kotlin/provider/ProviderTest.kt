@@ -1,5 +1,6 @@
 package provider
 
+import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.collections.shouldNotBeEmpty
@@ -15,7 +16,7 @@ private const val BB_USER = "danysk"
 
 class ProviderTest : FunSpec() {
     init {
-        test("Searching by existing name and user should return repos matching the given pattern") {
+        test("Searching by existing name and user should return repos matching that name") {
             testByExistingName(
                 GitHubProvider(ByGitHubName("Student-Project-OOP", ByGitHubUser(GH_USER))),
                 "Student-Project-OOP"
@@ -26,7 +27,7 @@ class ProviderTest : FunSpec() {
             )
         }
 
-        test("Searching by existing URL should return that repo") {
+        test("Searching by existing URL should return the repo pointed to") {
             testByExistingUrl(
                 GitHubProvider(URL("$GH_URL_PREFIX/$GH_USER/code-plagiarism-detector")),
                 "code-plagiarism-detector"
@@ -37,21 +38,28 @@ class ProviderTest : FunSpec() {
             )
         }
 
-        test("Searching by malformed URL should return an empty collection of repos") {
+        test("Searching by *non-existing* URL should return an empty collection of repos") {
             GitHubProvider(URL("$GH_URL_PREFIX/$GH_USER/non-existing-repo")).repositories.shouldBeEmpty()
             BitbucketProvider(URL("$BB_URL_PREFIX/$BB_USER/non-existing-repo")).repositories.shouldBeEmpty()
-            BitbucketProvider(URL("$BB_URL_PREFIX/$BB_USER/courses-oop-gradle-jfx-template/src/master/"))
-                .repositories.shouldBeEmpty()
         }
 
-        test("Searching by a non-existing name should return an empty collection of repos") {
+        test("Searching by illegal URL should throw an exception") {
+            shouldThrow<java.lang.IllegalArgumentException> {
+                GitHubProvider(URL("$GH_URL_PREFIX/$GH_USER/code-plagiarism-detector/tree/master/src/"))
+            }
+            shouldThrow<java.lang.IllegalArgumentException> {
+                BitbucketProvider(URL("$BB_URL_PREFIX/$BB_USER/courses-oop-gradle-jfx-template/src/master/"))
+            }
+        }
+
+        test("Searching by a *non-existing* name should return an empty collection of repos") {
             GitHubProvider(ByGitHubName("non-existing-repo", ByGitHubUser(GH_USER)))
                 .repositories.shouldBeEmpty()
             BitbucketProvider(ByBitbucketName("non-existing-repo", ByBitbucketUser(GH_USER)))
                 .repositories.shouldBeEmpty()
         }
 
-        test("Searching by a non-existing user should return an empty collection of repos") {
+        test("Searching by a *non-existing* user should return an empty collection of repos") {
             GitHubProvider(ByGitHubUser("non-existing-user")).repositories.shouldBeEmpty()
             BitbucketProvider(ByBitbucketUser("non-existing-user")).repositories.shouldBeEmpty()
         }
