@@ -18,7 +18,9 @@ interface Repository {
     val contributors: Iterable<String>
 
     /**
-     * An input stream iterable of each repository raw source code.
+     * Get all the sources contained in this repository by language.
+     * @param language the programming language of the sources to return
+     * @return an [Iterable] of [InputStream] representing source files.
      */
-    val sources: Iterable<InputStream>
+    fun getSources(language: String): Iterable<InputStream>
 }
