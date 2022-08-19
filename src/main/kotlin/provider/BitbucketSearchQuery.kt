@@ -20,8 +20,7 @@ class BitbucketSearchQuery : RepositorySearchQuery<String, BitbucketSearchCriter
     override fun byLink(url: URL): Iterable<Repository> {
         val path = url.path.removePrefix("/").removeSuffix("/")
         if (path.split("/").count() != 2) {
-            logger.error("The link must be in owner/repo-name format")
-            return emptySet()
+            throw java.lang.IllegalArgumentException("The url must match in owner/repo-name format")
         }
         val response = getResponse(BASE_URL.plus(url.path))
         return if (isError(response)) {
