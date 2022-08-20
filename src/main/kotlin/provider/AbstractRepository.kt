@@ -24,19 +24,15 @@ abstract class AbstractRepository : Repository {
     /**
      * Get the url for clone the repository.
      */
-    abstract fun getCloneUrl(): String
+    protected abstract val cloneUrl: String
 
     override fun getSources(language: String): Iterable<InputStream> {
         val extensions = getExtensionsOfLanguage(language)
         if (!extensions.any()) {
             throw java.lang.IllegalArgumentException("Not recognized language $language.")
         }
-        val cloneUrl = getCloneUrl()
         val repoDir = cloneRepo(cloneUrl)
-        val sources = listSources(repoDir, extensions)
-            .asSequence()
-            .map { FileInputStream(it) }
-            .toSet()
+        val sources = listSources(repoDir, extensions).map { FileInputStream(it) }
         repoDir.deleteRecursively()
         return sources
     }
@@ -45,10 +41,8 @@ abstract class AbstractRepository : Repository {
         val fileStream = ClassLoader.getSystemResourceAsStream(LANGUAGES_EXT_FILE_NAME)!!
         JSONArray(JSONTokener(fileStream)).forEach {
             val obj = JSONObject(it.toString())
-            if (obj.get(LANGUAGE_NAME_FIELD).toString().equals(language, ignoreCase = false)) {
-                return obj.getJSONArray(EXTENSIONS_FIELD)
-                    .map { e -> e.toString() }
-                    .toSet()
+            if (obj.get(LANGUAGE_NAME_FIELD).toString().equals(language, ignoreCase = true)) {
+                return obj.getJSONArray(EXTENSIONS_FIELD).map { e -> e.toString() }
             }
         }
         return emptySet()
