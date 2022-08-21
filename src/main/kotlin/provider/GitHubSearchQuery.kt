@@ -19,7 +19,7 @@ class GitHubSearchQuery : BaseRepoSearchQuery<String, GitHubSearchCriteria>() {
 
     override fun getRepoByUrl(url: URL): Repository? {
         val tokens = url.path.removePrefix("/").removeSuffix("/").split("/")
-        if (github.repos().exists(Coordinates.Simple(tokens[0], tokens[1]))) {
+        if (!github.repos().exists(Coordinates.Simple(tokens[0], tokens[1]))) {
             logger.error("No repo found at given address ($url)")
             return null
         }
