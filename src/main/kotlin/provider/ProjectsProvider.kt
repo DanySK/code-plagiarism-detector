@@ -1,5 +1,7 @@
 package provider
 
+import provider.repository.Repository
+
 /**
  * A provider of projects.
  */

@@ -1,4 +1,4 @@
-package provider
+package provider.query
 
 /**
  * An interface modeling search criteria for searching Bitbucket repositories.

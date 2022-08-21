@@ -1,4 +1,4 @@
-package provider
+package provider.repository
 
 import com.jcabi.github.Repo
 import java.net.URL

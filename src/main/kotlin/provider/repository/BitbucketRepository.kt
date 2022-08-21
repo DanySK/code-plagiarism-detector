@@ -1,4 +1,4 @@
-package provider
+package provider.repository
 
 import org.json.JSONObject
 import java.net.URL

@@ -1,5 +1,8 @@
 package provider
 
+import provider.query.GitHubSearchCriteria
+import provider.query.GitHubSearchQuery
+import provider.repository.Repository
 import java.net.URL
 
 /**

@@ -7,6 +7,10 @@ import io.kotest.matchers.collections.shouldNotBeEmpty
 import io.kotest.matchers.collections.shouldNotContainDuplicates
 import io.kotest.matchers.ints.shouldBeExactly
 import io.kotest.matchers.string.shouldMatch
+import provider.query.ByBitbucketName
+import provider.query.ByBitbucketUser
+import provider.query.ByGitHubName
+import provider.query.ByGitHubUser
 import java.net.URL
 
 private const val GH_URL_PREFIX = "https://github.com"
