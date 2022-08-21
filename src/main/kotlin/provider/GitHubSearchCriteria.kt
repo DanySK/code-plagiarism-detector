@@ -6,7 +6,8 @@ package provider
 interface GitHubSearchCriteria : SearchCriteria<String>
 
 /**
- * A criteria matching by username.
+ * A search criterion to filter by username.
+ * @property username the GitHub username.
  */
 class ByGitHubUser(private val username: String) : GitHubSearchCriteria {
     override fun apply(): String = "user:$username fork:true"
@@ -14,6 +15,7 @@ class ByGitHubUser(private val username: String) : GitHubSearchCriteria {
 
 /**
  * A decorator of [GitHubSearchCriteria] for compound criteria.
+ * @property criteria the base criteria to decorate.
  */
 abstract class GitHubCompoundCriteria(
     private val criteria: GitHubSearchCriteria
@@ -22,7 +24,8 @@ abstract class GitHubCompoundCriteria(
 }
 
 /**
- * A criteria matching by repository name.
+ * A search criterion to filter by the repository name.
+ * @property criteria the criteria to decorate.
  */
 class ByGitHubName(
     private val repositoryName: String,

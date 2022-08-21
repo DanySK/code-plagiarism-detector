@@ -6,7 +6,7 @@ package provider
 interface ProjectsProvider {
 
     /**
-     * An iterable of repositories.
+     * An [Iterable] of [Repository].
      */
     val repositories: Iterable<Repository>
 }

@@ -7,7 +7,7 @@ private const val GH_URL_PREFIX = "https://github.com/"
 
 /**
  * A GitHub repository adapter.
- * @property repository the [Repo] to be adapted
+ * @property repository the [Repo] to be adapted.
  */
 data class GitHubRepository(private val repository: Repo) : AbstractRepository() {
     override val name: String
