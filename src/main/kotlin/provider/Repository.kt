@@ -1,6 +1,6 @@
 package provider
 
-import java.io.InputStream
+import java.io.File
 
 /**
  * A repository.
@@ -18,9 +18,9 @@ interface Repository {
     val contributors: Iterable<String>
 
     /**
-     * Get all the sources contained in this repository by language.
-     * @param language the programming language of the sources to return
-     * @return an [Iterable] of [InputStream] representing source files.
+     * Get all the source files contained in this repository by language.
+     * @param language the programming language of the sources to return.
+     * @return an [Iterable] of source [File]s of the given language.
      */
-    fun getSources(language: String): Iterable<InputStream>
+    fun getSources(language: String): Iterable<File>
 }

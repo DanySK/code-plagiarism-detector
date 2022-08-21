@@ -8,10 +8,15 @@ import org.json.JSONArray
 import org.json.JSONObject
 import org.json.JSONTokener
 import java.io.File
-import java.io.FileInputStream
-import java.io.InputStream
 import java.net.URL
-import java.nio.file.Files
+
+private const val PROJECT_NAME = "code-plagiarism-detector"
+private val separator = System.getProperty("file.separator")
+
+/**
+ * The path of the directory in which are temporarily stored the cloned repositories.
+ */
+val clonedReposDirectoryPath = System.getProperty("user.home") + separator + ".$PROJECT_NAME" + separator
 
 private const val LANGUAGES_EXT_FILE_NAME = "Programming_Languages_Extensions.json"
 private const val LANGUAGE_NAME_FIELD = "name"
@@ -27,15 +32,13 @@ abstract class AbstractRepository : Repository {
      */
     protected abstract val cloneUrl: URL
 
-    override fun getSources(language: String): Iterable<InputStream> {
+    override fun getSources(language: String): Iterable<File> {
         val extensions = getExtensionsOfLanguage(language)
         if (!extensions.any()) {
             throw java.lang.IllegalArgumentException("Not recognized language $language.")
         }
         val repoDir = cloneRepo(cloneUrl.toString())
-        val sources = listSources(repoDir, extensions).map { FileInputStream(it) }
-        repoDir.deleteRecursively()
-        return sources
+        return listSources(repoDir, extensions)
     }
 
     private fun getExtensionsOfLanguage(language: String): Iterable<String> {
@@ -50,7 +53,7 @@ abstract class AbstractRepository : Repository {
     }
 
     private fun cloneRepo(url: String): File {
-        val tmpDir = Files.createTempDirectory(this.name).toFile()
+        val tmpDir = File("$clonedReposDirectoryPath$name")
         Git.cloneRepository()
             .setURI(url)
             .setDirectory(tmpDir)
