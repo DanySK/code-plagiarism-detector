@@ -5,6 +5,7 @@ import org.json.JSONObject
 import org.slf4j.LoggerFactory
 import java.net.URL
 
+private const val BITBUCKET_HOST = "bitbucket.org"
 private const val BASE_URL = "https://api.bitbucket.org/2.0/repositories"
 private const val ERROR_FIELD = "error"
 private const val NEXT_PAGE_FIELD = "next"
@@ -14,21 +15,18 @@ private const val MESSAGE_FIELD = "message"
 /**
  * A class implementing a search query for Bitbucket repositories.
  */
-class BitbucketSearchQuery : RepositorySearchQuery<String, BitbucketSearchCriteria> {
+class BitbucketSearchQuery : BaseRepoSearchQuery<String, BitbucketSearchCriteria>() {
     private val logger = LoggerFactory.getLogger(this.javaClass.name)
 
-    override fun byLink(url: URL): Iterable<Repository> {
-        val path = url.path.removePrefix("/").removeSuffix("/")
-        if (path.split("/").count() != 2) {
-            throw java.lang.IllegalArgumentException("The url must match in owner/repo-name format")
-        }
+    override fun urlIsValid(url: URL): Boolean = url.host == BITBUCKET_HOST
+
+    override fun getRepoByUrl(url: URL): Repository? {
         val response = getResponse(BASE_URL.plus(url.path))
-        return if (isError(response)) {
+        if (isError(response)) {
             logger.error(response.getJSONObject(ERROR_FIELD).get(MESSAGE_FIELD).toString())
-            emptySet()
-        } else {
-            setOf(BitbucketRepository(response))
+            return null
         }
+        return BitbucketRepository(response)
     }
 
     override fun byCriteria(criteria: BitbucketSearchCriteria): Iterable<Repository> {

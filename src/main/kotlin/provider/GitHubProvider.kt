@@ -9,7 +9,8 @@ class GitHubProvider : ProjectsProvider {
     private val _repositories: Iterable<Repository>
 
     constructor(url: URL) {
-        _repositories = GitHubSearchQuery().byLink(url)
+        val res = GitHubSearchQuery().byLink(url)
+        _repositories = if (res != null) setOf(res) else emptySet()
     }
 
     constructor(searchCriteria: GitHubSearchCriteria) {
