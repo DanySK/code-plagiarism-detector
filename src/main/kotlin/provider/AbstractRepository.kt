@@ -10,6 +10,7 @@ import org.json.JSONTokener
 import java.io.File
 import java.io.FileInputStream
 import java.io.InputStream
+import java.net.URL
 import java.nio.file.Files
 
 private const val LANGUAGES_EXT_FILE_NAME = "Programming_Languages_Extensions.json"
@@ -17,21 +18,21 @@ private const val LANGUAGE_NAME_FIELD = "name"
 private const val EXTENSIONS_FIELD = "extensions"
 
 /**
- * Abstract repo impl.
+ * Abstract base implementation for repositories.
  */
 abstract class AbstractRepository : Repository {
 
     /**
-     * Get the url for clone the repository.
+     * @property cloneUrl the [URL] to clone the repo.
      */
-    protected abstract val cloneUrl: String
+    protected abstract val cloneUrl: URL
 
     override fun getSources(language: String): Iterable<InputStream> {
         val extensions = getExtensionsOfLanguage(language)
         if (!extensions.any()) {
             throw java.lang.IllegalArgumentException("Not recognized language $language.")
         }
-        val repoDir = cloneRepo(cloneUrl)
+        val repoDir = cloneRepo(cloneUrl.toString())
         val sources = listSources(repoDir, extensions).map { FileInputStream(it) }
         repoDir.deleteRecursively()
         return sources
@@ -57,10 +58,10 @@ abstract class AbstractRepository : Repository {
         return tmpDir
     }
 
-    private fun listSources(from: File, admittedExtensions: Iterable<String>): Collection<File> {
+    private fun listSources(from: File, targetExtensions: Iterable<String>): Collection<File> {
         return FileUtils.listFiles(
             from,
-            SuffixFileFilter(admittedExtensions.toList()),
+            SuffixFileFilter(targetExtensions.toList()),
             DirectoryFileFilter.DIRECTORY
         )
     }
