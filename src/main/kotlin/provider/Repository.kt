@@ -3,7 +3,7 @@ package provider
 import java.io.File
 
 /**
- * A repository.
+ * An interface modeling a repository, a storage location for software packages.
  */
 interface Repository {
 

@@ -12,7 +12,6 @@ private const val HREF_FIELD = "href"
  * A Bitbucket repository adapter.
  */
 data class BitbucketRepository(private val repositoryInfo: JSONObject) : AbstractRepository() {
-
     override val name: String
         get() = repositoryInfo.get(NAME_FIELD).toString()
 

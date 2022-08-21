@@ -28,7 +28,7 @@ private const val EXTENSIONS_FIELD = "extensions"
 abstract class AbstractRepository : Repository {
 
     /**
-     * @property cloneUrl the [URL] to clone the repo.
+     * The [URL] to clone the repo.
      */
     protected abstract val cloneUrl: URL
 

@@ -6,7 +6,8 @@ package provider
 interface BitbucketSearchCriteria : SearchCriteria<String>
 
 /**
- * A criteria matching by username.
+ * A search criterion to filter by username.
+ * @property username the Bitbucket username.
  */
 class ByBitbucketUser(private val username: String) : BitbucketSearchCriteria {
     override fun apply(): String = "/$username?"
@@ -14,24 +15,25 @@ class ByBitbucketUser(private val username: String) : BitbucketSearchCriteria {
 
 /**
  * A decorator of [BitbucketSearchCriteria] for compound criteria.
+ * @property criteria the base criteria to decorate.
  */
 abstract class BitbucketCompoundCriteria(
     private val criteria: BitbucketSearchCriteria
 ) : BitbucketSearchCriteria {
-    override fun apply(): String = criteria.apply()
+    override fun apply(): String {
+        var url = criteria.apply()
+        url += if (url.endsWith("?")) "q=" else "+AND+"
+        return url
+    }
 }
 
 /**
- * A criteria matching by repository name.
+ * A search criterion to filter by the repository name.
+ * @property criteria the criteria to decorate.
  */
 class ByBitbucketName(
     private val repositoryName: String,
     criteria: BitbucketSearchCriteria
 ) : BitbucketCompoundCriteria(criteria) {
-    override fun apply(): String {
-        var url = super.apply()
-        url += if (url.endsWith("?")) "q=" else "+AND+"
-        url += "name+%7E+%22$repositoryName%22"
-        return url
-    }
+    override fun apply(): String = super.apply().plus("name+%7E+%22$repositoryName%22")
 }
