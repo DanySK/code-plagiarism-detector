@@ -45,7 +45,13 @@ class ProviderTest : FunSpec() {
 
         test("Searching by illegal URL should throw an exception") {
             shouldThrow<java.lang.IllegalArgumentException> {
+                GitHubProvider(URL("https://www.unibo.it/"))
+            }
+            shouldThrow<java.lang.IllegalArgumentException> {
                 GitHubProvider(URL("$GH_URL_PREFIX/$GH_USER/code-plagiarism-detector/tree/master/src/"))
+            }
+            shouldThrow<java.lang.IllegalArgumentException> {
+                BitbucketProvider(URL("https://www.unibo.it/it"))
             }
             shouldThrow<java.lang.IllegalArgumentException> {
                 BitbucketProvider(URL("$BB_URL_PREFIX/$BB_USER/courses-oop-gradle-jfx-template/src/master/"))
