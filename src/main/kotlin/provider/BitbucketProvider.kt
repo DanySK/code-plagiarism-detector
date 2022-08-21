@@ -9,7 +9,8 @@ class BitbucketProvider : ProjectsProvider {
     private val _repositories: Iterable<Repository>
 
     constructor(url: URL) {
-        _repositories = BitbucketSearchQuery().byLink(url)
+        val res = BitbucketSearchQuery().byLink(url)
+        _repositories = if (res != null) setOf(res) else emptySet()
     }
 
     constructor(searchCriteria: BitbucketSearchCriteria) {
