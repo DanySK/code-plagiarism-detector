@@ -1,5 +1,6 @@
-package provider
+package provider.query
 
+import provider.repository.Repository
 import java.net.URL
 
 /**

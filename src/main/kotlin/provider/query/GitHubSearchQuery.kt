@@ -1,9 +1,11 @@
-package provider
+package provider.query
 
 import com.jcabi.github.Coordinates
 import com.jcabi.github.RtGithub
 import com.jcabi.github.Search
 import org.slf4j.LoggerFactory
+import provider.repository.GitHubRepository
+import provider.repository.Repository
 import java.net.URL
 
 private const val GITHUB_HOST = "github.com"

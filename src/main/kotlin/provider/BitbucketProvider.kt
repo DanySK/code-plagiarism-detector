@@ -1,5 +1,8 @@
 package provider
 
+import provider.query.BitbucketSearchCriteria
+import provider.query.BitbucketSearchQuery
+import provider.repository.Repository
 import java.net.URL
 
 /**

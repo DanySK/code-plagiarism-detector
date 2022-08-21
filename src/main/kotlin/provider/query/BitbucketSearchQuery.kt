@@ -1,8 +1,10 @@
-package provider
+package provider.query
 
 import com.mashape.unirest.http.Unirest
 import org.json.JSONObject
 import org.slf4j.LoggerFactory
+import provider.repository.BitbucketRepository
+import provider.repository.Repository
 import java.net.URL
 
 private const val BITBUCKET_HOST = "bitbucket.org"

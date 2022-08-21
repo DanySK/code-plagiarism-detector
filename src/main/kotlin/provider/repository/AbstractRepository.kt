@@ -1,4 +1,4 @@
-package provider
+package provider.repository
 
 import org.apache.commons.io.FileUtils
 import org.apache.commons.io.filefilter.DirectoryFileFilter
