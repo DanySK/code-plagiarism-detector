@@ -22,8 +22,9 @@ dependencies {
     implementation("org.json:json:20220320")
     implementation("org.eclipse.jgit:org.eclipse.jgit:5.13.1.202206130422-r")
     implementation("commons-io:commons-io:2.11.0")
-    implementation("org.slf4j:slf4j-api:2.0.0-beta1")
-    testImplementation("ch.qos.logback:logback-classic:1.3.0-beta0")
+    implementation("org.slf4j:slf4j-api:2.0.0")
+    implementation("ch.qos.logback:logback-classic:1.3.0-beta0")
+    implementation("ch.qos.logback:logback-core:1.3.0-beta0")
     testImplementation(libs.bundles.kotlin.testing)
 }
 
