@@ -1,6 +1,7 @@
 package provider
 
 import org.json.JSONObject
+import java.net.URL
 
 private const val NAME_FIELD = "name"
 private const val LINKS_FIELD = "links"
@@ -18,11 +19,11 @@ data class BitbucketRepository(private val repositoryInfo: JSONObject) : Abstrac
     override val contributors: Iterable<String>
         get() = TODO("Not yet implemented")
 
-    override val cloneUrl: String
+    override val cloneUrl: URL
         get() {
             val cloneInfos = repositoryInfo.getJSONObject(LINKS_FIELD)
                 .getJSONArray(CLONE_FIELD)
                 .get(0) as JSONObject
-            return cloneInfos.get(HREF_FIELD).toString()
+            return URL(cloneInfos.get(HREF_FIELD).toString())
         }
 }
