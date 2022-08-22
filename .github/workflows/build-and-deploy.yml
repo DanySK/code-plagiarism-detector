@@ -16,6 +16,9 @@ jobs:
       - name: Checkout
         uses: DanySK/action-checkout@0.2.1
       - uses: DanySK/build-check-deploy-gradle-action@2.1.5
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          BB_TOKEN: ${{ secrets.BB_TOKEN }}
         with:
           # Dry-deployment
           deploy-command: >-
