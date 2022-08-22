@@ -3,7 +3,9 @@ package provider.query
 import com.jcabi.github.Coordinates
 import com.jcabi.github.RtGithub
 import com.jcabi.github.Search
+import com.jcabi.http.wire.RetryWire
 import org.slf4j.LoggerFactory
+import provider.query.token.TokenSupplier
 import provider.repository.GitHubRepository
 import provider.repository.Repository
 import java.net.URL
@@ -13,11 +15,14 @@ private const val GITHUB_HOST = "github.com"
 /**
  * A class implementing a search query for GitHub repositories.
  */
-class GitHubSearchQuery : BaseRepoSearchQuery<String, GitHubSearchCriteria>() {
+class GitHubSearchQuery(
+    private val tokenSupplier: TokenSupplier = TokenSupplier { System.getenv("GH_TOKEN") }
+) : BaseRepoSearchQuery<String, GitHubSearchCriteria>() {
     private val logger = LoggerFactory.getLogger(this.javaClass.name)
 
-    // TODO authentication
-    private val github = RtGithub()
+    private val github = RtGithub(
+        RtGithub(tokenSupplier.getToken()).entry().through(RetryWire::class.java)
+    )
 
     override fun getRepoByUrl(url: URL): Repository? {
         val tokens = url.path.removePrefix("/").removeSuffix("/").split("/")

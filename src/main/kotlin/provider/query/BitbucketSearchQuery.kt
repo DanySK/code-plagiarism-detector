@@ -3,6 +3,7 @@ package provider.query
 import com.mashape.unirest.http.Unirest
 import org.json.JSONObject
 import org.slf4j.LoggerFactory
+import provider.query.token.TokenSupplier
 import provider.repository.BitbucketRepository
 import provider.repository.Repository
 import java.net.URL
@@ -17,7 +18,9 @@ private const val MESSAGE_FIELD = "message"
 /**
  * A class implementing a search query for Bitbucket repositories.
  */
-class BitbucketSearchQuery : BaseRepoSearchQuery<String, BitbucketSearchCriteria>() {
+class BitbucketSearchQuery(
+    private val tokenSupplier: TokenSupplier = TokenSupplier { System.getenv("BB_TOKEN") }
+) : BaseRepoSearchQuery<String, BitbucketSearchCriteria>() {
     private val logger = LoggerFactory.getLogger(this.javaClass.name)
 
     override fun urlIsValid(url: URL): Boolean = url.host == BITBUCKET_HOST
@@ -43,9 +46,9 @@ class BitbucketSearchQuery : BaseRepoSearchQuery<String, BitbucketSearchCriteria
     }
 
     private fun getResponse(url: String): JSONObject {
-        // TODO authentication
         return Unirest.get(url)
             .header("Accept", "application/json")
+            .header("Authorization", "Bearer+${tokenSupplier.getToken()}")
             .asJson().body.`object`
     }
 
