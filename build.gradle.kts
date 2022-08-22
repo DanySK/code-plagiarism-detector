@@ -7,9 +7,14 @@ plugins {
     alias(libs.plugins.publishOnCentral)
     alias(libs.plugins.multiJvmTesting)
     alias(libs.plugins.taskTree)
+    application
 }
 
 group = "org.danilopianini"
+
+application {
+    mainClass.set("TestKt")
+}
 
 repositories {
     mavenCentral()
@@ -17,15 +22,19 @@ repositories {
 
 dependencies {
     implementation(libs.kotlin.stdlib)
-    implementation("com.jcabi:jcabi-github:1.2.0")
-    implementation("com.mashape.unirest:unirest-java:1.4.9")
-    implementation("org.json:json:20220320")
-    implementation("org.eclipse.jgit:org.eclipse.jgit:5.13.1.202206130422-r")
-    implementation("commons-io:commons-io:2.11.0")
-    implementation("org.slf4j:slf4j-api:2.0.0")
-    implementation("ch.qos.logback:logback-classic:1.3.0-beta0")
-    implementation("ch.qos.logback:logback-core:1.3.0-beta0")
+    implementation(libs.jcabi.github)
+    implementation(libs.unirest)
+    implementation(libs.json)
+    implementation(libs.org.eclipse.jgit)
+    implementation(libs.commons.io)
+    implementation(libs.slf4j.api)
+    runtimeOnly(libs.logback.classic)
+    runtimeOnly(libs.logback.core)
     testImplementation(libs.bundles.kotlin.testing)
+}
+
+multiJvm {
+    jvmVersionForCompilation.set(11)
 }
 
 kotlin {
@@ -72,6 +81,10 @@ publishOnCentral {
                             name.set("Danilo Pianini")
                             email.set("danilo.pianini@gmail.com")
                             url.set("http://www.danilopianini.org/")
+                        }
+                        developer {
+                            name.set("Luca Tassinari")
+                            email.set("luca.tassinari.2000@gmail.com")
                         }
                     }
                 }
