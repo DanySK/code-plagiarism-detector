@@ -18,14 +18,15 @@ private val separator = System.getProperty("file.separator")
  */
 val clonedReposDirectoryPath = System.getProperty("user.home") + separator + ".$PROJECT_NAME" + separator
 
-private const val LANGUAGES_EXT_FILE_NAME = "Programming_Languages_Extensions.json"
-private const val LANGUAGE_NAME_FIELD = "name"
-private const val EXTENSIONS_FIELD = "extensions"
-
 /**
  * Abstract base implementation for repositories.
  */
 abstract class AbstractRepository : Repository {
+    companion object {
+        private const val LANGUAGES_EXT_FILE_NAME = "Programming_Languages_Extensions.json"
+        private const val LANGUAGE_NAME_FIELD = "name"
+        private const val EXTENSIONS_FIELD = "extensions"
+    }
 
     /**
      * The [URL] to clone the repo.
