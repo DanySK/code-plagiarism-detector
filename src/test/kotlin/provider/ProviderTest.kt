@@ -15,30 +15,39 @@ import java.net.URL
 
 private const val GH_URL_PREFIX = "https://github.com"
 private const val BB_URL_PREFIX = "https://bitbucket.org"
+private const val USERNAME = "Danilo Pianini"
 private const val GH_USER = "DanySK"
 private const val BB_USER = "danysk"
 
 class ProviderTest : FunSpec() {
     init {
         test("Searching by existing name and user should return repos matching that name") {
+            var searchedRepoName = "Student-Project-OOP"
             testByExistingName(
-                GitHubProvider(ByGitHubName("Student-Project-OOP", ByGitHubUser(GH_USER))),
-                "Student-Project-OOP"
+                GitHubProvider(ByGitHubName(searchedRepoName, ByGitHubUser(GH_USER))),
+                searchedRepoName,
+                USERNAME
             )
+            searchedRepoName = "OOP"
             testByExistingName(
-                BitbucketProvider(ByBitbucketName("OOP", ByBitbucketUser(BB_USER))),
-                "OOP"
+                BitbucketProvider(ByBitbucketName(searchedRepoName, ByBitbucketUser(BB_USER))),
+                searchedRepoName,
+                USERNAME
             )
         }
 
         test("Searching by existing URL should return the repo pointed to") {
+            var expectedRepoUrl = "$GH_URL_PREFIX/$GH_USER/code-plagiarism-detector"
             testByExistingUrl(
-                GitHubProvider(URL("$GH_URL_PREFIX/$GH_USER/code-plagiarism-detector")),
-                "code-plagiarism-detector"
+                GitHubProvider(URL(expectedRepoUrl)),
+                "code-plagiarism-detector",
+                USERNAME
             )
+            expectedRepoUrl = "$BB_URL_PREFIX/$BB_USER/courses-oop-gradle-jfx-template"
             testByExistingUrl(
-                BitbucketProvider(URL("$BB_URL_PREFIX/$BB_USER/courses-oop-gradle-jfx-template")),
-                "Courses - OOP - Gradle JFX template"
+                BitbucketProvider(URL(expectedRepoUrl)),
+                "Courses - OOP - Gradle JFX template",
+                USERNAME
             )
         }
 
@@ -55,7 +64,7 @@ class ProviderTest : FunSpec() {
                 GitHubProvider(URL("$GH_URL_PREFIX/$GH_USER/code-plagiarism-detector/tree/master/src/"))
             }
             shouldThrow<java.lang.IllegalArgumentException> {
-                BitbucketProvider(URL("https://www.unibo.it/it"))
+                BitbucketProvider(URL("https://www.unibo.it/"))
             }
             shouldThrow<java.lang.IllegalArgumentException> {
                 BitbucketProvider(URL("$BB_URL_PREFIX/$BB_USER/courses-oop-gradle-jfx-template/src/master/"))
@@ -75,18 +84,28 @@ class ProviderTest : FunSpec() {
         }
     }
 
-    private fun testByExistingName(provider: ProjectsProvider, expectedPattern: String) {
+    private fun testByExistingName(
+        provider: ProjectsProvider,
+        expectedName: String,
+        expectedUser: String
+    ) {
         val result = provider.repositories
         result.shouldNotBeEmpty()
         result.shouldNotContainDuplicates()
         result.forEach {
-            it.name.startsWith(expectedPattern, ignoreCase = true)
+            it.name.startsWith(expectedName, ignoreCase = true)
+            it.owner.shouldMatch(expectedUser)
         }
     }
 
-    private fun testByExistingUrl(provider: ProjectsProvider, expectedName: String) {
+    private fun testByExistingUrl(
+        provider: ProjectsProvider,
+        expectedName: String,
+        expectedUser: String
+    ) {
         val result = provider.repositories
         result.count().shouldBeExactly(1)
         result.first().name.shouldMatch(expectedName)
+        result.first().owner.shouldMatch(expectedUser)
     }
 }
