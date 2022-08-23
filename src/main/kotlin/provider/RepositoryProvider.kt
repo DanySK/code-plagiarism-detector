@@ -1,6 +1,7 @@
-package provider.query
+package provider
 
-import provider.repository.Repository
+import provider.criteria.SearchCriteria
+import repository.Repository
 import java.net.URL
 
 /**
@@ -8,7 +9,7 @@ import java.net.URL
  * @param C the type of the search criteria.
  * @param T the result type returned applying the criteria.
  */
-interface RepositorySearchQuery<T, in C : SearchCriteria<T>> {
+interface RepositoryProvider<T, in C : SearchCriteria<T>> {
     /**
      * Search a repository by the given [URL].
      * @param url the [URL] address in `owner/name` format of the public repository to retrieve.
@@ -25,16 +26,4 @@ interface RepositorySearchQuery<T, in C : SearchCriteria<T>> {
      * If no results is found an empty iterable is returned.
      */
     fun byCriteria(criteria: C): Iterable<Repository>
-}
-
-/**
- * An interface modeling a search criteria.
- * @param T the result type returned applying the criteria.
- */
-interface SearchCriteria<T> {
-    /**
-     * Apply the criteria.
-     * @return T the result of applying the criteria.
-     */
-    fun apply(): T
 }

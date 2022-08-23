@@ -1,4 +1,4 @@
-package provider.repository
+package repository
 
 import com.jcabi.github.Repo
 import com.jcabi.github.User

@@ -1,4 +1,4 @@
-package provider.query.token
+package provider.token
 
 /**
  * A supplier of token.

@@ -1,4 +1,4 @@
-package provider.repository
+package repository
 
 import java.io.File
 

@@ -1,25 +1,54 @@
 package provider
 
-import provider.query.GitHubSearchCriteria
-import provider.query.GitHubSearchQuery
-import provider.repository.Repository
+import com.jcabi.github.Coordinates
+import com.jcabi.github.RtGithub
+import com.jcabi.github.Search
+import com.jcabi.http.wire.RetryWire
+import org.slf4j.LoggerFactory
+import provider.criteria.GitHubSearchCriteria
+import provider.token.TokenSupplier
+import repository.GitHubRepository
+import repository.Repository
 import java.net.URL
 
 /**
- * A provider of GitHub repositories.
+ * A class implementing a search query for GitHub repositories.
  */
-class GitHubProvider : ProjectsProvider {
-    private val _repositories: Iterable<Repository>
+class GitHubProvider(
+    private val tokenSupplier: TokenSupplier = TokenSupplier { System.getenv("GH_TOKEN") }
+) : AbstractRepositoryProvider<String, GitHubSearchCriteria>() {
+    companion object {
+        private const val GITHUB_HOST = "github.com"
+    }
+    private val logger = LoggerFactory.getLogger(this.javaClass.name)
+    private val github = RtGithub(
+        RtGithub(tokenSupplier.getToken()).entry().through(RetryWire::class.java)
+    )
 
-    constructor(url: URL) {
-        val res = GitHubSearchQuery().byLink(url)
-        _repositories = if (res != null) setOf(res) else emptySet()
+    override fun getRepoByUrl(url: URL): Repository? {
+        val tokens = url.path.removePrefix("/").removeSuffix("/").split("/")
+        if (!github.repos().exists(Coordinates.Simple(tokens[0], tokens[1]))) {
+            logger.error("No repo found at given address ($url)")
+            return null
+        }
+        return GitHubRepository(github.repos().get(Coordinates.Simple(tokens[0], tokens[1])))
     }
 
-    constructor(searchCriteria: GitHubSearchCriteria) {
-        _repositories = GitHubSearchQuery().byCriteria(searchCriteria)
+    override fun urlIsValid(url: URL): Boolean = url.host == GITHUB_HOST
+
+    override fun byCriteria(criteria: GitHubSearchCriteria): Iterable<Repository> {
+        try {
+            return getMatchingReposByCriteria(criteria)
+        } catch (e: AssertionError) {
+            logger.error(e.message)
+        }
+        return emptySet()
     }
 
-    override val repositories: Iterable<Repository>
-        get() = _repositories
+    private fun getMatchingReposByCriteria(criteria: GitHubSearchCriteria): Iterable<GitHubRepository> {
+        return github.search().repos(criteria.apply(), "Best Match", Search.Order.ASC)
+            .asSequence()
+            .map { GitHubRepository(it) }
+            .toSet()
+    }
 }
