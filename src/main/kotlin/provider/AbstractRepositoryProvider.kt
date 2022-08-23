@@ -1,14 +1,17 @@
-package provider.query
+package provider
 
-import provider.repository.Repository
+import provider.criteria.SearchCriteria
+import repository.Repository
 import java.net.URL
-
-private const val EXPECTED_PATH_ARGS = 2
 
 /**
  * A common base implementation to all concrete RepositorySearchQuery.
  */
-abstract class BaseRepoSearchQuery<T, in C : SearchCriteria<T>> : RepositorySearchQuery<T, C> {
+abstract class AbstractRepositoryProvider<T, in C : SearchCriteria<T>> : RepositoryProvider<T, C> {
+    companion object {
+        private const val EXPECTED_PATH_ARGS = 2
+    }
+
     override fun byLink(url: URL): Repository? {
         if (!urlIsValid(url)) {
             throw IllegalArgumentException("The given URL is not valid: should point to a repository service.")
