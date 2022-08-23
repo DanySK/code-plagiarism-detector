@@ -15,8 +15,8 @@ data class BitbucketRepository(private val repositoryInfo: JSONObject) : Abstrac
     override val name: String
         get() = repositoryInfo.get(NAME_FIELD).toString()
 
-    override val contributors: Iterable<String>
-        get() = TODO("Not yet implemented")
+    override val owner: String
+        get() = repositoryInfo.getJSONObject("owner").get("display_name").toString()
 
     override val cloneUrl: URL
         get() {

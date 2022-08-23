@@ -13,9 +13,9 @@ interface Repository {
     val name: String
 
     /**
-     * The contributors of the repository.
+     * The owner of the repository.
      */
-    val contributors: Iterable<String>
+    val owner: String
 
     /**
      * Get all the source files contained in this repository by language.
