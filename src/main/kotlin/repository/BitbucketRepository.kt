@@ -3,20 +3,24 @@ package repository
 import org.json.JSONObject
 import java.net.URL
 
-private const val NAME_FIELD = "name"
-private const val LINKS_FIELD = "links"
-private const val CLONE_FIELD = "clone"
-private const val HREF_FIELD = "href"
-
 /**
  * A Bitbucket repository adapter.
  */
 data class BitbucketRepository(private val repositoryInfo: JSONObject) : AbstractRepository() {
+    companion object {
+        private const val REPOSITORY_NAME_FIELD = "name"
+        private const val LINKS_FIELD = "links"
+        private const val CLONE_FIELD = "clone"
+        private const val HREF_FIELD = "href"
+        private const val OWNER_FIELD = "owner"
+        private const val OWNER_NAME_FIELD = "display_name"
+    }
+
     override val name: String
-        get() = repositoryInfo.get(NAME_FIELD).toString()
+        get() = repositoryInfo.get(REPOSITORY_NAME_FIELD).toString()
 
     override val owner: String
-        get() = repositoryInfo.getJSONObject("owner").get("display_name").toString()
+        get() = repositoryInfo.getJSONObject(OWNER_FIELD).get(OWNER_NAME_FIELD).toString()
 
     override val cloneUrl: URL
         get() {
