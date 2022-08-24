@@ -1,10 +1,10 @@
-package provider
+package repository
 
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.ints.shouldBeExactly
-import repository.clonedReposDirectoryPath
-import java.io.File
+import provider.BitbucketProvider
+import provider.GitHubProvider
 import java.net.URL
 
 private const val GH_SAMPLE_REPO_URL = "https://github.com/APICe-at-DISI/sample-javafx-project"
@@ -28,9 +28,5 @@ class RepositoryTest : FunSpec({
         shouldThrow<java.lang.IllegalArgumentException> {
             bitbucketRepo.getSources("non-existing-language")
         }
-    }
-
-    afterSpec {
-        File(clonedReposDirectoryPath).deleteRecursively()
     }
 })

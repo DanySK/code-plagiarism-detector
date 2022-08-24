@@ -28,8 +28,8 @@ dependencies {
     implementation(libs.org.eclipse.jgit)
     implementation(libs.commons.io)
     implementation(libs.slf4j.api)
-    runtimeOnly(libs.logback.classic)
-    runtimeOnly(libs.logback.core)
+    implementation(libs.logback.classic)
+    implementation(libs.logback.core)
     testImplementation(libs.bundles.kotlin.testing)
 }
 
