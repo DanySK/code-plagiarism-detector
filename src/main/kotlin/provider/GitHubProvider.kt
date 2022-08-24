@@ -6,7 +6,8 @@ import com.jcabi.github.Search
 import com.jcabi.http.wire.RetryWire
 import org.slf4j.LoggerFactory
 import provider.criteria.GitHubSearchCriteria
-import provider.token.TokenSupplier
+import provider.token.EnvironmentTokenSupplier
+import provider.token.TokenSupplierStrategy
 import repository.GitHubRepository
 import repository.Repository
 import java.net.URL
@@ -14,21 +15,23 @@ import java.net.URL
 /**
  * A class implementing a search query for GitHub repositories.
  */
-class GitHubProvider(
-    private val tokenSupplier: TokenSupplier = TokenSupplier { System.getenv("GH_TOKEN") }
-) : AbstractRepositoryProvider<String, GitHubSearchCriteria>() {
+class GitHubProvider : AbstractRepositoryProvider<String, GitHubSearchCriteria>() {
     companion object {
+        private const val AUTH_TOKEN_NAME = "GH_TOKEN"
+        private const val URL_SEPARATOR = "/"
         private const val GITHUB_HOST = "github.com"
+        private const val SORT_CRITERIA = "Best Match"
     }
+    private val tokenSupplierStrategy: TokenSupplierStrategy = EnvironmentTokenSupplier(AUTH_TOKEN_NAME)
     private val logger = LoggerFactory.getLogger(this.javaClass.name)
     private val github = RtGithub(
-        RtGithub(tokenSupplier.getToken()).entry().through(RetryWire::class.java)
+        RtGithub(tokenSupplierStrategy.token).entry().through(RetryWire::class.java)
     )
 
     override fun getRepoByUrl(url: URL): Repository? {
-        val tokens = url.path.removePrefix("/").removeSuffix("/").split("/")
+        val tokens = url.path.removePrefix(URL_SEPARATOR).removeSuffix(URL_SEPARATOR).split(URL_SEPARATOR)
         if (!github.repos().exists(Coordinates.Simple(tokens[0], tokens[1]))) {
-            logger.error("No repo found at given address ($url)")
+            logger.error("No repository found at given address ($url)")
             return null
         }
         return GitHubRepository(github.repos().get(Coordinates.Simple(tokens[0], tokens[1])))
@@ -46,7 +49,7 @@ class GitHubProvider(
     }
 
     private fun getMatchingReposByCriteria(criteria: GitHubSearchCriteria): Iterable<GitHubRepository> {
-        return github.search().repos(criteria.apply(), "Best Match", Search.Order.ASC)
+        return github.search().repos(criteria.apply(), SORT_CRITERIA, Search.Order.ASC)
             .asSequence()
             .map { GitHubRepository(it) }
             .toSet()
