@@ -1,5 +1,7 @@
 package provider.criteria
 
+private const val SPACE_CHAR = " "
+
 /**
  * An interface modeling search criteria for searching GitHub repositories.
  */
@@ -10,7 +12,9 @@ interface GitHubSearchCriteria : SearchCriteria<String>
  * @property username the GitHub username.
  */
 class ByGitHubUser(private val username: String) : GitHubSearchCriteria {
-    override fun apply(): String = "user:$username fork:true"
+    override fun apply(): String = StringBuilder("user:$username")
+        .append(SPACE_CHAR)
+        .append("fork:true").toString()
 }
 
 /**
@@ -20,7 +24,7 @@ class ByGitHubUser(private val username: String) : GitHubSearchCriteria {
 abstract class GitHubCompoundCriteria(
     private val criteria: GitHubSearchCriteria
 ) : GitHubSearchCriteria {
-    override fun apply(): String = criteria.apply()
+    override fun apply(): String = criteria.apply().plus(SPACE_CHAR)
 }
 
 /**
@@ -31,5 +35,7 @@ class ByGitHubName(
     private val repositoryName: String,
     criteria: GitHubSearchCriteria
 ) : GitHubCompoundCriteria(criteria) {
-    override fun apply(): String = "${super.apply()} $repositoryName"
+    override fun apply(): String = StringBuilder(super.apply())
+        .append(repositoryName)
+        .append("in:name").toString()
 }

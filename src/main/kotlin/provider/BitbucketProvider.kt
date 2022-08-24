@@ -4,7 +4,8 @@ import com.mashape.unirest.http.Unirest
 import org.json.JSONObject
 import org.slf4j.LoggerFactory
 import provider.criteria.BitbucketSearchCriteria
-import provider.token.TokenSupplier
+import provider.token.EnvironmentTokenSupplier
+import provider.token.TokenSupplierStrategy
 import repository.BitbucketRepository
 import repository.Repository
 import java.net.URL
@@ -12,17 +13,21 @@ import java.net.URL
 /**
  * A class implementing a search query for Bitbucket repositories.
  */
-class BitbucketProvider(
-    private val tokenSupplier: TokenSupplier = TokenSupplier { System.getenv("BB_TOKEN") }
-) : AbstractRepositoryProvider<String, BitbucketSearchCriteria>() {
+class BitbucketProvider : AbstractRepositoryProvider<String, BitbucketSearchCriteria>() {
     companion object {
+        private const val AUTH_TOKEN_NAME = "BB_TOKEN"
         private const val BITBUCKET_HOST = "bitbucket.org"
         private const val BASE_URL = "https://api.bitbucket.org/2.0/repositories"
         private const val ERROR_FIELD = "error"
         private const val NEXT_PAGE_FIELD = "next"
         private const val VALUES_FIELD = "values"
         private const val MESSAGE_FIELD = "message"
+        private const val ACCEPT_HEADER_FIELD = "Accept"
+        private const val ACCEPT_HEADER_VALUE = "application/json"
+        private const val AUTH_HEADER_FIELD = "Authorization"
+        private const val AUTH_HEADER_PREFIX = "Bearer+"
     }
+    private val tokenSupplierStrategy: TokenSupplierStrategy = EnvironmentTokenSupplier(AUTH_TOKEN_NAME)
     private val logger = LoggerFactory.getLogger(this.javaClass.name)
 
     override fun urlIsValid(url: URL): Boolean = url.host == BITBUCKET_HOST
@@ -49,8 +54,8 @@ class BitbucketProvider(
 
     private fun getResponse(url: String): JSONObject {
         return Unirest.get(url)
-            .header("Accept", "application/json")
-            .header("Authorization", "Bearer+${tokenSupplier.getToken()}")
+            .header(ACCEPT_HEADER_FIELD, ACCEPT_HEADER_VALUE)
+            .header(AUTH_HEADER_FIELD, "$AUTH_HEADER_PREFIX${tokenSupplierStrategy.token}")
             .asJson().body.`object`
     }
 

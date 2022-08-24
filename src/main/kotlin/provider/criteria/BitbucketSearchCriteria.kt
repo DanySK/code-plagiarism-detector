@@ -1,5 +1,12 @@
 package provider.criteria
 
+private const val QUOTATION_MARK = "%22"
+private const val QUESTION_MARK = "?"
+private const val URL_SEPARATOR = "/"
+private const val LIKE_CHAR = "%7E"
+private const val QUERY_PREFIX = "q="
+private const val AND_OPERATOR = "+AND+"
+
 /**
  * An interface modeling search criteria for searching Bitbucket repositories.
  */
@@ -10,7 +17,10 @@ interface BitbucketSearchCriteria : SearchCriteria<String>
  * @property username the Bitbucket username.
  */
 class ByBitbucketUser(private val username: String) : BitbucketSearchCriteria {
-    override fun apply(): String = "/$username?"
+    override fun apply(): String = StringBuilder(URL_SEPARATOR)
+        .append(username)
+        .append(QUESTION_MARK)
+        .toString()
 }
 
 /**
@@ -22,7 +32,7 @@ abstract class BitbucketCompoundCriteria(
 ) : BitbucketSearchCriteria {
     override fun apply(): String {
         var url = criteria.apply()
-        url += if (url.endsWith("?")) "q=" else "+AND+"
+        url += if (url.endsWith(QUESTION_MARK)) QUERY_PREFIX else AND_OPERATOR
         return url
     }
 }
@@ -35,5 +45,10 @@ class ByBitbucketName(
     private val repositoryName: String,
     criteria: BitbucketSearchCriteria
 ) : BitbucketCompoundCriteria(criteria) {
-    override fun apply(): String = super.apply().plus("name+%7E+%22$repositoryName%22")
+    override fun apply(): String = StringBuilder(super.apply())
+        .append("name+")
+        .append(LIKE_CHAR)
+        .append(QUOTATION_MARK)
+        .append(repositoryName)
+        .append(QUOTATION_MARK).toString()
 }
