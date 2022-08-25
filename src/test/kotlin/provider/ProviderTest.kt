@@ -7,6 +7,7 @@ import io.kotest.matchers.collections.shouldNotBeEmpty
 import io.kotest.matchers.collections.shouldNotContainDuplicates
 import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.nulls.shouldNotBeNull
+import io.kotest.matchers.string.shouldContainIgnoringCase
 import io.kotest.matchers.string.shouldMatch
 import provider.criteria.ByBitbucketName
 import provider.criteria.ByBitbucketUser
@@ -27,7 +28,7 @@ class ProviderTest : FunSpec() {
         val bitbucketProvider = BitbucketProvider()
 
         test("Searching by existing name and user should return repos matching those criteria") {
-            var searchedRepoName = "Student-Project-OOP"
+            var searchedRepoName = "Project-OOP"
             testByExistingName(
                 githubProvider.byCriteria(ByGitHubName(searchedRepoName, ByGitHubUser(GH_USER))),
                 searchedRepoName,
@@ -56,9 +57,13 @@ class ProviderTest : FunSpec() {
             )
         }
 
-        test("Searching by *non-existing* URL should return null") {
-            githubProvider.byLink(URL("$GH_URL_PREFIX/$GH_USER/non-existing-repo")).shouldBeNull()
-            bitbucketProvider.byLink(URL("$BB_URL_PREFIX/$BB_USER/non-existing-repo")).shouldBeNull()
+        test("Searching by *non-existing* URL should throw an exception") {
+            shouldThrow<IllegalArgumentException> {
+                githubProvider.byLink(URL("$GH_URL_PREFIX/$GH_USER/non-existing-repo")).shouldBeNull()
+            }
+            shouldThrow<IllegalArgumentException> {
+                bitbucketProvider.byLink(URL("$BB_URL_PREFIX/$BB_USER/non-existing-repo")).shouldBeNull()
+            }
         }
 
         test("Searching by illegal URL should throw an exception") {
@@ -85,13 +90,13 @@ class ProviderTest : FunSpec() {
             ).shouldBeEmpty()
         }
 
-        test("Searching by a *non-existing* user should return an empty collection of repos") {
-            githubProvider.byCriteria(
-                ByGitHubUser("non-existing-user")
-            ).shouldBeEmpty()
-            bitbucketProvider.byCriteria(
-                ByBitbucketUser("non-existing-user")
-            ).shouldBeEmpty()
+        test("Searching by a *non-existing* user should throw an exception") {
+            shouldThrow<IllegalArgumentException> {
+                githubProvider.byCriteria(ByGitHubUser("non-existing-user"))
+            }
+            shouldThrow<IllegalArgumentException> {
+                bitbucketProvider.byCriteria(ByBitbucketUser("non-existing-user"))
+            }
         }
     }
 
@@ -99,14 +104,14 @@ class ProviderTest : FunSpec() {
         result.shouldNotBeEmpty()
         result.shouldNotContainDuplicates()
         result.forEach {
-            it.name.startsWith(expectedName, ignoreCase = true)
-            it.owner.shouldMatch(expectedUser)
+            it.name shouldContainIgnoringCase expectedName
+            it.owner shouldMatch expectedUser
         }
     }
 
     private fun testByExistingUrl(result: Repository?, expectedName: String, expectedUser: String) {
         result.shouldNotBeNull()
-        result.name.shouldMatch(expectedName)
-        result.owner.shouldMatch(expectedUser)
+        result.name shouldMatch expectedName
+        result.owner shouldMatch expectedUser
     }
 }

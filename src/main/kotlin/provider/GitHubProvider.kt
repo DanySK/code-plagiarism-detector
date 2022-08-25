@@ -7,7 +7,7 @@ import com.jcabi.http.wire.RetryWire
 import org.slf4j.LoggerFactory
 import provider.criteria.GitHubSearchCriteria
 import provider.token.EnvironmentTokenSupplier
-import provider.token.TokenSupplierStrategy
+import provider.token.AuthenticationTokenSupplierStrategy
 import repository.GitHubRepository
 import repository.Repository
 import java.net.URL
@@ -21,20 +21,21 @@ class GitHubProvider : AbstractRepositoryProvider<String, GitHubSearchCriteria>(
         private const val URL_SEPARATOR = "/"
         private const val GITHUB_HOST = "github.com"
         private const val SORT_CRITERIA = "Best Match"
+        private const val ERROR_MSG = "The listed repositories cannot be searched either because" +
+            " the resources do not exist or you do not have permission to view them"
     }
-    private val tokenSupplierStrategy: TokenSupplierStrategy = EnvironmentTokenSupplier(AUTH_TOKEN_NAME)
-    private val logger = LoggerFactory.getLogger(this.javaClass.name)
+    private val logger = LoggerFactory.getLogger(this.javaClass)
+    private val tokenSupplier: AuthenticationTokenSupplierStrategy = EnvironmentTokenSupplier(AUTH_TOKEN_NAME)
     private val github = RtGithub(
-        RtGithub(tokenSupplierStrategy.token).entry().through(RetryWire::class.java)
+        RtGithub(tokenSupplier.getCredentials()).entry().through(RetryWire::class.java)
     )
 
-    override fun getRepoByUrl(url: URL): Repository? {
-        val tokens = url.path.removePrefix(URL_SEPARATOR).removeSuffix(URL_SEPARATOR).split(URL_SEPARATOR)
-        if (!github.repos().exists(Coordinates.Simple(tokens[0], tokens[1]))) {
-            logger.error("No repository found at given address ($url)")
-            return null
+    override fun getRepoByUrl(url: URL): Repository {
+        val (user, name) = url.path.removePrefix(URL_SEPARATOR).removeSuffix(URL_SEPARATOR).split(URL_SEPARATOR)
+        if (!github.repos().exists(Coordinates.Simple(user, name))) {
+            throw IllegalArgumentException(ERROR_MSG)
         }
-        return GitHubRepository(github.repos().get(Coordinates.Simple(tokens[0], tokens[1])))
+        return GitHubRepository(github.repos().get(Coordinates.Simple(user, name)))
     }
 
     override fun urlIsValid(url: URL): Boolean = url.host == GITHUB_HOST
@@ -44,8 +45,8 @@ class GitHubProvider : AbstractRepositoryProvider<String, GitHubSearchCriteria>(
             return getMatchingReposByCriteria(criteria)
         } catch (e: AssertionError) {
             logger.error(e.message)
+            throw IllegalArgumentException(ERROR_MSG)
         }
-        return emptySet()
     }
 
     private fun getMatchingReposByCriteria(criteria: GitHubSearchCriteria): Iterable<GitHubRepository> {
