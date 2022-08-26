@@ -1,4 +1,4 @@
-package repository
+package org.danilopianini.plagiarismdetector.repository
 
 import org.json.JSONObject
 import java.net.URL

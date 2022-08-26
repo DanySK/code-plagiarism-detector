@@ -1,9 +1,9 @@
-package repository
+package org.danilopianini.plagiarismdetector.repository
 
 import org.json.JSONArray
 import org.json.JSONObject
 import org.json.JSONTokener
-import repository.content.RepoContentSupplierCloneStrategy
+import org.danilopianini.plagiarismdetector.repository.content.RepoContentSupplierCloneStrategy
 import java.io.File
 import java.net.URL
 

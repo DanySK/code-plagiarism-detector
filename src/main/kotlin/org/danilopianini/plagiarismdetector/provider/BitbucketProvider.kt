@@ -1,13 +1,13 @@
-package provider
+package org.danilopianini.plagiarismdetector.provider
 
 import com.mashape.unirest.http.Unirest
 import org.apache.commons.io.IOUtils
 import org.json.JSONObject
 import org.slf4j.LoggerFactory
-import provider.criteria.BitbucketSearchCriteria
-import provider.token.EnvironmentTokenSupplier
-import repository.BitbucketRepository
-import repository.Repository
+import org.danilopianini.plagiarismdetector.provider.criteria.BitbucketSearchCriteria
+import org.danilopianini.plagiarismdetector.repository.BitbucketRepository
+import org.danilopianini.plagiarismdetector.repository.Repository
+import org.danilopianini.plagiarismdetector.utils.EnvironmentTokenSupplier
 import java.net.URL
 import java.nio.charset.StandardCharsets
 import java.util.*
@@ -32,9 +32,9 @@ class BitbucketProvider : AbstractRepositoryProvider<String, BitbucketSearchCrit
         private const val UNAUTHORIZED_CODE = 401
     }
     private val logger = LoggerFactory.getLogger(this.javaClass)
-    private val tokenSupplier = EnvironmentTokenSupplier(AUTH_USERNAME, ":", AUTH_TOKEN_NAME)
+    private val tokenSupplier = EnvironmentTokenSupplier(AUTH_USERNAME, AUTH_TOKEN_NAME, separator = ":")
     private val encodedAuthenticationToken = Base64.getEncoder()
-        .encodeToString(tokenSupplier.getCredentials().toByteArray(StandardCharsets.UTF_8))
+        .encodeToString(tokenSupplier.token.toByteArray(StandardCharsets.UTF_8))
 
     override fun urlIsValid(url: URL): Boolean = url.host == BITBUCKET_HOST
 

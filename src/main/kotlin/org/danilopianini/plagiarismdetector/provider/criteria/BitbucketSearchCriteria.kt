@@ -1,4 +1,4 @@
-package provider.criteria
+package org.danilopianini.plagiarismdetector.provider.criteria
 
 private const val QUOTATION_MARK = "%22"
 private const val QUESTION_MARK = "?"

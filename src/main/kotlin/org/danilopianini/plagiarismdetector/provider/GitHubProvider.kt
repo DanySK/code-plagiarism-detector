@@ -1,15 +1,14 @@
-package provider
+package org.danilopianini.plagiarismdetector.provider
 
 import com.jcabi.github.Coordinates
 import com.jcabi.github.RtGithub
 import com.jcabi.github.Search
 import com.jcabi.http.wire.RetryWire
 import org.slf4j.LoggerFactory
-import provider.criteria.GitHubSearchCriteria
-import provider.token.EnvironmentTokenSupplier
-import provider.token.AuthenticationTokenSupplierStrategy
-import repository.GitHubRepository
-import repository.Repository
+import org.danilopianini.plagiarismdetector.provider.criteria.GitHubSearchCriteria
+import org.danilopianini.plagiarismdetector.repository.GitHubRepository
+import org.danilopianini.plagiarismdetector.repository.Repository
+import org.danilopianini.plagiarismdetector.utils.EnvironmentTokenSupplier
 import java.net.URL
 
 /**
@@ -25,9 +24,9 @@ class GitHubProvider : AbstractRepositoryProvider<String, GitHubSearchCriteria>(
             " the resources do not exist or you do not have permission to view them"
     }
     private val logger = LoggerFactory.getLogger(this.javaClass)
-    private val tokenSupplier: AuthenticationTokenSupplierStrategy = EnvironmentTokenSupplier(AUTH_TOKEN_NAME)
+    private val tokenSupplier = EnvironmentTokenSupplier(AUTH_TOKEN_NAME)
     private val github = RtGithub(
-        RtGithub(tokenSupplier.getCredentials()).entry().through(RetryWire::class.java)
+        RtGithub(tokenSupplier.token).entry().through(RetryWire::class.java)
     )
 
     override fun getRepoByUrl(url: URL): Repository {

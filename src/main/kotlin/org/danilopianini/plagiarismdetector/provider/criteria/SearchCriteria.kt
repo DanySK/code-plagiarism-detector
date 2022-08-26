@@ -1,4 +1,4 @@
-package provider.criteria
+package org.danilopianini.plagiarismdetector.provider.criteria
 
 /**
  * An interface modeling a search criteria.
