@@ -9,8 +9,6 @@ import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.string.shouldContainIgnoringCase
 import io.kotest.matchers.string.shouldMatch
-import org.danilopianini.plagiarismdetector.provider.BitbucketProvider
-import org.danilopianini.plagiarismdetector.provider.GitHubProvider
 import org.danilopianini.plagiarismdetector.provider.criteria.ByBitbucketName
 import org.danilopianini.plagiarismdetector.provider.criteria.ByBitbucketUser
 import org.danilopianini.plagiarismdetector.provider.criteria.ByGitHubName
