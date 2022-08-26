@@ -17,8 +17,8 @@ import java.util.*
  */
 class BitbucketProvider : AbstractRepositoryProvider<String, BitbucketSearchCriteria>() {
     companion object {
-        private const val AUTH_USERNAME = "BITBUCKET_USER"
-        private const val AUTH_TOKEN_NAME = "BITBUCKET_TOKEN"
+        private const val AUTH_USERNAME = "BB_USER"
+        private const val AUTH_TOKEN_NAME = "BB_TOKEN"
         private const val BITBUCKET_HOST = "bitbucket.org"
         private const val BASE_URL = "https://api.bitbucket.org/2.0/repositories"
         private const val ERROR_FIELD = "error"
