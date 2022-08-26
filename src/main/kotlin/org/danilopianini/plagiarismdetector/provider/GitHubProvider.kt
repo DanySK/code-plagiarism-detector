@@ -12,7 +12,7 @@ import org.danilopianini.plagiarismdetector.utils.EnvironmentTokenSupplier
 import java.net.URL
 
 /**
- * A class implementing a search query for GitHub repositories.
+ * A provider of GitHub repositories.
  */
 class GitHubProvider : AbstractRepositoryProvider<String, GitHubSearchCriteria>() {
     companion object {

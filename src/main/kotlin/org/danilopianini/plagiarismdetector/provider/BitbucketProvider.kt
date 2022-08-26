@@ -13,7 +13,7 @@ import java.nio.charset.StandardCharsets
 import java.util.*
 
 /**
- * A class implementing a search query for Bitbucket repositories.
+ * A provider of Bitbucket repositories.
  */
 class BitbucketProvider : AbstractRepositoryProvider<String, BitbucketSearchCriteria>() {
     companion object {

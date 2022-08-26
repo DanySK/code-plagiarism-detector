@@ -1,7 +1,7 @@
 package org.danilopianini.plagiarismdetector.utils
 
 /**
- * A supplier of token, used for authenticating to repositories API services.
+ * A supplier of token, used for authenticating to API of repository services.
  */
 interface AuthenticationTokenSupplierStrategy {
     /**
