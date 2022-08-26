@@ -10,7 +10,7 @@ import org.danilopianini.plagiarismdetector.repository.Repository
 import org.danilopianini.plagiarismdetector.utils.EnvironmentTokenSupplier
 import java.net.URL
 import java.nio.charset.StandardCharsets
-import java.util.*
+import java.util.Base64
 
 /**
  * A provider of Bitbucket repositories.
