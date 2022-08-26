@@ -18,6 +18,7 @@ jobs:
       - uses: DanySK/build-check-deploy-gradle-action@2.1.5
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          BB_USER: ${{ secrets.BB_USER }}
           BB_TOKEN: ${{ secrets.BB_TOKEN }}
         with:
           # Dry-deployment
