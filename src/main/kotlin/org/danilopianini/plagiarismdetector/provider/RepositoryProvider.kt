@@ -5,7 +5,7 @@ import org.danilopianini.plagiarismdetector.repository.Repository
 import java.net.URL
 
 /**
- * An interface modeling a repository search query.
+ * An interface modeling a provider of [Repository].
  * @param C the type of the search criteria.
  * @param T the result type returned applying the criteria.
  */

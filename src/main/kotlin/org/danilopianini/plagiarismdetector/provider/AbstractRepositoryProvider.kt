@@ -5,7 +5,7 @@ import org.danilopianini.plagiarismdetector.repository.Repository
 import java.net.URL
 
 /**
- * A common base implementation to all concrete RepositorySearchQuery.
+ * A common base implementation to all concrete [RepositoryProvider].
  */
 abstract class AbstractRepositoryProvider<T, in C : SearchCriteria<T>> : RepositoryProvider<T, C> {
     companion object {
@@ -14,7 +14,7 @@ abstract class AbstractRepositoryProvider<T, in C : SearchCriteria<T>> : Reposit
 
     override fun byLink(url: URL): Repository {
         if (!urlIsValid(url)) {
-            throw IllegalArgumentException("The given URL is not valid: should point to a repository service.")
+            throw IllegalArgumentException("The given URL is not valid: should point to the repository service.")
         } else if (!urlIsWellFormed(url)) {
             throw java.lang.IllegalArgumentException("The given URL must be in `owner/name` format.")
         }
@@ -22,7 +22,7 @@ abstract class AbstractRepositoryProvider<T, in C : SearchCriteria<T>> : Reposit
     }
 
     /**
-     * Checks if the given url is valid, i.e., it points to a repository service.
+     * Checks if the given url is valid, i.e. it points to the repository service.
      * @param url the [URL] to validate.
      * @return true if the url is valid, false otherwise.
      */
