@@ -16,7 +16,7 @@ import java.net.URL
  */
 class GitHubProvider : AbstractRepositoryProvider<String, GitHubSearchCriteria>() {
     companion object {
-        private const val AUTH_TOKEN_NAME = "GH_TOKEN"
+        private const val AUTH_TOKEN_NAME = "GITHUB_TOKEN"
         private const val URL_SEPARATOR = "/"
         private const val GITHUB_HOST = "github.com"
         private const val SORT_CRITERIA = "Best Match"

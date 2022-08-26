@@ -4,7 +4,8 @@ import org.json.JSONObject
 import java.net.URL
 
 /**
- * A Bitbucket repository adapter.
+ * A Bitbucket repository.
+ * @property repositoryInfo the [JSONObject] containing all repo's infos.
  */
 data class BitbucketRepository(private val repositoryInfo: JSONObject) : AbstractRepository() {
     companion object {
