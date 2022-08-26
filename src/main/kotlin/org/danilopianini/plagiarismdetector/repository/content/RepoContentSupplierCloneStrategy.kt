@@ -16,11 +16,7 @@ class RepoContentSupplierCloneStrategy(private val cloneUrl: URL) : RepoContentS
     companion object {
         private const val URL_SEPARATOR = "/"
     }
-    private val clonedRepoDirectory: File
-
-    init {
-        clonedRepoDirectory = cloneRepo()
-    }
+    private val clonedRepoDirectory: File = cloneRepo()
 
     private fun cloneRepo(): File {
         val tmpDir = Files.createTempDirectory(cloneUrl.path.substringAfterLast(URL_SEPARATOR)).toFile()

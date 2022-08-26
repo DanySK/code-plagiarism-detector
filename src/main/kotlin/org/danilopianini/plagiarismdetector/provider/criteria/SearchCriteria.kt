@@ -7,7 +7,6 @@ package org.danilopianini.plagiarismdetector.provider.criteria
 interface SearchCriteria<T> {
     /**
      * Apply the criteria.
-     * @return T the result of applying the criteria.
      */
     fun apply(): T
 }
