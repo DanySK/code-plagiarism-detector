@@ -46,7 +46,7 @@ class ByBitbucketName(
     criteria: BitbucketSearchCriteria
 ) : BitbucketCompoundCriteria(criteria) {
     override fun apply(): String = StringBuilder(super.apply())
-        .append("name+")
+        .append("name")
         .append(LIKE_CHAR)
         .append(QUOTATION_MARK)
         .append(repositoryName)
