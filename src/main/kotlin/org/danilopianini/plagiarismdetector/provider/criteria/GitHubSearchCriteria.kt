@@ -1,4 +1,4 @@
-package provider.criteria
+package org.danilopianini.plagiarismdetector.provider.criteria
 
 private const val SPACE_CHAR = " "
 

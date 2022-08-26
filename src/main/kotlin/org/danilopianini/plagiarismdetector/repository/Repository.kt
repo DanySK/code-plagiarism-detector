@@ -1,4 +1,4 @@
-package repository
+package org.danilopianini.plagiarismdetector.repository
 
 import java.io.File
 

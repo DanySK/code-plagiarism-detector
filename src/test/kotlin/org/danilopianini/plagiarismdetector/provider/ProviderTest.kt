@@ -1,4 +1,4 @@
-package provider
+package org.danilopianini.plagiarismdetector.provider
 
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.FunSpec
@@ -9,11 +9,13 @@ import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.string.shouldContainIgnoringCase
 import io.kotest.matchers.string.shouldMatch
-import provider.criteria.ByBitbucketName
-import provider.criteria.ByBitbucketUser
-import provider.criteria.ByGitHubName
-import provider.criteria.ByGitHubUser
-import repository.Repository
+import org.danilopianini.plagiarismdetector.provider.BitbucketProvider
+import org.danilopianini.plagiarismdetector.provider.GitHubProvider
+import org.danilopianini.plagiarismdetector.provider.criteria.ByBitbucketName
+import org.danilopianini.plagiarismdetector.provider.criteria.ByBitbucketUser
+import org.danilopianini.plagiarismdetector.provider.criteria.ByGitHubName
+import org.danilopianini.plagiarismdetector.provider.criteria.ByGitHubUser
+import org.danilopianini.plagiarismdetector.repository.Repository
 import java.net.URL
 
 private const val GH_URL_PREFIX = "https://github.com"

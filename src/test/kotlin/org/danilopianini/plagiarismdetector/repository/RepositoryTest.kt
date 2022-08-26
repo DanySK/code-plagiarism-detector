@@ -1,10 +1,10 @@
-package repository
+package org.danilopianini.plagiarismdetector.repository
 
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.ints.shouldBeExactly
-import provider.BitbucketProvider
-import provider.GitHubProvider
+import org.danilopianini.plagiarismdetector.provider.BitbucketProvider
+import org.danilopianini.plagiarismdetector.provider.GitHubProvider
 import java.net.URL
 
 private const val GH_SAMPLE_REPO_URL = "https://github.com/tassiLuca/test-app-for-code-plagiarism-detector"

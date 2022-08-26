@@ -1,4 +1,4 @@
-package repository
+package org.danilopianini.plagiarismdetector.repository
 
 import com.jcabi.github.Repo
 import com.jcabi.github.User

@@ -1,7 +1,7 @@
-package provider
+package org.danilopianini.plagiarismdetector.provider
 
-import provider.criteria.SearchCriteria
-import repository.Repository
+import org.danilopianini.plagiarismdetector.provider.criteria.SearchCriteria
+import org.danilopianini.plagiarismdetector.repository.Repository
 import java.net.URL
 
 /**
