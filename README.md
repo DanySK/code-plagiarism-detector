@@ -1,9 +1,9 @@
-# TODO LIST
+# Code Plagiarism Detector
+A tool for scanning existing projects in search of potential signs of plagiarism.
 
-1. Rename the project in `settings.gradle.kts`
-1. Change the project name and description in the `publishOnCentral` block in `build.gradle.kts`
-1. Configure the repository to have the following variables set:
-  * ORG_GRADLE_PROJECT_signingKey
-  * ORG_GRADLE_PROJECT_signingPassword
-  * MAVEN_CENTRAL_USERNAME
-  * MAVEN_CENTRAL_PASSWORD
+## Usage
+In order to work, the following environment variables must be set:
+- `BB_USER` which contains the Bitbucket username;
+- `BB_TOKEN` which contains the Bitbucket token;
+- `GH_TOKEN` which contains the GitHub token.
+
