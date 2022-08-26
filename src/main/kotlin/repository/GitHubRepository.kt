@@ -13,20 +13,21 @@ data class GitHubRepository(private val repository: Repo) : AbstractRepository()
         private const val GITHUB_URL_PREFIX = "https://github.com/"
         private const val URL_SEPARATOR = "/"
     }
+    private val ownerUsername = repository.coordinates().user()
 
-    override val name: String
-        get() = repository.coordinates().repo()
+    override val name: String = repository.coordinates().repo()
 
-    override val owner: String
-        get() = User.Smart(repository.github().users().get(repository.coordinates().user())).name()
+    override val owner: String = User.Smart(repository.github().users().get(ownerUsername)).name()
 
     override val cloneUrl: URL
         get() {
             val urlRepresentation = StringBuilder().append(GITHUB_URL_PREFIX)
-                .append(repository.coordinates().user())
+                .append(ownerUsername)
                 .append(URL_SEPARATOR)
-                .append(repository.coordinates().repo())
+                .append(name)
                 .toString()
             return URL(urlRepresentation)
         }
+
+    override fun toString() = "Repository $name of $owner"
 }
