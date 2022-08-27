@@ -54,8 +54,8 @@ class BitbucketProvider : AbstractRepositoryProvider<String, BitbucketSearchCrit
     private fun getResponses(url: String): Iterable<JSONObject> {
         val responses = mutableSetOf<JSONObject>()
         responses.add(doGETRequest(url))
-        if (checkError(responses.last())) {
-            throw IllegalArgumentException(responses.last().getJSONObject(ERROR_FIELD).get(MESSAGE_FIELD).toString())
+        require(!checkError(responses.last())) {
+            responses.last().getJSONObject(ERROR_FIELD).get(MESSAGE_FIELD).toString()
         }
         if (hasNext(responses.last())) {
             responses.addAll(getResponses(responses.last().get(NEXT_PAGE_FIELD).toString()))

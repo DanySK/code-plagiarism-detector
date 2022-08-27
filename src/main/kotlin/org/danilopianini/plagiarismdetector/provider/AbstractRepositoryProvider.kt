@@ -13,11 +13,8 @@ abstract class AbstractRepositoryProvider<T, in C : SearchCriteria<T>> : Reposit
     }
 
     override fun byLink(url: URL): Repository {
-        if (!urlIsValid(url)) {
-            throw IllegalArgumentException("The given URL is not valid: should point to the repository service.")
-        } else if (!urlIsWellFormed(url)) {
-            throw java.lang.IllegalArgumentException("The given URL must be in `owner/name` format.")
-        }
+        require(urlIsValid(url)) { "The given URL is not valid: should point to the repository service." }
+        require(urlIsWellFormed(url)) { "The given URL must be in `owner/name` format." }
         return getRepoByUrl(url)
     }
 
