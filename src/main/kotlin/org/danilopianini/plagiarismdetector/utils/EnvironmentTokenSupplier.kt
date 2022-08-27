@@ -15,7 +15,7 @@ class EnvironmentTokenSupplier(
     override val token: String
         get() {
             val tokenValues = listOf(System.getenv(environmentVariableName)) +
-                otherEnvironmentVariableNames.map { System.getenv(it) }.toList()
+                otherEnvironmentVariableNames.map(System::getenv).toList()
             if (tokenValues.any { it == null }) {
                 throw NullPointerException(
                     "Error while retrieving environment variables: variables not defined in the system environment."
