@@ -21,7 +21,7 @@ class RepoContentSupplierCloneStrategy(private val cloneUrl: URL) : RepoContentS
     private fun cloneRepo(): File {
         val tmpDir = Files.createTempDirectory(cloneUrl.path.substringAfterLast(URL_SEPARATOR)).toFile()
         Git.cloneRepository()
-            .setURI(cloneUrl.toString())
+            .setURI("$cloneUrl")
             .setDirectory(tmpDir)
             .call()
         /* In order to work, no additional files and/or folders must be created
