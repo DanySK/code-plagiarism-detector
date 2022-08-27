@@ -5,7 +5,6 @@ import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.collections.shouldNotBeEmpty
 import io.kotest.matchers.collections.shouldNotContainDuplicates
-import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.string.shouldContainIgnoringCase
 import io.kotest.matchers.string.shouldMatch
@@ -62,10 +61,10 @@ class ProviderTest : FunSpec() {
 
         test("Searching by *non-existing* URL should throw an exception") {
             shouldThrow<IllegalArgumentException> {
-                githubProvider.byLink(URL("$GH_URL_PREFIX/$DANYSK_GH_USER/non-existing-repo")).shouldBeNull()
+                githubProvider.byLink(URL("$GH_URL_PREFIX/$DANYSK_GH_USER/non-existing-repo"))
             }
             shouldThrow<IllegalArgumentException> {
-                bitbucketProvider.byLink(URL("$BB_URL_PREFIX/$DANYSK_BB_USER/non-existing-repo")).shouldBeNull()
+                bitbucketProvider.byLink(URL("$BB_URL_PREFIX/$DANYSK_BB_USER/non-existing-repo"))
             }
         }
 
