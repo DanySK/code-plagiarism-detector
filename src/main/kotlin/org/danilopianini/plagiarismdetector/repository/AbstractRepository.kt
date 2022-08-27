@@ -24,9 +24,7 @@ abstract class AbstractRepository : Repository {
 
     override fun getSources(language: String): Iterable<File> {
         val extensions = getExtensionsOfLanguage(language)
-        if (!extensions.any()) {
-            throw java.lang.IllegalArgumentException("Not recognized language $language.")
-        }
+        require(extensions.any()) { "Not recognized language $language." }
         return RepoContentSupplierCloneStrategy(cloneUrl).getFilesOf(extensions)
     }
 

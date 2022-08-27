@@ -4,7 +4,6 @@ import com.jcabi.github.Coordinates
 import com.jcabi.github.RtGithub
 import com.jcabi.github.Search
 import com.jcabi.http.wire.RetryWire
-import org.slf4j.LoggerFactory
 import org.danilopianini.plagiarismdetector.provider.criteria.GitHubSearchCriteria
 import org.danilopianini.plagiarismdetector.repository.GitHubRepository
 import org.danilopianini.plagiarismdetector.repository.Repository
@@ -23,7 +22,6 @@ class GitHubProvider : AbstractRepositoryProvider<String, GitHubSearchCriteria>(
         private const val ERROR_MSG = "The listed repositories cannot be searched either because" +
             " the resources do not exist or you do not have permission to view them"
     }
-    private val logger = LoggerFactory.getLogger(this.javaClass)
     private val tokenSupplier = EnvironmentTokenSupplier(AUTH_TOKEN_NAME)
     private val github = RtGithub(
         RtGithub(tokenSupplier.token).entry().through(RetryWire::class.java)
@@ -31,9 +29,7 @@ class GitHubProvider : AbstractRepositoryProvider<String, GitHubSearchCriteria>(
 
     override fun getRepoByUrl(url: URL): Repository {
         val (user, name) = url.path.removePrefix(URL_SEPARATOR).removeSuffix(URL_SEPARATOR).split(URL_SEPARATOR)
-        if (!github.repos().exists(Coordinates.Simple(user, name))) {
-            throw IllegalArgumentException(ERROR_MSG)
-        }
+        require(github.repos().exists(Coordinates.Simple(user, name))) { ERROR_MSG }
         return GitHubRepository(github.repos().get(Coordinates.Simple(user, name)))
     }
 
@@ -43,8 +39,7 @@ class GitHubProvider : AbstractRepositoryProvider<String, GitHubSearchCriteria>(
         try {
             return getMatchingReposByCriteria(criteria)
         } catch (e: AssertionError) {
-            logger.error(e.message)
-            throw IllegalArgumentException(ERROR_MSG)
+            throw IllegalArgumentException("$ERROR_MSG: $e")
         }
     }
 
