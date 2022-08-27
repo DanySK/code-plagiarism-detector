@@ -47,7 +47,7 @@ class BitbucketProvider : AbstractRepositoryProvider<String, BitbucketSearchCrit
     override fun byCriteria(criteria: BitbucketSearchCriteria): Iterable<Repository> {
         return getResponses(BASE_URL.plus(criteria.apply())).asSequence()
             .flatMap { it.getJSONArray(VALUES_FIELD) }
-            .map { BitbucketRepository(JSONObject(it.toString())) }
+            .map { BitbucketRepository(JSONObject("$it")) }
             .toSet()
     }
 

@@ -33,9 +33,9 @@ abstract class AbstractRepository : Repository {
     private fun getExtensionsOfLanguage(language: String): Iterable<String> {
         val fileStream = ClassLoader.getSystemResourceAsStream(LANGUAGES_EXT_FILE_NAME)!!
         JSONArray(JSONTokener(fileStream)).forEach {
-            val obj = JSONObject(it.toString())
+            val obj = JSONObject("$it")
             if (obj.get(LANGUAGE_NAME_FIELD).toString().equals(language, ignoreCase = true)) {
-                return obj.getJSONArray(EXTENSIONS_FIELD).map { e -> e.toString() }
+                return obj.getJSONArray(EXTENSIONS_FIELD).map { e -> "$e" }
             }
         }
         return emptySet()
