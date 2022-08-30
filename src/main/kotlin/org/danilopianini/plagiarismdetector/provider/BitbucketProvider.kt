@@ -3,7 +3,6 @@ package org.danilopianini.plagiarismdetector.provider
 import com.mashape.unirest.http.Unirest
 import org.apache.commons.io.IOUtils
 import org.json.JSONObject
-import org.slf4j.LoggerFactory
 import org.danilopianini.plagiarismdetector.provider.criteria.BitbucketSearchCriteria
 import org.danilopianini.plagiarismdetector.repository.BitbucketRepository
 import org.danilopianini.plagiarismdetector.repository.Repository
@@ -31,7 +30,6 @@ class BitbucketProvider : AbstractRepositoryProvider<String, BitbucketSearchCrit
         private const val AUTH_HEADER_PREFIX = "Basic"
         private const val UNAUTHORIZED_CODE = 401
     }
-    private val logger = LoggerFactory.getLogger(this.javaClass)
     private val tokenSupplier = EnvironmentTokenSupplier(AUTH_USERNAME, AUTH_TOKEN_NAME, separator = ":")
     private val encodedAuthenticationToken = Base64.getEncoder()
         .encodeToString(tokenSupplier.token.toByteArray(StandardCharsets.UTF_8))
@@ -68,7 +66,6 @@ class BitbucketProvider : AbstractRepositoryProvider<String, BitbucketSearchCrit
             .header(AUTH_HEADER_FIELD, "$AUTH_HEADER_PREFIX $encodedAuthenticationToken")
             .header(ACCEPT_HEADER_FIELD, ACCEPT_HEADER_VALUE)
             .asBinary()
-        logger.info("#fetch(GET $url): [${response.status} ${response.statusText}]")
         if (response.status == UNAUTHORIZED_CODE) {
             error("HTTP Response: ${response.statusText}")
         }

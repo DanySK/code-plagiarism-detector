@@ -23,6 +23,7 @@ repositories {
 dependencies {
     implementation(libs.kotlin.stdlib)
     implementation(libs.jcabi.github)
+    implementation(libs.github.api)
     implementation(libs.unirest)
     implementation(libs.json)
     implementation(libs.org.eclipse.jgit)
@@ -31,6 +32,7 @@ dependencies {
     implementation(libs.logback.classic)
     implementation(libs.logback.core)
     testImplementation(libs.bundles.kotlin.testing)
+    testImplementation(libs.mockk)
 }
 
 multiJvm {
