@@ -7,9 +7,8 @@ import java.net.URL
 /**
  * An interface modeling a provider of [Repository].
  * @param C the type of the search criteria.
- * @param T the result type returned applying the criteria.
  */
-interface RepositoryProvider<T, in C : SearchCriteria<T>> {
+interface RepositoryProvider<I, O, in C : SearchCriteria<I, O>> {
     /**
      * Search a repository by the given [URL].
      * @param url the [URL] address in `owner/name` format of the public repository to retrieve.

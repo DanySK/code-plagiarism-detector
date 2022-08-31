@@ -10,14 +10,15 @@ private const val AND_OPERATOR = "+AND+"
 /**
  * An interface modeling search criteria for searching Bitbucket repositories.
  */
-interface BitbucketSearchCriteria : SearchCriteria<String>
+interface BitbucketSearchCriteria : SearchCriteria<String, String>
 
 /**
  * A search criterion to filter by username.
  * @property username the Bitbucket username.
  */
 class ByBitbucketUser(private val username: String) : BitbucketSearchCriteria {
-    override fun apply(): String = StringBuilder(URL_SEPARATOR)
+    override fun apply(input: String): String = StringBuilder(input)
+        .append(URL_SEPARATOR)
         .append(username)
         .append(QUESTION_MARK)
         .toString()
@@ -30,8 +31,8 @@ class ByBitbucketUser(private val username: String) : BitbucketSearchCriteria {
 abstract class BitbucketCompoundCriteria(
     private val criteria: BitbucketSearchCriteria
 ) : BitbucketSearchCriteria {
-    override fun apply(): String {
-        var url = criteria.apply()
+    override fun apply(input: String): String {
+        var url = criteria.apply(input)
         url += if (url.endsWith(QUESTION_MARK)) QUERY_PREFIX else AND_OPERATOR
         return url
     }
@@ -45,7 +46,7 @@ class ByBitbucketName(
     private val repositoryName: String,
     criteria: BitbucketSearchCriteria
 ) : BitbucketCompoundCriteria(criteria) {
-    override fun apply(): String = StringBuilder(super.apply())
+    override fun apply(input: String): String = StringBuilder(super.apply(input))
         .append("name")
         .append(LIKE_CHAR)
         .append(QUOTATION_MARK)
