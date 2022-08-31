@@ -6,6 +6,7 @@ import org.json.JSONObject
 import org.danilopianini.plagiarismdetector.provider.criteria.BitbucketSearchCriteria
 import org.danilopianini.plagiarismdetector.repository.BitbucketRepository
 import org.danilopianini.plagiarismdetector.repository.Repository
+import org.danilopianini.plagiarismdetector.utils.AuthenticationTokenSupplierStrategy
 import org.danilopianini.plagiarismdetector.utils.EnvironmentTokenSupplier
 import java.net.URL
 import java.nio.charset.StandardCharsets
@@ -14,7 +15,10 @@ import java.util.Base64
 /**
  * A provider of Bitbucket repositories.
  */
-class BitbucketProvider : AbstractRepositoryProvider<String, BitbucketSearchCriteria>() {
+class BitbucketProvider(
+    tokenSupplier: AuthenticationTokenSupplierStrategy =
+        EnvironmentTokenSupplier(AUTH_USERNAME, AUTH_TOKEN_NAME, separator = ":")
+) : AbstractRepositoryProvider<String, String, BitbucketSearchCriteria>() {
     companion object {
         private const val AUTH_USERNAME = "BB_USER"
         private const val AUTH_TOKEN_NAME = "BB_TOKEN"
@@ -30,7 +34,6 @@ class BitbucketProvider : AbstractRepositoryProvider<String, BitbucketSearchCrit
         private const val AUTH_HEADER_PREFIX = "Basic"
         private const val UNAUTHORIZED_CODE = 401
     }
-    private val tokenSupplier = EnvironmentTokenSupplier(AUTH_USERNAME, AUTH_TOKEN_NAME, separator = ":")
     private val encodedAuthenticationToken = Base64.getEncoder()
         .encodeToString(tokenSupplier.token.toByteArray(StandardCharsets.UTF_8))
 
@@ -43,7 +46,7 @@ class BitbucketProvider : AbstractRepositoryProvider<String, BitbucketSearchCrit
     }
 
     override fun byCriteria(criteria: BitbucketSearchCriteria): Iterable<Repository> {
-        return getResponses(BASE_URL.plus(criteria.apply())).asSequence()
+        return getResponses(criteria.apply(BASE_URL)).asSequence()
             .flatMap { it.getJSONArray(VALUES_FIELD) }
             .map { BitbucketRepository(JSONObject("$it")) }
             .toSet()
