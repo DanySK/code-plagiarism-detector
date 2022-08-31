@@ -17,7 +17,7 @@ interface BitbucketSearchCriteria : SearchCriteria<String, String>
  * @property username the Bitbucket username.
  */
 class ByBitbucketUser(private val username: String) : BitbucketSearchCriteria {
-    override fun apply(input: String): String = StringBuilder(input)
+    override fun apply(subject: String): String = StringBuilder(subject)
         .append(URL_SEPARATOR)
         .append(username)
         .append(QUESTION_MARK)
@@ -31,8 +31,8 @@ class ByBitbucketUser(private val username: String) : BitbucketSearchCriteria {
 abstract class BitbucketCompoundCriteria(
     private val criteria: BitbucketSearchCriteria
 ) : BitbucketSearchCriteria {
-    override fun apply(input: String): String {
-        var url = criteria.apply(input)
+    override fun apply(subject: String): String {
+        var url = criteria.apply(subject)
         url += if (url.endsWith(QUESTION_MARK)) QUERY_PREFIX else AND_OPERATOR
         return url
     }
@@ -46,7 +46,7 @@ class ByBitbucketName(
     private val repositoryName: String,
     criteria: BitbucketSearchCriteria
 ) : BitbucketCompoundCriteria(criteria) {
-    override fun apply(input: String): String = StringBuilder(super.apply(input))
+    override fun apply(subject: String): String = StringBuilder(super.apply(subject))
         .append("name")
         .append(LIKE_CHAR)
         .append(QUOTATION_MARK)
