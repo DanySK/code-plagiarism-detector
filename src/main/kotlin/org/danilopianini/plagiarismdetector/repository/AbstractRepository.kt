@@ -5,7 +5,6 @@ import org.json.JSONObject
 import org.json.JSONTokener
 import org.danilopianini.plagiarismdetector.repository.content.RepoContentSupplierCloneStrategy
 import java.io.File
-import java.net.URL
 
 /**
  * Abstract base implementation for repositories.
@@ -16,11 +15,6 @@ abstract class AbstractRepository : Repository {
         private const val LANGUAGE_NAME_FIELD = "name"
         private const val EXTENSIONS_FIELD = "extensions"
     }
-
-    /**
-     * The [URL] to clone the repo.
-     */
-    protected abstract val cloneUrl: URL
 
     override fun getSources(language: String): Iterable<File> {
         val extensions = getExtensionsOfLanguage(language)
