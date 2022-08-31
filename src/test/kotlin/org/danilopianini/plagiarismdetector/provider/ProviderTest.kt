@@ -39,15 +39,17 @@ private const val TASSILUCA_USERNAME = "Luca Tassinari"
 class ProviderTest : FunSpec() {
     private val logger = LoggerFactory.getLogger(this.javaClass)
     private val providerTestsEnabled = System.getenv(PR_BUILD_VARIABLE) != "true"
-    private var githubProvider = GitHubProvider()
-    private var bitbucketProvider = BitbucketProvider()
+    private val githubProvider: GitHubProvider
+    private val bitbucketProvider: BitbucketProvider
 
     init {
-        beforeSpec {
-            if (!providerTestsEnabled) {
-                createMockBitbucketProvider()
-                createMockGitHubProvider()
-            }
+        if (providerTestsEnabled) {
+            githubProvider = GitHubProvider()
+            bitbucketProvider = BitbucketProvider()
+        } else {
+            logger.info("Testing providers with anonymously connections: rate limits exists!")
+            bitbucketProvider = createMockBitbucketProvider()
+            githubProvider = createMockGitHubProvider()
         }
 
         test("Searching by existing name and user should return repos matching those criteria") {
@@ -143,37 +145,30 @@ class ProviderTest : FunSpec() {
         result.owner shouldMatch expectedUser
     }
 
-    private fun createMockBitbucketProvider() {
-        logger.info(
-            "Testing bitbucket provider with anonymously connection: rate limits exists " +
-                "(see https://support.atlassian.com/bitbucket-cloud/docs/api-request-limits/)"
-        )
+    private fun createMockBitbucketProvider(): BitbucketProvider {
         val urlSlot = slot<String>()
-        bitbucketProvider = spyk(BitbucketProvider(), recordPrivateCalls = true)
-        every { bitbucketProvider invoke "doGETRequest" withArguments listOf(capture(urlSlot)) } answers {
+        val mockProvider = spyk(BitbucketProvider(), recordPrivateCalls = true)
+        every { mockProvider invoke "doGETRequest" withArguments listOf(capture(urlSlot)) } answers {
             val response = Unirest.get(urlSlot.captured)
                 .header("Accept", "application/json")
                 .asBinary()
             JSONObject(IOUtils.toString(response.body, StandardCharsets.UTF_8))
         }
+        return mockProvider
     }
 
-    private fun createMockGitHubProvider() {
-        logger.info(
-            "Testing github provider with anonymously connection: rate limits exists " +
-                "(see https://docs.github.com/en/rest/rate-limit)"
-        )
+    private fun createMockGitHubProvider(): GitHubProvider {
         val criteriaSlot = slot<GitHubSearchCriteria>()
-        githubProvider = spyk(GitHubProvider(), recordPrivateCalls = true)
+        val urlSlot = slot<URL>()
+        val mockProvider = spyk(GitHubProvider(), recordPrivateCalls = true)
         every {
-            githubProvider invoke "getMatchingReposByCriteria" withArguments listOf(capture(criteriaSlot))
+            mockProvider invoke "getMatchingReposByCriteria" withArguments listOf(capture(criteriaSlot))
         } answers {
             criteriaSlot.captured.apply(GitHub.connectAnonymously()).list().toSet().asSequence()
                 .map { GitHubRepository(it) }
                 .toSet()
         }
-        val urlSlot = slot<URL>()
-        every { githubProvider invoke "getRepoByUrl" withArguments listOf(capture(urlSlot)) } answers {
+        every { mockProvider invoke "getRepoByUrl" withArguments listOf(capture(urlSlot)) } answers {
             val repoName = urlSlot.captured.path.replace(Regex("^/|/$"), "")
             try {
                 GitHubRepository(GitHub.connectAnonymously().getRepository(repoName))
@@ -181,5 +176,6 @@ class ProviderTest : FunSpec() {
                 throw IllegalArgumentException(e)
             }
         }
+        return mockProvider
     }
 }
