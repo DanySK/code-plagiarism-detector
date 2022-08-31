@@ -178,7 +178,7 @@ class ProviderTest : FunSpec() {
             try {
                 GitHubRepository(GitHub.connectAnonymously().getRepository(repoName))
             } catch (e: GHFileNotFoundException) {
-                throw IllegalArgumentException("FILE NOT FOUND: $e")
+                throw IllegalArgumentException(e)
             }
         }
     }
