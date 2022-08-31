@@ -38,18 +38,19 @@ private const val TASSILUCA_USERNAME = "Luca Tassinari"
 
 class ProviderTest : FunSpec() {
     private val logger = LoggerFactory.getLogger(this.javaClass)
-    private val providerTestsEnabled = System.getenv(PR_BUILD_VARIABLE) != "true"
     private val githubProvider: GitHubProvider
     private val bitbucketProvider: BitbucketProvider
 
     init {
-        if (providerTestsEnabled) {
-            githubProvider = GitHubProvider()
-            bitbucketProvider = BitbucketProvider()
-        } else {
-            logger.info("Testing providers with anonymously connections: rate limits exists!")
+        /* Since on PR builds secrets are not available, execute providers test with
+         * mocked ones which uses anonymously connections: rate limits exists! */
+        if (isExecutingOnPullRequest()) {
+            logger.info("Testing providers with anonymously connections")
             bitbucketProvider = createMockBitbucketProvider()
             githubProvider = createMockGitHubProvider()
+        } else {
+            githubProvider = GitHubProvider()
+            bitbucketProvider = BitbucketProvider()
         }
 
         test("Searching by existing name and user should return repos matching those criteria") {
@@ -129,6 +130,8 @@ class ProviderTest : FunSpec() {
             }
         }
     }
+
+    private fun isExecutingOnPullRequest() = System.getenv(PR_BUILD_VARIABLE) == "true"
 
     private fun testByExistingName(result: Iterable<Repository>, expectedName: String, expectedUser: String) {
         result.shouldNotBeEmpty()
