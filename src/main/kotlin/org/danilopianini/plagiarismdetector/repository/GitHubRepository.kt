@@ -9,11 +9,14 @@ import java.net.URL
  * @property repository the [Repo] to be adapted.
  */
 data class GitHubRepository(private val repository: GHRepository) : AbstractRepository() {
-    override val name: String = repository.name
+    override val name: String
+        get() = repository.name
 
-    override val owner: String = repository.owner.name
+    override val owner: String
+        get() = repository.owner.name
 
-    override val cloneUrl: URL = repository.htmlUrl
+    override val cloneUrl: URL
+        get() = repository.htmlUrl
 
     override fun toString() = "Repository $name of $owner"
 }
