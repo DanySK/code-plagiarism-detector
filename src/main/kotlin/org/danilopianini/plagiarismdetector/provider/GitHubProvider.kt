@@ -4,7 +4,6 @@ import org.danilopianini.plagiarismdetector.provider.criteria.GitHubSearchCriter
 import org.danilopianini.plagiarismdetector.repository.GitHubRepository
 import org.danilopianini.plagiarismdetector.repository.Repository
 import org.danilopianini.plagiarismdetector.utils.EnvironmentTokenSupplier
-import org.kohsuke.github.GHException
 import org.kohsuke.github.GHFileNotFoundException
 import org.kohsuke.github.GHRepositorySearchBuilder
 import org.kohsuke.github.GitHub
@@ -18,6 +17,7 @@ class GitHubProvider : AbstractRepositoryProvider<GHRepositorySearchBuilder, Git
     companion object {
         private const val AUTH_TOKEN_NAME = "GH_TOKEN"
         private const val GITHUB_HOST = "github.com"
+        private const val UNAUTHORIZED_CODE = 401
     }
     private val tokenSupplier = EnvironmentTokenSupplier(AUTH_TOKEN_NAME)
     private val github = GitHub.connectUsingOAuth(tokenSupplier.token)
@@ -36,10 +36,9 @@ class GitHubProvider : AbstractRepositoryProvider<GHRepositorySearchBuilder, Git
     override fun byCriteria(criteria: GitHubSearchCriteria): Iterable<Repository> {
         try {
             return getMatchingReposByCriteria(criteria)
-        } catch (e: GHException) {
-            throw IllegalArgumentException(e)
         } catch (e: HttpException) {
-            error("Validation failed $e")
+            check(e.responseCode != UNAUTHORIZED_CODE) { "Authentication failed: $e" }
+            throw IllegalArgumentException(e)
         }
     }
 
