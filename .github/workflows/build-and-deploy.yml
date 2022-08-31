@@ -17,6 +17,7 @@ jobs:
         uses: DanySK/action-checkout@0.2.1
       - uses: DanySK/build-check-deploy-gradle-action@2.1.5
         env:
+          PR_BUILD: ${{ github.event_name == 'pull_request' }}
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
           BB_USER: ${{ secrets.BB_USER }}
           BB_TOKEN: ${{ secrets.BB_TOKEN }}
