@@ -59,6 +59,6 @@ class GitHubProvider private constructor(
 
     private fun getMatchingReposByCriteria(criteria: GitHubSearchCriteria): Sequence<GitHubRepository> {
         return criteria.apply(github).list().toSet().asSequence()
-            .map { GitHubRepository(it) }
+            .map(::GitHubRepository)
     }
 }
