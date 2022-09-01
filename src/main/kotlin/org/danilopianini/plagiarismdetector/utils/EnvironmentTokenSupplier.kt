@@ -13,14 +13,9 @@ class EnvironmentTokenSupplier(
     private val separator: CharSequence = ""
 ) : AuthenticationTokenSupplierStrategy {
     override val token: String
-        get() {
-            val tokenValues = listOf(System.getenv(environmentVariableName)) +
-                otherEnvironmentVariableNames.map(System::getenv).toList()
-            if (tokenValues.any { it == null }) {
-                throw NullPointerException(
-                    "Error while retrieving environment variables: variables not defined in the system environment."
-                )
-            }
-            return tokenValues.reduce { acc, s -> acc.plus(separator).plus(s) }
-        }
+        get() = (
+            sequenceOf(System.getenv(environmentVariableName)) +
+                otherEnvironmentVariableNames.asSequence().map(System::getenv)
+            ).requireNoNulls()
+            .joinToString(separator)
 }

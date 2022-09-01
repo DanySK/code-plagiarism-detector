@@ -6,7 +6,6 @@ package org.danilopianini.plagiarismdetector.utils
 interface AuthenticationTokenSupplierStrategy {
     /**
      * @return the token.
-     * @throws NullPointerException if the token cannot be retrieved.
      */
     val token: String
 }
