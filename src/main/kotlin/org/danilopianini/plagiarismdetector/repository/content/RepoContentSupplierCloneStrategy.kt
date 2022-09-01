@@ -2,7 +2,7 @@ package org.danilopianini.plagiarismdetector.repository.content
 
 import org.apache.commons.io.FileUtils
 import org.apache.commons.io.filefilter.DirectoryFileFilter
-import org.apache.commons.io.filefilter.SuffixFileFilter
+import org.apache.commons.io.filefilter.RegexFileFilter
 import org.eclipse.jgit.api.Git
 import java.io.File
 import java.net.URL
@@ -30,13 +30,10 @@ class RepoContentSupplierCloneStrategy(private val cloneUrl: URL) : RepoContentS
         return tmpDir
     }
 
-    override fun getFilesOf(extensions: Iterable<String>): Iterable<File> = listSources(extensions)
-
-    private fun listSources(targetExtensions: Iterable<String>): Collection<File> {
-        return FileUtils.listFiles(
+    override fun filesMatching(pattern: Regex): Sequence<File> =
+        FileUtils.listFiles(
             clonedRepoDirectory,
-            SuffixFileFilter(targetExtensions.toList()),
+            RegexFileFilter(pattern.toPattern()),
             DirectoryFileFilter.DIRECTORY
-        )
-    }
+        ).asSequence()
 }
