@@ -4,25 +4,36 @@ import org.danilopianini.plagiarismdetector.provider.criteria.GitHubSearchCriter
 import org.danilopianini.plagiarismdetector.repository.GitHubRepository
 import org.danilopianini.plagiarismdetector.repository.Repository
 import org.danilopianini.plagiarismdetector.utils.AuthenticationTokenSupplierStrategy
-import org.danilopianini.plagiarismdetector.utils.EnvironmentTokenSupplier
 import org.kohsuke.github.GHFileNotFoundException
 import org.kohsuke.github.GHRepositorySearchBuilder
 import org.kohsuke.github.GitHub
 import org.kohsuke.github.HttpException
 import java.net.URL
 
+private const val GITHUB_HOST = "github.com"
+private const val UNAUTHORIZED_CODE = 401
+
 /**
  * A provider of GitHub repositories.
  */
-class GitHubProvider(
-    tokenSupplier: AuthenticationTokenSupplierStrategy = EnvironmentTokenSupplier(AUTH_TOKEN_NAME)
+class GitHubProvider private constructor(
+    private var github: GitHub
 ) : AbstractRepositoryProvider<GitHub, GHRepositorySearchBuilder, GitHubSearchCriteria>() {
     companion object {
-        private const val AUTH_TOKEN_NAME = "GH_TOKEN"
-        private const val GITHUB_HOST = "github.com"
-        private const val UNAUTHORIZED_CODE = 401
+        /**
+         * Creates a [GitHubProvider] with anonymous authentication: this is **not** recommended due to
+         * rate limits. In case limits are reached the computation blocks until new requests can be made.
+         * See GitHub API documentation [here](https://docs.github.com/en/rest/rate-limit).
+         */
+        fun connectAnonymously() = GitHubProvider(GitHub.connectAnonymously())
+
+        /**
+         * Creates a [GitHubProvider] with an authenticated connection.
+         * @param tokenSupplier the supplier of the token
+         */
+        fun connectWithToken(tokenSupplier: AuthenticationTokenSupplierStrategy) =
+            GitHubProvider(GitHub.connectUsingOAuth(tokenSupplier.token))
     }
-    private val github = GitHub.connectUsingOAuth(tokenSupplier.token)
 
     override fun getRepoByUrl(url: URL): Repository {
         val repoName = url.path.replace(Regex("^/|/$"), "")
