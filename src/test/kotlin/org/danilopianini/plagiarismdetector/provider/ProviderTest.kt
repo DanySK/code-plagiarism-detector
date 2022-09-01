@@ -1,6 +1,5 @@
 package org.danilopianini.plagiarismdetector.provider
 
-import com.mashape.unirest.http.Unirest
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.collections.shouldBeEmpty
@@ -9,23 +8,14 @@ import io.kotest.matchers.collections.shouldNotContainDuplicates
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.string.shouldContainIgnoringCase
 import io.kotest.matchers.string.shouldMatch
-import io.mockk.every
-import io.mockk.slot
-import io.mockk.spyk
-import org.apache.commons.io.IOUtils
 import org.danilopianini.plagiarismdetector.provider.criteria.ByBitbucketName
 import org.danilopianini.plagiarismdetector.provider.criteria.ByBitbucketUser
 import org.danilopianini.plagiarismdetector.provider.criteria.ByGitHubName
 import org.danilopianini.plagiarismdetector.provider.criteria.ByGitHubUser
-import org.danilopianini.plagiarismdetector.provider.criteria.GitHubSearchCriteria
-import org.danilopianini.plagiarismdetector.repository.GitHubRepository
 import org.danilopianini.plagiarismdetector.repository.Repository
-import org.json.JSONObject
-import org.kohsuke.github.GHFileNotFoundException
-import org.kohsuke.github.GitHub
+import org.danilopianini.plagiarismdetector.utils.EnvironmentTokenSupplier
 import org.slf4j.LoggerFactory
 import java.net.URL
-import java.nio.charset.StandardCharsets
 
 private const val PR_BUILD_VARIABLE = "PR_BUILD"
 private const val GH_URL_PREFIX = "https://github.com"
@@ -35,6 +25,9 @@ private const val DANYSK_GH_USER = "DanySK"
 private const val DANYSK_BB_USER = "danysk"
 private const val TASSILUCA_USER = "tassiLuca"
 private const val TASSILUCA_USERNAME = "Luca Tassinari"
+private const val BB_AUTH_USER_VAR = "BB_USER"
+private const val BB_AUTH_TOKEN_VAR = "BB_TOKEN"
+private const val GH_AUTH_TOKEN_VAR = "GH_TOKEN"
 
 class ProviderTest : FunSpec() {
     private val logger = LoggerFactory.getLogger(this.javaClass)
@@ -42,15 +35,16 @@ class ProviderTest : FunSpec() {
     private val bitbucketProvider: BitbucketProvider
 
     init {
-        /* Since on PR builds secrets are not available, execute providers test with
-         * mocked ones which uses anonymously connections: rate limits exists! */
+        // Since on PR builds secrets are not available, execute providers test with anonymously connections
         if (isExecutingOnPullRequest()) {
             logger.info("Testing providers with anonymously connections")
-            bitbucketProvider = createMockBitbucketProvider()
-            githubProvider = createMockGitHubProvider()
+            bitbucketProvider = BitbucketProvider.connectAnonymously()
+            githubProvider = GitHubProvider.connectAnonymously()
         } else {
-            githubProvider = GitHubProvider()
-            bitbucketProvider = BitbucketProvider()
+            githubProvider = GitHubProvider.connectWithToken(EnvironmentTokenSupplier(GH_AUTH_TOKEN_VAR))
+            bitbucketProvider = BitbucketProvider.connectWithToken(
+                EnvironmentTokenSupplier(BB_AUTH_USER_VAR, BB_AUTH_TOKEN_VAR, separator = ":")
+            )
         }
 
         test("Searching by existing name and user should return repos matching those criteria") {
@@ -146,39 +140,5 @@ class ProviderTest : FunSpec() {
         result.shouldNotBeNull()
         result.name shouldMatch expectedName
         result.owner shouldMatch expectedUser
-    }
-
-    private fun createMockBitbucketProvider(): BitbucketProvider {
-        val urlSlot = slot<String>()
-        val mockProvider = spyk(BitbucketProvider(), recordPrivateCalls = true)
-        every { mockProvider invoke "doGETRequest" withArguments listOf(capture(urlSlot)) } answers {
-            val response = Unirest.get(urlSlot.captured)
-                .header("Accept", "application/json")
-                .asBinary()
-            JSONObject(IOUtils.toString(response.body, StandardCharsets.UTF_8))
-        }
-        return mockProvider
-    }
-
-    private fun createMockGitHubProvider(): GitHubProvider {
-        val criteriaSlot = slot<GitHubSearchCriteria>()
-        val urlSlot = slot<URL>()
-        val mockProvider = spyk(GitHubProvider(), recordPrivateCalls = true)
-        every {
-            mockProvider invoke "getMatchingReposByCriteria" withArguments listOf(capture(criteriaSlot))
-        } answers {
-            criteriaSlot.captured.apply(GitHub.connectAnonymously()).list().toSet().asSequence()
-                .map { GitHubRepository(it) }
-                .toSet()
-        }
-        every { mockProvider invoke "getRepoByUrl" withArguments listOf(capture(urlSlot)) } answers {
-            val repoName = urlSlot.captured.path.replace(Regex("^/|/$"), "")
-            try {
-                GitHubRepository(GitHub.connectAnonymously().getRepository(repoName))
-            } catch (e: GHFileNotFoundException) {
-                throw IllegalArgumentException(e)
-            }
-        }
-        return mockProvider
     }
 }
