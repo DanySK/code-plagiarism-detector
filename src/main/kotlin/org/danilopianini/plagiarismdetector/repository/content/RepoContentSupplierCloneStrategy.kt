@@ -16,18 +16,17 @@ class RepoContentSupplierCloneStrategy(private val cloneUrl: URL) : RepoContentS
     companion object {
         private const val URL_SEPARATOR = "/"
     }
-    private val clonedRepoDirectory: File = cloneRepo()
+    private val clonedRepoDirectory: File
 
-    private fun cloneRepo(): File {
-        val tmpDir = Files.createTempDirectory(cloneUrl.path.substringAfterLast(URL_SEPARATOR)).toFile()
+    init {
+        clonedRepoDirectory = Files.createTempDirectory(cloneUrl.path.substringAfterLast(URL_SEPARATOR)).toFile()
         Git.cloneRepository()
             .setURI("$cloneUrl")
-            .setDirectory(tmpDir)
+            .setDirectory(clonedRepoDirectory)
             .call()
         /* In order to work, no additional files and/or folders must be created
          * inside the directory after forceDeleteOnExit() is called. */
-        FileUtils.forceDeleteOnExit(tmpDir)
-        return tmpDir
+        FileUtils.forceDeleteOnExit(clonedRepoDirectory)
     }
 
     override fun filesMatching(pattern: Regex): Sequence<File> =
