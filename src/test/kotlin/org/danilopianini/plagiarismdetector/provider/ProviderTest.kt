@@ -37,7 +37,7 @@ class ProviderTest : FunSpec() {
     init {
         // Since on PR builds secrets are not available, execute providers test with anonymously connections
         if (isExecutingOnPullRequest()) {
-            logger.info("Testing providers with anonymously connections")
+            logger.info("Testing providers with anonymous connections.")
             bitbucketProvider = BitbucketProvider.connectAnonymously()
             githubProvider = GitHubProvider.connectAnonymously()
         } else {
