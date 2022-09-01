@@ -17,5 +17,5 @@ data class GitHubRepository(private val repository: GHRepository) : AbstractRepo
     override val cloneUrl: URL
         get() = repository.htmlUrl
 
-    override fun toString() = "Repository $name of $owner"
+    override fun toString() = "git@github.com:$owner/$name"
 }
