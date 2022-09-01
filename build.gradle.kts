@@ -22,7 +22,6 @@ repositories {
 
 dependencies {
     implementation(libs.kotlin.stdlib)
-    implementation(libs.jcabi.github)
     implementation(libs.github.api)
     implementation(libs.unirest)
     implementation(libs.json)
