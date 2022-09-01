@@ -13,9 +13,8 @@ class EnvironmentTokenSupplier(
     private val separator: CharSequence = ""
 ) : AuthenticationTokenSupplierStrategy {
     override val token: String
-        get() = (
-            sequenceOf(System.getenv(environmentVariableName)) +
-                otherEnvironmentVariableNames.asSequence().map(System::getenv)
-            ).requireNoNulls()
+        get() = sequenceOf(System.getenv(environmentVariableName))
+            .let { it + otherEnvironmentVariableNames.asSequence().map(System::getenv) }
+            .requireNoNulls()
             .joinToString(separator)
 }
