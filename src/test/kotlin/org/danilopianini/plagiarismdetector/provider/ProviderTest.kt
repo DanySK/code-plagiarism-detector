@@ -4,8 +4,6 @@ import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.collections.shouldNotBeEmpty
-import io.kotest.matchers.collections.shouldNotContainDuplicates
-import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.string.shouldContainIgnoringCase
 import io.kotest.matchers.string.shouldMatch
 import org.danilopianini.plagiarismdetector.provider.criteria.ByBitbucketName
@@ -111,10 +109,10 @@ class ProviderTest : FunSpec() {
         test("Searching by a *non-existing* name should return an empty collection of repos") {
             githubProvider.byCriteria(
                 ByGitHubName("non-existing-repo", ByGitHubUser(DANYSK_GH_USER))
-            ).shouldBeEmpty()
+            ).toSet().shouldBeEmpty()
             bitbucketProvider.byCriteria(
                 ByBitbucketName("non-existing-repo", ByBitbucketUser(DANYSK_GH_USER))
-            ).shouldBeEmpty()
+            ).toSet().shouldBeEmpty()
         }
 
         test("Searching by a *non-existing* user should throw an exception") {
@@ -129,17 +127,15 @@ class ProviderTest : FunSpec() {
 
     private fun isExecutingOnPullRequest() = System.getenv(PR_BUILD_VARIABLE) == "true"
 
-    private fun testByExistingName(result: Iterable<Repository>, expectedName: String, expectedUser: String) {
-        result.shouldNotBeEmpty()
-        result.shouldNotContainDuplicates()
+    private fun testByExistingName(result: Sequence<Repository>, expectedName: String, expectedUser: String) {
+        result.toSet().shouldNotBeEmpty()
         result.forEach {
             it.name shouldContainIgnoringCase expectedName
             it.owner shouldMatch expectedUser
         }
     }
 
-    private fun testByExistingUrl(result: Repository?, expectedName: String, expectedUser: String) {
-        result.shouldNotBeNull()
+    private fun testByExistingUrl(result: Repository, expectedName: String, expectedUser: String) {
         result.name shouldMatch expectedName
         result.owner shouldMatch expectedUser
     }

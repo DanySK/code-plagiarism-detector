@@ -48,7 +48,7 @@ class GitHubProvider private constructor(
 
     override fun urlIsValid(url: URL): Boolean = url.host == GITHUB_HOST
 
-    override fun byCriteria(criteria: GitHubSearchCriteria): Iterable<Repository> {
+    override fun byCriteria(criteria: GitHubSearchCriteria): Sequence<Repository> {
         try {
             return getMatchingReposByCriteria(criteria)
         } catch (e: HttpException) {
@@ -57,9 +57,8 @@ class GitHubProvider private constructor(
         }
     }
 
-    private fun getMatchingReposByCriteria(criteria: GitHubSearchCriteria): Iterable<GitHubRepository> {
+    private fun getMatchingReposByCriteria(criteria: GitHubSearchCriteria): Sequence<GitHubRepository> {
         return criteria.apply(github).list().toSet().asSequence()
             .map { GitHubRepository(it) }
-            .toSet()
     }
 }
