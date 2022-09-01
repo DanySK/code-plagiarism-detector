@@ -10,9 +10,6 @@ import org.kohsuke.github.GitHub
 import org.kohsuke.github.HttpException
 import java.net.URL
 
-private const val GITHUB_HOST = "github.com"
-private const val UNAUTHORIZED_CODE = 401
-
 /**
  * A provider of GitHub repositories.
  */
@@ -20,6 +17,9 @@ class GitHubProvider private constructor(
     private var github: GitHub
 ) : AbstractRepositoryProvider<GitHub, GHRepositorySearchBuilder, GitHubSearchCriteria>() {
     companion object {
+        private const val GITHUB_HOST = "github.com"
+        private const val UNAUTHORIZED_CODE = 401
+
         /**
          * Creates a [GitHubProvider] with anonymous authentication: this is **not** recommended due to
          * rate limits. In case limits are reached the computation blocks until new requests can be made.

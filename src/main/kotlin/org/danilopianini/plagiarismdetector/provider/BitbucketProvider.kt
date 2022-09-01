@@ -11,19 +11,6 @@ import java.net.URL
 import java.nio.charset.StandardCharsets
 import java.util.Base64
 
-private const val BITBUCKET_HOST = "bitbucket.org"
-private const val BASE_URL = "https://api.bitbucket.org/2.0/repositories"
-private const val ERROR_FIELD = "error"
-private const val NEXT_PAGE_FIELD = "next"
-private const val VALUES_FIELD = "values"
-private const val MESSAGE_FIELD = "message"
-private const val ACCEPT_HEADER_FIELD = "Accept"
-private const val ACCEPT_HEADER_VALUE = "application/json"
-private const val AUTH_HEADER_FIELD = "Authorization"
-private const val AUTH_HEADER_PREFIX = "Basic"
-private const val UNAUTHORIZED_CODE = 401
-private const val FORBIDDEN_CODE = 403
-
 /**
  * A provider of Bitbucket repositories.
  */
@@ -31,6 +18,18 @@ class BitbucketProvider private constructor(
     private var encodedAuthenticationToken: String? = null
 ) : AbstractRepositoryProvider<String, String, BitbucketSearchCriteria>() {
     companion object {
+        private const val BITBUCKET_HOST = "bitbucket.org"
+        private const val BASE_URL = "https://api.bitbucket.org/2.0/repositories"
+        private const val ERROR_FIELD = "error"
+        private const val NEXT_PAGE_FIELD = "next"
+        private const val VALUES_FIELD = "values"
+        private const val MESSAGE_FIELD = "message"
+        private const val ACCEPT_HEADER_FIELD = "Accept"
+        private const val ACCEPT_HEADER_VALUE = "application/json"
+        private const val AUTH_HEADER_FIELD = "Authorization"
+        private const val AUTH_HEADER_PREFIX = "Basic"
+        private const val UNAUTHORIZED_CODE = 401
+        private const val FORBIDDEN_CODE = 403
 
         /**
          * Creates a [BitbucketProvider] with anonymous authentication: this is **not** recommended due to
