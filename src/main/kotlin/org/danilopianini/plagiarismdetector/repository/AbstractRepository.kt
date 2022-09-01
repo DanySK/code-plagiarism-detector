@@ -7,7 +7,6 @@ import java.io.File
  * Abstract base implementation for repositories.
  */
 abstract class AbstractRepository : Repository {
-    override fun getSources(pattern: Regex): Sequence<File> {
-        return RepoContentSupplierCloneStrategy(cloneUrl).filesMatching(pattern)
-    }
+    override fun getSources(pattern: Regex): Sequence<File> =
+        RepoContentSupplierCloneStrategy(cloneUrl).filesMatching(pattern)
 }
