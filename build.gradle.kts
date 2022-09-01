@@ -13,7 +13,7 @@ plugins {
 group = "org.danilopianini"
 
 application {
-    mainClass.set("TestKt")
+    mainClass.set("$group.plagiarismdetector.MainKt")
 }
 
 repositories {
