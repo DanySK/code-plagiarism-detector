@@ -1,6 +1,5 @@
 package org.danilopianini.plagiarismdetector.repository
 
-import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.ints.shouldBeExactly
 import io.mockk.every
@@ -25,17 +24,15 @@ class RepositoryTest : FunSpec() {
 
     init {
         test("Check if returns all sources") {
-            githubRepo.getSources("java").count() shouldBeExactly EXPECTED_SOURCES
-            bitbucketRepo.getSources("java").count() shouldBeExactly EXPECTED_SOURCES
+            val suffixFileJavaPattern = Regex(".*.java$")
+            githubRepo.getSources(suffixFileJavaPattern).count() shouldBeExactly EXPECTED_SOURCES
+            bitbucketRepo.getSources(suffixFileJavaPattern).count() shouldBeExactly EXPECTED_SOURCES
         }
 
-        test("Trying to get sources of unknown language should throw an exception") {
-            shouldThrow<java.lang.IllegalArgumentException> {
-                githubRepo.getSources("non-existing-language")
-            }
-            shouldThrow<java.lang.IllegalArgumentException> {
-                bitbucketRepo.getSources("non-existing-language")
-            }
+        test("No sources meets the given pattern") {
+            val suffixFileJavaPattern = Regex(".*.cs")
+            githubRepo.getSources(suffixFileJavaPattern).count() shouldBeExactly 0
+            bitbucketRepo.getSources(suffixFileJavaPattern).count() shouldBeExactly 0
         }
     }
 }

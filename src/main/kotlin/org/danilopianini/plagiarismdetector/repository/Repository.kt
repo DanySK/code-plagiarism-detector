@@ -24,9 +24,9 @@ interface Repository {
     val cloneUrl: URL
 
     /**
-     * Get all the source files contained in this repository by language.
-     * @param language the programming language of the sources to return.
-     * @return an [Iterable] of source [File]s of the given language.
+     * Get all the source files contained in this repository whose name matches the given pattern.
+     * @param pattern the [Regex] the pattern that the returned files must meet
+     * @return a [Sequence] of source [File]s.
      */
-    fun getSources(language: String): Iterable<File>
+    fun getSources(pattern: Regex): Sequence<File>
 }

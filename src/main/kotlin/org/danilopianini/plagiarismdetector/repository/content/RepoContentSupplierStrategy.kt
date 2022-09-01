@@ -7,7 +7,7 @@ import java.io.File
  */
 interface RepoContentSupplierStrategy {
     /**
-     * @return the files with the given extensions.
+     * @return the files match the given pattern.
      */
-    fun getFilesOf(extensions: Iterable<String>): Iterable<File>
+    fun filesMatching(pattern: Regex): Sequence<File>
 }
