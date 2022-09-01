@@ -17,19 +17,21 @@ data class BitbucketRepository(private val repositoryInfo: JSONObject) : Abstrac
         private const val OWNER_NAME_FIELD = "display_name"
     }
 
-    override val name: String
-        get() = repositoryInfo.get(REPOSITORY_NAME_FIELD).toString()
+    override val name: String by lazy {
+        repositoryInfo.get(REPOSITORY_NAME_FIELD).toString()
+    }
 
-    override val owner: String
-        get() = repositoryInfo.getJSONObject(OWNER_FIELD).get(OWNER_NAME_FIELD).toString()
+    override val owner: String by lazy {
+        repositoryInfo.getJSONObject(OWNER_FIELD).get(OWNER_NAME_FIELD).toString()
+    }
 
-    override val cloneUrl: URL
-        get() {
-            val cloneInfos = repositoryInfo.getJSONObject(LINKS_FIELD)
-                .getJSONArray(CLONE_FIELD)
-                .get(0) as JSONObject
-            return URL(cloneInfos.get(HREF_FIELD).toString())
-        }
+    override val cloneUrl: URL by lazy {
+        repositoryInfo.getJSONObject(LINKS_FIELD)
+            .getJSONArray(CLONE_FIELD)
+            .first()
+            .let(::JSONObject)
+            .let { URL(it.get(HREF_FIELD).toString()) }
+    }
 
     override fun toString() = "git@bitbucket.org:$owner/$name.git"
 }
