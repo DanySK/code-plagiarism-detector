@@ -20,7 +20,6 @@ class LoggerTest : FunSpec() {
         val listAppender = ListAppender<ILoggingEvent>()
         listAppender.start()
         logger.addAppender(listAppender)
-
         beforeSpec {
             logger.debug(LOGGING_MSG)
         }

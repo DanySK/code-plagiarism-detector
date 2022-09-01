@@ -31,5 +31,5 @@ data class BitbucketRepository(private val repositoryInfo: JSONObject) : Abstrac
             return URL(cloneInfos.get(HREF_FIELD).toString())
         }
 
-    override fun toString() = "Repository $name of $owner"
+    override fun toString() = "git@bitbucket.org:$owner/$name.git"
 }
