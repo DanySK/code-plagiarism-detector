@@ -17,19 +17,21 @@ import org.danilopianini.plagiarismdetector.utils.EnvironmentTokenSupplier
 import org.slf4j.LoggerFactory
 import java.net.URL
 
-private const val PR_BUILD_VARIABLE = "PR_BUILD"
-private const val GH_URL_PREFIX = "https://github.com"
-private const val BB_URL_PREFIX = "https://bitbucket.org"
-private const val DANYSK_USERNAME = "Danilo Pianini"
-private const val DANYSK_GH_USER = "DanySK"
-private const val DANYSK_BB_USER = "danysk"
-private const val TASSILUCA_USER = "tassiLuca"
-private const val TASSILUCA_USERNAME = "Luca Tassinari"
-private const val BB_AUTH_USER_VAR = "BB_USER"
-private const val BB_AUTH_TOKEN_VAR = "BB_TOKEN"
-private const val GH_AUTH_TOKEN_VAR = "GH_TOKEN"
-
 class ProviderTest : FunSpec() {
+    companion object {
+        private const val PR_BUILD_VARIABLE = "PR_BUILD"
+        private const val GH_URL_PREFIX = "https://github.com"
+        private const val BB_URL_PREFIX = "https://bitbucket.org"
+        private const val DANYSK_USERNAME = "Danilo Pianini"
+        private const val DANYSK_GH_USER = "DanySK"
+        private const val DANYSK_BB_USER = "danysk"
+        private const val TASSILUCA_USER = "tassiLuca"
+        private const val TASSILUCA_USERNAME = "Luca Tassinari"
+        private const val BB_AUTH_USER_VAR = "BB_USER"
+        private const val BB_AUTH_TOKEN_VAR = "BB_TOKEN"
+        private const val GH_AUTH_TOKEN_VAR = "GH_TOKEN"
+    }
+
     private val logger = LoggerFactory.getLogger(this.javaClass)
     private val githubProvider: GitHubProvider
     private val bitbucketProvider: BitbucketProvider

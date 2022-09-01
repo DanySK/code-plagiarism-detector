@@ -6,14 +6,16 @@ import org.json.JSONTokener
 import org.danilopianini.plagiarismdetector.repository.content.RepoContentSupplierCloneStrategy
 import java.io.File
 
-private const val LANGUAGES_EXT_FILE_NAME = "Programming_Languages_Extensions.json"
-private const val LANGUAGE_NAME_FIELD = "name"
-private const val EXTENSIONS_FIELD = "extensions"
-
 /**
  * Abstract base implementation for repositories.
  */
 abstract class AbstractRepository : Repository {
+    companion object {
+        private const val LANGUAGES_EXT_FILE_NAME = "Programming_Languages_Extensions.json"
+        private const val LANGUAGE_NAME_FIELD = "name"
+        private const val EXTENSIONS_FIELD = "extensions"
+    }
+
     override fun getSources(language: String): Iterable<File> {
         val extensions = getExtensionsOfLanguage(language)
         require(extensions.any()) { "Not recognized language $language." }

@@ -4,12 +4,14 @@ import org.danilopianini.plagiarismdetector.provider.criteria.SearchCriteria
 import org.danilopianini.plagiarismdetector.repository.Repository
 import java.net.URL
 
-private const val EXPECTED_PATH_ARGS = 2
-
 /**
  * A common base implementation to all concrete [RepositoryProvider].
  */
 abstract class AbstractRepositoryProvider<I, O, in C : SearchCriteria<I, O>> : RepositoryProvider<I, O, C> {
+    companion object {
+        private const val EXPECTED_PATH_ARGS = 2
+    }
+
     override fun byLink(url: URL): Repository {
         require(urlIsValid(url)) { "The given URL is not valid: should point to the repository service." }
         require(urlIsWellFormed(url)) { "The given URL must be in `owner/name` format." }
