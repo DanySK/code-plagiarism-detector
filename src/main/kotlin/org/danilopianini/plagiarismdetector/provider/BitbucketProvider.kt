@@ -58,14 +58,13 @@ class BitbucketProvider private constructor(
         )
     }
 
-    override fun byCriteria(criteria: BitbucketSearchCriteria): Iterable<Repository> {
+    override fun byCriteria(criteria: BitbucketSearchCriteria): Sequence<Repository> {
         return getResponses(criteria.apply(BASE_URL)).asSequence()
             .flatMap { it.getJSONArray(VALUES_FIELD) }
             .map { BitbucketRepository(JSONObject("$it")) }
-            .toSet()
     }
 
-    private fun getResponses(url: String): Iterable<JSONObject> {
+    private fun getResponses(url: String): Set<JSONObject> {
         val responses = mutableSetOf<JSONObject>()
         responses.add(doGETRequest(url))
         require(!checkError(responses.last())) {

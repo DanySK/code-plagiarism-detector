@@ -20,8 +20,8 @@ interface RepositoryProvider<I, O, in C : SearchCriteria<I, O>> {
     /**
      * Search repositories matching the given criteria.
      * @param criteria the criteria to apply.
-     * @return an [Iterable] of [Repository] matching the criteria given in input.
+     * @return a [Sequence] of [Repository] matching the criteria given in input.
      * @throws IllegalArgumentException if the user do not exist.
      */
-    fun byCriteria(criteria: C): Iterable<Repository>
+    fun byCriteria(criteria: C): Sequence<Repository>
 }
