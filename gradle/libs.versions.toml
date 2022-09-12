@@ -14,7 +14,7 @@ mockito-core = { module = "org.mockito:mockito-core", version.ref = "mockito" }
 github-api = "org.kohsuke:github-api:1.308"
 unirest = "com.mashape.unirest:unirest-java:1.4.9"
 json = "org.json:json:20220320"
-org-eclipse-jgit = "org.eclipse.jgit:org.eclipse.jgit:6.2.0.202206071550-r"
+org-eclipse-jgit = "org.eclipse.jgit:org.eclipse.jgit:6.3.0.202209071007-r"
 commons-io = "commons-io:commons-io:2.11.0"
 slf4j-api = "org.slf4j:slf4j-api:2.0.0"
 logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
