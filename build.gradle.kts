@@ -27,6 +27,7 @@ dependencies {
     implementation(libs.json)
     implementation(libs.org.eclipse.jgit)
     implementation(libs.commons.io)
+    implementation(libs.javaparser.core)
     implementation(libs.slf4j.api)
     implementation(libs.logback.classic)
     implementation(libs.logback.core)
