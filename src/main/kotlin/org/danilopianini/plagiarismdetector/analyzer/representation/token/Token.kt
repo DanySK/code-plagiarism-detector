@@ -1,4 +1,4 @@
-package org.danilopianini.plagiarismdetector.analyzer.representation
+package org.danilopianini.plagiarismdetector.analyzer.representation.token
 
 /**
  * An interface modeling a lexical token.
@@ -15,7 +15,7 @@ interface Token {
     val column: Int
 
     /**
-     * The token identifier.
+     * The token type.
      */
-    val type: Int
+    val type: TokenType
 }
