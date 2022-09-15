@@ -14,6 +14,7 @@ mockito-core = { module = "org.mockito:mockito-core", version.ref = "mockito" }
 github-api = "org.kohsuke:github-api:1.308"
 unirest = "com.mashape.unirest:unirest-java:1.4.9"
 json = "org.json:json:20220924"
+kaml = "com.charleskorn.kaml:kaml:0.48.0"
 org-eclipse-jgit = "org.eclipse.jgit:org.eclipse.jgit:6.3.0.202209071007-r"
 commons-io = "commons-io:commons-io:2.11.0"
 javaparser-core = "com.github.javaparser:javaparser-core:3.24.4"
@@ -33,3 +34,4 @@ kotlin-qa = { id = "org.danilopianini.gradle-kotlin-qa", version = "0.25.0" }
 multiJvmTesting = { id = "org.danilopianini.multi-jvm-test-plugin", version = "0.4.9" }
 publishOnCentral = { id = "org.danilopianini.publish-on-central", version = "2.0.6" }
 taskTree = { id = "com.dorongold.task-tree", version = "2.1.0" }
+serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }

@@ -7,6 +7,7 @@ plugins {
     alias(libs.plugins.publishOnCentral)
     alias(libs.plugins.multiJvmTesting)
     alias(libs.plugins.taskTree)
+    alias(libs.plugins.serialization)
     application
 }
 
@@ -25,6 +26,7 @@ dependencies {
     implementation(libs.github.api)
     implementation(libs.unirest)
     implementation(libs.json)
+    implementation(libs.kaml)
     implementation(libs.org.eclipse.jgit)
     implementation(libs.commons.io)
     implementation(libs.javaparser.core)
