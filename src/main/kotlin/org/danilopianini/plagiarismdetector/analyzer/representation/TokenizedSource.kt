@@ -1,5 +1,8 @@
 package org.danilopianini.plagiarismdetector.analyzer.representation
 
+import org.danilopianini.plagiarismdetector.analyzer.representation.token.Gram
+import org.danilopianini.plagiarismdetector.analyzer.representation.token.Token
+
 /**
  * A token based representation of a source file, which is a sequence
  * of structure-preserving terms found in the code files.

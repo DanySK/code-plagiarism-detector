@@ -1,4 +1,4 @@
-package org.danilopianini.plagiarismdetector.analyzer.representation
+package org.danilopianini.plagiarismdetector.analyzer.representation.token
 
 /**
  * An interface modeling a [n-gram](https://en.wikipedia.org/wiki/N-gram),
