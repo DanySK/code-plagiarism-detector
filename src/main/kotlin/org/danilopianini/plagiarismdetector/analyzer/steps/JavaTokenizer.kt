@@ -25,7 +25,7 @@ class JavaTokenizer : StepHandler<CompilationUnit, Sequence<Token>> {
      */
     class TokenizerTreeVisitor : TreeVisitor() {
         companion object {
-            private const val CONFIG_FILE_NAME = "java-token-types.yaml"
+            private const val CONFIG_FILE_NAME = "java-token-types.yml"
         }
         private val javaTokenTypes: JavaTokenTypes
 
