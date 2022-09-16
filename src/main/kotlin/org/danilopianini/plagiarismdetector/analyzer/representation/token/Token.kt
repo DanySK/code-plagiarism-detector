@@ -1,7 +1,7 @@
 package org.danilopianini.plagiarismdetector.analyzer.representation.token
 
 /**
- * An interface modeling a lexical token.
+ * An interface modeling a [lexical token](https://en.wikipedia.org/wiki/Lexical_analysis#Token).
  */
 interface Token {
     /**

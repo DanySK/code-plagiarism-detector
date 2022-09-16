@@ -1,16 +1,22 @@
 package org.danilopianini.plagiarismdetector.analyzer.representation.token
 
+import kotlinx.serialization.Serializable
+
 /**
- * An interface modeling a token type.
+ * An interface modeling a token type, e.g. `keyword`, `identifier`...
+ * A token type is associated with one or more language-specific constructs.
+ * In the Java programming language, for example, the TokenType `loop-stmt`
+ * is associated to the following: `ForEachStmt`, `ForStmt`, `WhileStmt`, `DoStmt`.
  */
-interface TokenType {
+@Serializable
+sealed interface TokenType {
     /**
-     * The name of the type.
+     * The name of the token type.
      */
-    val identifier: String
+    val name: String
 
     /**
-     * The language types represented by this type.
+     * The language-specific constructs associated with this type.
      */
-    val types: Collection<String>
+    val languageConstructs: Collection<String>
 }
