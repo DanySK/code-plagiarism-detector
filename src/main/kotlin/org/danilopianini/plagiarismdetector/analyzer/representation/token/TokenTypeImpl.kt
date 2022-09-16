@@ -3,14 +3,14 @@ package org.danilopianini.plagiarismdetector.analyzer.representation.token
 import kotlinx.serialization.Serializable
 
 /**
- * A simple implementation of a token type.
+ * A simple class implementing a [TokenType].
  */
 @Serializable
 data class TokenTypeImpl(
-    override val identifier: String,
-    override val types: Collection<String>
+    override val name: String,
+    override val languageConstructs: Collection<String>
 ) : TokenType {
     override fun toString(): String {
-        return "$identifier: ${types.joinToString()}"
+        return "name: $name, constructs: {${languageConstructs.joinToString()}}"
     }
 }
