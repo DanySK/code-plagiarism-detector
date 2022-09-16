@@ -11,8 +11,8 @@ interface TokenizedSource : SourceRepresentation<Sequence<Token>> {
     /**
      * Splits the sequence of tokens owned by this file representation
      * in [grams](https://en.wikipedia.org/wiki/N-gram) of the given dimension.
-     * @param dimension an [Int] describing the dimension of each gram.
+     * @param size an [Int] describing the size of each gram.
      * @return a sequence of [Gram].
      */
-    fun splitInGramsOf(dimension: Int): Sequence<Gram<Token>>
+    fun splitInGramsOf(size: Int): Sequence<Gram<Token>>
 }
