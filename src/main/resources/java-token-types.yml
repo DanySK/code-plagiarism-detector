@@ -1,0 +1,200 @@
+---
+###################################################
+# This file contains the mappings between JAVA    #
+# programming language constructs and token types #
+###################################################
+# DECLARATIONS
+- name: annotation-decl
+  languageConstructs:
+    - AnnotationDeclaration
+- name: annotation-member-decl
+  languageConstructs:
+    - AnnotationMemberDeclaration
+- name: class-interface-decl
+  languageConstructs:
+    - ClassOrInterfaceDeclaration
+- name: constructor-decl
+  languageConstructs:
+    - ConstructorDeclaration
+    - CompactConstructorDeclaration
+- name: record-decl
+  languageConstructs:
+    - RecordDeclaration
+- name: enum-constant-decl
+  languageConstructs:
+    - EnumConstantDeclaration
+- name: enum-decl
+  languageConstructs:
+    - EnumDeclaration
+- name: field-declaration
+  languageConstructs:
+    - FieldDeclaration
+- name: initializer-declaration
+  languageConstructs:
+    - InitializerDeclaration
+- name: method-decl
+  languageConstructs:
+    - MethodDeclaration
+# EXPRESSIONS
+- name: array-access-expr
+  languageConstructs:
+    - ArrayAccessExpr
+- name: array-creation-expr
+  languageConstructs:
+    - ArrayCreationExpr
+- name: array-initializer-expr
+  languageConstructs:
+    - ArrayInitializerExpr
+- name: assign-expr
+  languageConstructs:
+    - AssignExpr
+- name: binary-expr
+  languageConstructs:
+    - BinaryExpr
+- name: boolean-literal-expr
+  languageConstructs:
+    - BooleanLiteralExpr
+- name: cast-expr
+  languageConstructs:
+    - CastExpr
+- name: literal-expr
+  languageConstructs:
+    - DoubleLiteralExpr
+    - IntegerLiteralExpr
+    - LongLiteralExpr
+    - NullLiteralExpr
+    - CharLiteralExpr
+    - StringLiteralExpr
+    - TextBlockLiteralExpr
+- name: class-expr
+  languageConstructs:
+    - ClassExpr
+- name: conditional-expr
+  languageConstructs:
+    - ConditionalExpr
+- name: pattern-expr
+  languageConstructs:
+    - PatternExpr
+- name: unary-expr
+  languageConstructs:
+    - UnaryExpr
+- name: switch-expr
+  languageConstructs:
+    - switchExpr
+- name: instanceof-expr
+  languageConstructs:
+    - InstanceOfExpr
+- name: field-access-expr
+  languageConstructs:
+    - FieldAccessExpr
+- name: lambda-expr
+  languageConstructs:
+    - LambdaExpr
+- name: annotation-expr
+  languageConstructs:
+    - MarkerAnnotationExpr
+    - NormalAnnotationExpr
+    - SingleMemberAnnotationExpr
+- name: variable-decl-expr
+  languageConstructs:
+    - VariableDeclarationExpr
+- name: super-expr
+  languageConstructs:
+    - SuperExpr
+- name: method-call-expr
+  languageConstructs:
+    - MethodCallExpr
+- name: method-reference-expr
+  languageConstructs:
+    - MethodReferenceExpr
+- name: name-expr
+  languageConstructs:
+    - NameExpr
+- name: object-creation-expr
+  languageConstructs:
+    - ObjectCreationExpr
+# STATEMENTS
+- name: loop-stmt
+  languageConstructs:
+    - ForEachStmt
+    - ForStmt
+    - WhileStmt
+    - DoStmt
+- name: assert-stmt
+  languageConstructs:
+    - AssertStmt
+- name: block-stmt
+  languageConstructs:
+    - BlockStmt
+- name: break-stmt
+  languageConstructs:
+    - BreakStmt
+- name: empty-stmt
+  languageConstructs:
+    - EmptyStmt
+- name: yield-stmt
+  languageConstructs:
+    - yieldStmt
+- name: continue-stmt
+  languageConstructs:
+    - ContinueStmt
+- name: if-stmt
+  languageConstructs:
+    - IfStmt
+- name: explicit-constructor-stmt
+  languageConstructs:
+    - ExplicitConstructorInvocationStmt
+- name: expression-stmt
+  languageConstructs:
+    - ExpressionStmt
+- name: switch-stmt
+  languageConstructs:
+    - SwitchStmt
+- name: synchronized-stmt
+  languageConstructs:
+    - SynchronizedStmt
+- name: throw-stmt
+  languageConstructs:
+    - ThrowStmt
+- name: try-stmt
+  languageConstructs:
+    - TryStmt
+- name: labeled-stmt
+  languageConstructs:
+    - LabeledStmt
+- name: local-class-stmt
+  languageConstructs:
+    - LocalClassDeclarationStmt
+- name: local-record-stmt
+  languageConstructs:
+    - LocalRecordDeclarationStmt
+- name: return-stmt
+  languageConstructs:
+    - ReturnStmt
+# OTHERS
+- name: receiver-param
+  languageConstructs:
+    - ReceiverParameter
+- name: parameter
+  languageConstructs:
+    - Parameter
+- name: type-parameter
+  languageConstructs:
+    - TypeParameter
+- name: catch
+  languageConstructs:
+    - CatchClause
+- name: member-value-pair
+  languageConstructs:
+    - MemberValuePair
+- name: name
+  languageConstructs:
+    - Name
+    - SimpleName
+- name: switch-entry
+  languageConstructs:
+    - SwitchEntry
+- name: variable-declarator
+  languageConstructs:
+    - VariableDeclarator
+...
