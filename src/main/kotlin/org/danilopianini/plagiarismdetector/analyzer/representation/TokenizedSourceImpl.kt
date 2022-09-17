@@ -8,7 +8,7 @@ import java.io.File
 /**
  * Tokenized source impl.
  */
-class TokenizedSourceImpl(
+data class TokenizedSourceImpl(
     override val sourceFile: File,
     override val representation: Sequence<Token>
 ) : TokenizedSource {
@@ -19,5 +19,21 @@ class TokenizedSourceImpl(
     override fun splitInGramsOf(size: Int): Sequence<Gram<Token>> {
         return representation.windowed(size, SLIDING_STEP)
             .map { GramImpl(it.asSequence()) }
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        } else if (javaClass != other?.javaClass) {
+            return false
+        }
+        other as TokenizedSourceImpl
+        return sourceFile == other.sourceFile && representation.toList() == other.representation.toList()
+    }
+
+    override fun hashCode(): Int {
+        var result = sourceFile.hashCode()
+        result = 31 * result + representation.hashCode()
+        return result
     }
 }
