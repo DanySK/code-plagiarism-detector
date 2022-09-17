@@ -9,7 +9,7 @@ import com.github.javaparser.ast.ImportDeclaration
 class JavaPreprocessor : StepHandler<CompilationUnit, CompilationUnit> {
     override fun process(input: CompilationUnit): CompilationUnit {
         input.removePackageDeclaration()
-        input.findAll(ImportDeclaration::class.java).forEach { input.remove(it) }
+        input.findAll(ImportDeclaration::class.java).forEach(input::remove)
         return input
     }
 }
