@@ -8,7 +8,7 @@ import org.danilopianini.plagiarismdetector.analyzer.representation.token.Langua
 import org.danilopianini.plagiarismdetector.analyzer.technique.tokenization.LanguageTokenTypesSupplier
 
 /**
- * A supplier of [LanguageTokenTypesImpl].
+ * A supplier of [LanguageTokenTypes] for Java programming language.
  */
 class JavaTokenTypesSupplier : LanguageTokenTypesSupplier {
     companion object {
