@@ -8,7 +8,7 @@ import java.io.File
 
 class TokenizationAnalyzerTest : FunSpec() {
     companion object {
-        const val SIMPLE_FILE_NAME = "SimpleTestClass.java"
+        private const val SIMPLE_FILE_NAME = "SimpleTestClass.java"
     }
     private val logger = LoggerFactory.getLogger(this::class.java)
     private val filePath = ClassLoader.getSystemResource(SIMPLE_FILE_NAME)
