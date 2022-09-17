@@ -1,4 +1,4 @@
-package org.danilopianini.plagiarismdetector.analyzer.steps
+package org.danilopianini.plagiarismdetector.analyzer
 
 /**
  * An interface modeling a step handler in the analyzer pipeline.

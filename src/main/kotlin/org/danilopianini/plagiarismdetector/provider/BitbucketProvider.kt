@@ -6,7 +6,7 @@ import org.json.JSONObject
 import org.danilopianini.plagiarismdetector.provider.criteria.BitbucketSearchCriteria
 import org.danilopianini.plagiarismdetector.repository.BitbucketRepository
 import org.danilopianini.plagiarismdetector.repository.Repository
-import org.danilopianini.plagiarismdetector.utils.AuthenticationTokenSupplierStrategy
+import org.danilopianini.plagiarismdetector.provider.authentication.AuthenticationTokenSupplierStrategy
 import java.net.URL
 import java.nio.charset.StandardCharsets
 import java.util.Base64

@@ -1,4 +1,4 @@
-package org.danilopianini.plagiarismdetector.analyzer.steps.tokenization
+package org.danilopianini.plagiarismdetector.analyzer.technique.tokenization
 
 import org.danilopianini.plagiarismdetector.analyzer.representation.token.LanguageTokenTypes
 

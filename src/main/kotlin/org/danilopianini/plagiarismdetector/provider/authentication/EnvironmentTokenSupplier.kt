@@ -1,4 +1,4 @@
-package org.danilopianini.plagiarismdetector.utils
+package org.danilopianini.plagiarismdetector.provider.authentication
 
 /**
  * A token supplier strategy which retrieves the token via environment variables.

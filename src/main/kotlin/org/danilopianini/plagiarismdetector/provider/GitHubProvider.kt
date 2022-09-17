@@ -3,7 +3,7 @@ package org.danilopianini.plagiarismdetector.provider
 import org.danilopianini.plagiarismdetector.provider.criteria.GitHubSearchCriteria
 import org.danilopianini.plagiarismdetector.repository.GitHubRepository
 import org.danilopianini.plagiarismdetector.repository.Repository
-import org.danilopianini.plagiarismdetector.utils.AuthenticationTokenSupplierStrategy
+import org.danilopianini.plagiarismdetector.provider.authentication.AuthenticationTokenSupplierStrategy
 import org.kohsuke.github.GHFileNotFoundException
 import org.kohsuke.github.GHRepositorySearchBuilder
 import org.kohsuke.github.GitHub
