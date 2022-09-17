@@ -1,7 +1,7 @@
 package org.danilopianini.plagiarismdetector.analyzer.representation.token
 
 /**
- * A simple class implementing a [LanguageTokenTypes] for Java programming language.
+ * A simple class implementing a [LanguageTokenTypes].
  */
 class LanguageTokenTypesImpl(private val tokensTypes: Sequence<TokenType>) : LanguageTokenTypes {
     override fun getTokenTypeBy(constructName: String): TokenType {
