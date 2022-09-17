@@ -47,7 +47,7 @@ class JavaTokenizer : StepHandler<CompilationUnit, Sequence<Token>> {
         }
 
         private fun tokenize(node: Node?) {
-            require(node != null)
+            check(node != null)
             val tokenTypeName = node::class.java.simpleName
             if (javaTokenTypes.isValidToken(tokenTypeName)) {
                 tokens.add(
