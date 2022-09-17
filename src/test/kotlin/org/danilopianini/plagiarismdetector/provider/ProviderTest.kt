@@ -11,7 +11,7 @@ import org.danilopianini.plagiarismdetector.provider.criteria.ByBitbucketUser
 import org.danilopianini.plagiarismdetector.provider.criteria.ByGitHubName
 import org.danilopianini.plagiarismdetector.provider.criteria.ByGitHubUser
 import org.danilopianini.plagiarismdetector.repository.Repository
-import org.danilopianini.plagiarismdetector.utils.EnvironmentTokenSupplier
+import org.danilopianini.plagiarismdetector.provider.authentication.EnvironmentTokenSupplier
 import org.slf4j.LoggerFactory
 import java.net.URL
 

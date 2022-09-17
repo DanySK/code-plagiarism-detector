@@ -3,6 +3,7 @@ package org.danilopianini.plagiarismdetector.analyzer
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.comparables.shouldBeGreaterThan
 import io.kotest.matchers.shouldBe
+import org.danilopianini.plagiarismdetector.analyzer.technique.tokenization.java.JavaTokenizationAnalyzer
 import org.slf4j.LoggerFactory
 import java.io.File
 

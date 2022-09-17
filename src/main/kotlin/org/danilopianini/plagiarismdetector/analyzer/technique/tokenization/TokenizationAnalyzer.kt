@@ -1,9 +1,10 @@
-package org.danilopianini.plagiarismdetector.analyzer
+package org.danilopianini.plagiarismdetector.analyzer.technique.tokenization
 
+import org.danilopianini.plagiarismdetector.analyzer.Analyzer
 import org.danilopianini.plagiarismdetector.analyzer.representation.TokenizedSource
 import org.danilopianini.plagiarismdetector.analyzer.representation.TokenizedSourceImpl
 import org.danilopianini.plagiarismdetector.analyzer.representation.token.Token
-import org.danilopianini.plagiarismdetector.analyzer.steps.StepHandler
+import org.danilopianini.plagiarismdetector.analyzer.StepHandler
 import java.io.File
 
 /**

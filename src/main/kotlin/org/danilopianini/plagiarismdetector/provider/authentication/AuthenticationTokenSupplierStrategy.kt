@@ -1,4 +1,4 @@
-package org.danilopianini.plagiarismdetector.utils
+package org.danilopianini.plagiarismdetector.provider.authentication
 
 /**
  * A supplier of token, used for authenticating to API of repository services.

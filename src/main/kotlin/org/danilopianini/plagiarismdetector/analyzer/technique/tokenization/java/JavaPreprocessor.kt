@@ -1,8 +1,8 @@
-package org.danilopianini.plagiarismdetector.analyzer.steps.tokenization.java
+package org.danilopianini.plagiarismdetector.analyzer.technique.tokenization.java
 
 import com.github.javaparser.ast.CompilationUnit
 import com.github.javaparser.ast.ImportDeclaration
-import org.danilopianini.plagiarismdetector.analyzer.steps.StepHandler
+import org.danilopianini.plagiarismdetector.analyzer.StepHandler
 
 /**
  * A java source file preprocessor, which removes noisy information
