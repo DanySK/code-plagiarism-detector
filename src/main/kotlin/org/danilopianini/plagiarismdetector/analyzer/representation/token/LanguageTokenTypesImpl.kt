@@ -1,11 +1,9 @@
-package org.danilopianini.plagiarismdetector.analyzer.representation.token.languages
-
-import org.danilopianini.plagiarismdetector.analyzer.representation.token.TokenType
+package org.danilopianini.plagiarismdetector.analyzer.representation.token
 
 /**
  * A simple class implementing a [LanguageTokenTypes] for Java programming language.
  */
-class JavaTokenTypes(private val tokensTypes: Sequence<TokenType>) : LanguageTokenTypes {
+class LanguageTokenTypesImpl(private val tokensTypes: Sequence<TokenType>) : LanguageTokenTypes {
     override fun getTokenTypeBy(constructName: String): TokenType {
         require(isValidToken(constructName))
         return tokensTypes.find { it.languageConstructs.contains(constructName) }!!

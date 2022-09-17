@@ -1,14 +1,11 @@
 package org.danilopianini.plagiarismdetector.analyzer.steps
 
-import com.charleskorn.kaml.Yaml
 import com.github.javaparser.ast.CompilationUnit
 import com.github.javaparser.ast.Node
 import com.github.javaparser.ast.visitor.TreeVisitor
-import kotlinx.serialization.builtins.ListSerializer
 import org.danilopianini.plagiarismdetector.analyzer.representation.token.Token
 import org.danilopianini.plagiarismdetector.analyzer.representation.token.TokenImpl
-import org.danilopianini.plagiarismdetector.analyzer.representation.token.TokenTypeImpl
-import org.danilopianini.plagiarismdetector.analyzer.representation.token.languages.JavaTokenTypes
+import org.danilopianini.plagiarismdetector.utils.JavaTokenTypesSupplier
 
 /**
  * A Java source file tokenizer.
@@ -24,10 +21,7 @@ class JavaTokenizer : StepHandler<CompilationUnit, Sequence<Token>> {
      * A token generator.
      */
     private class TokenizerTreeVisitor : TreeVisitor() {
-        companion object {
-            private const val CONFIG_FILE_NAME = "java-token-types.yml"
-        }
-        private val javaTokenTypes: JavaTokenTypes
+        private val javaTokenTypes = JavaTokenTypesSupplier().types
         private val tokens = mutableListOf<Token>()
 
         /**
@@ -39,12 +33,6 @@ class JavaTokenizer : StepHandler<CompilationUnit, Sequence<Token>> {
                 tokens.clear()
                 return result.asSequence()
             }
-
-        init {
-            val configFile = ClassLoader.getSystemResourceAsStream(CONFIG_FILE_NAME)!!
-            val tokenTypes = Yaml.default.decodeFromStream(ListSerializer(TokenTypeImpl.serializer()), configFile)
-            javaTokenTypes = JavaTokenTypes(tokenTypes.asSequence())
-        }
 
         private fun tokenize(node: Node?) {
             check(node != null)

@@ -1,6 +1,4 @@
-package org.danilopianini.plagiarismdetector.analyzer.representation.token.languages
-
-import org.danilopianini.plagiarismdetector.analyzer.representation.token.TokenType
+package org.danilopianini.plagiarismdetector.analyzer.representation.token
 
 /**
  * An interface which models a container of [TokenType]s for a specific language.
