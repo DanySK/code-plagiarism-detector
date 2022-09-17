@@ -1,4 +1,4 @@
-package org.danilopianini.plagiarismdetector.utils
+package org.danilopianini.plagiarismdetector.analyzer.steps.tokenization
 
 import com.charleskorn.kaml.Yaml
 import kotlinx.serialization.builtins.ListSerializer

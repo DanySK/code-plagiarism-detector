@@ -1,8 +1,9 @@
-package org.danilopianini.plagiarismdetector.analyzer.steps
+package org.danilopianini.plagiarismdetector.analyzer.steps.tokenization.java
 
 import com.github.javaparser.ParserConfiguration
 import com.github.javaparser.StaticJavaParser
 import com.github.javaparser.ast.CompilationUnit
+import org.danilopianini.plagiarismdetector.analyzer.steps.StepHandler
 import java.io.File
 
 /**
