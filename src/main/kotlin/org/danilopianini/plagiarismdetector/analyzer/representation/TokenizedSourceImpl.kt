@@ -6,7 +6,7 @@ import org.danilopianini.plagiarismdetector.analyzer.representation.token.Token
 import java.io.File
 
 /**
- * Tokenized source impl.
+ * A class implementing a [TokenizedSource].
  */
 data class TokenizedSourceImpl(
     override val sourceFile: File,
