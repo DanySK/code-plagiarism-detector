@@ -28,7 +28,7 @@ data class TokenizedSourceImpl(
             return false
         }
         other as TokenizedSourceImpl
-        return sourceFile == other.sourceFile && representation.toList() == other.representation.toList()
+        return (sourceFile == other.sourceFile) && (representation.toList() == other.representation.toList())
     }
 
     override fun hashCode(): Int {
