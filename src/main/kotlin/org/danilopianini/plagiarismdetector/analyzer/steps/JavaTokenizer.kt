@@ -17,7 +17,7 @@ class JavaTokenizer : StepHandler<CompilationUnit, Sequence<Token>> {
     override fun process(input: CompilationUnit): Sequence<Token> {
         val tokenizer = TokenizerTreeVisitor()
         tokenizer.visitPreOrder(input)
-        return tokenizer.tokens.asSequence()
+        return tokenizer.sourceCodeToken
     }
 
     /**
@@ -28,11 +28,17 @@ class JavaTokenizer : StepHandler<CompilationUnit, Sequence<Token>> {
             private const val CONFIG_FILE_NAME = "java-token-types.yml"
         }
         private val javaTokenTypes: JavaTokenTypes
+        private val tokens = mutableListOf<Token>()
 
         /**
-         * List of tokens extracted visiting the source AST.
+         * Sequence of [Token] extracted visiting the source AST.
          */
-        val tokens = mutableListOf<Token>()
+        val sourceCodeToken: Sequence<Token>
+            get() {
+                val result = tokens.toList()
+                tokens.clear()
+                return result.asSequence()
+            }
 
         init {
             val configFile = ClassLoader.getSystemResourceAsStream(CONFIG_FILE_NAME)!!
@@ -55,7 +61,6 @@ class JavaTokenizer : StepHandler<CompilationUnit, Sequence<Token>> {
         }
 
         override fun process(node: Node?) {
-            tokens.clear()
             tokenize(node)
         }
     }
