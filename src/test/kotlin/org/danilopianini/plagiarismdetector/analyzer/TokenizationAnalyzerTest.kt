@@ -12,7 +12,7 @@ class TokenizationAnalyzerTest : FunSpec() {
     }
     private val logger = LoggerFactory.getLogger(this::class.java)
     private val filePath = ClassLoader.getSystemResource(SIMPLE_FILE_NAME)
-    private val analyzer = TokenizationAnalyzer()
+    private val analyzer = JavaTokenizationAnalyzer()
 
     init {
         test("Tokenizing source code should return a tokenized representation of source code") {
