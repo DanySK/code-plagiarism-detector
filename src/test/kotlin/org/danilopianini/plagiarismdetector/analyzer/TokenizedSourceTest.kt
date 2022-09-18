@@ -16,7 +16,7 @@ class TokenizedSourceTest : FunSpec() {
     private val token2 = TokenImpl(0, 1, TokenTypeImpl("B", emptySet()))
     private val token3 = TokenImpl(0, 2, TokenTypeImpl("C", emptySet()))
     private val token4 = TokenImpl(0, 3, TokenTypeImpl("D", emptySet()))
-    private val token5 = TokenImpl(0, 3, TokenTypeImpl("E", emptySet()))
+    private val token5 = TokenImpl(0, 4, TokenTypeImpl("E", emptySet()))
     private val tokenizedSource = spyk(TokenizedSourceImpl(mockk(), mockk())) {
         every { representation } returns sequenceOf(token1, token2, token3, token4, token5)
     }
