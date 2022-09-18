@@ -18,7 +18,7 @@ class JavaTokenizer : StepHandler<CompilationUnit, Sequence<Token>> {
     }
 
     /**
-     * A token generator.
+     * A generator of tokens, obtained by visiting the AST of the source file.
      */
     private class TokenizerTreeVisitor : TreeVisitor() {
         private val javaTokenTypes = JavaTokenTypesSupplier().types
