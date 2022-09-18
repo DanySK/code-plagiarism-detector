@@ -34,6 +34,10 @@ class JavaTokenizer : StepHandler<CompilationUnit, Sequence<Token>> {
                 return result.asSequence()
             }
 
+        override fun process(node: Node?) {
+            tokenize(node)
+        }
+
         private fun tokenize(node: Node?) {
             check(node != null)
             val tokenTypeName = node::class.java.simpleName
@@ -46,10 +50,6 @@ class JavaTokenizer : StepHandler<CompilationUnit, Sequence<Token>> {
                     )
                 )
             }
-        }
-
-        override fun process(node: Node?) {
-            tokenize(node)
         }
     }
 }
