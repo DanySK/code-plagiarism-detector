@@ -1,16 +1,18 @@
 package org.danilopianini.plagiarismdetector.analyzer.technique.tokenization.java
 
 import org.danilopianini.plagiarismdetector.analyzer.StepHandler
+import org.danilopianini.plagiarismdetector.analyzer.representation.token.Token
 import org.danilopianini.plagiarismdetector.analyzer.technique.tokenization.TokenizationAnalyzer
+import java.io.File
 
 /**
  * A concrete Java source code [TokenizationAnalyzer].
  */
 class JavaTokenizationAnalyzer : TokenizationAnalyzer(
-    StepHandler {
-        JavaTokenizer().process(
-            JavaPreprocessor().process(
-                JavaParser().process(it)
+    object : StepHandler<File, List<Token>> {
+        override fun invoke(input: File): List<Token> = JavaTokenizer().invoke(
+            JavaPreprocessor().invoke(
+                JavaParser().invoke(input)
             )
         )
     }

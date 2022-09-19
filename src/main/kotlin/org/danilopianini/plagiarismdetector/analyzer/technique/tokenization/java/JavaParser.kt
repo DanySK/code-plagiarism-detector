@@ -10,7 +10,7 @@ import java.io.File
  * A java source file parser.
  */
 class JavaParser : StepHandler<File, CompilationUnit> {
-    override fun process(input: File): CompilationUnit {
+    override fun invoke(input: File): CompilationUnit {
         val parserConfiguration = ParserConfiguration().setAttributeComments(false)
         StaticJavaParser.setConfiguration(parserConfiguration)
         return StaticJavaParser.parse(input)

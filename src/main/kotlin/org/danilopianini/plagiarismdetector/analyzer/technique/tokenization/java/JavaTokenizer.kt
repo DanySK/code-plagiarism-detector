@@ -11,7 +11,7 @@ import org.danilopianini.plagiarismdetector.analyzer.StepHandler
  * A Java source file tokenizer.
  */
 class JavaTokenizer : StepHandler<CompilationUnit, List<Token>> {
-    override fun process(input: CompilationUnit): List<Token> {
+    override fun invoke(input: CompilationUnit): List<Token> {
         val tokenizer = TokenizerTreeVisitor()
         tokenizer.visitPreOrder(input)
         return tokenizer.sourceCodeToken
