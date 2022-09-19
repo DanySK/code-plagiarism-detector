@@ -41,12 +41,12 @@ class JavaTokenizer : StepHandler<CompilationUnit, Sequence<Token>> {
         private fun tokenize(node: Node?) {
             check(node != null)
             val tokenTypeName = node::class.java.simpleName
-            if (javaTokenTypes.isValidToken(tokenTypeName)) {
+            if (javaTokenTypes.isToken(tokenTypeName)) {
                 tokens.add(
                     TokenImpl(
                         node.begin.get().line,
                         node.begin.get().column,
-                        javaTokenTypes.getTokenTypeBy(tokenTypeName)
+                        javaTokenTypes.tokenFor(tokenTypeName)
                     )
                 )
             }
