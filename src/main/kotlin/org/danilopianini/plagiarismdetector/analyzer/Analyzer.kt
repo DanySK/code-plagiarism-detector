@@ -9,10 +9,4 @@ import org.danilopianini.plagiarismdetector.analyzer.representation.SourceRepres
  * @param <O> the type of output
  * @param <T> the type of the representation
  */
-interface Analyzer<I, out O : SourceRepresentation<T>, T> {
-    /**
-     * Executes the analysis.
-     * @return a comparable representation of the source file.
-     */
-    fun execute(input: I): O
-}
+interface Analyzer<in I, out O : SourceRepresentation<T>, T> : (I) -> (O)

@@ -18,7 +18,7 @@ class TokenizationAnalyzerTest : FunSpec() {
     init {
         test("Tokenizing source code should return a tokenized representation of source code") {
             val sourceFile = File(filePath.toURI())
-            val result = analyzer.execute(sourceFile)
+            val result = analyzer(sourceFile)
             result.sourceFile.path shouldBe sourceFile.path
             result.representation.count() shouldBeGreaterThan 0
             result.representation.forEach { logger.info(it.toString()) }
