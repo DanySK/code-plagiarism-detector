@@ -10,7 +10,5 @@ data class TokenTypeImpl(
     override val name: String,
     override val languageConstructs: Collection<String>
 ) : TokenType {
-    override fun toString(): String {
-        return "name: $name, constructs: {${languageConstructs.joinToString()}}"
-    }
+    override fun toString(): String = "name: $name, constructs: {${languageConstructs.joinToString()}}"
 }
