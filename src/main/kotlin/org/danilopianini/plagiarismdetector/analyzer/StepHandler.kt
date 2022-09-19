@@ -5,10 +5,4 @@ package org.danilopianini.plagiarismdetector.analyzer
  * @param I the type of the input.
  * @param O the type of the output.
  */
-fun interface StepHandler<I, O> {
-    /**
-     * Process the given input.
-     * @return the input transformation result.
-     */
-    fun process(input: I): O
-}
+typealias StepHandler<I, O> = (I) -> (O)
