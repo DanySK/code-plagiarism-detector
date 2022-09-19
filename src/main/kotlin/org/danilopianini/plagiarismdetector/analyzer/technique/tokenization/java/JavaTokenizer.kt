@@ -10,8 +10,8 @@ import org.danilopianini.plagiarismdetector.analyzer.StepHandler
 /**
  * A Java source file tokenizer.
  */
-class JavaTokenizer : StepHandler<CompilationUnit, Sequence<Token>> {
-    override fun process(input: CompilationUnit): Sequence<Token> {
+class JavaTokenizer : StepHandler<CompilationUnit, List<Token>> {
+    override fun process(input: CompilationUnit): List<Token> {
         val tokenizer = TokenizerTreeVisitor()
         tokenizer.visitPreOrder(input)
         return tokenizer.sourceCodeToken
@@ -27,11 +27,11 @@ class JavaTokenizer : StepHandler<CompilationUnit, Sequence<Token>> {
         /**
          * Sequence of [Token] extracted visiting the source AST.
          */
-        val sourceCodeToken: Sequence<Token>
+        val sourceCodeToken: List<Token>
             get() {
                 val result = tokens.toList()
                 tokens.clear()
-                return result.asSequence()
+                return result
             }
 
         override fun process(node: Node?) {
