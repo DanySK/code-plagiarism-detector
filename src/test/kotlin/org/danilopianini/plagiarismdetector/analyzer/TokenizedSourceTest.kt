@@ -25,9 +25,9 @@ class TokenizedSourceTest : FunSpec() {
         test("Token grams are correctly generated") {
             val gramSize = 3
             val expectedGrams = listOf(
-                GramImpl(sequenceOf(token1, token2, token3)),
-                GramImpl(sequenceOf(token2, token3, token4)),
-                GramImpl(sequenceOf(token3, token4, token5))
+                GramImpl(listOf(token1, token2, token3)),
+                GramImpl(listOf(token2, token3, token4)),
+                GramImpl(listOf(token3, token4, token5))
             )
             val grams = tokenizedSource.splitInGramsOf(gramSize)
             grams.count() shouldBeExactly gramSize

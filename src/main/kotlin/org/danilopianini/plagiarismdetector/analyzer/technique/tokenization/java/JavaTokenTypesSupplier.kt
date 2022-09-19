@@ -19,6 +19,6 @@ class JavaTokenTypesSupplier : LanguageTokenTypesSupplier {
         get() {
             val configFile = ClassLoader.getSystemResourceAsStream(CONFIG_FILE_NAME)!!
             val tokenTypes = Yaml.default.decodeFromStream(ListSerializer(TokenTypeImpl.serializer()), configFile)
-            return LanguageTokenTypesImpl(tokenTypes.asSequence())
+            return LanguageTokenTypesImpl(tokenTypes)
         }
 }

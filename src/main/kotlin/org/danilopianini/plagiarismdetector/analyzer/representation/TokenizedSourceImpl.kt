@@ -7,33 +7,20 @@ import java.io.File
 
 /**
  * A class implementing a [TokenizedSource].
+ * @param sourceFile the file associated to this representation
+ * @param tokens the list of tokens that represents the source file
  */
 data class TokenizedSourceImpl(
     override val sourceFile: File,
-    override val representation: Sequence<Token>
+    val tokens: List<Token>
 ) : TokenizedSource {
     companion object {
         private const val SLIDING_STEP = 1
     }
+    override val representation: Sequence<Token> = tokens.asSequence()
 
     override fun splitInGramsOf(size: Int): Sequence<Gram<Token>> {
         return representation.windowed(size, SLIDING_STEP)
-            .map { GramImpl(it.asSequence()) }
-    }
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        } else if (javaClass != other?.javaClass) {
-            return false
-        }
-        other as TokenizedSourceImpl
-        return (sourceFile == other.sourceFile) && (representation.toList() == other.representation.toList())
-    }
-
-    override fun hashCode(): Int {
-        var result = sourceFile.hashCode()
-        result = 31 * result + representation.hashCode()
-        return result
+            .map(::GramImpl)
     }
 }

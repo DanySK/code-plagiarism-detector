@@ -9,5 +9,5 @@ interface Gram<T> {
     /**
      * The items that compose the gram.
      */
-    val items: Sequence<T>
+    val items: List<T>
 }
