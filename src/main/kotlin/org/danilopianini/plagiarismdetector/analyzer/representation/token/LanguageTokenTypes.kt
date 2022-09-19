@@ -7,10 +7,10 @@ interface LanguageTokenTypes {
     /**
      * @return the [TokenType] associated to the given construct.
      */
-    fun getTokenTypeBy(constructName: String): TokenType
+    fun tokenFor(constructName: String): TokenType
 
     /**
      * @return true if the given construct name is valid, false otherwise.
      */
-    fun isValidToken(constructName: String): Boolean
+    fun isToken(constructName: String): Boolean
 }
