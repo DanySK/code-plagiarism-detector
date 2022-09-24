@@ -2,6 +2,8 @@ package org.danilopianini.plagiarismdetector.provider
 
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.FunSpec
+import io.kotest.extensions.system.OverrideMode
+import io.kotest.extensions.system.withEnvironment
 import io.kotest.matchers.string.shouldContain
 import io.kotest.matchers.string.shouldNotBeEmpty
 import org.danilopianini.plagiarismdetector.provider.authentication.EnvironmentTokenSupplier
@@ -21,11 +23,15 @@ class EnvironmentTokenSupplierTest : FunSpec() {
             }
         }
 
-        test("The content of an existing environment variable should meet the formatting requirements")
-            .config(enabled = !isExecutingOnPullRequest()) {
+        test("The content of an existing environment variable should meet the formatting requirements") {
+            withEnvironment(
+                mapOf(BB_AUTH_USER_VAR to "BB_USER", BB_AUTH_TOKEN_VAR to "BB_TOKEN"),
+                mode = OverrideMode.SetOrOverride
+            ) {
                 val supplier = EnvironmentTokenSupplier(BB_AUTH_USER_VAR, BB_AUTH_TOKEN_VAR, separator = ":")
                 supplier.token.shouldNotBeEmpty()
                 supplier.token.shouldContain(Regex("(.+):(.+)"))
             }
+        }
     }
 }

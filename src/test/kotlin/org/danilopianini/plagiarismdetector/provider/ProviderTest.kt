@@ -17,6 +17,7 @@ import java.net.URL
 
 class ProviderTest : FunSpec() {
     companion object {
+        private const val PR_BUILD_VARIABLE = "PR_BUILD"
         private const val GH_URL_PREFIX = "https://github.com"
         private const val BB_URL_PREFIX = "https://bitbucket.org"
         private const val DANYSK_USERNAME = "Danilo Pianini"
@@ -123,6 +124,8 @@ class ProviderTest : FunSpec() {
             }
         }
     }
+
+    private fun isExecutingOnPullRequest() = System.getenv(PR_BUILD_VARIABLE) == "true"
 
     private fun testByExistingName(result: Sequence<Repository>, expectedName: String, expectedUser: String) {
         result.toSet().shouldNotBeEmpty()
