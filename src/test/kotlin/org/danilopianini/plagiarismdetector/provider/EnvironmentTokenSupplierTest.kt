@@ -21,10 +21,11 @@ class EnvironmentTokenSupplierTest : FunSpec() {
             }
         }
 
-        test("The content of an existing environment variable should meet the formatting requirements") {
-            val supplier = EnvironmentTokenSupplier(BB_AUTH_USER_VAR, BB_AUTH_TOKEN_VAR, separator = ":")
-            supplier.token.shouldNotBeEmpty()
-            supplier.token.shouldContain(Regex("(.+):(.+)"))
-        }
+        test("The content of an existing environment variable should meet the formatting requirements")
+            .config(enabled = !isExecutingOnPullRequest()) {
+                val supplier = EnvironmentTokenSupplier(BB_AUTH_USER_VAR, BB_AUTH_TOKEN_VAR, separator = ":")
+                supplier.token.shouldNotBeEmpty()
+                supplier.token.shouldContain(Regex("(.+):(.+)"))
+            }
     }
 }
