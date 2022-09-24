@@ -61,6 +61,7 @@ tasks.test {
         events(*org.gradle.api.tasks.testing.logging.TestLogEvent.values())
         exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
     }
+    jvmArgs(project.property("jvmTestArgs"))
 }
 
 signing {
