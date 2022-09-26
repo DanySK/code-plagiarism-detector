@@ -15,5 +15,5 @@ interface TokenType {
     /**
      * The language-specific constructs associated with this type.
      */
-    val languageConstructs: Collection<String>
+    val languageConstructs: Set<String>
 }
