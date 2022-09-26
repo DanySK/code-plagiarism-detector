@@ -7,7 +7,7 @@ import org.danilopianini.plagiarismdetector.analyzer.representation.token.Langua
  * retrieving the lexical token types of a specific programming
  * language and encapsulating them in a [LanguageTokenTypes].
  */
-interface LanguageTokenTypesSupplier {
+interface TokenTypesSupplier {
     /**
      * The [LanguageTokenTypes] object.
      */
