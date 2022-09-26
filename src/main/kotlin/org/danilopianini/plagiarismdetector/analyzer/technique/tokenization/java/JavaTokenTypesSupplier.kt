@@ -17,7 +17,9 @@ class JavaTokenTypesSupplier : LanguageTokenTypesSupplier {
 
     override val types: LanguageTokenTypes
         get() {
-            val configFile = ClassLoader.getSystemResourceAsStream(CONFIG_FILE_NAME)!!
+            val configFile = ClassLoader.getSystemResourceAsStream(CONFIG_FILE_NAME) ?: error {
+                "Configuration file $CONFIG_FILE_NAME not found."
+            }
             val tokenTypes = Yaml.default.decodeFromStream(SetSerializer(TokenTypeImpl.serializer()), configFile)
             return LanguageTokenTypesImpl(tokenTypes)
         }
