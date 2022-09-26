@@ -6,11 +6,9 @@ package org.danilopianini.plagiarismdetector.analyzer.representation.token
  */
 class LanguageTokenTypesImpl(private val tokensTypes: Collection<TokenType>) : LanguageTokenTypes {
 
-    override fun tokenFor(constructName: String): TokenType {
-        require(isToken(constructName))
-        return tokensTypes.find { it.languageConstructs.contains(constructName) }!!
-    }
+    override fun tokenFor(constructName: String): TokenType =
+        tokensTypes.find { constructName in it.languageConstructs } ?: error("No token found for given construct name.")
 
     override fun isToken(constructName: String): Boolean =
-        tokensTypes.any { it.languageConstructs.contains(constructName) }
+        tokensTypes.any { constructName in it.languageConstructs }
 }
