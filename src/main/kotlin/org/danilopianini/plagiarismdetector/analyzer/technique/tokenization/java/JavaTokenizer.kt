@@ -6,11 +6,15 @@ import com.github.javaparser.ast.visitor.TreeVisitor
 import org.danilopianini.plagiarismdetector.analyzer.representation.token.Token
 import org.danilopianini.plagiarismdetector.analyzer.representation.token.TokenImpl
 import org.danilopianini.plagiarismdetector.analyzer.StepHandler
+import org.danilopianini.plagiarismdetector.analyzer.technique.tokenization.FileTokenTypesSupplier
 
 /**
  * A Java source file tokenizer.
  */
 class JavaTokenizer : StepHandler<CompilationUnit, List<Token>> {
+    companion object {
+        private const val CONFIG_FILE_NAME = "java-token-types.yml"
+    }
 
     override fun invoke(input: CompilationUnit): List<Token> = TokenizerTreeVisitor().run {
         visitPreOrder(input)
@@ -21,7 +25,7 @@ class JavaTokenizer : StepHandler<CompilationUnit, List<Token>> {
      * A generator of tokens, obtained by visiting the AST of the source file.
      */
     private class TokenizerTreeVisitor : TreeVisitor() {
-        private val javaTokenTypes = JavaTokenTypesSupplier().types
+        private val javaTokenTypes = FileTokenTypesSupplier(CONFIG_FILE_NAME).types
         private val tokens = mutableListOf<Token>()
 
         /**
