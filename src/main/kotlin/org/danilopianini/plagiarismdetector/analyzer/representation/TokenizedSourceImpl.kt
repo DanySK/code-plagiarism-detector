@@ -12,7 +12,7 @@ import java.io.File
  */
 data class TokenizedSourceImpl(
     override val sourceFile: File,
-    val tokens: List<Token>
+    val tokens: List<Token>,
 ) : TokenizedSource {
 
     companion object {

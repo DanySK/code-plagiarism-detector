@@ -6,7 +6,7 @@ package org.danilopianini.plagiarismdetector.analyzer.representation.token
 data class TokenImpl(
     override val line: Int,
     override val column: Int,
-    override val type: TokenType
+    override val type: TokenType,
 ) : Token {
     override fun toString(): String = "${type.name} (line=$line, column=$column)"
 }

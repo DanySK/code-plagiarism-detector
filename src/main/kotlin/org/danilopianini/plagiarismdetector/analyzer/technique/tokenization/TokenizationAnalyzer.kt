@@ -11,7 +11,7 @@ import java.io.File
  * An abstract [Analyzer] which executes source code tokenization.
  */
 abstract class TokenizationAnalyzer(
-    private val pipeline: StepHandler<File, List<Token>>
+    private val pipeline: StepHandler<File, List<Token>>,
 ) : Analyzer<File, TokenizedSource, Sequence<Token>> {
     override fun invoke(input: File): TokenizedSource = TokenizedSourceImpl(input, pipeline(input))
 }

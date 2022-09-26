@@ -10,7 +10,7 @@ package org.danilopianini.plagiarismdetector.provider.authentication
 class EnvironmentTokenSupplier(
     private val environmentVariableName: String,
     private vararg val otherEnvironmentVariableNames: String,
-    private val separator: CharSequence = ""
+    private val separator: CharSequence = "",
 ) : AuthenticationTokenSupplierStrategy {
     override val token: String
         get() = sequenceOf(System.getenv(environmentVariableName))
