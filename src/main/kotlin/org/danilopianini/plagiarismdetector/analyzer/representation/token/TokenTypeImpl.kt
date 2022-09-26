@@ -8,7 +8,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class TokenTypeImpl(
     override val name: String,
-    override val languageConstructs: Collection<String>,
+    override val languageConstructs: Set<String>,
 ) : TokenType {
     override fun toString(): String = "name: $name, constructs: {${languageConstructs.joinToString()}}"
 }

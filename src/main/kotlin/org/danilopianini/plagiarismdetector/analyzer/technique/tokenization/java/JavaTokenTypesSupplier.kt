@@ -1,7 +1,7 @@
 package org.danilopianini.plagiarismdetector.analyzer.technique.tokenization.java
 
 import com.charleskorn.kaml.Yaml
-import kotlinx.serialization.builtins.ListSerializer
+import kotlinx.serialization.builtins.SetSerializer
 import org.danilopianini.plagiarismdetector.analyzer.representation.token.LanguageTokenTypes
 import org.danilopianini.plagiarismdetector.analyzer.representation.token.TokenTypeImpl
 import org.danilopianini.plagiarismdetector.analyzer.representation.token.LanguageTokenTypesImpl
@@ -18,7 +18,7 @@ class JavaTokenTypesSupplier : LanguageTokenTypesSupplier {
     override val types: LanguageTokenTypes
         get() {
             val configFile = ClassLoader.getSystemResourceAsStream(CONFIG_FILE_NAME)!!
-            val tokenTypes = Yaml.default.decodeFromStream(ListSerializer(TokenTypeImpl.serializer()), configFile)
+            val tokenTypes = Yaml.default.decodeFromStream(SetSerializer(TokenTypeImpl.serializer()), configFile)
             return LanguageTokenTypesImpl(tokenTypes)
         }
 }
