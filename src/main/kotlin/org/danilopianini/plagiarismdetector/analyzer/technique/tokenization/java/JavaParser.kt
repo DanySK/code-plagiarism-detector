@@ -9,6 +9,7 @@ import java.io.File
  * A java source file parser.
  */
 class JavaParser : StepHandler<File, CompilationUnit> {
+
     override fun invoke(input: File): CompilationUnit {
         val parserConfiguration = ParserConfiguration().setAttributeComments(false)
         val parser = com.github.javaparser.JavaParser(parserConfiguration)
