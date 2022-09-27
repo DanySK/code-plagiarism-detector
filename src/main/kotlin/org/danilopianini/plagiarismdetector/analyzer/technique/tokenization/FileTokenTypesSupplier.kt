@@ -8,6 +8,7 @@ import org.danilopianini.plagiarismdetector.analyzer.representation.token.Langua
 
 /**
  * A supplier of [LanguageTokenTypes] for Java programming language.
+ * @property configurationFileName the name of the configuration file from which load token types.
  */
 class FileTokenTypesSupplier(private val configurationFileName: String) : TokenTypesSupplier {
     private val configurationFile = ClassLoader.getSystemResourceAsStream(configurationFileName) ?: error {
