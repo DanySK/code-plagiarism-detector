@@ -3,9 +3,9 @@ package org.danilopianini.plagiarismdetector.analyzer.technique.tokenization.jav
 import com.github.javaparser.ast.CompilationUnit
 import com.github.javaparser.ast.Node
 import com.github.javaparser.ast.visitor.TreeVisitor
+import org.danilopianini.plagiarismdetector.analyzer.StepHandler
 import org.danilopianini.plagiarismdetector.analyzer.representation.token.Token
 import org.danilopianini.plagiarismdetector.analyzer.representation.token.TokenImpl
-import org.danilopianini.plagiarismdetector.analyzer.StepHandler
 import org.danilopianini.plagiarismdetector.analyzer.technique.tokenization.FileTokenTypesSupplier
 
 /**
