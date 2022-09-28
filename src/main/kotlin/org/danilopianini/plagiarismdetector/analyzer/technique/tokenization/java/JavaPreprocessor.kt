@@ -11,7 +11,7 @@ import org.danilopianini.plagiarismdetector.analyzer.StepHandler
  */
 class JavaPreprocessor : StepHandler<CompilationUnit, CompilationUnit> {
 
-    override fun invoke(input: CompilationUnit): CompilationUnit = input.clone().also {
+    override operator fun invoke(input: CompilationUnit): CompilationUnit = input.clone().also {
         it.removePackageDeclaration()
         it.findAll(ImportDeclaration::class.java).forEach(it::remove)
     }

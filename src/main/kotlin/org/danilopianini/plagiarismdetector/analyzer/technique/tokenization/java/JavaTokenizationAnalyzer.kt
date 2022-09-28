@@ -10,9 +10,9 @@ import java.io.File
  */
 class JavaTokenizationAnalyzer : TokenizationAnalyzer(
     object : StepHandler<File, List<Token>> {
-        override fun invoke(input: File): List<Token> = JavaTokenizer().invoke(
-            JavaPreprocessor().invoke(
-                JavaParser().invoke(input)
+        override operator fun invoke(input: File): List<Token> = JavaTokenizer()(
+            JavaPreprocessor()(
+                JavaParser()(input)
             )
         )
     }

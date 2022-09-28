@@ -10,7 +10,7 @@ import java.io.File
  */
 class JavaParser : StepHandler<File, CompilationUnit> {
 
-    override fun invoke(input: File): CompilationUnit {
+    override operator fun invoke(input: File): CompilationUnit {
         val parserConfiguration = ParserConfiguration().setAttributeComments(false)
         val parser = com.github.javaparser.JavaParser(parserConfiguration)
         return parser.parse(input).run {

@@ -16,7 +16,8 @@ class JavaTokenizer : StepHandler<CompilationUnit, List<Token>> {
         private const val CONFIG_FILE_NAME = "java-token-types.yml"
     }
 
-    override fun invoke(input: CompilationUnit): List<Token> = TokenizerTreeVisitor().run { visit(input) }
+    override operator fun invoke(input: CompilationUnit): List<Token> =
+        TokenizerTreeVisitor().run { visit(input) }
 
     /**
      * A generator of tokens, obtained by visiting the AST of the source file.
