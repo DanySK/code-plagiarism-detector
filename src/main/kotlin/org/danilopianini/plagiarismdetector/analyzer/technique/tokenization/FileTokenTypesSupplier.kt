@@ -3,8 +3,8 @@ package org.danilopianini.plagiarismdetector.analyzer.technique.tokenization
 import com.charleskorn.kaml.Yaml
 import kotlinx.serialization.builtins.SetSerializer
 import org.danilopianini.plagiarismdetector.analyzer.representation.token.LanguageTokenTypes
-import org.danilopianini.plagiarismdetector.analyzer.representation.token.TokenTypeImpl
 import org.danilopianini.plagiarismdetector.analyzer.representation.token.LanguageTokenTypesImpl
+import org.danilopianini.plagiarismdetector.analyzer.representation.token.TokenTypeImpl
 
 /**
  * A supplier of [LanguageTokenTypes] for Java programming language.
