@@ -30,7 +30,7 @@ class EnvironmentTokenSupplierTest : FunSpec() {
             ) {
                 val supplier = EnvironmentTokenSupplier(BB_AUTH_USER_VAR, BB_AUTH_TOKEN_VAR, separator = ":")
                 supplier.token.shouldNotBeEmpty()
-                supplier.token.shouldContain(Regex("(.+):(.+)"))
+                supplier.token.shouldContain(Regex(".+:.+"))
             }
         }
     }
