@@ -16,10 +16,7 @@ class JavaTokenizer : StepHandler<CompilationUnit, List<Token>> {
         private const val CONFIG_FILE_NAME = "java-token-types.yml"
     }
 
-    override fun invoke(input: CompilationUnit): List<Token> = TokenizerTreeVisitor().run {
-        visitPreOrder(input)
-        sourceCodeToken
-    }
+    override fun invoke(input: CompilationUnit): List<Token> = TokenizerTreeVisitor().run { visit(input) }
 
     /**
      * A generator of tokens, obtained by visiting the AST of the source file.
@@ -29,14 +26,15 @@ class JavaTokenizer : StepHandler<CompilationUnit, List<Token>> {
         private val tokens = mutableListOf<Token>()
 
         /**
-         * Sequence of [Token] extracted visiting the source AST.
+         * Visit the AST generating the tokens for the given [CompilationUnit].
+         * @param compilationUnit the [CompilationUnit] to visit and tokenize.
+         * @return the [List] of [Token]s generated.
          */
-        val sourceCodeToken: List<Token>
-            get() {
-                val result = tokens.toList()
-                tokens.clear()
-                return result
-            }
+        fun visit(compilationUnit: CompilationUnit): List<Token> {
+            tokens.clear()
+            visitPreOrder(compilationUnit)
+            return tokens
+        }
 
         override fun process(node: Node?) {
             tokenize(node)
