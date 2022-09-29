@@ -187,10 +187,6 @@
 - name: member-value-pair
   languageConstructs:
     - MemberValuePair
-- name: name
-  languageConstructs:
-    - Name
-    - SimpleName
 - name: switch-entry
   languageConstructs:
     - SwitchEntry
