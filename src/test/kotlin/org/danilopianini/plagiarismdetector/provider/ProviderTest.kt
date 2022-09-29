@@ -4,6 +4,7 @@ import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.collections.shouldNotBeEmpty
+import io.kotest.matchers.string.shouldContain
 import io.kotest.matchers.string.shouldContainIgnoringCase
 import io.kotest.matchers.string.shouldMatch
 import org.danilopianini.plagiarismdetector.provider.criteria.ByBitbucketName
@@ -20,11 +21,11 @@ class ProviderTest : FunSpec() {
         private const val PR_BUILD_VARIABLE = "PR_BUILD"
         private const val GH_URL_PREFIX = "https://github.com"
         private const val BB_URL_PREFIX = "https://bitbucket.org"
-        private const val DANYSK_USERNAME = "Danilo Pianini"
+        private const val DANYSK_NAME = "Danilo Pianini"
         private const val DANYSK_GH_USER = "DanySK"
         private const val DANYSK_BB_USER = "danysk"
         private const val TASSILUCA_USER = "tassiLuca"
-        private const val TASSILUCA_USERNAME = "Luca Tassinari"
+        private const val TASSILUCA_NAME = "Luca Tassinari"
         private const val BB_AUTH_USER_VAR = "BB_USER"
         private const val BB_AUTH_TOKEN_VAR = "BB_TOKEN"
         private const val GH_AUTH_TOKEN_VAR = "GH_TOKEN"
@@ -52,13 +53,15 @@ class ProviderTest : FunSpec() {
             testByExistingName(
                 githubProvider.byCriteria(ByGitHubName(searchedRepoName, ByGitHubUser(DANYSK_GH_USER))),
                 searchedRepoName,
-                DANYSK_USERNAME
+                DANYSK_NAME,
+                DANYSK_GH_USER
             )
             searchedRepoName = "OOP"
             testByExistingName(
                 bitbucketProvider.byCriteria(ByBitbucketName(searchedRepoName, ByBitbucketUser(DANYSK_BB_USER))),
                 searchedRepoName,
-                DANYSK_USERNAME
+                DANYSK_NAME,
+                DANYSK_BB_USER
             )
         }
 
@@ -68,13 +71,13 @@ class ProviderTest : FunSpec() {
             testByExistingUrl(
                 githubProvider.byLink(URL(expectedRepoUrl)),
                 repoName,
-                TASSILUCA_USERNAME
+                TASSILUCA_NAME
             )
             expectedRepoUrl = "$BB_URL_PREFIX/$TASSILUCA_USER/$repoName"
             testByExistingUrl(
                 bitbucketProvider.byLink(URL(expectedRepoUrl)),
                 repoName,
-                TASSILUCA_USERNAME
+                TASSILUCA_NAME
             )
         }
 
@@ -127,11 +130,20 @@ class ProviderTest : FunSpec() {
 
     private fun isExecutingOnPullRequest() = System.getenv(PR_BUILD_VARIABLE) == "true"
 
-    private fun testByExistingName(result: Sequence<Repository>, expectedName: String, expectedUser: String) {
+    private fun testByExistingName(
+        result: Sequence<Repository>,
+        expectedRepositoryName: String,
+        expectedUser: String,
+        expectedUsername: String
+    ) {
         result.toSet().shouldNotBeEmpty()
         result.forEach {
-            it.name shouldContainIgnoringCase expectedName
+            it.name shouldContainIgnoringCase expectedRepositoryName
             it.owner shouldMatch expectedUser
+            it.cloneUrl.path shouldContain Regex(
+                "^/$expectedUsername/.*$expectedRepositoryName.*",
+                RegexOption.IGNORE_CASE
+            )
         }
     }
 
