@@ -8,24 +8,27 @@ import kotlin.math.min
 /**
  * Implementation of Greedy String Tiling algorithm.
  * [Here](https://bit.ly/3f3qzED) you can find the paper in which was originally described.
+ * @param minimumMatchLength the minimum matches length under which they are ignored.
  */
-class GreedyStringTiling : ComparisonStrategy<TokenizedSource, Sequence<Token>, TokenMatch> {
+class GreedyStringTiling(
+    private val minimumMatchLength: Int = DEFAULT_MINIMUM_MATCH_LEN
+) : ComparisonStrategy<TokenizedSource, Sequence<Token>, TokenMatch> {
     companion object {
-        private const val MINIMUM_MATCH_LEN = 5
+        private const val DEFAULT_MINIMUM_MATCH_LEN = 5
     }
-    private var maxMatch = MINIMUM_MATCH_LEN
+    private var maxMatch = minimumMatchLength
     private val tiles = mutableSetOf<TokenMatch>()
     private val marked = mutableSetOf<Token>()
     private val matches: MutableMap<Int, MutableList<TokenMatch>> = mutableMapOf()
 
     override fun invoke(input: Pair<TokenizedSource, TokenizedSource>): Sequence<TokenMatch> {
-        init()
+        clearPreviousResults()
         val (pattern, text) = orderInput(input)
         runAlgorithm(pattern, text)
         return tiles.asSequence()
     }
 
-    private fun init() {
+    private fun clearPreviousResults() {
         tiles.clear()
         marked.clear()
         matches.clear()
@@ -50,11 +53,12 @@ class GreedyStringTiling : ComparisonStrategy<TokenizedSource, Sequence<Token>, 
      * @param text the [TokenizedSource] with the larger number of [Token]s.
      */
     private fun runAlgorithm(pattern: TokenizedSource, text: TokenizedSource) {
+
         do {
-            maxMatch = MINIMUM_MATCH_LEN
+            maxMatch = minimumMatchLength
             scanPattern(pattern, text)
             markMatches()
-        } while (maxMatch != MINIMUM_MATCH_LEN)
+        } while (maxMatch != minimumMatchLength)
     }
 
     /**
