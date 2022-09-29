@@ -53,7 +53,6 @@ class GreedyStringTiling(
      * @param text the [TokenizedSource] with the larger number of [Token]s.
      */
     private fun runAlgorithm(pattern: TokenizedSource, text: TokenizedSource) {
-
         do {
             maxMatch = minimumMatchLength
             scanPattern(pattern, text)
