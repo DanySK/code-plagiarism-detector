@@ -11,6 +11,7 @@ kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-stdlib-reflect", versio
 kotest-junit5-jvm = { module = "io.kotest:kotest-runner-junit5-jvm", version.ref = "kotest" }
 kotest-assertions-core-jvm = { module = "io.kotest:kotest-assertions-core-jvm", version.ref = "kotest" }
 mockito-core = { module = "org.mockito:mockito-core", version.ref = "mockito" }
+clikt = "com.github.ajalt.clikt:clikt:3.5.0"
 github-api = "org.kohsuke:github-api:1.313"
 unirest = "com.mashape.unirest:unirest-java:1.4.9"
 json = "org.json:json:20220924"
@@ -35,3 +36,4 @@ multiJvmTesting = { id = "org.danilopianini.multi-jvm-test-plugin", version = "0
 publishOnCentral = { id = "org.danilopianini.publish-on-central", version = "2.0.8" }
 taskTree = { id = "com.dorongold.task-tree", version = "2.1.0" }
 serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+shadowJar = "com.github.johnrengelman.shadow:7.1.2"

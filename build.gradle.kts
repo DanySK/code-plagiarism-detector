@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.kotlin.qa)
     alias(libs.plugins.publishOnCentral)
     alias(libs.plugins.multiJvmTesting)
+    alias(libs.plugins.shadowJar)
     alias(libs.plugins.taskTree)
     alias(libs.plugins.serialization)
     application
@@ -23,6 +24,7 @@ repositories {
 
 dependencies {
     implementation(libs.kotlin.stdlib)
+    implementation(libs.clikt)
     implementation(libs.github.api)
     implementation(libs.unirest)
     implementation(libs.json)

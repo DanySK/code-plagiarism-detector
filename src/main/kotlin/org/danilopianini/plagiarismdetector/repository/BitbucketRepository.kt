@@ -28,9 +28,8 @@ data class BitbucketRepository(private val repositoryInfo: JSONObject) : Abstrac
     override val cloneUrl: URL by lazy {
         repositoryInfo.getJSONObject(LINKS_FIELD)
             .getJSONArray(CLONE_FIELD)
-            .first()
-            .let(::JSONObject)
-            .let { URL(it.get(HREF_FIELD).toString()) }
+            .getJSONObject(0)
+            .let { URL(it.getString(HREF_FIELD)) }
     }
 
     override fun toString() = "git@bitbucket.org:$owner/$name.git"
