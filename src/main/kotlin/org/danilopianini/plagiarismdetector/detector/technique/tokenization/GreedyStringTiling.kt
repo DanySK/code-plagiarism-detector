@@ -35,9 +35,9 @@ class GreedyStringTiling(
     }
 
     /**
-     * Orders the input in terms of number of [Token]s owned by the [TokenizedSource].
+     * Orders the input in terms of [Token]s number owned by the [TokenizedSource].
      * @param input the pair of [TokenizedSource] to order.
-     * @return a pair of [TokenizedSource]: in the first position is put the `pattern`, i.e. the
+     * @return a pair of [TokenizedSource]: in the first position the `pattern`, i.e. the
      * shorter of the two, and in the second position the `text`, i.e. the longer.
      */
     private fun orderInput(input: Pair<TokenizedSource, TokenizedSource>): Pair<TokenizedSource, TokenizedSource> =
@@ -77,7 +77,8 @@ class GreedyStringTiling(
     }
 
     /**
-     * Search a match starting from first elements of `pattern` and `text`.
+     * Search a match between the two sequence of tokens starting at their respective first elements.
+     * Tokens are matching if their type are equals and both have not already been marked.
      * @return a [Pair] in which are encapsulated the matching [Token]s: in the first
      * position those of the pattern and in the second position those of the text.
      */
