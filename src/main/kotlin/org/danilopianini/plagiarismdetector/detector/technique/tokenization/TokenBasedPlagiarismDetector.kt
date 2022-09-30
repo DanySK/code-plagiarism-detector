@@ -3,13 +3,15 @@ package org.danilopianini.plagiarismdetector.detector.technique.tokenization
 import org.danilopianini.plagiarismdetector.analyzer.representation.TokenizedSource
 import org.danilopianini.plagiarismdetector.analyzer.representation.token.Token
 import org.danilopianini.plagiarismdetector.detector.ComparisonResult
+import org.danilopianini.plagiarismdetector.detector.ComparisonStrategy
 import org.danilopianini.plagiarismdetector.detector.PlagiarismDetector
 
 /**
  * A simple token based plagiarism detector.
  */
-class TokenBasedPlagiarismDetector : PlagiarismDetector<TokenizedSource, Sequence<Token>, TokenMatch> {
-    private val strategy = GreedyStringTiling()
+class TokenBasedPlagiarismDetector(
+    private val strategy: ComparisonStrategy<TokenizedSource, Sequence<Token>, TokenMatch> = GreedyStringTiling()
+) : PlagiarismDetector<TokenizedSource, Sequence<Token>, TokenMatch> {
 
     override operator fun invoke(
         input: Pair<TokenizedSource, TokenizedSource>
@@ -24,6 +26,8 @@ class TokenBasedPlagiarismDetector : PlagiarismDetector<TokenizedSource, Sequenc
     ): Double {
         val totalTokens = input.first.representation.count() + input.second.representation.count()
         val matchesCoverage = matches.sumOf { it.length }
+        println(totalTokens)
+        println(matchesCoverage)
         return ((2 * matchesCoverage).toDouble() / totalTokens)
     }
 }
