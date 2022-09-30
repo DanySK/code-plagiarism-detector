@@ -11,7 +11,7 @@ import kotlin.math.min
  * @param minimumMatchLength the minimum matches length under which they are ignored.
  */
 class GreedyStringTiling(
-    private val minimumMatchLength: Int = DEFAULT_MINIMUM_MATCH_LEN
+    private val minimumMatchLength: Int = DEFAULT_MINIMUM_MATCH_LEN,
 ) : ComparisonStrategy<TokenizedSource, Sequence<Token>, TokenMatch> {
     companion object {
         private const val DEFAULT_MINIMUM_MATCH_LEN = 5
@@ -21,11 +21,11 @@ class GreedyStringTiling(
     private val marked = mutableSetOf<Token>()
     private val matches: MutableMap<Int, MutableList<TokenMatch>> = mutableMapOf()
 
-    override fun invoke(input: Pair<TokenizedSource, TokenizedSource>): Sequence<TokenMatch> {
+    override fun invoke(input: Pair<TokenizedSource, TokenizedSource>): Set<TokenMatch> {
         clearPreviousResults()
         val (pattern, text) = orderInput(input)
         runAlgorithm(pattern, text)
-        return tiles.asSequence()
+        return tiles
     }
 
     private fun clearPreviousResults() {
@@ -82,13 +82,13 @@ class GreedyStringTiling(
      * @return a [Pair] in which are encapsulated the matching [Token]s: in the first
      * position those of the pattern and in the second position those of the text.
      */
-    private fun scan(pattern: Sequence<Token>, text: Sequence<Token>): Pair<Sequence<Token>, Sequence<Token>> {
+    private fun scan(pattern: Sequence<Token>, text: Sequence<Token>): Pair<List<Token>, List<Token>> {
         val (matchingPatternTokens, matchingTextTokens) = (0 until min(pattern.count(), text.count()))
             .asSequence()
             .map { Pair(pattern.elementAt(it), text.elementAt(it)) }
             .takeWhile { it.first.type == it.second.type && isUnmarked(it.first) && isUnmarked(it.second) }
             .unzip()
-        return Pair(matchingPatternTokens.asSequence(), matchingTextTokens.asSequence())
+        return Pair(matchingPatternTokens, matchingTextTokens)
     }
 
     /**
@@ -97,8 +97,8 @@ class GreedyStringTiling(
      * @param text a pair consisting of the [TokenizedSource] and the sequence of [Token]s that matches
      */
     private fun updateMatches(
-        pattern: Pair<TokenizedSource, Sequence<Token>>,
-        text: Pair<TokenizedSource, Sequence<Token>>
+        pattern: Pair<TokenizedSource, List<Token>>,
+        text: Pair<TokenizedSource, List<Token>>
     ) {
         require(pattern.second.count() == text.second.count())
         val matchLength = pattern.second.count()
@@ -154,5 +154,5 @@ class GreedyStringTiling(
      * Marks the tokens.
      * @param tokens the [Token]s to be marked.
      */
-    private fun markTokens(tokens: Sequence<Token>) = tokens.forEach { marked.add(it) }
+    private fun markTokens(tokens: List<Token>) = tokens.forEach { marked.add(it) }
 }
