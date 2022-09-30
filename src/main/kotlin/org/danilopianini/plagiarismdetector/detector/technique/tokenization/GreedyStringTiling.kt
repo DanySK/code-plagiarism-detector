@@ -11,7 +11,7 @@ import kotlin.math.min
  * @param minimumMatchLength the minimum matches length under which they are ignored.
  */
 class GreedyStringTiling(
-    private val minimumMatchLength: Int = DEFAULT_MINIMUM_MATCH_LEN,
+    private val minimumMatchLength: Int = DEFAULT_MINIMUM_MATCH_LEN
 ) : ComparisonStrategy<TokenizedSource, Sequence<Token>, TokenMatch> {
     companion object {
         private const val DEFAULT_MINIMUM_MATCH_LEN = 5
@@ -35,9 +35,8 @@ class GreedyStringTiling(
     }
 
     /**
-     * Orders the input in terms of [Token]s number owned by the [TokenizedSource].
-     * @param input the pair of [TokenizedSource] to order.
-     * @return a pair of [TokenizedSource]: in the first position the `pattern`, i.e. the
+     * Orders the [input] in terms of [Token]s number owned by the [TokenizedSource] and
+     * return a pair of [TokenizedSource]: in the first position the `pattern`, i.e. the
      * shorter of the two, and in the second position the `text`, i.e. the longer.
      */
     private fun orderInput(input: Pair<TokenizedSource, TokenizedSource>): Pair<TokenizedSource, TokenizedSource> =
@@ -49,8 +48,6 @@ class GreedyStringTiling(
 
     /**
      * Top level algorithm.
-     * @param pattern the [TokenizedSource] with the least number of [Token]s.
-     * @param text the [TokenizedSource] with the larger number of [Token]s.
      */
     private fun runAlgorithm(pattern: TokenizedSource, text: TokenizedSource) {
         do {
@@ -61,9 +58,8 @@ class GreedyStringTiling(
     }
 
     /**
-     * Searches for maximal matches. It corresponds to the `scanpattern()` function of the paper.
-     * @param pattern the [TokenizedSource] with the larger number of [Token]s
-     * @param text the [TokenizedSource] with the smaller number of [Token]s
+     * Searches for maximal matches between [pattern] and [text].
+     * It corresponds to the `scanpattern()` function of the paper.
      */
     private fun scanPattern(pattern: TokenizedSource, text: TokenizedSource) {
         pattern.representation.dropWhile(::isMarked).forEach { p ->
@@ -77,8 +73,8 @@ class GreedyStringTiling(
     }
 
     /**
-     * Search a match between the two sequence of tokens starting at their respective first elements.
-     * Tokens are matching if their type are equals and both have not already been marked.
+     * Search a match between [pattern] and [text] starting at their respective first elements.
+     * Tokens match if their type are equals and both have not already been marked.
      * @return a [Pair] in which are encapsulated the matching [Token]s: in the first
      * position those of the pattern and in the second position those of the text.
      */
@@ -91,11 +87,6 @@ class GreedyStringTiling(
         return Pair(matchingPatternTokens, matchingTextTokens)
     }
 
-    /**
-     * Updates the matches.
-     * @param pattern a pair consisting of the [TokenizedSource] and the sequence of [Token]s that matches
-     * @param text a pair consisting of the [TokenizedSource] and the sequence of [Token]s that matches
-     */
     private fun updateMatches(
         pattern: Pair<TokenizedSource, List<Token>>,
         text: Pair<TokenizedSource, List<Token>>
@@ -112,7 +103,7 @@ class GreedyStringTiling(
     }
 
     /**
-     * Marks the matches and creates the tiles.
+     * Marks the matches and creates the tiles. It corresponds to the `markarrays` function of the paper.
      */
     private fun markMatches() {
         matches[maxMatch]?.let {
@@ -127,10 +118,8 @@ class GreedyStringTiling(
     }
 
     /**
-     * Checks if the given match is occluded.
-     * @param tokenMatch the [TokenMatch] to be tested.
-     * @return true if the given match is occluded, i.e. all the matching tokens of both the
-     * pattern and the text is marked.
+     * Checks if the given [tokenMatch] is occluded, i.e. all the matching tokens of both the
+     * pattern and the text are marked.
      * Note that, according to the paper, given that smaller matches cannot be created before
      * larger ones, it suffices that only the ends of each sequence of matching tokens be
      * tested for occlusion, rather than the whole sequence.
@@ -139,20 +128,17 @@ class GreedyStringTiling(
         isMarked(tokenMatch.text.second.last()) && isMarked(tokenMatch.pattern.second.last())
 
     /**
-     * @param token the [Token] to be tested.
-     * @return true if the given token has **not** been marked, yet.
+     * Returns if the given [token] has **not** been marked, yet.
      */
     private fun isUnmarked(token: Token) = !isMarked(token)
 
     /**
-     * @param token the [Token] to be tested.
-     * @return true if the given token has already been marked.
+     * Returns if the given [token] has already been marked.
      */
     private fun isMarked(token: Token) = marked.contains(token)
 
     /**
-     * Marks the tokens.
-     * @param tokens the [Token]s to be marked.
+     * Marks the given [tokens].
      */
     private fun markTokens(tokens: List<Token>) = tokens.forEach { marked.add(it) }
 }
