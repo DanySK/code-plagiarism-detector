@@ -26,8 +26,6 @@ class TokenBasedPlagiarismDetector(
     ): Double {
         val totalTokens = input.first.representation.count() + input.second.representation.count()
         val matchesCoverage = matches.sumOf { it.length }
-        println(totalTokens)
-        println(matchesCoverage)
         return ((2 * matchesCoverage).toDouble() / totalTokens)
     }
 }
