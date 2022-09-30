@@ -11,12 +11,12 @@ interface TokenMatch : Match {
     /**
      * The matching [Token] in the pattern.
      */
-    val pattern: Pair<TokenizedSource, Sequence<Token>>
+    val pattern: Pair<TokenizedSource, List<Token>>
 
     /**
      * The matching [Token] in the text.
      */
-    val text: Pair<TokenizedSource, Sequence<Token>>
+    val text: Pair<TokenizedSource, List<Token>>
 
     /**
      * The length of the match in terms of number of tokens in common.
