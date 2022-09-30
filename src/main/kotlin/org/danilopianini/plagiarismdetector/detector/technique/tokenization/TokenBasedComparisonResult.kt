@@ -7,5 +7,8 @@ import org.danilopianini.plagiarismdetector.detector.ComparisonResult
  */
 class TokenBasedComparisonResult(
     override val scoreOfSimilarity: Double,
-    override val matches: Sequence<TokenMatch>,
-) : ComparisonResult<TokenMatch>
+    tokenMatches: Set<TokenMatch>,
+) : ComparisonResult<TokenMatch> {
+
+    override val matches: Sequence<TokenMatch> = tokenMatches.asSequence()
+}

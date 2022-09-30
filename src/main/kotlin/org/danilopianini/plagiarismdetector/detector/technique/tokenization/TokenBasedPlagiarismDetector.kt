@@ -20,7 +20,7 @@ class TokenBasedPlagiarismDetector : PlagiarismDetector<TokenizedSource, Sequenc
 
     private fun estimateSimilarity(
         input: Pair<TokenizedSource, TokenizedSource>,
-        matches: Sequence<TokenMatch>,
+        matches: Set<TokenMatch>,
     ): Double {
         val totalTokens = input.first.representation.count() + input.second.representation.count()
         val matchesCoverage = matches.sumOf { it.length }
