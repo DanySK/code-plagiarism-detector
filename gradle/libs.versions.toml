@@ -18,7 +18,7 @@ kaml = "com.charleskorn.kaml:kaml:0.48.0"
 org-eclipse-jgit = "org.eclipse.jgit:org.eclipse.jgit:6.3.0.202209071007-r"
 commons-io = "commons-io:commons-io:2.11.0"
 javaparser-core = "com.github.javaparser:javaparser-core:3.24.4"
-slf4j-api = "org.slf4j:slf4j-api:2.0.2"
+slf4j-api = "org.slf4j:slf4j-api:2.0.3"
 logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
 logback-core = { module = "ch.qos.logback:logback-core", version.ref = "logback" }
 mockk = "io.mockk:mockk:1.13.1"
