@@ -50,7 +50,7 @@ class GreedyStringTiling(
     override fun markMatches() {
         matches[maxMatch]?.let {
             it.forEach { m ->
-                if (!isOccluded(m)) {
+                if (isNotOccluded(m)) {
                     markTokens(m.pattern.second)
                     markTokens(m.text.second)
                     tiles.add(m)
