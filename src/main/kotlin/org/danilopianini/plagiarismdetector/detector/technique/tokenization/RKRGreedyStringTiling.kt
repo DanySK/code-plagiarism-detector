@@ -37,42 +37,42 @@ class RKRGreedyStringTiling(
         secondPhase(pattern, text)
     }
 
-    private fun firstPhase(pattern: TokenizedSource, text: TokenizedSource) {
-        text.representation.filter(::isUnmarked).forEach { t ->
-            val subText = text.representation.dropWhile { it != t }
-            val distanceToNextTile = distanceToNextTile(subText)
+    private fun phaseInvariant(
+        tokens: Sequence<Token>,
+        thenBranch: (Sequence<Token>) -> (Unit),
+        elseBranch: (Sequence<Token>) -> (Unit),
+    ) {
+        tokens.filter(::isUnmarked).forEach { actualToken ->
+            val tokensFromActual = tokens.dropWhile { it != actualToken }
+            val distanceToNextTile = distanceToNextTile(tokensFromActual)
             if (distanceToNextTile < searchLen) {
-                if (text.representation.indexOf(t) + distanceToNextTile == text.representation.count()) {
+                if (tokensFromActual.indexOf(actualToken) + distanceToNextTile == tokensFromActual.count()) {
                     return
                 } else {
-                    val unmarkedTokensAfterTile = tokensFromFirstUnmarked(text.representation.drop(distanceToNextTile))
-                    return firstPhase(pattern, TokenizedSourceImpl(text.sourceFile, unmarkedTokensAfterTile.toList()))
+                    return thenBranch(tokensFromFirstUnmarked(tokens.drop(distanceToNextTile)))
                 }
             } else {
-                saveHashValueOf(subText.take(searchLen))
+                elseBranch(tokensFromActual)
             }
         }
     }
 
+    private fun firstPhase(pattern: TokenizedSource, text: TokenizedSource) {
+        phaseInvariant(text.representation, {
+            firstPhase(pattern, TokenizedSourceImpl(text.sourceFile, it.toList()))
+        }) {
+            saveHashValueOf(it.take(searchLen))
+        }
+    }
+
     private fun secondPhase(pattern: TokenizedSource, text: TokenizedSource) {
-        pattern.representation.filter(::isUnmarked).forEach { t ->
-            val subPattern = pattern.representation.dropWhile { it != t }
-            val distanceToNextTile = distanceToNextTile(subPattern)
-            if (distanceToNextTile < searchLen) {
-                if (pattern.representation.indexOf(t) + distanceToNextTile == pattern.representation.count()) {
-                    return
-                } else {
-                    val unmarkedTokensAfterTile = tokensFromFirstUnmarked(
-                        pattern.representation.drop(distanceToNextTile)
-                    )
-                    return secondPhase(TokenizedSourceImpl(pattern.sourceFile, unmarkedTokensAfterTile.toList()), text)
-                }
-            } else {
-                val subPatternToSearch = subPattern.take(searchLen)
-                val hashValue = hashValue(subPatternToSearch)
-                if (hashValue in hashTable) {
-                    findMaxMatch(hashValue, subPatternToSearch, subPattern, text, pattern)
-                }
+        phaseInvariant(pattern.representation, {
+            secondPhase(TokenizedSourceImpl(pattern.sourceFile, it.toList()), text)
+        }) {
+            val subPatternToSearch = it.take(searchLen)
+            val hashValue = hashValue(subPatternToSearch)
+            if (hashValue in hashTable) {
+                findMaxMatch(hashValue, subPatternToSearch, it, text, pattern)
             }
         }
     }
