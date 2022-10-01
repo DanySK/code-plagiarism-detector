@@ -5,6 +5,9 @@ import org.danilopianini.plagiarismdetector.analyzer.representation.token.Token
 import org.danilopianini.plagiarismdetector.detector.ComparisonStrategy
 import kotlin.math.min
 
+/**
+ * This is an abstract base implementation of the common code for Greedy String Tiling algorithm.
+ */
 abstract class BaseGreedyStringTiling(
     protected val minimumMatchLength: Int
 ) : ComparisonStrategy<TokenizedSource, Sequence<Token>, TokenMatch> {
