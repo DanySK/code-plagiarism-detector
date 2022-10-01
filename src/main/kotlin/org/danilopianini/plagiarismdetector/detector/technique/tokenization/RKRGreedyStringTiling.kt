@@ -3,6 +3,7 @@ package org.danilopianini.plagiarismdetector.detector.technique.tokenization
 import org.danilopianini.plagiarismdetector.analyzer.representation.TokenizedSource
 import org.danilopianini.plagiarismdetector.analyzer.representation.TokenizedSourceImpl
 import org.danilopianini.plagiarismdetector.analyzer.representation.token.Token
+import org.slf4j.LoggerFactory
 
 /**
  * The advanced algorithm proposed in [this paper](https://bit.ly/3f3qzED).
@@ -11,14 +12,16 @@ class RKRGreedyStringTiling(
     minimumMatchLength: Int = DEFAULT_MINIMUM_MATCH_LEN
 ) : BaseGreedyStringTiling(minimumMatchLength) {
     companion object {
-        private const val DEFAULT_MINIMUM_MATCH_LEN = 8
+        private const val DEFAULT_MINIMUM_MATCH_LEN = 5
     }
+    private val logger = LoggerFactory.getLogger(this::class.java)
     private var searchLen = minimumMatchLength
     private val hashTable = mutableMapOf<Int, MutableSet<Sequence<Token>>>()
 
     override fun runAlgorithm(pattern: TokenizedSource, text: TokenizedSource) {
         var stop = false
         while (!stop) {
+            logger.debug("Search length: $searchLen")
             scanPattern(pattern, text)
             markMatches()
             when {
@@ -34,57 +37,67 @@ class RKRGreedyStringTiling(
         secondPhase(pattern, text)
     }
 
-    private fun scanPhase(
-        tokens: Sequence<Token>,
-        ifBranch: (Sequence<Token>) -> (Unit),
-        elseBranch: (Sequence<Token>) -> (Unit)
-    ) {
-        tokens.filter(::isUnmarked).forEach { t ->
-            val subTokens = tokens.dropWhile { it != t }
-            val distanceToNextTile = distanceToNextTile(subTokens)
+    private fun firstPhase(pattern: TokenizedSource, text: TokenizedSource) {
+        text.representation.filter(::isUnmarked).forEach { t ->
+            val subText = text.representation.dropWhile { it != t }
+            val distanceToNextTile = distanceToNextTile(subText)
             if (distanceToNextTile < searchLen) {
-                if (tokens.indexOf(t) + distanceToNextTile != tokens.count()) {
-                    val unmarkedTokensAfterTile = tokensFromFirstUnmarked(tokens.drop(distanceToNextTile))
-                    ifBranch(unmarkedTokensAfterTile)
+                if (text.representation.indexOf(t) + distanceToNextTile == text.representation.count()) {
+                    return
+                } else {
+                    val unmarkedTokensAfterTile = tokensFromFirstUnmarked(text.representation.drop(distanceToNextTile))
+                    return firstPhase(pattern, TokenizedSourceImpl(text.sourceFile, unmarkedTokensAfterTile.toList()))
                 }
             } else {
-                elseBranch(subTokens)
+                saveHashValueOf(subText.take(searchLen))
             }
         }
     }
 
-    private fun firstPhase(pattern: TokenizedSource, text: TokenizedSource) {
-        scanPhase(text.representation, {
-            firstPhase(pattern, TokenizedSourceImpl(text.sourceFile, it.toList()))
-        }) {
-            saveHashValueOf(it.take(searchLen))
+    private fun secondPhase(pattern: TokenizedSource, text: TokenizedSource) {
+        pattern.representation.filter(::isUnmarked).forEach { t ->
+            val subPattern = pattern.representation.dropWhile { it != t }
+            val distanceToNextTile = distanceToNextTile(subPattern)
+            if (distanceToNextTile < searchLen) {
+                if (pattern.representation.indexOf(t) + distanceToNextTile == pattern.representation.count()) {
+                    return
+                } else {
+                    val unmarkedTokensAfterTile = tokensFromFirstUnmarked(
+                        pattern.representation.drop(distanceToNextTile)
+                    )
+                    return secondPhase(TokenizedSourceImpl(pattern.sourceFile, unmarkedTokensAfterTile.toList()), text)
+                }
+            } else {
+                val subPatternToSearch = subPattern.take(searchLen)
+                val hashValue = hashValue(subPatternToSearch)
+                if (hashValue in hashTable) {
+                    findMaxMatch(hashValue, subPatternToSearch, subPattern, text, pattern)
+                }
+            }
         }
     }
 
-    private fun secondPhase(pattern: TokenizedSource, text: TokenizedSource) {
-        scanPhase(pattern.representation, {
-            secondPhase(TokenizedSourceImpl(pattern.sourceFile, it.toList()), text)
-        }) {
-            val subPattern = it.take(searchLen)
-            val hashValue = hashValue(subPattern)
-            if (hashValue in hashTable) {
-                hashTable[hashValue]?.forEach { subText ->
-                    if (subPattern isEqualsTo subText) {
-                        val subPatternFromLastChecked = it.drop(searchLen)
-                        val subTextFromLastChecked = text.representation.dropWhile { t -> t != subText.first() }
-                            .drop(searchLen)
-                        val (patternMatches, textMatches) = scan(subPatternFromLastChecked, subTextFromLastChecked)
-                        val completePatternMatch = (subPattern + patternMatches).toList()
-                        val completeTextMatch = (subText + textMatches).toList()
-                        check(completePatternMatch.count() == completeTextMatch.count())
-                        val completeMatchLen = completePatternMatch.count()
-                        if (completeMatchLen > 2 * searchLen) {
-                            searchLen += patternMatches.count()
-                            scanPattern(pattern, text)
-                        } else {
-                            updateMatches(Pair(pattern, completePatternMatch), Pair(text, completeTextMatch))
-                        }
-                    }
+    private fun findMaxMatch(
+        hashValue: Int,
+        subPatternToSearch: Sequence<Token>,
+        subPattern: Sequence<Token>,
+        text: TokenizedSource,
+        pattern: TokenizedSource
+    ) {
+        hashTable[hashValue]?.forEach { subText ->
+            if (subPatternToSearch isEqualsTo subText) {
+                val subPatternFromLastChecked = subPattern.drop(searchLen)
+                val subTextFromLastChecked = text.representation.dropWhile { t -> t != subText.first() }.drop(searchLen)
+                val (patternMatches, textMatches) = scan(subPatternFromLastChecked, subTextFromLastChecked)
+                val completePatternMatch = (subPatternToSearch + patternMatches).toList()
+                val completeTextMatch = (subText + textMatches).toList()
+                check(completePatternMatch.count() == completeTextMatch.count())
+                val completeMatchLen = completePatternMatch.count()
+                if (completeMatchLen > 2 * searchLen) {
+                    searchLen = completeMatchLen
+                    return scanPattern(pattern, text)
+                } else {
+                    updateMatches(Pair(pattern, completePatternMatch), Pair(text, completeTextMatch))
                 }
             }
         }
@@ -92,7 +105,7 @@ class RKRGreedyStringTiling(
 
     override fun updateMatches(
         pattern: Pair<TokenizedSource, List<Token>>,
-        text: Pair<TokenizedSource, List<Token>>
+        text: Pair<TokenizedSource, List<Token>>,
     ) {
         require(pattern.second.count() == text.second.count())
         val matchLength = pattern.second.count()
@@ -107,7 +120,7 @@ class RKRGreedyStringTiling(
             val maxMatch = matches.keys.max()
             matches[maxMatch]?.let {
                 it.forEach { m ->
-                    if (!isOccluded(m)) {
+                    if (isNotOccluded(m)) {
                         markTokens(m.pattern.second)
                         markTokens(m.text.second)
                         tiles.add(m)
