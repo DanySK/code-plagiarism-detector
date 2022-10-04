@@ -2,16 +2,6 @@ package org.danilopianini.plagiarismdetector.detector.technique.tokenization
 
 import org.danilopianini.plagiarismdetector.analyzer.representation.TokenizedSource
 import org.danilopianini.plagiarismdetector.analyzer.representation.token.Token
-import org.danilopianini.plagiarismdetector.detector.ComparisonStrategy
-import kotlin.math.min
-
-typealias Tokens = Sequence<Token>
-
-/** In the first position is put the marked tokens of pattern, in the second those of the text. */
-typealias MarkedTokens = Pair<Set<Token>, Set<Token>>
-
-/** A map which contains (matchLen, list of token match). */
-typealias MaximalMatches = Map<Int, List<TokenMatch>>
 
 /** A map with (hash value, set of sequences with that hash value). */
 typealias HashTable = MutableMap<Long, MutableSet<Sequence<Token>>>
@@ -20,25 +10,13 @@ typealias HashTable = MutableMap<Long, MutableSet<Sequence<Token>>>
  * Thread safe implementation of Running-Karp-Rabin Greedy String Tiling.
  */
 class RKRGreedyStringTiling(
-    private val minimumMatchLength: Int = DEFAULT_MINIMUM_MATCH_LEN
-) : ComparisonStrategy<TokenizedSource, Sequence<Token>, TokenMatch> {
+    minimumMatchLength: Int = DEFAULT_MINIMUM_MATCH_LEN
+) : BaseGreedyStringTiling(minimumMatchLength) {
     companion object {
         private const val DEFAULT_MINIMUM_MATCH_LEN = 5
     }
 
-    override operator fun invoke(input: Pair<TokenizedSource, TokenizedSource>): Set<TokenMatch> {
-        val (pattern, text) = orderInput(input)
-        return runAlgorithm(pattern, text)
-    }
-
-    private fun orderInput(input: Pair<TokenizedSource, TokenizedSource>): Pair<TokenizedSource, TokenizedSource> =
-        if (input.first.representation.count() > input.second.representation.count()) {
-            Pair(input.second, input.first)
-        } else {
-            Pair(input.first, input.second)
-        }
-
-    private fun runAlgorithm(pattern: TokenizedSource, text: TokenizedSource): Set<TokenMatch> {
+    override fun runAlgorithm(pattern: TokenizedSource, text: TokenizedSource): Set<TokenMatch> {
         var stop = false
         var searchLength = minimumMatchLength
         val marked = Pair(mutableSetOf<Token>(), mutableSetOf<Token>())
@@ -166,15 +144,6 @@ class RKRGreedyStringTiling(
         return tiles
     }
 
-    private fun scan(pattern: Tokens, text: Tokens, marked: MarkedTokens): Pair<List<Token>, List<Token>> {
-        val (matchingPatternTokens, matchingTextTokens) = (0 until min(pattern.count(), text.count()))
-            .asSequence()
-            .map { Pair(pattern.elementAt(it), text.elementAt(it)) }
-            .takeWhile { it.first.type == it.second.type && areBothUnmarked(it.first, it.second, marked) }
-            .unzip()
-        return Pair(matchingPatternTokens, matchingTextTokens)
-    }
-
     private fun hashValueOf(tokens: Tokens): Long {
         var hashValue: Long = 0
         tokens.forEach {
@@ -195,15 +164,8 @@ class RKRGreedyStringTiling(
         return true
     }
 
-    private fun isNotOccluded(tokenMatch: TokenMatch, marked: MarkedTokens) =
-        !marked.second.contains(tokenMatch.text.second.last()) &&
-            !marked.first.contains(tokenMatch.pattern.second.last())
-
     private fun distanceToNextTile(tokens: Tokens, marked: Set<Token>): Int {
         val result = tokens.indexOfFirst(marked::contains)
         return if (result == -1) tokens.count() else result
     }
-
-    private fun areBothUnmarked(pattern: Token, text: Token, marked: MarkedTokens) =
-        !marked.first.contains(pattern) && !marked.second.contains(text)
 }

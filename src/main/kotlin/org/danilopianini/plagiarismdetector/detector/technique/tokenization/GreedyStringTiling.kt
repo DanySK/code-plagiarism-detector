@@ -14,48 +14,79 @@ class GreedyStringTiling(
     companion object {
         private const val DEFAULT_MINIMUM_MATCH_LEN = 5
     }
-    private var maxMatch = minimumMatchLength
 
-    override fun runAlgorithm(pattern: TokenizedSource, text: TokenizedSource) {
+    override fun runAlgorithm(pattern: TokenizedSource, text: TokenizedSource): Set<TokenMatch> {
+        var maxMatch: Int
+        val marked = Pair(mutableSetOf<Token>(), mutableSetOf<Token>())
+        val matches: MutableMap<Int, List<TokenMatch>> = mutableMapOf()
+        val tiles = mutableSetOf<TokenMatch>()
         do {
             maxMatch = minimumMatchLength
-            scanPattern(pattern, text)
-            markMatches()
+            val (m, mm) = scanPattern(pattern, text, marked, maxMatch)
+            maxMatch = m
+            matches.putAll(mm)
+            tiles.addAll(markMatches(matches, marked, maxMatch))
         } while (maxMatch != minimumMatchLength)
+        return tiles
     }
 
-    override fun scanPattern(pattern: TokenizedSource, text: TokenizedSource) {
-        pattern.representation.dropWhile(::isMarked).forEach { p ->
-            text.representation.dropWhile(::isMarked).forEach { t ->
+    private fun scanPattern(
+        pattern: TokenizedSource,
+        text: TokenizedSource,
+        marked: MarkedTokens,
+        maxMatch: Int
+    ): Pair<Int, MaximalMatches> {
+        var iterationMaxMatch = maxMatch
+        val matches: MutableMap<Int, MutableList<TokenMatch>> = mutableMapOf()
+        pattern.representation.dropWhile(marked.first::contains).forEach { p ->
+            text.representation.dropWhile(marked.second::contains).forEach { t ->
                 val subPattern = pattern.representation.dropWhile { it != p }
                 val subText = text.representation.dropWhile { it != t }
-                val (patternMatches, textMatches) = scan(subPattern, subText)
-                updateMatches(Pair(pattern, patternMatches), Pair(text, textMatches))
+                val (patternMatches, textMatches) = scan(subPattern, subText, marked)
+                iterationMaxMatch = updateMatches(
+                    Pair(pattern, patternMatches),
+                    Pair(text, textMatches),
+                    matches,
+                    iterationMaxMatch
+                )
             }
         }
+        return Pair(iterationMaxMatch, matches)
     }
 
-    override fun updateMatches(pattern: Pair<TokenizedSource, List<Token>>, text: Pair<TokenizedSource, List<Token>>) {
-        require(pattern.second.count() == text.second.count())
+    private fun updateMatches(
+        pattern: Pair<TokenizedSource, List<Token>>,
+        text: Pair<TokenizedSource, List<Token>>,
+        matches: MutableMap<Int, MutableList<TokenMatch>>,
+        maxMatch: Int
+    ): Int {
+        require(pattern.second.count() == text.second.count()) // TODO must?
         val matchLength = pattern.second.count()
         if (matchLength >= maxMatch) {
-            maxMatch = matchLength
             val match = TokenMatchImpl(pattern, text, matchLength)
             with(matches) {
-                if (containsKey(maxMatch)) this[maxMatch]?.add(match) else this[maxMatch] = mutableListOf(match)
+                this[matchLength]?.add(match) ?: this.put(matchLength, mutableListOf(match))
             }
+            return matchLength
         }
+        return maxMatch
     }
 
-    override fun markMatches() {
+    private fun markMatches(
+        matches: Map<Int, List<TokenMatch>>,
+        marked: Pair<MutableSet<Token>, MutableSet<Token>>,
+        maxMatch: Int
+    ): Set<TokenMatch> {
+        val tiles = mutableSetOf<TokenMatch>()
         matches[maxMatch]?.let {
             it.forEach { m ->
-                if (isNotOccluded(m)) {
-                    markTokens(m.pattern.second)
-                    markTokens(m.text.second)
+                if (isNotOccluded(m, marked)) {
+                    m.pattern.second.forEach(marked.first::add)
+                    m.text.second.forEach(marked.second::add)
                     tiles.add(m)
                 }
             }
         }
+        return tiles
     }
 }
