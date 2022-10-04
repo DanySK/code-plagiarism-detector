@@ -21,7 +21,7 @@ class TokenBasedPlagiarismDetectorTest : FunSpec() {
     private val analyzer = JavaTokenizationAnalyzer()
 
     init {
-        test("checking similarity between ${sourceFile.name} and ${plagiarizedFile.name}") {
+        test("testing tokenization detection between similar sources") {
             val (GSTElapsedTime, GSTResult) = detect(TokenBasedPlagiarismDetector())
             logger.info("> Greedy String Tiling")
             logger.info(">> Elapsed time: $GSTElapsedTime ms")
