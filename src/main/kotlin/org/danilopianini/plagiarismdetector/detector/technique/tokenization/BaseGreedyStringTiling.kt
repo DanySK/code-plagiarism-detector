@@ -5,27 +5,25 @@ import org.danilopianini.plagiarismdetector.analyzer.representation.token.Token
 import org.danilopianini.plagiarismdetector.detector.ComparisonStrategy
 import kotlin.math.min
 
+/** A [Sequence] of [Token]s. */
+typealias Tokens = Sequence<Token>
+
+/** A [Map] which contains (matchLen, list of token match). */
+typealias MaximalMatches = Map<Int, List<TokenMatch>>
+
+/** In the first position is put the marked tokens of pattern, in the second those of the text. */
+typealias MarkedTokens = Pair<Set<Token>, Set<Token>>
+
 /**
  * This is an abstract base implementation of the common code for Greedy String Tiling algorithm.
  */
 abstract class BaseGreedyStringTiling(
     protected val minimumMatchLength: Int
 ) : ComparisonStrategy<TokenizedSource, Sequence<Token>, TokenMatch> {
-    private val marked = mutableSetOf<Token>()
-    protected val matches: MutableMap<Int, MutableList<TokenMatch>> = mutableMapOf()
-    protected val tiles = mutableSetOf<TokenMatch>()
 
     override operator fun invoke(input: Pair<TokenizedSource, TokenizedSource>): Set<TokenMatch> {
-        clearPreviousResults()
         val (pattern, text) = orderInput(input)
-        runAlgorithm(pattern, text)
-        return tiles
-    }
-
-    private fun clearPreviousResults() {
-        tiles.clear()
-        marked.clear()
-        matches.clear()
+        return runAlgorithm(pattern, text)
     }
 
     /**
@@ -43,23 +41,7 @@ abstract class BaseGreedyStringTiling(
     /**
      * Top level algorithm.
      */
-    protected abstract fun runAlgorithm(pattern: TokenizedSource, text: TokenizedSource)
-
-    /**
-     * Searches for maximal matches between [pattern] and [text].
-     * It corresponds to the `scanpattern()` function of the paper.
-     */
-    protected abstract fun scanPattern(pattern: TokenizedSource, text: TokenizedSource)
-
-    protected abstract fun updateMatches(
-        pattern: Pair<TokenizedSource, List<Token>>,
-        text: Pair<TokenizedSource, List<Token>>,
-    )
-
-    /**
-     * Marks the matches and creates the tiles. It corresponds to the `markarrays` function of the paper.
-     */
-    protected abstract fun markMatches()
+    protected abstract fun runAlgorithm(pattern: TokenizedSource, text: TokenizedSource): Set<TokenMatch>
 
     /**
      * Search a match between [pattern] and [text] starting at their respective first elements.
@@ -67,11 +49,11 @@ abstract class BaseGreedyStringTiling(
      * @return a [Pair] in which are encapsulated the matching [Token]s: in the first
      * position those of the pattern and in the second position those of the text.
      */
-    protected fun scan(pattern: Sequence<Token>, text: Sequence<Token>): Pair<List<Token>, List<Token>> {
+    protected fun scan(pattern: Tokens, text: Tokens, marked: MarkedTokens): Pair<List<Token>, List<Token>> {
         val (matchingPatternTokens, matchingTextTokens) = (0 until min(pattern.count(), text.count()))
             .asSequence()
             .map { Pair(pattern.elementAt(it), text.elementAt(it)) }
-            .takeWhile { it.first.type == it.second.type && isUnmarked(it.first) && isUnmarked(it.second) }
+            .takeWhile { it.first.type == it.second.type && it.first !in marked.first && it.second !in marked.second }
             .unzip()
         return Pair(matchingPatternTokens, matchingTextTokens)
     }
@@ -83,21 +65,6 @@ abstract class BaseGreedyStringTiling(
      * larger ones, it suffices that only the ends of each sequence of matching tokens be
      * tested for occlusion, rather than the whole sequence.
      */
-    protected fun isNotOccluded(tokenMatch: TokenMatch) =
-        isUnmarked(tokenMatch.text.second.last()) && isUnmarked(tokenMatch.pattern.second.last())
-
-    /**
-     * Returns if the given [token] has **not** been marked, yet.
-     */
-    protected fun isUnmarked(token: Token) = !isMarked(token)
-
-    /**
-     * Returns if the given [token] has already been marked.
-     */
-    protected fun isMarked(token: Token) = marked.contains(token)
-
-    /**
-     * Marks the given [tokens].
-     */
-    protected fun markTokens(tokens: List<Token>) = tokens.forEach { marked.add(it) }
+    protected fun isNotOccluded(tokenMatch: TokenMatch, marked: MarkedTokens) =
+        tokenMatch.pattern.second.last() !in marked.first && tokenMatch.text.second.last() !in marked.second
 }
