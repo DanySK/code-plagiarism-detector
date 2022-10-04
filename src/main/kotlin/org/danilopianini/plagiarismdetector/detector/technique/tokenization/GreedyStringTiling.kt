@@ -25,7 +25,10 @@ class GreedyStringTiling(
             val (m, mm) = scanPattern(pattern, text, marked, maxMatch)
             maxMatch = m
             matches.putAll(mm)
-            tiles.addAll(markMatches(matches, marked, maxMatch))
+            val (newTiles, newMarked) = mark(matches, marked, maxMatch)
+            tiles.addAll(newTiles)
+            marked.first.addAll(newMarked.first)
+            marked.second.addAll(newMarked.second)
         } while (maxMatch != minimumMatchLength)
         return tiles
     }
@@ -70,23 +73,5 @@ class GreedyStringTiling(
             return matchLength
         }
         return maxMatch
-    }
-
-    private fun markMatches(
-        matches: Map<Int, List<TokenMatch>>,
-        marked: Pair<MutableSet<Token>, MutableSet<Token>>,
-        maxMatch: Int
-    ): Set<TokenMatch> {
-        val tiles = mutableSetOf<TokenMatch>()
-        matches[maxMatch]?.let {
-            it.forEach { m ->
-                if (isNotOccluded(m, marked)) {
-                    m.pattern.second.forEach(marked.first::add)
-                    m.text.second.forEach(marked.second::add)
-                    tiles.add(m)
-                }
-            }
-        }
-        return tiles
     }
 }

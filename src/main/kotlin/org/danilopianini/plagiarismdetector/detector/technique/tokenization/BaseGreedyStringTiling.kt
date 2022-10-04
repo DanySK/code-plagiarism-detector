@@ -43,6 +43,25 @@ abstract class BaseGreedyStringTiling(
      */
     protected abstract fun runAlgorithm(pattern: TokenizedSource, text: TokenizedSource): Set<TokenMatch>
 
+    protected fun mark(
+        matches: MaximalMatches,
+        marked: MarkedTokens,
+        maxMatch: Int
+    ): Pair<Set<TokenMatch>, MarkedTokens> {
+        val tiles = mutableSetOf<TokenMatch>()
+        val myMarked = Pair(marked.first.toMutableSet(), marked.second.toMutableSet())
+        matches[maxMatch]?.let {
+            it.forEach { match ->
+                if (isNotOccluded(match, myMarked)) {
+                    match.pattern.second.forEach(myMarked.first::add)
+                    match.text.second.forEach(myMarked.second::add)
+                    tiles.add(match)
+                }
+            }
+        }
+        return Pair(tiles, myMarked)
+    }
+
     /**
      * Search a match between [pattern] and [text] starting at their respective first elements.
      * Tokens match if their type are equals and both have not already been marked.
