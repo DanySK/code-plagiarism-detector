@@ -43,35 +43,17 @@ class GreedyStringTiling(
         val matches: MutableMap<Int, MutableList<TokenMatch>> = mutableMapOf()
         pattern.representation.dropWhile(marked.first::contains).forEach { p ->
             text.representation.dropWhile(marked.second::contains).forEach { t ->
-                val subPattern = pattern.representation.dropWhile { it != p }
-                val subText = text.representation.dropWhile { it != t }
+                val subPattern = pattern.representation.dropWhile { it !== p }
+                val subText = text.representation.dropWhile { it !== t }
                 val (patternMatches, textMatches) = scan(subPattern, subText, marked)
-                iterationMaxMatch = updateMatches(
-                    Pair(pattern, patternMatches),
-                    Pair(text, textMatches),
-                    matches,
-                    iterationMaxMatch
-                )
+                val matchLength = patternMatches.count()
+                if (matchLength >= iterationMaxMatch) {
+                    iterationMaxMatch = matchLength
+                    val match = TokenMatchImpl(Pair(pattern, patternMatches), Pair(text, textMatches), matchLength)
+                    matches[matchLength]?.add(match) ?: matches.put(matchLength, mutableListOf(match))
+                }
             }
         }
         return Pair(iterationMaxMatch, matches)
-    }
-
-    private fun updateMatches(
-        pattern: Pair<TokenizedSource, List<Token>>,
-        text: Pair<TokenizedSource, List<Token>>,
-        matches: MutableMap<Int, MutableList<TokenMatch>>,
-        maxMatch: Int
-    ): Int {
-        require(pattern.second.count() == text.second.count()) // TODO must?
-        val matchLength = pattern.second.count()
-        if (matchLength >= maxMatch) {
-            val match = TokenMatchImpl(pattern, text, matchLength)
-            with(matches) {
-                this[matchLength]?.add(match) ?: this.put(matchLength, mutableListOf(match))
-            }
-            return matchLength
-        }
-        return maxMatch
     }
 }
