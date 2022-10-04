@@ -14,32 +14,48 @@ class TokenBasedPlagiarismDetectorTest : FunSpec() {
     companion object {
         private const val SOURCE_FILE = "SimpleTestClass.java"
         private const val PLAGIARIZED_FILE = "SimplePlagiarizedClass.java"
+        private const val NON_PLAGIARIZED_FILE = "NonPlagiarizedClass.java"
     }
     private val logger = LoggerFactory.getLogger(this::class.java)
     private val sourceFile = File(ClassLoader.getSystemResource(SOURCE_FILE).toURI())
     private val plagiarizedFile = File(ClassLoader.getSystemResource(PLAGIARIZED_FILE).toURI())
+    private val nonPlagiarizedFile = File(ClassLoader.getSystemResource(NON_PLAGIARIZED_FILE).toURI())
     private val analyzer = JavaTokenizationAnalyzer()
 
     init {
         test("testing tokenization detection between similar sources") {
-            val (GSTElapsedTime, GSTResult) = detect(TokenBasedPlagiarismDetector())
-            logger.info("> Greedy String Tiling")
-            logger.info(">> Elapsed time: $GSTElapsedTime ms")
-            logger.info(">> Score of similarity: ${GSTResult.scoreOfSimilarity}")
-            // logger.info(">> Matches: ${GSTResult.matches.map(TokenMatch::toString).forEach(logger::info)}")
-            val (RKRElapsedTime, RKRResult) = detect(TokenBasedPlagiarismDetector(RKRGreedyStringTiling()))
-            logger.info("> Running-Karp-Rabin Greedy String Tiling")
-            logger.info(">> Elapsed time: $RKRElapsedTime ms")
-            logger.info(">> Score of similarity: ${RKRResult.scoreOfSimilarity}")
-            // logger.info(">> Matches: ${RKRResult.matches.map(TokenMatch::toString).forEach(logger::info)}")
-            GSTResult.scoreOfSimilarity shouldBeExactly RKRResult.scoreOfSimilarity
+            runDetection(Pair(sourceFile, plagiarizedFile))
+        }
+
+        test("Testing tokenization detection between non-similar sources") {
+            runDetection(Pair(sourceFile, nonPlagiarizedFile))
         }
     }
 
-    private fun detect(detector: TokenBasedPlagiarismDetector): Pair<Long, ComparisonResult<TokenMatch>> {
+    private fun runDetection(files: Pair<File, File>, printStats: Boolean = false) {
+        val (GSTElapsedTime, GSTResult) = detect(TokenBasedPlagiarismDetector(), files)
+        val (RKRElapsedTime, RKRResult) = detect(TokenBasedPlagiarismDetector(RKRGreedyStringTiling()), files)
+        if (printStats) {
+            printStats("Greedy String Tiling", GSTElapsedTime, GSTResult)
+            printStats("Running-Karp-Rabin Greedy String Tiling", RKRElapsedTime, RKRResult)
+        }
+        GSTResult.scoreOfSimilarity shouldBeExactly RKRResult.scoreOfSimilarity
+    }
+
+    private fun detect(
+        detector: TokenBasedPlagiarismDetector,
+        filesToCheck: Pair<File, File>,
+    ): Pair<Long, ComparisonResult<TokenMatch>> {
         val start = timeInMillis()
-        val result = detector(Pair(analyzer(sourceFile), analyzer(plagiarizedFile)))
+        val result = detector(Pair(analyzer(filesToCheck.first), analyzer(filesToCheck.second)))
         val stop = timeInMillis()
         return Pair(stop - start, result)
+    }
+
+    private fun printStats(strategyName: String, elapsedTime: Long, result: ComparisonResult<TokenMatch>) {
+        logger.info("> $strategyName")
+        logger.info(">> Elapsed time: $elapsedTime ms")
+        logger.info(">> Score of similarity: ${result.scoreOfSimilarity}")
+        // logger.debug(">> Matches: ${result.matches.map(TokenMatch::toString).forEach(logger::info)}")
     }
 }
