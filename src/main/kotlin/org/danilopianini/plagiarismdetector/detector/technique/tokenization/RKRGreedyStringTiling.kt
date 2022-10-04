@@ -2,9 +2,10 @@ package org.danilopianini.plagiarismdetector.detector.technique.tokenization
 
 import org.danilopianini.plagiarismdetector.analyzer.representation.TokenizedSource
 import org.danilopianini.plagiarismdetector.analyzer.representation.token.Token
+import java.util.TreeMap
 
 /** A map with (hash value, set of sequences with that hash value). */
-typealias HashTable = MutableMap<Long, MutableSet<Sequence<Token>>>
+typealias HashTable = Map<Long, Set<Sequence<Token>>>
 
 /**
  * Thread safe implementation of Running-Karp-Rabin Greedy String Tiling.
@@ -17,28 +18,35 @@ class RKRGreedyStringTiling(
     }
 
     override fun runAlgorithm(pattern: TokenizedSource, text: TokenizedSource): Set<TokenMatch> {
-        var stop = false
         var searchLength = minimumMatchLength
-        val marked = Pair(mutableSetOf<Token>(), mutableSetOf<Token>())
         val tiles = mutableSetOf<TokenMatch>()
-        while (!stop) {
+        val marked = Pair(mutableSetOf<Token>(), mutableSetOf<Token>())
+        while (searchLength != 0) {
             val (matches, lmax) = scanPattern(pattern, text, marked, searchLength)
-            searchLength = lmax
-            tiles.addAll(markMatches(marked, matches))
-            when {
-                searchLength > 2 * minimumMatchLength -> searchLength /= 2
-                searchLength > minimumMatchLength -> searchLength = minimumMatchLength
-                else -> stop = true
+            matches.toSortedMap(Comparator.reverseOrder()).forEach {
+                val (t, m) = mark(matches, marked, it.key)
+                tiles.addAll(t)
+                marked.first.addAll(m.first)
+                marked.second.addAll(m.second)
             }
+            searchLength = updateSearchLength(lmax)
         }
         return tiles
+    }
+
+    private fun updateSearchLength(lmax: Int): Int {
+        return when {
+            lmax > 2 * minimumMatchLength -> lmax / 2
+            lmax > minimumMatchLength -> minimumMatchLength
+            else -> 0
+        }
     }
 
     private fun scanPattern(
         pattern: TokenizedSource,
         text: TokenizedSource,
         marked: MarkedTokens,
-        searchLength: Int
+        searchLength: Int,
     ): Pair<MaximalMatches, Int> {
         val hashTable = firstPhase(text, marked, searchLength)
         return secondPhase(pattern, text, marked, searchLength, hashTable)
@@ -55,7 +63,7 @@ class RKRGreedyStringTiling(
     }
 
     private fun firstPhase(text: TokenizedSource, marked: MarkedTokens, searchLength: Int): HashTable {
-        val hashTable: HashTable = mutableMapOf()
+        val hashTable: MutableMap<Long, MutableSet<Sequence<Token>>> = mutableMapOf()
         phase(text.representation, marked.second, searchLength) { _, tokens ->
             tokens.take(searchLength).run {
                 val hashValue = hashValueOf(this)
@@ -70,9 +78,9 @@ class RKRGreedyStringTiling(
         text: TokenizedSource,
         marked: MarkedTokens,
         searchLength: Int,
-        hashTable: HashTable
+        hashTable: HashTable,
     ): Pair<MaximalMatches, Int> {
-        val matches: MutableMap<Int, MutableList<TokenMatch>> = mutableMapOf()
+        val matches: MutableMap<Int, MutableList<TokenMatch>> = TreeMap()
         val patternTokens = pattern.representation
         val textTokens = text.representation
         phase(patternTokens, marked.first, searchLength) { index, tokens ->
@@ -103,7 +111,7 @@ class RKRGreedyStringTiling(
     private fun completeMatches(
         checked: Pair<Tokens, Tokens>,
         toCheck: Pair<Tokens, Tokens>,
-        marked: MarkedTokens
+        marked: MarkedTokens,
     ): Pair<Tokens, Tokens> {
         val (patternMatches, textMatches) = scan(toCheck.first, toCheck.second, marked)
         val completePatternMatch = checked.first + patternMatches.asSequence()
@@ -115,34 +123,12 @@ class RKRGreedyStringTiling(
         pattern: TokenizedSource,
         text: TokenizedSource,
         patternMatches: Tokens,
-        textMatches: Tokens
+        textMatches: Tokens,
     ): TokenMatch = TokenMatchImpl(
         Pair(pattern, patternMatches.toList()),
         Pair(text, textMatches.toList()),
         patternMatches.count()
     )
-
-    private fun markMatches(
-        marked: Pair<MutableSet<Token>, MutableSet<Token>>,
-        matches: MaximalMatches
-    ): Set<TokenMatch> {
-        val tiles = mutableSetOf<TokenMatch>()
-        val myMatches = matches.toMutableMap()
-        while (myMatches.isNotEmpty()) {
-            val maxMatch = myMatches.keys.max()
-            myMatches[maxMatch]?.let {
-                it.forEach { match ->
-                    if (isNotOccluded(match, marked)) {
-                        match.pattern.second.forEach(marked.first::add)
-                        match.text.second.forEach(marked.second::add)
-                        tiles.add(match)
-                    }
-                }
-            }
-            myMatches.remove(maxMatch)
-        }
-        return tiles
-    }
 
     private fun hashValueOf(tokens: Tokens): Long {
         var hashValue: Long = 0
