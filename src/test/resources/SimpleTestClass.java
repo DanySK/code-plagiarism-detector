@@ -1,7 +1,7 @@
 package org.example.cavegenerator;
 
 /**
- * A cave generator class.
+ * A test class used for testing similarities.
  */
 public class CaveGenerator {
     private float chanceToStartAlive = 0.45f;
