@@ -79,9 +79,9 @@ class RKRGreedyStringTiling(
             hashTable[hashValue]?.let {
                 it.filter { candidates -> searchedTokens areEqualsTo candidates }
                     .forEach { matchingTokens ->
-                        val lastCheckedPatternTokens = patternTokens.drop(index + searchLength)
-                        val lastCheckedTextTokens = textTokens.drop(textTokens.indexOf(matchingTokens.last()) + 1)
-                        val otherMatches = scan(lastCheckedPatternTokens, lastCheckedTextTokens, marked)
+                        val patternTokensFromLastChecked = patternTokens.drop(index + searchLength)
+                        val txtTokensFromLastChecked = textTokens.drop(textTokens.indexOf(matchingTokens.last()) + 1)
+                        val otherMatches = scan(patternTokensFromLastChecked, txtTokensFromLastChecked, marked)
                         val patternMatches = searchedTokens.toList() + otherMatches.first
                         val textMatches = matchingTokens.toList() + otherMatches.second
                         val matchLen = patternMatches.count()
