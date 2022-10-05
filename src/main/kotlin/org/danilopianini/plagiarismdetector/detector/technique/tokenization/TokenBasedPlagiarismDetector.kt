@@ -10,7 +10,7 @@ import org.danilopianini.plagiarismdetector.detector.PlagiarismDetector
  * A simple token based plagiarism detector.
  */
 class TokenBasedPlagiarismDetector(
-    private val strategy: ComparisonStrategy<TokenizedSource, Sequence<Token>, TokenMatch> = GreedyStringTiling()
+    private val strategy: ComparisonStrategy<TokenizedSource, Sequence<Token>, TokenMatch> = RKRGreedyStringTiling()
 ) : PlagiarismDetector<TokenizedSource, Sequence<Token>, TokenMatch> {
 
     override operator fun invoke(
