@@ -5,10 +5,11 @@ import org.danilopianini.plagiarismdetector.analyzer.representation.token.Token
 import java.util.TreeMap
 
 /** A map with (hash value, set of sequences with that hash value). */
-typealias HashTable = Map<Long, Set<Sequence<Token>>>
+typealias HashTable = Map<Int, Set<Sequence<Token>>>
 
 /**
  * Thread safe implementation of Running-Karp-Rabin Greedy String Tiling.
+ * @param minimumMatchLength the minimum matches length under which ignore them.
  */
 class RKRGreedyStringTiling(
     minimumMatchLength: Int = DEFAULT_MINIMUM_MATCH_LEN
@@ -62,7 +63,7 @@ class RKRGreedyStringTiling(
     }
 
     private fun firstPhase(text: TokenizedSource, marked: MarkedTokens, searchLength: Int): HashTable {
-        val hashTable: MutableMap<Long, MutableSet<Sequence<Token>>> = mutableMapOf()
+        val hashTable: MutableMap<Int, MutableSet<Sequence<Token>>> = mutableMapOf()
         phase(text.representation, marked.second, searchLength) { _, tokens ->
             tokens.take(searchLength).run {
                 val hashValue = hashValueOf(this)
@@ -129,8 +130,8 @@ class RKRGreedyStringTiling(
         patternMatches.count()
     )
 
-    private fun hashValueOf(tokens: Tokens): Long {
-        var hashValue: Long = 0
+    private fun hashValueOf(tokens: Tokens): Int {
+        var hashValue = 0
         tokens.forEach {
             hashValue = ((hashValue shl 1) + it.type.hashCode())
         }
