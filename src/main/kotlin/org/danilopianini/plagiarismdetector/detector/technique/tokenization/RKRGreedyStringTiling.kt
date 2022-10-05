@@ -23,9 +23,9 @@ class RKRGreedyStringTiling(
         val tiles = mutableSetOf<TokenMatch>()
         val marked = Pair(mutableSetOf<Token>(), mutableSetOf<Token>())
         while (searchLength != 0) {
-            val (matches, lmax) = scanPattern(pattern, text, marked, searchLength)
+            val (matches, lmax) = searchMatches(pattern, text, marked, searchLength)
             matches.toSortedMap(Comparator.reverseOrder()).forEach {
-                val (newTiles, newMarked) = mark(marked, matches, it.key)
+                val (newTiles, newMarked) = markMatches(marked, matches, it.key)
                 tiles.addAll(newTiles)
                 marked.addAll(newMarked)
             }
@@ -42,7 +42,7 @@ class RKRGreedyStringTiling(
         }
     }
 
-    override fun scanPattern(
+    override fun searchMatches(
         pattern: TokenizedSource,
         text: TokenizedSource,
         marked: MarkedTokens,
@@ -86,7 +86,7 @@ class RKRGreedyStringTiling(
                         val textMatches = matchingTokens.toList() + otherMatches.second
                         val matchLen = patternMatches.count()
                         if (matchLen > 2 * searchLength) {
-                            return scanPattern(pattern, text, marked, matchLen)
+                            return searchMatches(pattern, text, marked, matchLen)
                         } else {
                             val match = TokenMatchImpl(Pair(pattern, patternMatches), Pair(text, textMatches), matchLen)
                             matches[matchLen]?.add(match) ?: matches.put(matchLen, mutableListOf(match))

@@ -59,7 +59,7 @@ abstract class BaseGreedyStringTiling(
      * (i.e. not in [marked]), between [pattern] and [text].
      * It corresponds to the `scanpattern()` function of the paper.
      */
-    protected abstract fun scanPattern(
+    protected abstract fun searchMatches(
         pattern: TokenizedSource,
         text: TokenizedSource,
         marked: MarkedTokens,
@@ -74,7 +74,7 @@ abstract class BaseGreedyStringTiling(
      * of the pattern with a matching subsequence of [Tokens] from the text.
      * It corresponds to the `markarrays()` function of the paper.
      */
-    protected fun mark(
+    protected fun markMatches(
         marked: MarkedTokens,
         matches: MaximalMatches,
         matchLength: Int,
