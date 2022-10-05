@@ -52,16 +52,6 @@ class RKRGreedyStringTiling(
         return secondPhase(pattern, text, marked, searchLength, hashTable)
     }
 
-    private inline fun phase(tokens: Tokens, marked: Set<Token>, searchLength: Int, action: (Int, Tokens) -> (Unit)) {
-        tokens.filterNot(marked::contains).forEachIndexed { index, _ ->
-            val tokensFromActual = tokens.drop(index)
-            val distanceToNextTile = distanceToNextTile(tokensFromActual, marked)
-            if (distanceToNextTile > searchLength) {
-                action(index, tokensFromActual)
-            }
-        }
-    }
-
     private fun firstPhase(text: TokenizedSource, marked: MarkedTokens, searchLength: Int): HashTable {
         val hashTable: MutableMap<Int, MutableSet<Sequence<Token>>> = mutableMapOf()
         phase(text.representation, marked.second, searchLength) { _, tokens ->
@@ -105,6 +95,16 @@ class RKRGreedyStringTiling(
             }
         }
         return Pair(matches, searchLength)
+    }
+
+    private inline fun phase(tokens: Tokens, marked: Set<Token>, searchLength: Int, action: (Int, Tokens) -> (Unit)) {
+        tokens.filterNot(marked::contains).forEachIndexed { index, _ ->
+            val tokensFromActual = tokens.drop(index)
+            val distanceToNextTile = distanceToNextTile(tokensFromActual, marked)
+            if (distanceToNextTile > searchLength) {
+                action(index, tokensFromActual)
+            }
+        }
     }
 
     private fun hashValueOf(tokens: Tokens): Int {
