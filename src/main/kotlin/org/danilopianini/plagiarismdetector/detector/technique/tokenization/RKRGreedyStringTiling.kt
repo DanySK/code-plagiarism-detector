@@ -53,7 +53,7 @@ class RKRGreedyStringTiling(
     }
 
     private fun firstPhase(text: TokenizedSource, marked: MarkedTokens, searchLength: Int): HashTable {
-        val hashTable: MutableMap<Int, MutableSet<Sequence<Token>>> = mutableMapOf()
+        val hashTable: MutableMap<Int, MutableSet<Tokens>> = mutableMapOf()
         phase(text.representation, marked.second, searchLength) { _, tokens ->
             tokens.take(searchLength).run {
                 val hashValue = hashValueOf(this)
