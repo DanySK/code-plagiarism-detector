@@ -18,9 +18,9 @@ interface Match
  */
 interface ComparisonResult<out M : Match> {
     /**
-     * The score of similarity.
+     * The score of similarity, expressed as a value between 0 and 1.
      */
-    val scoreOfSimilarity: Double
+    val similarity: Double
 
     /**
      * The [Match]es found during the comparison.

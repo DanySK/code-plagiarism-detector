@@ -40,7 +40,7 @@ class TokenBasedPlagiarismDetectorTest : FunSpec() {
             printStats("Greedy String Tiling", GSTElapsedTime, GSTResult)
             printStats("Running-Karp-Rabin Greedy String Tiling", RKRElapsedTime, RKRResult)
         }
-        GSTResult.scoreOfSimilarity shouldBeExactly RKRResult.scoreOfSimilarity
+        GSTResult.similarity shouldBeExactly RKRResult.similarity
         GSTResult.matches.toList() shouldContainExactly RKRResult.matches.toList()
     }
 
@@ -57,7 +57,7 @@ class TokenBasedPlagiarismDetectorTest : FunSpec() {
     private fun printStats(strategyName: String, elapsedTime: Long, result: ComparisonResult<TokenMatch>) {
         logger.info("> $strategyName")
         logger.info(">> Elapsed time: $elapsedTime ms")
-        logger.info(">> Score of similarity: ${result.scoreOfSimilarity}")
+        logger.info(">> Score of similarity: ${result.similarity}")
         logger.debug(">> Matches: ${result.matches.map(TokenMatch::toString).forEach(logger::info)}")
     }
 }
