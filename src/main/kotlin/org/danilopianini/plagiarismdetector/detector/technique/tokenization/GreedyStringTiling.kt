@@ -19,16 +19,16 @@ class GreedyStringTiling(
         val marked = Pair(mutableSetOf<Token>(), mutableSetOf<Token>())
         val matches: MutableMap<Int, List<TokenMatch>> = mutableMapOf()
         do {
-            val (selectedMatches, largestMatch) = scanPattern(pattern, text, marked, minimumMatchLength)
+            val (selectedMatches, largestMatch) = searchMatches(pattern, text, marked, minimumMatchLength)
             matches.putAll(selectedMatches)
-            val (newTiles, newMarked) = mark(marked, matches, largestMatch)
+            val (newTiles, newMarked) = markMatches(marked, matches, largestMatch)
             tiles.addAll(newTiles)
             marked.addAll(newMarked)
         } while (largestMatch != minimumMatchLength)
         return tiles
     }
 
-    override fun scanPattern(
+    override fun searchMatches(
         pattern: TokenizedSource,
         text: TokenizedSource,
         marked: MarkedTokens,
