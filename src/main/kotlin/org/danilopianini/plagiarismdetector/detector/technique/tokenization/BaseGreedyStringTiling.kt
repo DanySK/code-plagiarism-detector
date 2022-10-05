@@ -43,6 +43,13 @@ abstract class BaseGreedyStringTiling(
      */
     protected abstract fun runAlgorithm(pattern: TokenizedSource, text: TokenizedSource): Set<TokenMatch>
 
+    protected abstract fun scanPattern(
+        pattern: TokenizedSource,
+        text: TokenizedSource,
+        marked: MarkedTokens,
+        searchLength: Int,
+    ): Pair<MaximalMatches, Int>
+
     protected fun mark(
         matches: MaximalMatches,
         marked: MarkedTokens,

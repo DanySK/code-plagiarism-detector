@@ -41,7 +41,7 @@ class RKRGreedyStringTiling(
         }
     }
 
-    private fun scanPattern(
+    override fun scanPattern(
         pattern: TokenizedSource,
         text: TokenizedSource,
         marked: MarkedTokens,
