@@ -22,7 +22,7 @@ class GreedyStringTiling(
         val matches: MutableMap<Int, List<TokenMatch>> = mutableMapOf()
         do {
             maxMatch = minimumMatchLength
-            val (largestMatch, selectedMatches) = scanPattern(pattern, text, marked, maxMatch)
+            val (selectedMatches, largestMatch) = scanPattern(pattern, text, marked, maxMatch)
             maxMatch = largestMatch
             matches.putAll(selectedMatches)
             val (newTiles, newMarked) = mark(matches, marked, maxMatch)
@@ -32,13 +32,13 @@ class GreedyStringTiling(
         return tiles
     }
 
-    private fun scanPattern(
+    override fun scanPattern(
         pattern: TokenizedSource,
         text: TokenizedSource,
         marked: MarkedTokens,
-        maxMatch: Int
-    ): Pair<Int, MaximalMatches> {
-        var iterationMaxMatch = maxMatch
+        searchLength: Int,
+    ): Pair<MaximalMatches, Int> {
+        var iterationMaxMatch = searchLength
         val matches: MutableMap<Int, MutableList<TokenMatch>> = mutableMapOf()
         pattern.representation.dropWhile(marked.first::contains).forEach { p ->
             text.representation.dropWhile(marked.second::contains).forEach { t ->
@@ -53,6 +53,6 @@ class GreedyStringTiling(
                 }
             }
         }
-        return Pair(iterationMaxMatch, matches)
+        return Pair(matches, iterationMaxMatch)
     }
 }
