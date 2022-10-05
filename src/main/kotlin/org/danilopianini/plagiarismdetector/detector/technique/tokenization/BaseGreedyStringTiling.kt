@@ -30,7 +30,7 @@ typealias MarkedTokens = Pair<Set<Token>, Set<Token>>
  * [Here](https://bit.ly/3f3qzED) you can find the paper in which were originally described.
  */
 abstract class BaseGreedyStringTiling(
-    protected val minimumMatchLength: Int
+    protected val minimumMatchLength: Int,
 ) : ComparisonStrategy<TokenizedSource, Sequence<Token>, TokenMatch> {
 
     override operator fun invoke(input: Pair<TokenizedSource, TokenizedSource>): Set<TokenMatch> {

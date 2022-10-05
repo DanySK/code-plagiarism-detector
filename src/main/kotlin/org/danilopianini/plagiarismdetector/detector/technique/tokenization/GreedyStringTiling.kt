@@ -8,7 +8,7 @@ import org.danilopianini.plagiarismdetector.analyzer.representation.token.Token
  * @param minimumMatchLength the minimum matches length under which ignore them.
  */
 class GreedyStringTiling(
-    minimumMatchLength: Int = DEFAULT_MINIMUM_MATCH_LEN
+    minimumMatchLength: Int = DEFAULT_MINIMUM_MATCH_LEN,
 ) : BaseGreedyStringTiling(minimumMatchLength) {
     companion object {
         private const val DEFAULT_MINIMUM_MATCH_LEN = 5
