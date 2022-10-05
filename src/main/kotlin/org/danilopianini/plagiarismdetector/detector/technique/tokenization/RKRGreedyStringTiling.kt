@@ -24,7 +24,7 @@ class RKRGreedyStringTiling(
         while (searchLength != 0) {
             val (matches, lmax) = scanPattern(pattern, text, marked, searchLength)
             matches.toSortedMap(Comparator.reverseOrder()).forEach {
-                val (t, m) = mark(matches, marked, it.key)
+                val (t, m) = mark(marked, matches, it.key)
                 tiles.addAll(t)
                 marked.addAll(m)
             }
