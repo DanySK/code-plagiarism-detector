@@ -5,17 +5,28 @@ import org.danilopianini.plagiarismdetector.analyzer.representation.token.Token
 import org.danilopianini.plagiarismdetector.detector.ComparisonStrategy
 import kotlin.math.min
 
-/** A [Sequence] of [Token]s. */
+/**
+ * A [Sequence] of [Token]s.
+ */
 typealias Tokens = Sequence<Token>
 
-/** A [Map] which contains (matchLen, list of token match). */
+/**
+ * A [Map] which contains the mappings between the minimum match-length being
+ * sought and the list of matching tokens found in that iteration.
+ */
 typealias MaximalMatches = Map<Int, List<TokenMatch>>
 
-/** In the first position is put the marked tokens of pattern, in the second those of the text. */
+/**
+ * A collection of marked [Token]s. In the first position are stored the marked
+ * tokens of the pattern and in the second one those of the text.
+ * These are maintained separately because the same [Token]s (with same type and
+ * position) are considered equals despite being of different files.
+ */
 typealias MarkedTokens = Pair<Set<Token>, Set<Token>>
 
 /**
- * This is an abstract base implementation of the common code for Greedy String Tiling algorithm.
+ * This is an abstract base implementation of the common code
+ * for Greedy String Tiling algorithm's family.
  */
 abstract class BaseGreedyStringTiling(
     protected val minimumMatchLength: Int
@@ -39,10 +50,14 @@ abstract class BaseGreedyStringTiling(
         }
 
     /**
-     * Top level algorithm.
+     * Top level algorithm: it executes the logic of the algorithm.
      */
     protected abstract fun runAlgorithm(pattern: TokenizedSource, text: TokenizedSource): Set<TokenMatch>
 
+    /**
+     * Searches for maximal matches in [pattern] and [text].
+     * It corresponds to the `scanpattern()` function of the paper.
+     */
     protected abstract fun scanPattern(
         pattern: TokenizedSource,
         text: TokenizedSource,
@@ -50,6 +65,9 @@ abstract class BaseGreedyStringTiling(
         searchLength: Int,
     ): Pair<MaximalMatches, Int>
 
+    /**
+     * Marks the matches and creates the tiles. It corresponds to the `markarrays` function of the paper.
+     */
     protected fun mark(
         matches: MaximalMatches,
         marked: MarkedTokens,
@@ -94,6 +112,9 @@ abstract class BaseGreedyStringTiling(
     private fun isNotOccluded(tokenMatch: TokenMatch, marked: MarkedTokens) =
         tokenMatch.pattern.second.last() !in marked.first && tokenMatch.text.second.last() !in marked.second
 
+    /**
+     * Update the marked tokens with those from the specified [other] collection.
+     */
     protected fun Pair<MutableSet<Token>, MutableSet<Token>>.addAll(other: MarkedTokens) {
         this.first.addAll(other.first)
         this.second.addAll(other.second)
