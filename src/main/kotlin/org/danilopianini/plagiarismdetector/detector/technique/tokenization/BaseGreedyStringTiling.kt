@@ -84,7 +84,7 @@ abstract class BaseGreedyStringTiling(
      * larger ones, it suffices that only the ends of each sequence of matching tokens be
      * tested for occlusion, rather than the whole sequence.
      */
-    protected fun isNotOccluded(tokenMatch: TokenMatch, marked: MarkedTokens) =
+    private fun isNotOccluded(tokenMatch: TokenMatch, marked: MarkedTokens) =
         tokenMatch.pattern.second.last() !in marked.first && tokenMatch.text.second.last() !in marked.second
 
     protected fun Pair<MutableSet<Token>, MutableSet<Token>>.addAll(other: MarkedTokens) {
