@@ -5,7 +5,6 @@ import org.danilopianini.plagiarismdetector.analyzer.representation.token.Token
 
 /**
  * Implementation of Greedy String Tiling algorithm.
- * [Here](https://bit.ly/3f3qzED) you can find the paper in which was originally described.
  * @param minimumMatchLength the minimum matches length under which they are ignored.
  */
 class GreedyStringTiling(
@@ -16,19 +15,16 @@ class GreedyStringTiling(
     }
 
     override fun runAlgorithm(pattern: TokenizedSource, text: TokenizedSource): Set<TokenMatch> {
-        var maxMatch: Int
         val tiles = mutableSetOf<TokenMatch>()
         val marked = Pair(mutableSetOf<Token>(), mutableSetOf<Token>())
         val matches: MutableMap<Int, List<TokenMatch>> = mutableMapOf()
         do {
-            maxMatch = minimumMatchLength
-            val (selectedMatches, largestMatch) = scanPattern(pattern, text, marked, maxMatch)
-            maxMatch = largestMatch
+            val (selectedMatches, largestMatch) = scanPattern(pattern, text, marked, minimumMatchLength)
             matches.putAll(selectedMatches)
-            val (newTiles, newMarked) = mark(matches, marked, maxMatch)
+            val (newTiles, newMarked) = mark(marked, matches, largestMatch)
             tiles.addAll(newTiles)
             marked.addAll(newMarked)
-        } while (maxMatch != minimumMatchLength)
+        } while (largestMatch != minimumMatchLength)
         return tiles
     }
 
