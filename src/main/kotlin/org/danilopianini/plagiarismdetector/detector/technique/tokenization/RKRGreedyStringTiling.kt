@@ -12,7 +12,7 @@ typealias HashTable = Map<Int, Set<Sequence<Token>>>
  * @param minimumMatchLength the minimum matches length under which ignore them.
  */
 class RKRGreedyStringTiling(
-    minimumMatchLength: Int = DEFAULT_MINIMUM_MATCH_LEN
+    minimumMatchLength: Int = DEFAULT_MINIMUM_MATCH_LEN,
 ) : BaseGreedyStringTiling(minimumMatchLength) {
     companion object {
         private const val DEFAULT_MINIMUM_MATCH_LEN = 5
