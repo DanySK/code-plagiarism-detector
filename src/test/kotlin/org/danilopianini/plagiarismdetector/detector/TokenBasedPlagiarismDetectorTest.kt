@@ -1,6 +1,7 @@
 package org.danilopianini.plagiarismdetector.detector
 
 import io.kotest.core.spec.style.FunSpec
+import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.doubles.shouldBeExactly
 import io.kotest.mpp.timeInMillis
 import org.danilopianini.plagiarismdetector.analyzer.technique.tokenization.java.JavaTokenizationAnalyzer
@@ -40,6 +41,7 @@ class TokenBasedPlagiarismDetectorTest : FunSpec() {
             printStats("Running-Karp-Rabin Greedy String Tiling", RKRElapsedTime, RKRResult)
         }
         GSTResult.scoreOfSimilarity shouldBeExactly RKRResult.scoreOfSimilarity
+        GSTResult.matches.toList() shouldContainExactly RKRResult.matches.toList()
     }
 
     private fun detect(
@@ -56,6 +58,6 @@ class TokenBasedPlagiarismDetectorTest : FunSpec() {
         logger.info("> $strategyName")
         logger.info(">> Elapsed time: $elapsedTime ms")
         logger.info(">> Score of similarity: ${result.scoreOfSimilarity}")
-        // logger.debug(">> Matches: ${result.matches.map(TokenMatch::toString).forEach(logger::info)}")
+        logger.debug(">> Matches: ${result.matches.map(TokenMatch::toString).forEach(logger::info)}")
     }
 }
