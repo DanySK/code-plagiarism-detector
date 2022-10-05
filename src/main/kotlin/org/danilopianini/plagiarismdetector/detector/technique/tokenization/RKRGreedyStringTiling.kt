@@ -5,7 +5,7 @@ import org.danilopianini.plagiarismdetector.analyzer.representation.token.Token
 import java.util.TreeMap
 
 /** A map with (hash value, set of sequences with that hash value). */
-typealias HashTable = Map<Int, Set<Sequence<Token>>>
+typealias HashTable = Map<Int, Set<Tokens>>
 
 /**
  * Thread safe implementation of Running-Karp-Rabin Greedy String Tiling.
