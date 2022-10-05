@@ -17,18 +17,17 @@ class GreedyStringTiling(
 
     override fun runAlgorithm(pattern: TokenizedSource, text: TokenizedSource): Set<TokenMatch> {
         var maxMatch: Int
+        val tiles = mutableSetOf<TokenMatch>()
         val marked = Pair(mutableSetOf<Token>(), mutableSetOf<Token>())
         val matches: MutableMap<Int, List<TokenMatch>> = mutableMapOf()
-        val tiles = mutableSetOf<TokenMatch>()
         do {
             maxMatch = minimumMatchLength
-            val (m, mm) = scanPattern(pattern, text, marked, maxMatch)
-            maxMatch = m
-            matches.putAll(mm)
+            val (largestMatch, selectedMatches) = scanPattern(pattern, text, marked, maxMatch)
+            maxMatch = largestMatch
+            matches.putAll(selectedMatches)
             val (newTiles, newMarked) = mark(matches, marked, maxMatch)
             tiles.addAll(newTiles)
-            marked.first.addAll(newMarked.first)
-            marked.second.addAll(newMarked.second)
+            marked.addAll(newMarked)
         } while (maxMatch != minimumMatchLength)
         return tiles
     }
@@ -43,9 +42,9 @@ class GreedyStringTiling(
         val matches: MutableMap<Int, MutableList<TokenMatch>> = mutableMapOf()
         pattern.representation.dropWhile(marked.first::contains).forEach { p ->
             text.representation.dropWhile(marked.second::contains).forEach { t ->
-                val subPattern = pattern.representation.dropWhile { it !== p }
-                val subText = text.representation.dropWhile { it !== t }
-                val (patternMatches, textMatches) = scan(subPattern, subText, marked)
+                val patternTokensFromActual = pattern.representation.dropWhile { it !== p }
+                val textTokensFromActual = text.representation.dropWhile { it !== t }
+                val (patternMatches, textMatches) = scan(patternTokensFromActual, textTokensFromActual, marked)
                 val matchLength = patternMatches.count()
                 if (matchLength >= iterationMaxMatch) {
                     iterationMaxMatch = matchLength

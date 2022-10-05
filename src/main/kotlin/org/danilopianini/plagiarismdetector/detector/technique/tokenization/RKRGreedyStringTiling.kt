@@ -26,8 +26,7 @@ class RKRGreedyStringTiling(
             matches.toSortedMap(Comparator.reverseOrder()).forEach {
                 val (t, m) = mark(matches, marked, it.key)
                 tiles.addAll(t)
-                marked.first.addAll(m.first)
-                marked.second.addAll(m.second)
+                marked.addAll(m)
             }
             searchLength = updateSearchLength(lmax)
         }

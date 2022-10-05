@@ -86,4 +86,9 @@ abstract class BaseGreedyStringTiling(
      */
     protected fun isNotOccluded(tokenMatch: TokenMatch, marked: MarkedTokens) =
         tokenMatch.pattern.second.last() !in marked.first && tokenMatch.text.second.last() !in marked.second
+
+    protected fun Pair<MutableSet<Token>, MutableSet<Token>>.addAll(other: MarkedTokens) {
+        this.first.addAll(other.first)
+        this.second.addAll(other.second)
+    }
 }
