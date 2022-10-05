@@ -34,7 +34,7 @@ class GreedyStringTiling(
         marked: MarkedTokens,
         searchLength: Int,
     ): Pair<MaximalMatches, Int> {
-        var iterationMaxMatch = searchLength
+        var maxMatch = searchLength
         val matches: MutableMap<Int, MutableList<TokenMatch>> = mutableMapOf()
         pattern.representation.dropWhile(marked.first::contains).forEach { p ->
             text.representation.dropWhile(marked.second::contains).forEach { t ->
@@ -44,13 +44,13 @@ class GreedyStringTiling(
                 val textTokensFromActual = text.representation.dropWhile { it !== t }
                 val (patternMatches, textMatches) = scan(patternTokensFromActual, textTokensFromActual, marked)
                 val matchLength = patternMatches.count()
-                if (matchLength >= iterationMaxMatch) {
-                    iterationMaxMatch = matchLength
+                if (matchLength >= maxMatch) {
+                    maxMatch = matchLength
                     val match = TokenMatchImpl(Pair(pattern, patternMatches), Pair(text, textMatches), matchLength)
                     matches[matchLength]?.add(match) ?: matches.put(matchLength, mutableListOf(match))
                 }
             }
         }
-        return Pair(matches, iterationMaxMatch)
+        return Pair(matches, maxMatch)
     }
 }

@@ -25,9 +25,9 @@ class RKRGreedyStringTiling(
         while (searchLength != 0) {
             val (matches, lmax) = scanPattern(pattern, text, marked, searchLength)
             matches.toSortedMap(Comparator.reverseOrder()).forEach {
-                val (t, m) = mark(marked, matches, it.key)
-                tiles.addAll(t)
-                marked.addAll(m)
+                val (newTiles, newMarked) = mark(marked, matches, it.key)
+                tiles.addAll(newTiles)
+                marked.addAll(newMarked)
             }
             searchLength = updateSearchLength(lmax)
         }
@@ -87,48 +87,25 @@ class RKRGreedyStringTiling(
             val searchedTokens = tokens.take(searchLength)
             val hashValue = hashValueOf(searchedTokens)
             hashTable[hashValue]?.let {
-                it.filter { searchedTokens areEqualsTo it }.forEach { matchingTokens ->
-                    val lastCheckedPatternTokens = patternTokens.drop(index + searchLength)
-                    val lastCheckedTextTokens = textTokens.dropWhile { it != matchingTokens.first() }.drop(searchLength)
-                    val (patternMatches, textMatches) = completeMatches(
-                        Pair(searchedTokens, matchingTokens),
-                        Pair(lastCheckedPatternTokens, lastCheckedTextTokens),
-                        marked
-                    )
-                    val matchLength = patternMatches.count()
-                    if (matchLength > 2 * searchLength) {
-                        return scanPattern(pattern, text, marked, matchLength)
-                    } else {
-                        val match = matchOf(pattern, text, patternMatches, textMatches)
-                        matches[matchLength]?.add(match) ?: matches.put(matchLength, mutableListOf(match))
+                it.filter { candidates -> searchedTokens areEqualsTo candidates }
+                    .forEach { matchingTokens ->
+                        val lastCheckedPatternTokens = patternTokens.drop(index + searchLength)
+                        val lastCheckedTextTokens = textTokens.drop(textTokens.indexOf(matchingTokens.last()) + 1)
+                        val otherMatches = scan(lastCheckedPatternTokens, lastCheckedTextTokens, marked)
+                        val patternMatches = searchedTokens.toList() + otherMatches.first
+                        val textMatches = matchingTokens.toList() + otherMatches.second
+                        val matchLen = patternMatches.count()
+                        if (matchLen > 2 * searchLength) {
+                            return scanPattern(pattern, text, marked, matchLen)
+                        } else {
+                            val match = TokenMatchImpl(Pair(pattern, patternMatches), Pair(text, textMatches), matchLen)
+                            matches[matchLen]?.add(match) ?: matches.put(matchLen, mutableListOf(match))
+                        }
                     }
-                }
             }
         }
         return Pair(matches, searchLength)
     }
-
-    private fun completeMatches(
-        checked: Pair<Tokens, Tokens>,
-        toCheck: Pair<Tokens, Tokens>,
-        marked: MarkedTokens,
-    ): Pair<Tokens, Tokens> {
-        val (patternMatches, textMatches) = scan(toCheck.first, toCheck.second, marked)
-        val completePatternMatch = checked.first + patternMatches.asSequence()
-        val completeTextMatch = checked.second + textMatches.asSequence()
-        return Pair(completePatternMatch, completeTextMatch)
-    }
-
-    private fun matchOf(
-        pattern: TokenizedSource,
-        text: TokenizedSource,
-        patternMatches: Tokens,
-        textMatches: Tokens,
-    ): TokenMatch = TokenMatchImpl(
-        Pair(pattern, patternMatches.toList()),
-        Pair(text, textMatches.toList()),
-        patternMatches.count()
-    )
 
     private fun hashValueOf(tokens: Tokens): Int {
         var hashValue = 0
