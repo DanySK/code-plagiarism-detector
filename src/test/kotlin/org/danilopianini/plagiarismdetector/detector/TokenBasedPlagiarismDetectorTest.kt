@@ -24,7 +24,7 @@ class TokenBasedPlagiarismDetectorTest : FunSpec() {
     private val analyzer = JavaTokenizationAnalyzer()
 
     init {
-        test("testing tokenization detection between similar sources") {
+        test("Testing tokenization detection between similar sources") {
             runDetection(Pair(sourceFile, plagiarizedFile))
         }
 
