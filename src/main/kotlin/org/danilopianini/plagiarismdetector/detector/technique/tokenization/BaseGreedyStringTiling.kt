@@ -19,14 +19,13 @@ typealias MaximalMatches = Map<Int, List<TokenMatch>>
 /**
  * A collection of marked [Token]s. In the first position are stored the marked
  * tokens of the pattern and in the second one those of the text.
- * These are maintained separately because the same [Token]s (with same type and
- * position) are considered equals despite being of different files.
+ * These are maintained separately because, despite being in different files,
+ * the same [Tokens] (with the same type and position) are considered equal.
  */
 typealias MarkedTokens = Pair<Set<Token>, Set<Token>>
 
 /**
- * This is an abstract base implementation of the common code
- * for Greedy String Tiling algorithm's family.
+ * This is an abstract base implementation of the common code for Greedy String Tiling algorithm's family.
  * [Here](https://bit.ly/3f3qzED) you can find the paper in which were originally described.
  */
 abstract class BaseGreedyStringTiling(
@@ -56,7 +55,8 @@ abstract class BaseGreedyStringTiling(
     protected abstract fun runAlgorithm(pattern: TokenizedSource, text: TokenizedSource): Set<TokenMatch>
 
     /**
-     * Searches for maximal matches in [pattern] and [text].
+     * Searches for maximal matches at least of length [searchLength], not already marked
+     * (i.e. not in [marked]), between [pattern] and [text].
      * It corresponds to the `scanpattern()` function of the paper.
      */
     protected abstract fun scanPattern(
@@ -67,7 +67,7 @@ abstract class BaseGreedyStringTiling(
     ): Pair<MaximalMatches, Int>
 
     /**
-     * Selects, from [matches] of the given [matchLength], which are not occluded
+     * Selects, from [matches] of the given [matchLength] which are not occluded
      * (i.e. are not contained in [marked]), marking the corresponding tokens.
      * According to the terminology of the paper, this function returns the set of
      * discovered tiles, i.e. the one-to-one association of a subsequence of [Tokens]
@@ -95,7 +95,7 @@ abstract class BaseGreedyStringTiling(
 
     /**
      * Search a match between [pattern] and [text] starting at their respective first elements.
-     * Tokens match if their type are equals and both have not already been marked.
+     * Tokens match if their type are equals and both have not already been marked (i.e. are not in [marked]).
      * @return a [Pair] in which are encapsulated the matching [Token]s: in the first
      * position those of the pattern and in the second position those of the text.
      */
@@ -110,7 +110,8 @@ abstract class BaseGreedyStringTiling(
 
     /**
      * Checks if the given [tokenMatch] is **not** occluded, i.e. none of all matching tokens of both
-     * the pattern and the text has been marked during the creation of an earlier tile.
+     * the pattern and the text has been marked during the creation of an earlier tile or, equivalently,
+     * are not in [marked].
      * Note that, according to the paper, given that smaller matches cannot be created before
      * larger ones, it suffices that only the ends of each sequence of matching tokens be
      * tested for occlusion, rather than the whole sequence.
