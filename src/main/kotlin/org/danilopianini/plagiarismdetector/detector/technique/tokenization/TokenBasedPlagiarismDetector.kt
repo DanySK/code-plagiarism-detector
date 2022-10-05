@@ -16,11 +16,11 @@ class TokenBasedPlagiarismDetector(
     override operator fun invoke(
         input: Pair<TokenizedSource, TokenizedSource>,
     ): ComparisonResult<TokenMatch> = with(strategy(input)) {
-        val scoreOfSimilarity = estimateSimilarity(input, this)
+        val scoreOfSimilarity = similarityOf(input, this)
         TokenBasedComparisonResult(scoreOfSimilarity, this)
     }
 
-    private fun estimateSimilarity(
+    private fun similarityOf(
         input: Pair<TokenizedSource, TokenizedSource>,
         matches: Set<TokenMatch>,
     ): Double {
