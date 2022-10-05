@@ -7,9 +7,7 @@ import java.util.function.IntConsumer;
 import java.util.stream.IntStream;
 
 /**
- * Generates a cave (duh).
- *
- * @see <a href="https://gamedevelopment.tutsplus.com/tutorials/generate-random-cave-levels-using-cellular-automata--gamedev-9664">inspiration</a>
+ * A test class used for testing similarities.
  */
 class CaveGeneratorImpl implements CaveGenerator {
     private static final int CHANCE_TO_START_ALIVE = 20;

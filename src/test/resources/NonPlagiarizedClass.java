@@ -11,8 +11,7 @@ import rogue.model.items.inventory.ScrollContainer;
 import rogue.model.items.scroll.Scroll;
 
 /**
- * An implementation of a {@link InventoryController}.
- *
+ * A test class used for testing similarities.
  */
 public class InventoryControllerImpl implements InventoryController {
 
