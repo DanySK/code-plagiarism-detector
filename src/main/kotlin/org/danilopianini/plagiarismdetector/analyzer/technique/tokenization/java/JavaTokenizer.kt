@@ -17,7 +17,7 @@ class JavaTokenizer : StepHandler<CompilationUnit, List<Token>> {
     }
 
     override operator fun invoke(input: CompilationUnit): List<Token> =
-        TokenizerTreeVisitor().run { visit(input) }
+        TokenizerTreeVisitor().run { visit(input).distinct() }
 
     /**
      * A generator of tokens, obtained by visiting the AST of the source file.
