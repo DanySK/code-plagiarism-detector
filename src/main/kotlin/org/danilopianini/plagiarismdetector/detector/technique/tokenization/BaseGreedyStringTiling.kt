@@ -112,12 +112,9 @@ abstract class BaseGreedyStringTiling(
      * Checks if the given [tokenMatch] is **not** occluded, i.e. none of all matching tokens of both
      * the pattern and the text has been marked during the creation of an earlier tile or, equivalently,
      * are not in [marked].
-     * Note that, according to the paper, given that smaller matches cannot be created before
-     * larger ones, it suffices that only the ends of each sequence of matching tokens be
-     * tested for occlusion, rather than the whole sequence.
      */
     private fun isNotOccluded(tokenMatch: TokenMatch, marked: MarkedTokens) =
-        tokenMatch.pattern.second.last() !in marked.first && tokenMatch.text.second.last() !in marked.second
+        tokenMatch.pattern.second.all { it !in marked.first } && tokenMatch.text.second.all { it !in marked.second }
 
     /**
      * Update the marked tokens with those from the specified [other] collection.
