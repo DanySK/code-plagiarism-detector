@@ -13,9 +13,9 @@ import java.io.File
 
 class TokenBasedPlagiarismDetectorTest : FunSpec() {
     companion object {
-        private const val SOURCE_FILE = "SimpleTestClass.java"
-        private const val PLAGIARIZED_FILE = "SimplePlagiarizedClass.java"
-        private const val NON_PLAGIARIZED_FILE = "NonPlagiarizedClass.java"
+        private const val SOURCE_FILE = "CaveGenerator.java"
+        private const val PLAGIARIZED_FILE = "CaveGeneratorImpl.java"
+        private const val NON_PLAGIARIZED_FILE = "InventoryControllerImpl.java"
     }
     private val logger = LoggerFactory.getLogger(this::class.java)
     private val sourceFile = File(ClassLoader.getSystemResource(SOURCE_FILE).toURI())
