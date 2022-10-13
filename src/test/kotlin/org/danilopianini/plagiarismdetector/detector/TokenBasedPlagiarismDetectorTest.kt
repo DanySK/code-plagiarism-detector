@@ -13,23 +13,32 @@ import java.io.File
 
 class TokenBasedPlagiarismDetectorTest : FunSpec() {
     companion object {
-        private const val SOURCE_FILE = "CaveGenerator.java"
-        private const val PLAGIARIZED_FILE = "CaveGeneratorImpl.java"
-        private const val NON_PLAGIARIZED_FILE = "InventoryControllerImpl.java"
+        private const val CAVE_FILE_NAME = "CaveGenerator.java"
+        private const val CAVE_PLAGIARIZED_FILE_NAME = "CaveGeneratorImpl.java"
+        private const val INVENTORY_FILE_NAME = "InventoryControllerImpl.java"
+        private const val EDITOR_FILE_NAME = "EditorBoard.java"
+        private const val PLAYER_FILE_NAME = "PlayerImplTest.java"
     }
     private val logger = LoggerFactory.getLogger(this::class.java)
-    private val sourceFile = File(ClassLoader.getSystemResource(SOURCE_FILE).toURI())
-    private val plagiarizedFile = File(ClassLoader.getSystemResource(PLAGIARIZED_FILE).toURI())
-    private val nonPlagiarizedFile = File(ClassLoader.getSystemResource(NON_PLAGIARIZED_FILE).toURI())
     private val analyzer = JavaTokenizationAnalyzer()
 
     init {
         test("Testing tokenization detection between similar sources") {
-            runDetection(Pair(sourceFile, plagiarizedFile))
+            val caveFile = File(ClassLoader.getSystemResource(CAVE_FILE_NAME).toURI())
+            val cavePlagiarizedFile = File(ClassLoader.getSystemResource(CAVE_PLAGIARIZED_FILE_NAME).toURI())
+            runDetection(Pair(caveFile, cavePlagiarizedFile))
         }
 
         test("Testing tokenization detection between non-similar sources") {
-            runDetection(Pair(sourceFile, nonPlagiarizedFile))
+            val caveFile = File(ClassLoader.getSystemResource(CAVE_FILE_NAME).toURI())
+            val inventoryFile = File(ClassLoader.getSystemResource(INVENTORY_FILE_NAME).toURI())
+            runDetection(Pair(caveFile, inventoryFile))
+        }
+
+        test("Testing tokenization detection between non-similar sources/2") {
+            val playerFile = File(ClassLoader.getSystemResource(PLAYER_FILE_NAME).toURI())
+            val editorFile = File(ClassLoader.getSystemResource(EDITOR_FILE_NAME).toURI())
+            runDetection(Pair(playerFile, editorFile))
         }
     }
 
