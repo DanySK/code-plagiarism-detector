@@ -41,7 +41,7 @@ class TokenBasedPlagiarismDetectorTest : FunSpec() {
             printStats("Running-Karp-Rabin Greedy String Tiling", RKRElapsedTime, RKRResult)
         }
         GSTResult.similarity shouldBeExactly RKRResult.similarity
-        GSTResult.matches.toList() shouldContainExactly RKRResult.matches.toList()
+        GSTResult.matches.toSet() shouldContainExactly RKRResult.matches.toSet()
     }
 
     private fun detect(
