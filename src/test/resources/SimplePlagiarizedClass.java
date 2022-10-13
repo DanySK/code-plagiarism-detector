@@ -8,6 +8,7 @@ import java.util.stream.IntStream;
 
 /**
  * A test class used for testing similarities.
+ * @see https://github.com/mq1/OOP20-rogue/blob/main/src/main/java/rogue/model/world/CaveGeneratorImpl.java
  */
 class CaveGeneratorImpl implements CaveGenerator {
     private static final int CHANCE_TO_START_ALIVE = 20;
