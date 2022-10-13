@@ -38,10 +38,8 @@ class GreedyStringTiling(
         val matches: MutableMap<Int, MutableList<TokenMatch>> = mutableMapOf()
         pattern.representation.dropWhile(marked.first::contains).forEach { p ->
             text.representation.dropWhile(marked.second::contains).forEach { t ->
-                // [NOTE] Equality check must be done on the reference because otherwise two
-                // tokens of different files but same type and position would be considered equals.
-                val patternTokensFromActual = pattern.representation.dropWhile { it !== p }
-                val textTokensFromActual = text.representation.dropWhile { it !== t }
+                val patternTokensFromActual = pattern.representation.dropWhile { it != p }
+                val textTokensFromActual = text.representation.dropWhile { it != t }
                 val (patternMatches, textMatches) = scan(patternTokensFromActual, textTokensFromActual, marked)
                 val matchLength = patternMatches.count()
                 if (matchLength >= maxMatch) {
