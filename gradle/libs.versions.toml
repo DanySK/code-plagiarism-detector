@@ -27,7 +27,7 @@ mockk = "io.mockk:mockk:1.13.2"
 kotlin-testing = [ "kotest-junit5-jvm", "kotest-assertions-core-jvm", "mockito-core" ]
 
 [plugins]
-dokka = "org.jetbrains.dokka:1.7.10"
+dokka = "org.jetbrains.dokka:1.7.20"
 gitSemVer = { id = "org.danilopianini.git-sensitive-semantic-versioning", version = "0.3.0" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-qa = { id = "org.danilopianini.gradle-kotlin-qa", version = "0.26.0" }
