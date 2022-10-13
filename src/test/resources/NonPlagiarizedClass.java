@@ -12,6 +12,7 @@ import rogue.model.items.scroll.Scroll;
 
 /**
  * A test class used for testing similarities.
+ * @see https://github.com/mq1/OOP20-rogue/blob/main/src/main/java/rogue/controller/inventory/InventoryControllerImpl.java
  */
 public class InventoryControllerImpl implements InventoryController {
 

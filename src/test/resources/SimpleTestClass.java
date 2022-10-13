@@ -2,6 +2,7 @@ package org.example.cavegenerator;
 
 /**
  * A test class used for testing similarities.
+ * @see https://gamedevelopment.tutsplus.com/tutorials/generate-random-cave-levels-using-cellular-automata--gamedev-9664
  */
 public class CaveGenerator {
     private float chanceToStartAlive = 0.45f;
