@@ -1,95 +1,98 @@
-package rogue.model.creature;
+package org.example.cavegenerator;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+/**
+ * A test class used for testing similarities.
+ */
+public class CaveGenerator {
+    private float chanceToStartAlive = 0.45f;
 
-public class PlayerImplTest {
-
-    private Player pl;
-
-    @org.junit.Before
-    public void init() {
+    public boolean[][] initialiseMap(boolean[][] map){
+        for(int x=0; x<width; x++){
+            for(int y=0; y<height; y++){
+                if(random() < chanceToStartAlive){
+                    map[x][y] = true;
+                }
+            }
+        }
+        return map;
     }
 
-    @org.junit.Test
-    public void testDefaultsLife() {
-        // with default configs
-        pl = new PlayerFactoryImpl().create();
-
-        final var hp   = pl.getLife().getHealthPoints();
-        final var exp  = pl.getLife().getExperience();
-        final var food = pl.getLife().getFood();
-
-        pl.getLife().hurt(10);
-        assertEquals(hp - 10, pl.getLife().getHealthPoints());
-        assertFalse(pl.getLife().isDead());
-        pl.getLife().increaseExperience(10);
-        assertEquals(exp + 10, pl.getLife().getExperience());
-        pl.getLife().decreaseFood(10);
-        assertFalse(pl.getLife().isDead());
-        assertEquals(food - 10, pl.getLife().getFood());
-        pl.getLife().decreaseFood(food - 10);
-        assertTrue(pl.getLife().isDead());
+    //Returns the number of cells in a ring around (x,y) that are alive.
+    public countAliveNeighbours(boolean[][] map, int x, int y){
+        int count = 0;
+        for(int i=-1; i<2; i++){
+            for(int j=-1; j<2; j++){
+                int neighbour_x = x+i;
+                int neighbour_y = y+j;
+                //If we're looking at the middle point
+                if(i == 0 && j == 0){
+                    //Do nothing, we don't want to add ourselves in!
+                }
+                //In case the index we're looking at it off the edge of the map
+                else if(neighbour_x < 0 || neighbour_y < 0 || neighbour_x >= map.length || neighbour_y >= map[0].length){
+                    count = count + 1;
+                }
+                //Otherwise, a normal check of the neighbour
+                else if(map[neighour_x][neighbour_y]){
+                    count = count + 1;
+                }
+            }
+        }
     }
 
-    @org.junit.Test
-    public void testExplicitLife() {
-        // with explicit configs
-        final var hp   = 3;
-        final var str  = 50;
-        final var exp  = 20;
-        final var food = 10;
-
-        final PlayerLifeImpl.Builder lifeBuilder = new PlayerLifeImpl.Builder();
-        pl = new PlayerFactoryImpl().createByLife(lifeBuilder.initExperience(exp)
-                .initFood(food)
-                .initStrength(str)
-                .initHealthPoints(hp)
-                .build());
-
-        pl.getLife().hurt(10);
-        assertEquals(0, pl.getLife().getHealthPoints());
-        assertTrue(pl.getLife().isDead());
-        pl.getLife().increaseExperience(10);
-        assertEquals(exp + 10, pl.getLife().getExperience());
-        pl.getLife().decreaseFood(10);
-        assertEquals(0, pl.getLife().getFood());
+    public boolean[][] doSimulationStep(boolean[][] oldMap){
+        boolean[][] newMap = new boolean[width][height];
+        //Loop over each row and column of the map
+        for(int x=0; x<oldMap.length; x++){
+            for(int y=0; y<oldMap[0].length; y++){
+                int nbs = countAliveNeighbours(oldMap, x, y);
+                //The new value is based on our simulation rules
+                //First, if a cell is alive but has too few neighbours, kill it.
+                if(oldMap[x][y]){
+                    if(nbs < deathLimit){
+                        newMap[x][y] = false;
+                    }
+                    else{
+                        newMap[x][y] = true;
+                    }
+                } //Otherwise, if the cell is dead now, check if it has the right number of neighbours to be 'born'
+                else{
+                    if(nbs > birthLimit){
+                        newMap[x][y] = true;
+                    }
+                    else{
+                        newMap[x][y] = false;
+                    }
+                }
+            }
+        }
+        return newMap;
     }
 
-    @org.junit.Test
-    public void testMaxHealthPoints() {
-        pl = new PlayerFactoryImpl().create(); // default values and configs
-        assertEquals(pl.getLife().getHealthPoints(), pl.getLife().getMaxHealthPoints());
-        final int delta = 355; // integer to obtain: level = 10 and maxHp = 120
-        pl.getLife().increaseExperience(delta);
-        final int actualLevel = 10;
-        final int actualMaxHp = 120;
-        assertEquals(actualLevel, pl.getLife().getLevel());
-        assertEquals(actualMaxHp, pl.getLife().getMaxHealthPoints());
-        pl.getLife().powerUp(actualMaxHp);
-        assertEquals(pl.getLife().getMaxHealthPoints(), pl.getLife().getHealthPoints());
-        pl.getLife().hurt(actualMaxHp);
-        assertEquals(0, pl.getLife().getHealthPoints());
-        assertTrue(pl.getLife().isDead());
+    public boolean[][] generateMap(){
+        //Create a new map
+        boolean[][] cellmap = new boolean[width][height];
+        //Set up the map with random values
+        cellmap = initialiseMap(cellmap);
+        //And now run the simulation for a set number of steps
+        for(int i=0; i<numberOfSteps; i++){
+            cellmap = doSimulationStep(cellmap);
+        }
     }
 
-    @org.junit.Test
-    public void testMaxFood() {
-        pl = new PlayerFactoryImpl().create();
-        // Exceeds max food
-        pl.getLife().increaseFood(pl.getLife().getMaxFood() - pl.getLife().getFood() + 1);
-        assertEquals(pl.getLife().getMaxFood(), pl.getLife().getFood());
-        pl.getLife().decreaseFood(pl.getLife().getMaxFood() + 1);
-        assertEquals(0, pl.getLife().getFood());
+    public void placeTreasure(boolean[][] world){
+        //How hidden does a spot need to be for treasure?
+        //I find 5 or 6 is good. 6 for very rare treasure.
+        int treasureHiddenLimit = 5;
+        for (int x=0; x < worldWidth; x++){
+            for (int y=0; y < worldHeight; y++){
+                if(!world[x][y]){
+                    int nbs = countAliveNeighbours(world, x, y);
+                    if(nbs >= treasureHiddenLimit){
+                        placeTreasure(x, y);
+                    }
+                }
+            }
+        }
     }
-
-    @org.junit.Test(expected = IllegalStateException.class)
-    public void testMultipleBuild() {
-        // cannot be built multiple times...
-        final PlayerLifeImpl.Builder lifeBuilder = new PlayerLifeImpl.Builder();
-        lifeBuilder.build();
-        lifeBuilder.build();
-    }
-
 }
