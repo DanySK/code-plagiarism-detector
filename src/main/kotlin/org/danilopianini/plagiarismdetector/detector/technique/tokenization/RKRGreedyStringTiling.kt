@@ -54,7 +54,7 @@ class RKRGreedyStringTiling(
 
     private fun firstPhase(text: TokenizedSource, marked: MarkedTokens, searchLength: Int): HashTable {
         val hashTable: MutableMap<Int, MutableSet<Tokens>> = mutableMapOf()
-        phase(text.representation, marked.second, searchLength) { _, tokens ->
+        phase(text.representation, marked.second, searchLength) { tokens ->
             tokens.take(searchLength).run {
                 val hashValue = hashValueOf(this)
                 hashTable[hashValue]?.add(this) ?: hashTable.put(hashValue, mutableSetOf(this))
@@ -73,17 +73,17 @@ class RKRGreedyStringTiling(
         val matches: MutableMap<Int, MutableList<TokenMatch>> = TreeMap()
         val patternTokens = pattern.representation
         val textTokens = text.representation
-        phase(patternTokens, marked.first, searchLength) { index, tokens ->
-            val searchedTokens = tokens.take(searchLength)
-            val hashValue = hashValueOf(searchedTokens)
+        phase(patternTokens, marked.first, searchLength) { tokens ->
+            val searched = tokens.take(searchLength)
+            val hashValue = hashValueOf(searched)
             hashTable[hashValue]?.let {
-                it.filter { candidates -> searchedTokens areEqualsTo candidates }
-                    .forEach { matchingTokens ->
-                        val patternTokensFromLastChecked = patternTokens.drop(index + searchLength)
-                        val txtTokensFromLastChecked = textTokens.drop(textTokens.indexOf(matchingTokens.last()) + 1)
-                        val otherMatches = scan(patternTokensFromLastChecked, txtTokensFromLastChecked, marked)
-                        val patternMatches = searchedTokens.toList() + otherMatches.first
-                        val textMatches = matchingTokens.toList() + otherMatches.second
+                it.filter { candidates -> searched areEqualsTo candidates }
+                    .forEach { matching ->
+                        val ptnTokensFromLastChecked = patternTokens.drop(patternTokens.indexOf(searched.last()) + 1)
+                        val txtTokensFromLastChecked = textTokens.drop(textTokens.indexOf(matching.last()) + 1)
+                        val otherMatches = scan(ptnTokensFromLastChecked, txtTokensFromLastChecked, marked)
+                        val patternMatches = searched.toList() + otherMatches.first
+                        val textMatches = matching.toList() + otherMatches.second
                         val matchLen = patternMatches.count()
                         if (matchLen > 2 * searchLength) {
                             return searchMatches(pattern, text, marked, matchLen)
@@ -97,12 +97,12 @@ class RKRGreedyStringTiling(
         return Pair(matches, searchLength)
     }
 
-    private inline fun phase(tokens: Tokens, marked: Set<Token>, searchLength: Int, action: (Int, Tokens) -> (Unit)) {
-        tokens.filterNot(marked::contains).forEachIndexed { index, _ ->
-            val tokensFromActual = tokens.drop(index)
+    private inline fun phase(tokens: Tokens, marked: Set<Token>, searchLength: Int, action: (Tokens) -> (Unit)) {
+        tokens.filterNot(marked::contains).forEach { actualToken ->
+            val tokensFromActual = tokens.dropWhile { it != actualToken }
             val distanceToNextTile = distanceToNextTile(tokensFromActual, marked)
             if (distanceToNextTile >= searchLength) {
-                action(index, tokensFromActual)
+                action(tokensFromActual)
             }
         }
     }
