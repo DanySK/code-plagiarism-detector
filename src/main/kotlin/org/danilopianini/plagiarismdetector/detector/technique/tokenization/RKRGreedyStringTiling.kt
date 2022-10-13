@@ -101,7 +101,7 @@ class RKRGreedyStringTiling(
         tokens.filterNot(marked::contains).forEachIndexed { index, _ ->
             val tokensFromActual = tokens.drop(index)
             val distanceToNextTile = distanceToNextTile(tokensFromActual, marked)
-            if (distanceToNextTile > searchLength) {
+            if (distanceToNextTile >= searchLength) {
                 action(index, tokensFromActual)
             }
         }
