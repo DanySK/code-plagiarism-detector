@@ -1,7 +1,6 @@
 package org.danilopianini.plagiarismdetector.detector.technique.tokenization
 
 import org.danilopianini.plagiarismdetector.analyzer.representation.TokenizedSource
-import org.danilopianini.plagiarismdetector.analyzer.representation.token.Token
 
 /**
  * Basic thread-safe implementation of Greedy String Tiling algorithm.
@@ -16,14 +15,12 @@ class GreedyStringTiling(
 
     override fun runAlgorithm(pattern: TokenizedSource, text: TokenizedSource): Set<TokenMatch> {
         val tiles = mutableSetOf<TokenMatch>()
-        val marked = Pair(mutableSetOf<Token>(), mutableSetOf<Token>())
+        val marked: MutableMarkedTokens = Pair(mutableSetOf(), mutableSetOf())
         val matches: MutableMap<Int, List<TokenMatch>> = mutableMapOf()
         do {
             val (selectedMatches, largestMatch) = searchMatches(pattern, text, marked, minimumMatchLength)
             matches.putAll(selectedMatches)
-            val (newTiles, newMarked) = markMatches(marked, matches, largestMatch)
-            tiles.addAll(newTiles)
-            marked.addAll(newMarked)
+            matches[largestMatch]?.forEach { addToTilesOrElse(it, marked, tiles) }
         } while (largestMatch != minimumMatchLength)
         return tiles
     }

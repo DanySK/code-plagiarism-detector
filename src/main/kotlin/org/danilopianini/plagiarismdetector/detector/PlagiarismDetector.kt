@@ -17,6 +17,7 @@ interface Match
  * An interface modeling a comparison result object.
  */
 interface ComparisonResult<out M : Match> {
+
     /**
      * The score of similarity, expressed as a value between 0 and 1.
      */
