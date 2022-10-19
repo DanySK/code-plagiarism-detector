@@ -18,6 +18,8 @@ class TokenBasedPlagiarismDetectorTest : FunSpec() {
         private const val INVENTORY_FILE_NAME = "InventoryControllerImpl.java"
         private const val EDITOR_FILE_NAME = "EditorBoard.java"
         private const val PLAYER_FILE_NAME = "PlayerImplTest.java"
+        private const val VALIDATOR_FILE_NAME = "ValidatorTest.java"
+        private const val LEVEL_STRATEGY_FILE = "StandardLevelIncreaseStrategyTest.java"
     }
     private val logger = LoggerFactory.getLogger(this::class.java)
     private val analyzer = JavaTokenizationAnalyzer()
@@ -39,6 +41,12 @@ class TokenBasedPlagiarismDetectorTest : FunSpec() {
             val playerFile = File(ClassLoader.getSystemResource(PLAYER_FILE_NAME).toURI())
             val editorFile = File(ClassLoader.getSystemResource(EDITOR_FILE_NAME).toURI())
             runDetection(Pair(playerFile, editorFile))
+        }
+
+        test("Testing tokenization detection between non-similar sources/3") {
+            val file1 = File(ClassLoader.getSystemResource(VALIDATOR_FILE_NAME).toURI())
+            val file2 = File(ClassLoader.getSystemResource(LEVEL_STRATEGY_FILE).toURI())
+            runDetection(Pair(file1, file2))
         }
     }
 

@@ -8,6 +8,7 @@ import org.danilopianini.plagiarismdetector.detector.Match
  * A match between two [TokenizedSource].
  */
 interface TokenMatch : Match {
+
     /**
      * The matching [Token]s in the pattern, i.e. the shorter [TokenizedSource].
      */

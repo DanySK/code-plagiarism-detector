@@ -25,6 +25,11 @@ typealias MaximalMatches = Map<Int, List<TokenMatch>>
 typealias MarkedTokens = Pair<Set<Token>, Set<Token>>
 
 /**
+ * Simply, a mutable [MarkedTokens].
+ */
+typealias MutableMarkedTokens = Pair<MutableSet<Token>, MutableSet<Token>>
+
+/**
  * This is an abstract base implementation of the common code for Greedy String Tiling algorithm's family.
  * [Here](https://bit.ly/3f3qzED) you can find the paper in which were originally described.
  */
@@ -50,7 +55,10 @@ abstract class BaseGreedyStringTiling(
         }
 
     /**
-     * Top level algorithm: it executes the logic of the algorithm.
+     * Top level algorithm: it executes the logic of the algorithm, returning a set of [TokenMatch].
+     * According to the terminology of the paper, this function returns the set of discovered tiles,
+     * i.e. the one-to-one association of a subsequence of [Tokens] of the pattern with a matching
+     * subsequence of [Tokens] from the text.
      */
     protected abstract fun runAlgorithm(pattern: TokenizedSource, text: TokenizedSource): Set<TokenMatch>
 
@@ -67,30 +75,24 @@ abstract class BaseGreedyStringTiling(
     ): Pair<MaximalMatches, Int>
 
     /**
-     * Selects, from [matches] of the given [matchLength] which are not occluded
-     * (i.e. are not contained in [marked]), marking the corresponding tokens.
-     * According to the terminology of the paper, this function returns the set of
-     * discovered tiles, i.e. the one-to-one association of a subsequence of [Tokens]
-     * of the pattern with a matching subsequence of [Tokens] from the text.
-     * It corresponds to the `markarrays()` function of the paper.
+     * If the given [match] is not occluded marks the tokens which is composed of
+     * and add it to [tiles]. Otherwise, is executed the [elseBlock] which is, by
+     * default, a function that does nothing.
+     * This is the heart of the `markarrays()` function of the paper.
      */
-    protected fun markMatches(
-        marked: MarkedTokens,
-        matches: MaximalMatches,
-        matchLength: Int,
-    ): Pair<Set<TokenMatch>, MarkedTokens> {
-        val tiles = mutableSetOf<TokenMatch>()
-        val myMarked = Pair(marked.first.toMutableSet(), marked.second.toMutableSet())
-        matches[matchLength]?.let {
-            it.forEach { match ->
-                if (isNotOccluded(match, myMarked)) {
-                    match.pattern.second.forEach(myMarked.first::add)
-                    match.text.second.forEach(myMarked.second::add)
-                    tiles.add(match)
-                }
-            }
+    protected fun addToTilesOrElse(
+        match: TokenMatch,
+        marked: MutableMarkedTokens,
+        tiles: MutableSet<TokenMatch>,
+        elseBlock: () -> Unit = { }
+    ) {
+        if (isNotOccluded(match, marked)) {
+            match.pattern.second.forEach(marked.first::add)
+            match.text.second.forEach(marked.second::add)
+            tiles.add(match)
+        } else {
+            elseBlock()
         }
-        return Pair(tiles, myMarked)
     }
 
     /**
@@ -119,7 +121,7 @@ abstract class BaseGreedyStringTiling(
     /**
      * Update the marked tokens with those from the specified [other] collection.
      */
-    protected fun Pair<MutableSet<Token>, MutableSet<Token>>.addAll(other: MarkedTokens) {
+    protected fun MutableMarkedTokens.addAll(other: MarkedTokens) {
         this.first.addAll(other.first)
         this.second.addAll(other.second)
     }
