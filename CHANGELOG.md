@@ -1,3 +1,37 @@
+## [4.0.1](https://github.com/DanySK/code-plagiarism-detector/compare/4.0.0...4.0.1) (2022-10-24)
+
+
+### Bug Fixes
+
+* **rkr:** fix bug not considering leftover unmarked tokens which are longer than min search len ([41ff7ea](https://github.com/DanySK/code-plagiarism-detector/commit/41ff7ea3ad2d81e006e5d1bdb485ffa7be6b959a))
+
+
+### Build and continuous integration
+
+* **deps:** update danysk/build-check-deploy-gradle-action action to v2.1.11 ([7c3e527](https://github.com/DanySK/code-plagiarism-detector/commit/7c3e5276090b6986f90f580daee7f73449bec448))
+
+
+### Dependency updates
+
+* **deps:** update dependency com.github.javaparser:javaparser-core to v3.24.7 ([494f0a2](https://github.com/DanySK/code-plagiarism-detector/commit/494f0a256697cbd354905b002663f2c30ab2a881))
+* **deps:** update dependency org.mockito:mockito-core to v4.8.1 ([61e1ac6](https://github.com/DanySK/code-plagiarism-detector/commit/61e1ac6ec111d43097f7bc6e1de6e49ebc1c1781))
+* **deps:** update dependency semantic-release-preconfigured-conventional-commits to v1.1.13 ([ac15609](https://github.com/DanySK/code-plagiarism-detector/commit/ac1560980beba9e0697264a9a773f00ceed272ca))
+
+
+### Refactoring
+
+* **gst:** remove not useful addAll extension function ([01b34dc](https://github.com/DanySK/code-plagiarism-detector/commit/01b34dcb266a82032921a098f1d23322b0290020))
+
+
+### Tests
+
+* **detector:** rename variables ([57296f3](https://github.com/DanySK/code-plagiarism-detector/commit/57296f309d6bd37816921eba089679cb7d3f9366))
+
+
+### Style improvements
+
+* **provider:** replace null check with let scope function ([ad84750](https://github.com/DanySK/code-plagiarism-detector/commit/ad84750811e0886936a03546e7fb4717b57c47d0))
+
 ## [4.0.0](https://github.com/DanySK/code-plagiarism-detector/compare/3.0.0...4.0.0) (2022-10-17)
 
 
