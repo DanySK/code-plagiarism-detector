@@ -79,9 +79,7 @@ class BitbucketProvider private constructor(
     private fun doGETRequest(url: String): JSONObject {
         val request = Unirest.get(url)
             .header(ACCEPT_HEADER_FIELD, ACCEPT_HEADER_VALUE)
-        if (encodedAuthenticationToken != null) {
-            request.header(AUTH_HEADER_FIELD, "$AUTH_HEADER_PREFIX $encodedAuthenticationToken")
-        }
+        encodedAuthenticationToken?.let { request.header(AUTH_HEADER_FIELD, "$AUTH_HEADER_PREFIX $it") }
         val response = request.asBinary()
         check(response.status != UNAUTHORIZED_CODE && response.status != FORBIDDEN_CODE) {
             "HTTP Response: ${response.statusText}. ${IOUtils.toString(response.body, StandardCharsets.UTF_8)}"
