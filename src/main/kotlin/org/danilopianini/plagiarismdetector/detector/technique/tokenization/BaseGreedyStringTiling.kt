@@ -117,12 +117,4 @@ abstract class BaseGreedyStringTiling(
      */
     private fun isNotOccluded(tokenMatch: TokenMatch, marked: MarkedTokens) =
         tokenMatch.pattern.second.all { it !in marked.first } && tokenMatch.text.second.all { it !in marked.second }
-
-    /**
-     * Update the marked tokens with those from the specified [other] collection.
-     */
-    protected fun MutableMarkedTokens.addAll(other: MarkedTokens) {
-        this.first.addAll(other.first)
-        this.second.addAll(other.second)
-    }
 }
