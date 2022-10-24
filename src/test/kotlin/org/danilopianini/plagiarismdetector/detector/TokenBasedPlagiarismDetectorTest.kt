@@ -26,21 +26,21 @@ class TokenBasedPlagiarismDetectorTest : FunSpec() {
 
     init {
         test("Testing tokenization detection between similar sources") {
-            val caveFile = File(ClassLoader.getSystemResource(CAVE_FILE_NAME).toURI())
-            val cavePlagiarizedFile = File(ClassLoader.getSystemResource(CAVE_PLAGIARIZED_FILE_NAME).toURI())
-            runDetection(Pair(caveFile, cavePlagiarizedFile))
+            val file1 = File(ClassLoader.getSystemResource(CAVE_FILE_NAME).toURI())
+            val file2 = File(ClassLoader.getSystemResource(CAVE_PLAGIARIZED_FILE_NAME).toURI())
+            runDetection(Pair(file1, file2))
         }
 
         test("Testing tokenization detection between non-similar sources") {
-            val caveFile = File(ClassLoader.getSystemResource(CAVE_FILE_NAME).toURI())
-            val inventoryFile = File(ClassLoader.getSystemResource(INVENTORY_FILE_NAME).toURI())
-            runDetection(Pair(caveFile, inventoryFile))
+            val file1 = File(ClassLoader.getSystemResource(CAVE_FILE_NAME).toURI())
+            val file2 = File(ClassLoader.getSystemResource(INVENTORY_FILE_NAME).toURI())
+            runDetection(Pair(file1, file2))
         }
 
         test("Testing tokenization detection between non-similar sources/2") {
-            val playerFile = File(ClassLoader.getSystemResource(PLAYER_FILE_NAME).toURI())
-            val editorFile = File(ClassLoader.getSystemResource(EDITOR_FILE_NAME).toURI())
-            runDetection(Pair(playerFile, editorFile))
+            val file1 = File(ClassLoader.getSystemResource(PLAYER_FILE_NAME).toURI())
+            val file2 = File(ClassLoader.getSystemResource(EDITOR_FILE_NAME).toURI())
+            runDetection(Pair(file1, file2))
         }
 
         test("Testing tokenization detection between non-similar sources/3") {
