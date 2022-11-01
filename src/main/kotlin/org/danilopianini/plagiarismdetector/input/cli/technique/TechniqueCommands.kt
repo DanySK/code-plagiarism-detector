@@ -5,7 +5,9 @@ import com.github.ajalt.clikt.parameters.options.convert
 import com.github.ajalt.clikt.parameters.options.default
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.types.choice
+import com.github.ajalt.clikt.parameters.types.double
 import com.github.ajalt.clikt.parameters.types.int
+import com.github.ajalt.clikt.parameters.types.restrictTo
 import org.danilopianini.plagiarismdetector.commons.Java
 import org.danilopianini.plagiarismdetector.commons.Language
 import org.danilopianini.plagiarismdetector.core.TechniqueFacade
@@ -51,6 +53,13 @@ class TokenizationConfig : TechniqueConfig<TokenMatch>(TOKENIZATION_NAME) {
         .int()
         .default(DEFAULT_MIN_TOKENS)
 
+    /**
+     * The cutoff threshold used to filter comparison pairs.
+     */
+    val filterThreshold by option(help = FILTER_THRESHOLD_HELP_MSG)
+        .double()
+        .restrictTo(0.0..1.0)
+
     override fun getFacade(): TokenizationFacade = TokenizationFacade(this)
 
     companion object {
@@ -58,5 +67,6 @@ class TokenizationConfig : TechniqueConfig<TokenMatch>(TOKENIZATION_NAME) {
         private const val DEFAULT_MIN_TOKENS = 15
         private const val MIN_TOKENS_HELP_MSG = "The minimum token length which should be reported " +
             "as a duplicate. Default is $DEFAULT_MIN_TOKENS."
+        private const val FILTER_THRESHOLD_HELP_MSG = "The cutoff threshold used to filter comparison pairs."
     }
 }
