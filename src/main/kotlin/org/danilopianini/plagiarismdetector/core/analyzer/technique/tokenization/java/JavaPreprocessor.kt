@@ -21,14 +21,13 @@ class JavaPreprocessor : StepHandler<CompilationUnit, CompilationUnit> {
     private fun CompilationUnit.removeImports() {
         findAll(ImportDeclaration::class.java)
             .asSequence()
-            .forEach(this::remove)
+            .forEach { it.remove() }
     }
 
     private fun CompilationUnit.removeEqualsAndHashCodeFunctions() {
         findAll(MethodDeclaration::class.java)
             .asSequence()
             .filter { it.name.asString() == "equals" || it.name.asString() == "hashCode" }
-            .map { it.parentNode }
-            .forEach { it.ifPresent(this::remove) }
+            .forEach { it.remove() }
     }
 }
