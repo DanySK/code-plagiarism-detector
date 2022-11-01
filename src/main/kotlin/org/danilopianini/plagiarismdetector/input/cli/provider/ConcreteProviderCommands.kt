@@ -3,6 +3,7 @@ package org.danilopianini.plagiarismdetector.input.cli.provider
 import com.github.ajalt.clikt.parameters.groups.OptionGroup
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.options.required
+import com.github.ajalt.clikt.parameters.options.split
 import com.github.ajalt.clikt.parameters.types.choice
 import org.danilopianini.plagiarismdetector.commons.HostingService
 import org.danilopianini.plagiarismdetector.input.SupportedOptions
@@ -33,18 +34,21 @@ class CriteriaOptions : OptionGroup("Options to specify for search by criteria")
      */
     val service by option(help = SERVICE_HELP_MSG)
         .choice(*SupportedOptions.services.map(HostingService::name).toTypedArray())
+        .split(",")
         .required()
 
     /**
      * The username owner of the repos to search.
      */
     val user by option(help = USER_HELP_MSG)
+        .split(",")
         .required()
 
     /**
      * The name of the searched repos.
      */
     val repositoryName by option(help = REPO_NAME_HELP_MSG)
+        .split(",")
 
     companion object {
         private const val SERVICE_HELP_MSG = "The hosting service."
