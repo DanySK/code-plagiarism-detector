@@ -1,6 +1,6 @@
 package org.danilopianini.plagiarismdetector
 
-import org.danilopianini.plagiarismdetector.input.CLIConfigurator
+import org.danilopianini.plagiarismdetector.input.cli.CLIConfigurator
 
 /**
  * Code plagiarism detector entry point.
