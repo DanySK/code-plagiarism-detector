@@ -9,11 +9,14 @@ import org.danilopianini.plagiarismdetector.core.detector.technique.tokenization
 import org.danilopianini.plagiarismdetector.core.detector.technique.tokenization.TokenMatch
 import org.danilopianini.plagiarismdetector.input.cli.technique.TokenizationConfig
 import org.danilopianini.plagiarismdetector.repository.Repository
+import org.slf4j.LoggerFactory
 
 /**
  * A concrete [TechniqueFacade] which exploits the **Tokenization** technique.
  */
 class TokenizationFacade(private val configs: TokenizationConfig) : TechniqueFacade<TokenMatch> {
+
+    private val logger = LoggerFactory.getLogger(this.javaClass)
     private val analyzer = when (configs.language) {
         Java -> JavaTokenizationAnalyzer()
     }
@@ -25,6 +28,7 @@ class TokenizationFacade(private val configs: TokenizationConfig) : TechniqueFac
         filesToExclude: Set<String>,
         minDuplicatedPercentage: Double
     ): Report<TokenMatch> {
+        logger.info("Comparing ${submittedRepository.name} with ${comparedRepository.name}")
         val submittedAnalyzed = analyze(submittedRepository, filesToExclude)
         val corpusAnalyzed = analyze(comparedRepository, filesToExclude)
         return ReportImpl(
