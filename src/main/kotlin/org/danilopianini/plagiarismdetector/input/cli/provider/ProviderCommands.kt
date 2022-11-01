@@ -4,8 +4,10 @@ import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.parameters.groups.cooccurring
 import com.github.ajalt.clikt.parameters.options.convert
 import com.github.ajalt.clikt.parameters.options.option
+import com.github.ajalt.clikt.parameters.options.split
 import org.danilopianini.plagiarismdetector.commons.BitBucket
 import org.danilopianini.plagiarismdetector.commons.GitHub
+import org.danilopianini.plagiarismdetector.commons.HostingService
 import org.danilopianini.plagiarismdetector.input.SupportedOptions
 import org.danilopianini.plagiarismdetector.provider.BitbucketProvider
 import org.danilopianini.plagiarismdetector.provider.GitHubProvider
@@ -34,8 +36,8 @@ interface ProviderCommands {
  */
 abstract class BaseProviderCommand(
     name: String,
-    help: String
-) : ProviderCommands, CliktCommand(name = name, help = help) {
+    help: String,
+) : ProviderCommands, CliktCommand(name = name, help = help, printHelpOnEmptyArgs = true) {
 
     private val githubProvider = GitHubProvider.connectWithToken(EnvironmentTokenSupplier(GH_AUTH_TOKEN_VAR))
     private val bitbucketProvider = BitbucketProvider.connectWithToken(
@@ -43,40 +45,49 @@ abstract class BaseProviderCommand(
     )
     private val url by option(help = URL_HELP_MSG)
         .convert { URL(it) }
+        .split(",")
     private val criteria by CriteriaOptions()
         .cooccurring()
 
     override fun run() = checkInputs(url, criteria)
 
     override fun getRepositories(): Sequence<Repository> =
-        url?.let { sequenceOf(getResult(it)) } ?: criteria?.let { getResult(it) } ?: error("Error")
-
-    private fun checkInputs(url: URL?, criteria: CriteriaOptions?) {
-        check((url != null || criteria != null) && !(url != null && criteria != null)) {
-            "Exactly one between url and criteria must be valued."
+        try {
+            (url?.let { getResult(it) } ?: emptySequence()) + (criteria?.let { getResult(it) } ?: emptySequence())
+        } catch (e: IllegalStateException) {
+            error("$commandName must be valued (${e.message})")
         }
+
+    private fun checkInputs(url: List<URL>?, criteria: CriteriaOptions?) =
+        check(url != null || criteria != null) { "At least one between url and criteria must be valued." }
+
+    private fun getResult(url: List<URL>): Sequence<Repository> = url
+        .map { byLink(it, getServiceByUrl(it)) }
+        .asSequence()
+
+    private fun byLink(link: URL, service: HostingService) = when (service) {
+        GitHub -> githubProvider.byLink(link)
+        BitBucket -> bitbucketProvider.byLink(link)
     }
 
-    private fun getResult(url: URL): Repository {
-        return when (getServiceByUrl(url)) {
-            GitHub -> githubProvider.byLink(url)
-            BitBucket -> bitbucketProvider.byLink(url)
-        }
-    }
+    private fun getResult(criteria: CriteriaOptions): Sequence<Repository> =
+        criteria.user
+            .asSequence()
+            .flatMap { u ->
+                criteria.service.flatMap { s ->
+                    (criteria.repositoryName ?: emptyList()).flatMap { n ->
+                        byCriteria(getServiceByName(s), u, n)
+                    }
+                }
+            }
 
-    private fun getResult(criteria: CriteriaOptions): Sequence<Repository> {
-        return when (getServiceByName(criteria.service)) {
-            GitHub -> githubProvider.byCriteria(
-                criteria.repositoryName?.let {
-                    ByGitHubName(it, ByGitHubUser(criteria.user))
-                } ?: ByGitHubUser(criteria.user)
-            )
-            BitBucket -> bitbucketProvider.byCriteria(
-                criteria.repositoryName?.let {
-                    ByBitbucketName(it, ByBitbucketUser(criteria.user))
-                } ?: ByBitbucketUser(criteria.user)
-            )
-        }
+    private fun byCriteria(service: HostingService, user: String, repositoryName: String?) = when (service) {
+        GitHub -> githubProvider.byCriteria(
+            repositoryName?.let { ByGitHubName(it, ByGitHubUser(user)) } ?: ByGitHubUser(user)
+        )
+        BitBucket -> bitbucketProvider.byCriteria(
+            repositoryName?.let { ByBitbucketName(it, ByBitbucketUser(user)) } ?: ByBitbucketUser(user)
+        )
     }
 
     private fun getServiceByUrl(url: URL) =
