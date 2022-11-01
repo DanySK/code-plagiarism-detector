@@ -10,6 +10,8 @@ import org.danilopianini.plagiarismdetector.core.filter.technique.tokenization.T
 
 class TokenizedSourceFilterTest : FunSpec({
 
+    val threshold = 0.5
+
     test("test tokenized source filter") {
         val submission = TokenizedSourceImpl(
             mockk(),
@@ -49,6 +51,6 @@ class TokenizedSourceFilterTest : FunSpec({
             ),
             expectedResult
         )
-        TokenizedSourceFilter()(submission, corpus).toList() shouldBe listOf(expectedResult)
+        TokenizedSourceFilter(threshold)(submission, corpus).toList() shouldBe listOf(expectedResult)
     }
 })

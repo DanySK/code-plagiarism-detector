@@ -7,6 +7,8 @@ import org.danilopianini.plagiarismdetector.core.analyzer.technique.tokenization
 import org.danilopianini.plagiarismdetector.core.detector.ComparisonResult
 import org.danilopianini.plagiarismdetector.core.detector.technique.tokenization.TokenBasedPlagiarismDetector
 import org.danilopianini.plagiarismdetector.core.detector.technique.tokenization.TokenMatch
+import org.danilopianini.plagiarismdetector.core.filter.RepresentationFilter
+import org.danilopianini.plagiarismdetector.core.filter.technique.tokenization.TokenizedSourceFilter
 import org.danilopianini.plagiarismdetector.input.cli.technique.TokenizationConfig
 import org.danilopianini.plagiarismdetector.repository.Repository
 import org.slf4j.LoggerFactory
@@ -20,6 +22,9 @@ class TokenizationFacade(private val configs: TokenizationConfig) : TechniqueFac
     private val analyzer = when (configs.language) {
         Java -> JavaTokenizationAnalyzer()
     }
+    private val filter = configs.filterThreshold?.let {
+        TokenizedSourceFilter(it)
+    } ?: RepresentationFilter { _, s -> s }
     private val detector = TokenBasedPlagiarismDetector(configs.minimumTokens)
 
     override fun execute(
@@ -56,7 +61,7 @@ class TokenizationFacade(private val configs: TokenizationConfig) : TechniqueFac
         analyzedCorpus: Sequence<TokenizedSource>,
         minDuplicatedPercentage: Double
     ): Set<ComparisonResult<TokenMatch>> = analyzedSubmission
-        .flatMap { s -> analyzedCorpus.map { c -> detector(Pair(s, c)) } }
+        .flatMap { s -> filter(s, analyzedCorpus).map { c -> detector(Pair(s, c)) } }
         .filter { it.similarity > minDuplicatedPercentage }
         .toSet()
 }

@@ -11,7 +11,9 @@ import kotlin.math.sqrt
 /**
  * A [RepresentationFilter] for [TokenizedSource].
  */
-class TokenizedSourceFilter : RepresentationFilter<TokenizedSource, Sequence<Token>> {
+class TokenizedSourceFilter(
+    private val threshold: Double
+) : RepresentationFilter<TokenizedSource, Sequence<Token>> {
 
     private val indexer = TokenBasedIndexer()
 
@@ -23,12 +25,13 @@ class TokenizedSourceFilter : RepresentationFilter<TokenizedSource, Sequence<Tok
         val similarities = corpus
             .associateWith { indexer(it) }
             .mapValues { cosineSimilarityOf(indexedSubmission, it.value) }
+        similarities.forEach { check(!it.value.isNaN()) { it } }
         val minSimilarity = similarities.values.min()
         val maxSimilarity = similarities.values.max()
-        val threshold = minSimilarity + DEFAULT_THRESHOLD * (maxSimilarity - minSimilarity)
+        val cutoffValue = minSimilarity + threshold * (maxSimilarity - minSimilarity)
         return similarities
             .asSequence()
-            .filter { it.value >= threshold }
+            .filter { it.value >= cutoffValue }
             .map { it.key }
     }
 
@@ -40,8 +43,4 @@ class TokenizedSourceFilter : RepresentationFilter<TokenizedSource, Sequence<Tok
     private fun Collection<Int>.norm() = sqrt(this.sumOf { it.squared() })
 
     private fun Int.squared() = this.toDouble().pow(2)
-
-    companion object {
-        private const val DEFAULT_THRESHOLD = 0.5
-    }
 }
