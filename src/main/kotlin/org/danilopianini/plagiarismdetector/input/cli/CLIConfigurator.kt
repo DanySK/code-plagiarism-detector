@@ -21,8 +21,8 @@ class CLIConfigurator : RunConfigurator {
         val config = RunConfigurationImpl(
             technique = commonCommand.technique.getFacade(),
             minDuplicatedPercentage = commonCommand.minimumDuplication,
-            submission = submissionCommand.getRepositories().toSet(),
-            corpus = corpusCommand.getRepositories().toSet(),
+            submission = submissionCommand.getRepositories(),
+            corpus = corpusCommand.getRepositories(),
             filesToExclude = commonCommand.exclude?.toSet() ?: emptySet(),
             exporter = commonCommand.exporter.getExporter()
         )

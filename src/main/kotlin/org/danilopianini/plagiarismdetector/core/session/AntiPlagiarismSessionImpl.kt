@@ -20,6 +20,7 @@ class AntiPlagiarismSessionImpl<out C : RunConfiguration<M>, M : Match>(
             submission.forEach { submission ->
                 val result = corpus
                     .filter { it.name != submission.name }
+                    .toSet()
                     .parallelStream()
                     .map { technique.execute(submission, it, filesToExclude, minDuplicatedPercentage) }
                     .collect(Collectors.toSet())
