@@ -2,7 +2,7 @@ package org.danilopianini.plagiarismdetector.input.configuration
 
 import org.danilopianini.plagiarismdetector.core.TechniqueFacade
 import org.danilopianini.plagiarismdetector.core.detector.Match
-import org.danilopianini.plagiarismdetector.output.ResultsExporter
+import org.danilopianini.plagiarismdetector.output.ReportsExporter
 import org.danilopianini.plagiarismdetector.repository.Repository
 
 /**
@@ -36,7 +36,7 @@ interface RunConfiguration<M : Match> {
     val filesToExclude: Set<String>
 
     /**
-     * The concrete [ResultsExporter] to use to export the results.
+     * The concrete [ReportsExporter] to use to export the results.
      */
-    val exporter: ResultsExporter<M>
+    val exporter: ReportsExporter<M>
 }

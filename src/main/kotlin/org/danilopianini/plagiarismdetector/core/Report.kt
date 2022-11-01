@@ -8,7 +8,7 @@ import org.danilopianini.plagiarismdetector.repository.Repository
  * An interface for modeling the set of [ComparisonResult]
  * resulting from the comparison of two [Repository].
  */
-interface Result<out M : Match> {
+interface Report<out M : Match> {
 
     /**
      * The project on which the analysis has been performed.
@@ -28,10 +28,10 @@ interface Result<out M : Match> {
 }
 
 /**
- * A simple implementation of the [Result] interface.
+ * A simple implementation of the [Report] interface.
  */
-class ResultImpl<out M : Match>(
+class ReportImpl<out M : Match>(
     override val submittedProject: Repository,
     override val comparedProject: Repository,
     override val comparisonResult: Set<ComparisonResult<M>>
-) : Result<M>
+) : Report<M>

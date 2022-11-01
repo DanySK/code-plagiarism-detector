@@ -20,5 +20,5 @@ interface TechniqueFacade<out M : Match> {
         comparedRepository: Repository,
         filesToExclude: Set<String>,
         minDuplicatedPercentage: Double
-    ): Result<M>
+    ): Report<M>
 }

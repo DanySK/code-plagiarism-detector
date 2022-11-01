@@ -1,19 +1,19 @@
 package org.danilopianini.plagiarismdetector.output
 
-import org.danilopianini.plagiarismdetector.core.Result
+import org.danilopianini.plagiarismdetector.core.Report
 import org.danilopianini.plagiarismdetector.core.detector.Match
 import java.io.PrintWriter
 import java.nio.file.Path
 import java.time.LocalDateTime
 
 /**
- * A very simple [ResultsExporter], which exports results on a plain file, inside [outputDirectory].
+ * A very simple [ReportsExporter], which exports results on a plain file, inside [outputDirectory].
  */
 class PlainFileExporter<in M : Match>(outputDirectory: Path) : FileExporter<M>(outputDirectory) {
 
-    override fun export(results: Set<Result<M>>, output: PrintWriter) {
+    override fun export(reports: Set<Report<M>>, output: PrintWriter) {
         printHeader(output)
-        results.forEach { printBody(it, output) }
+        reports.forEach { printBody(it, output) }
     }
 
     private fun printHeader(out: PrintWriter) {
@@ -22,9 +22,9 @@ class PlainFileExporter<in M : Match>(outputDirectory: Path) : FileExporter<M>(o
         out.println("*".repeat(LINE_LENGTH))
     }
 
-    private fun printBody(result: Result<M>, out: PrintWriter) {
-        out.println("> Matches between ${result.submittedProject.name} and ${result.comparedProject.name}")
-        result.comparisonResult
+    private fun printBody(report: Report<M>, out: PrintWriter) {
+        out.println("> Matches between ${report.submittedProject.name} and ${report.comparedProject.name}")
+        report.comparisonResult
             .filter { it.matches.any() }
             .groupBy { it.similarity }
             .toSortedMap(Comparator.reverseOrder())
