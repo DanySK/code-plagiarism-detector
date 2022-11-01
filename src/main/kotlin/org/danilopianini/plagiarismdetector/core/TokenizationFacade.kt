@@ -24,10 +24,10 @@ class TokenizationFacade(private val configs: TokenizationConfig) : TechniqueFac
         comparedRepository: Repository,
         filesToExclude: Set<String>,
         minDuplicatedPercentage: Double
-    ): Result<TokenMatch> {
+    ): Report<TokenMatch> {
         val submittedAnalyzed = analyze(submittedRepository, filesToExclude)
         val corpusAnalyzed = analyze(comparedRepository, filesToExclude)
-        return ResultImpl(
+        return ReportImpl(
             submittedRepository,
             comparedRepository,
             compare(submittedAnalyzed, corpusAnalyzed, minDuplicatedPercentage)

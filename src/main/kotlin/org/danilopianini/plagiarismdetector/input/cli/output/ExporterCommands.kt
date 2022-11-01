@@ -7,7 +7,7 @@ import com.github.ajalt.clikt.parameters.options.required
 import com.github.ajalt.clikt.parameters.types.file
 import org.danilopianini.plagiarismdetector.core.detector.Match
 import org.danilopianini.plagiarismdetector.output.PlainFileExporter
-import org.danilopianini.plagiarismdetector.output.ResultsExporter
+import org.danilopianini.plagiarismdetector.output.ReportsExporter
 import java.nio.file.Path
 
 /**
@@ -24,9 +24,9 @@ sealed class ExporterConfig<in M : Match>(name: String) : OptionGroup(name = nam
         .required()
 
     /**
-     * Returns the [ResultsExporter] for the specific chosen exporter.
+     * Returns the [ReportsExporter] for the specific chosen exporter.
      */
-    abstract fun getExporter(): ResultsExporter<M>
+    abstract fun getExporter(): ReportsExporter<M>
 
     companion object {
         private const val OUTPUT_PATH_HELP_MSG = "The path of the directory where to store the reports."
@@ -38,7 +38,7 @@ sealed class ExporterConfig<in M : Match>(name: String) : OptionGroup(name = nam
  */
 class PlainFileConfig<in M : Match> : ExporterConfig<M>(PLAIN_FILE_NAME) {
 
-    override fun getExporter(): ResultsExporter<M> = PlainFileExporter(outputPath)
+    override fun getExporter(): ReportsExporter<M> = PlainFileExporter(outputPath)
 
     companion object {
         private const val PLAIN_FILE_NAME = "Plain file options"

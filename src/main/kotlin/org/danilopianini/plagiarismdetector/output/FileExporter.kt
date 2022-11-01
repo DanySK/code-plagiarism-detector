@@ -1,6 +1,6 @@
 package org.danilopianini.plagiarismdetector.output
 
-import org.danilopianini.plagiarismdetector.core.Result
+import org.danilopianini.plagiarismdetector.core.Report
 import org.danilopianini.plagiarismdetector.core.detector.Match
 import java.io.FileOutputStream
 import java.io.PrintWriter
@@ -13,20 +13,20 @@ import kotlin.io.path.pathString
  * An abstract class implementing a file exporter.
  * @property outputDirectory the [Path] of the directory where store the results.
  */
-abstract class FileExporter<in M : Match>(private val outputDirectory: Path) : ResultsExporter<M> {
+abstract class FileExporter<in M : Match>(private val outputDirectory: Path) : ReportsExporter<M> {
 
     /**
-     * Exports the given [results] in a file inside [outputDirectory].
+     * Exports the given [reports] in a file inside [outputDirectory].
      */
-    override operator fun invoke(results: Set<Result<M>>) {
+    override operator fun invoke(reports: Set<Report<M>>) {
         val output = Paths.get(outputDirectory.pathString, "${LocalDateTime.now()}.txt").toFile()
         PrintWriter(FileOutputStream(output, true)).use {
-            export(results, it)
+            export(reports, it)
         }
     }
 
     /**
-     * Formats the [results] exporting them using the given [output].
+     * Formats the [reports] exporting them using the given [output].
      */
-    protected abstract fun export(results: Set<Result<M>>, output: PrintWriter)
+    protected abstract fun export(reports: Set<Report<M>>, output: PrintWriter)
 }

@@ -2,7 +2,7 @@ package org.danilopianini.plagiarismdetector.input.configuration
 
 import org.danilopianini.plagiarismdetector.core.TechniqueFacade
 import org.danilopianini.plagiarismdetector.core.detector.Match
-import org.danilopianini.plagiarismdetector.output.ResultsExporter
+import org.danilopianini.plagiarismdetector.output.ReportsExporter
 import org.danilopianini.plagiarismdetector.repository.Repository
 
 /**
@@ -14,5 +14,5 @@ data class RunConfigurationImpl<M : Match>(
     override val submission: Set<Repository>,
     override val corpus: Set<Repository>,
     override val filesToExclude: Set<String>,
-    override val exporter: ResultsExporter<M>
+    override val exporter: ReportsExporter<M>
 ) : RunConfiguration<M>
