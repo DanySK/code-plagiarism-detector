@@ -10,4 +10,4 @@ import java.io.File
  * @param <O> the type of output
  * @param <T> the type of the representation
  */
-interface Analyzer<out O : SourceRepresentation<T>, T> : (File) -> (O)
+interface Analyzer<out S : SourceRepresentation<T>, T> : (File) -> (S)
