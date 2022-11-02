@@ -6,7 +6,6 @@ import java.io.FileOutputStream
 import java.io.PrintWriter
 import java.nio.file.Path
 import java.nio.file.Paths
-import java.time.LocalDateTime
 import kotlin.io.path.pathString
 
 /**
@@ -19,8 +18,9 @@ abstract class FileExporter<in M : Match>(private val outputDirectory: Path) : R
      * Exports the given [reports] in a file inside [outputDirectory].
      */
     override operator fun invoke(reports: Set<Report<M>>) {
-        val output = Paths.get(outputDirectory.pathString, "${LocalDateTime.now()}.txt").toFile()
-        PrintWriter(FileOutputStream(output, true)).use {
+        val fileName = "report-${reports.joinToString("-") { it.submittedProject.name }}.txt"
+        val output = Paths.get(outputDirectory.pathString, fileName).toFile()
+        PrintWriter(FileOutputStream(output)).use {
             export(reports, it)
         }
     }
