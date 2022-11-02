@@ -9,7 +9,7 @@ class TestPreprocessing {
     private String test;
 
     public TestPreprocessing(String test) {
-        this.test = test
+        this.test = test;
     }
 
     @Override
