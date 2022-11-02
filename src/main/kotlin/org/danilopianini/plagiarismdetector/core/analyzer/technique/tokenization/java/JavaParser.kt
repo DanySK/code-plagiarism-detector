@@ -14,7 +14,9 @@ class JavaParser : StepHandler<File, CompilationUnit> {
         val parserConfiguration = ParserConfiguration().setAttributeComments(false)
         val parser = com.github.javaparser.JavaParser(parserConfiguration)
         return parser.parse(input).run {
-            check(isSuccessful) { "Errors occurred parsing ${input.path}: ${problems.joinToString { it.message }}" }
+            check(isSuccessful) {
+                "Errors occurred parsing ${input.path}: ${problems.joinToString { it.verboseMessage }}"
+            }
             result.get()
         }
     }
