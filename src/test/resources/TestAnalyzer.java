@@ -1,15 +1,18 @@
 package org.example;
 
-import java.util.List;
 import java.util.Objects;
 import org.example.javaparser.*;
 
-class TestPreprocessing {
+class TestAnalyzer {
 
-    private String test;
+    private final String test;
 
     public TestPreprocessing(String test) {
         this.test = test;
+    }
+
+    public String getTest() {
+        return this.test;
     }
 
     @Override
