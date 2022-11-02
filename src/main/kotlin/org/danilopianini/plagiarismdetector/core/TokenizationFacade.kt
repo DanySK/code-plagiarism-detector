@@ -51,6 +51,7 @@ class TokenizationFacade(private val configs: TokenizationConfig) : TechniqueFac
         .getSources(configs.language.fileExtensions)
         .filter { it.name !in filesToExclude }
         .map(analyzer)
+        .filter { it.representation.any() }
 
     /**
      * Performs the comparison between the [analyzedSubmission] and

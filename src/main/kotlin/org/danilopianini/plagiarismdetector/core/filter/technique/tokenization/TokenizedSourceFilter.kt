@@ -33,15 +33,10 @@ class TokenizedSourceFilter(
             .map { it.key }
     }
 
-    private fun cosineSimilarityOf(index1: Map<TokenType, Int>, index2: Map<TokenType, Int>): Double {
-        return if (index1.isEmpty() || index2.isEmpty()) {
-            0.0
-        } else {
-            index1.keys.sumOf { index2[it]?.times(index1[it] ?: 0) ?: 0 }.div(
-                index1.values.norm() * index2.values.norm()
-            )
-        }
-    }
+    private fun cosineSimilarityOf(index1: Map<TokenType, Int>, index2: Map<TokenType, Int>): Double =
+        index1.keys.sumOf { index2[it]?.times(index1[it] ?: 0) ?: 0 }.div(
+            index1.values.norm() * index2.values.norm()
+        )
 
     private fun Collection<Int>.norm() = sqrt(this.sumOf { it.squared() })
 
