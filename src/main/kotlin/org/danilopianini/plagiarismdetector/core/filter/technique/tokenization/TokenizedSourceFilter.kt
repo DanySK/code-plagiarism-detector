@@ -23,7 +23,7 @@ class TokenizedSourceFilter(
     ): Sequence<TokenizedSource> {
         val indexedSubmission: Map<TokenType, Int> = indexer(submission)
         val similarities = corpus
-            .associateWith { indexer(it) }
+            .associateWith(indexer)
             .mapValues { cosineSimilarityOf(indexedSubmission, it.value) }
         val minSimilarity = similarities.values.min()
         val maxSimilarity = similarities.values.max()
