@@ -27,7 +27,9 @@ class TokenizationConfig : TechniqueConfig<TokenMatch>(TOKENIZATION_NAME) {
         .double()
         .restrictTo(0.0..1.0)
 
-    override fun getFacade(): TokenizationFacade = TokenizationFacade(this)
+    override val facade: TokenizationFacade by lazy {
+        TokenizationFacade(this)
+    }
 
     companion object {
         private const val TOKENIZATION_NAME = "Tokenization options"

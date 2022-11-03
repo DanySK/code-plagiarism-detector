@@ -42,12 +42,13 @@ sealed class BaseProviderCommand(
 
     override fun run() = checkInputs(url, criteria)
 
-    override fun getRepositories(): Sequence<Repository> =
+    override val repositories: Sequence<Repository> by lazy {
         try {
             (url?.let { getResult(it) } ?: emptySequence()) + (criteria?.let { getResult(it) } ?: emptySequence())
         } catch (e: IllegalStateException) {
             error("$commandName must be valued (${e.message})")
         }
+    }
 
     private fun checkInputs(url: List<URL>?, criteria: CriteriaOptions?) =
         require(url != null || criteria != null) { "At least one between url and criteria must be valued." }

@@ -9,7 +9,9 @@ import org.danilopianini.plagiarismdetector.output.ReportsExporter
  */
 class PlainFileExporterConfig<in M : Match> : ExporterConfig<M>(PLAIN_FILE_NAME) {
 
-    override fun getExporter(): ReportsExporter<M> = PlainFileExporter(outputPath)
+    override val exporter: ReportsExporter<M> by lazy {
+        PlainFileExporter(outputPath)
+    }
 
     companion object {
         private const val PLAIN_FILE_NAME = "Plain file options"
