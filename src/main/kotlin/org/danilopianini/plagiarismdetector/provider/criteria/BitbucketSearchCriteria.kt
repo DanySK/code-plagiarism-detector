@@ -3,6 +3,8 @@ package org.danilopianini.plagiarismdetector.provider.criteria
 private const val QUOTATION_MARK = "%22"
 private const val QUESTION_MARK = "?"
 private const val URL_SEPARATOR = "/"
+private const val EMPTY_CHAR = " "
+private const val PLUS_CHAR = "+"
 private const val LIKE_CHAR = "%7E"
 private const val QUERY_PREFIX = "q="
 private const val AND_OPERATOR = "+AND+"
@@ -50,6 +52,6 @@ class ByBitbucketName(
         .append("name")
         .append(LIKE_CHAR)
         .append(QUOTATION_MARK)
-        .append(repositoryName)
+        .append(repositoryName.replace(EMPTY_CHAR, PLUS_CHAR))
         .append(QUOTATION_MARK).toString()
 }
