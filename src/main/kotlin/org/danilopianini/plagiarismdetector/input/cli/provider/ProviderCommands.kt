@@ -8,8 +8,7 @@ import org.danilopianini.plagiarismdetector.repository.Repository
 interface ProviderCommands {
 
     /**
-     * Returns a [Sequence] of [Repository] containing the ones
-     * taken from the configured provider.
+     * A [Sequence] of [Repository] taken from the configured provider.
      */
-    fun getRepositories(): Sequence<Repository>
+    val repositories: Sequence<Repository>
 }

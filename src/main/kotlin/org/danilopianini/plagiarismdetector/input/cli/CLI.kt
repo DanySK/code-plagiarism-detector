@@ -24,17 +24,17 @@ class CLI : CliktCommand(
 ) {
 
     /**
-     * The technique configurations.
+     * The technique configuration.
      */
-    val technique by option(help = TECHNIQUE_HELP_MSG)
+    val techniqueType by option(help = TECHNIQUE_HELP_MSG)
         .groupChoice<TechniqueConfig<Match>>(
             TOKENIZATION_COMMAND to TokenizationConfig(),
         ).defaultByName(TOKENIZATION_COMMAND)
 
     /**
-     * The output configurations.
+     * The exporter configuration.
      */
-    val exporter by option(help = OUTPUT_HELP_MSG)
+    val exporterType by option(help = OUTPUT_HELP_MSG)
         .groupChoice<ExporterConfig<Match>>(
             PLAIN_TEXT_COMMAND to PlainFileExporterConfig()
         ).defaultByName(PLAIN_TEXT_COMMAND)

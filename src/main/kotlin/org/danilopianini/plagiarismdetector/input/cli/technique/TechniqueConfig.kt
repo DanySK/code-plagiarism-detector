@@ -29,7 +29,7 @@ sealed class TechniqueConfig<out M : Match>(name: String) : OptionGroup(name = n
     /**
      * Returns the [TechniqueFacade] for the specific chosen technique.
      */
-    abstract fun getFacade(): TechniqueFacade<M>
+    abstract val facade: TechniqueFacade<M>
 
     companion object {
         private const val LANGUAGE_HELP_MSG = "Sources code language. Default: Java."

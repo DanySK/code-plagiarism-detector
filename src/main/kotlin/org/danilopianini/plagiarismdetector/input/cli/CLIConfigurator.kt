@@ -19,12 +19,12 @@ class CLIConfigurator : RunConfigurator {
         val commonCommand = CLI()
         commonCommand.subcommands(submissionCommand, corpusCommand).main(arguments)
         val config = RunConfigurationImpl(
-            technique = commonCommand.technique.getFacade(),
+            technique = commonCommand.techniqueType.facade,
             minDuplicatedPercentage = commonCommand.minimumDuplication,
-            submission = submissionCommand.getRepositories(),
-            corpus = corpusCommand.getRepositories(),
+            submission = submissionCommand.repositories,
+            corpus = corpusCommand.repositories,
             filesToExclude = commonCommand.exclude?.toSet() ?: emptySet(),
-            exporter = commonCommand.exporter.getExporter()
+            exporter = commonCommand.exporterType.exporter
         )
         return AntiPlagiarismSessionImpl(config)
     }
