@@ -50,7 +50,7 @@ sealed class BaseProviderCommand(
         }
 
     private fun checkInputs(url: List<URL>?, criteria: CriteriaOptions?) =
-        check(url != null || criteria != null) { "At least one between url and criteria must be valued." }
+        require(url != null || criteria != null) { "At least one between url and criteria must be valued." }
 
     private fun getResult(url: List<URL>): Sequence<Repository> = url
         .map { byLink(it, getServiceByUrl(it)) }
