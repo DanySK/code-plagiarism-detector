@@ -10,7 +10,7 @@ import com.github.ajalt.clikt.parameters.types.double
 import com.github.ajalt.clikt.parameters.types.restrictTo
 import org.danilopianini.plagiarismdetector.core.detector.Match
 import org.danilopianini.plagiarismdetector.input.cli.output.ExporterConfig
-import org.danilopianini.plagiarismdetector.input.cli.output.PlainFileConfig
+import org.danilopianini.plagiarismdetector.input.cli.output.PlainFileExporterConfig
 import org.danilopianini.plagiarismdetector.input.cli.technique.TechniqueConfig
 import org.danilopianini.plagiarismdetector.input.cli.technique.TokenizationConfig
 
@@ -36,7 +36,7 @@ class CLI : CliktCommand(
      */
     val exporter by option(help = OUTPUT_HELP_MSG)
         .groupChoice<ExporterConfig<Match>>(
-            PLAIN_TEXT_COMMAND to PlainFileConfig()
+            PLAIN_TEXT_COMMAND to PlainFileExporterConfig()
         ).defaultByName(PLAIN_TEXT_COMMAND)
 
     /**

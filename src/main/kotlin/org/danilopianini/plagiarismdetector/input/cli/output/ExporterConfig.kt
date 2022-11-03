@@ -6,12 +6,11 @@ import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.options.required
 import com.github.ajalt.clikt.parameters.types.file
 import org.danilopianini.plagiarismdetector.core.detector.Match
-import org.danilopianini.plagiarismdetector.output.PlainFileExporter
 import org.danilopianini.plagiarismdetector.output.ReportsExporter
 import java.nio.file.Path
 
 /**
- * Output configurations.
+ * A class encapsulating [ReportsExporter] configurations.
  */
 sealed class ExporterConfig<in M : Match>(name: String) : OptionGroup(name = name) {
 
@@ -30,17 +29,5 @@ sealed class ExporterConfig<in M : Match>(name: String) : OptionGroup(name = nam
 
     companion object {
         private const val OUTPUT_PATH_HELP_MSG = "The path of the directory where to store the reports."
-    }
-}
-
-/**
- * Plain file configurations.
- */
-class PlainFileConfig<in M : Match> : ExporterConfig<M>(PLAIN_FILE_NAME) {
-
-    override fun getExporter(): ReportsExporter<M> = PlainFileExporter(outputPath)
-
-    companion object {
-        private const val PLAIN_FILE_NAME = "Plain file options"
     }
 }
