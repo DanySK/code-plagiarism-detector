@@ -25,13 +25,9 @@ interface Report<out M : Match> {
      * [comparisonResult] and [submittedProject].
      */
     val comparisonResult: Set<ComparisonResult<M>>
-}
 
-/**
- * A simple implementation of the [Report] interface.
- */
-class ReportImpl<out M : Match>(
-    override val submittedProject: Repository,
-    override val comparedProject: Repository,
-    override val comparisonResult: Set<ComparisonResult<M>>
-) : Report<M>
+    /**
+     * The overall similarity between [submittedProject] and [comparedProject].
+     */
+    val similarity: Double
+}
