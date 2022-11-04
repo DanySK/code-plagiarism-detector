@@ -11,6 +11,18 @@ import java.time.LocalDateTime
  */
 class PlainFileExporter<in M : Match>(outputDirectory: Path) : FileExporter<M>(outputDirectory) {
 
+    override val fileExtension: String = "txt"
+
+    override fun exportSummary(reports: Set<Report<M>>, output: PrintWriter) {
+        output.println("+".repeat(LINE_LENGTH))
+        output.format("|%-80s|%-80s|%s|%n", "submitted", "compared", "similarity")
+        output.println("+".repeat(LINE_LENGTH))
+        reports.forEach {
+            output.format("|%-80s|%-80s|%10.2f|%n", it.submittedProject.name, it.comparedProject.name, it.similarity)
+        }
+        output.println("+".repeat(LINE_LENGTH))
+    }
+
     override fun export(reports: Set<Report<M>>, output: PrintWriter) {
         printHeader(output)
         reports.forEach { printBody(it, output) }
@@ -45,7 +57,7 @@ class PlainFileExporter<in M : Match>(outputDirectory: Path) : FileExporter<M>(o
     }
 
     companion object {
-        private const val LINE_LENGTH = 120
+        private const val LINE_LENGTH = 174
         private const val FILE_PREAMBLE = "This is the generated report from plagiarism detector tool at "
     }
 }

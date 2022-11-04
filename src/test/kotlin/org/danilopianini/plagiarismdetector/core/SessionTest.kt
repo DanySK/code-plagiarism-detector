@@ -82,7 +82,7 @@ class SessionTest : FunSpec() {
                 PlainFileExporter(temporaryDirectory.toPath())
             )
             AntiPlagiarismSessionImpl(configuration)()
-            temporaryDirectory shouldContainNFiles 2
+            temporaryDirectory shouldContainNFiles 4
         }
     }
 
