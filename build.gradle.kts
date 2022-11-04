@@ -31,6 +31,7 @@ dependencies {
     implementation(libs.kaml)
     implementation(libs.org.eclipse.jgit)
     implementation(libs.commons.io)
+    implementation(libs.commons.math)
     implementation(libs.javaparser.core)
     implementation(libs.slf4j.api)
     implementation(libs.logback.classic)
