@@ -24,7 +24,9 @@ class AntiPlagiarismSessionImpl<out C : RunConfiguration<M>, M : Match>(
                     .parallelStream()
                     .map { technique.execute(submission, it, filesToExclude, minDuplicatedPercentage) }
                     .collect(Collectors.toSet())
-                configuration.exporter(result)
+                if (result.isNotEmpty()) {
+                    configuration.exporter(result)
+                }
             }
         }
     }

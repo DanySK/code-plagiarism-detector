@@ -11,12 +11,28 @@ import org.danilopianini.plagiarismdetector.core.session.AntiPlagiarismSessionIm
 import org.danilopianini.plagiarismdetector.input.cli.technique.TokenizationConfig
 import org.danilopianini.plagiarismdetector.input.configuration.RunConfigurationImpl
 import org.danilopianini.plagiarismdetector.output.PlainFileExporter
+import org.danilopianini.plagiarismdetector.repository.GitHubRepository
 import org.danilopianini.plagiarismdetector.repository.Repository
 import java.io.File
 
 class SessionTest : FunSpec() {
 
     init {
+
+        test("If no corpus is found to check no file is generated") {
+            val temporaryDirectory = tempdir()
+            val configuration = RunConfigurationImpl(
+                mockk<TokenizationFacade>(),
+                0.5,
+                sequenceOf(mockk<GitHubRepository>()),
+                emptySequence(),
+                emptySet(),
+                PlainFileExporter(temporaryDirectory.toPath())
+            )
+            AntiPlagiarismSessionImpl(configuration)()
+            temporaryDirectory shouldContainNFiles 0
+        }
+
         test("Testing tokenization technique session") {
             val tokenizationConfigs = mockk<TokenizationConfig> {
                 every { language } returns Java
