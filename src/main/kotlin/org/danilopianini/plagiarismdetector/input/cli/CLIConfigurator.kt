@@ -49,7 +49,7 @@ class CLIConfigurator : RunConfigurator {
 
     private fun extract(providerConfigs: ProviderCommand): Sequence<Repository> = with(providerConfigs) {
         url?.map { byLink(it, serviceByUr(it)) }?.asSequence() ?: searchCriteria?.flatMap { byCriteria(it) } ?: error(
-            "Neither url and criteria is valued."
+            "Neither url nor criteria are valued."
         )
     }
 
