@@ -3,7 +3,7 @@ package org.danilopianini.plagiarismdetector.input.cli.provider
 /**
  * Command encapsulating submission provider options.
  */
-class SubmissionProviderCommand : BaseProviderCommand(
+class SubmissionProviderCommand : ProviderCommand(
     name = "submission",
     help = "Submission options."
 )
@@ -11,7 +11,7 @@ class SubmissionProviderCommand : BaseProviderCommand(
 /**
  * Command encapsulating corpus provider options.
  */
-class CorpusProviderCommand : BaseProviderCommand(
+class CorpusProviderCommand : ProviderCommand(
     name = "corpus",
     help = "Corpus Options."
 )
