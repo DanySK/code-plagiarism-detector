@@ -18,7 +18,8 @@ abstract class FileExporter<in M : Match>(private val outputDirectory: Path) : R
      * Exports the given [reports] in a file inside [outputDirectory].
      */
     override operator fun invoke(reports: Set<Report<M>>) {
-        val fileName = "report-${reports.joinToString("-") { it.submittedProject.name }}.txt"
+        val submittedProjectNames = reports.map { it.submittedProject.name }.distinct().joinToString("-")
+        val fileName = "report-$submittedProjectNames.txt"
         val output = Paths.get(outputDirectory.pathString, fileName).toFile()
         PrintWriter(FileOutputStream(output)).use {
             export(reports, it)
