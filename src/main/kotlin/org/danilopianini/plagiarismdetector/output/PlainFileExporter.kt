@@ -17,7 +17,7 @@ class PlainFileExporter<in M : Match>(outputDirectory: Path) : FileExporter<M>(o
         output.println("+".repeat(LINE_LENGTH))
         output.format("|%-80s|%-80s|%s|%n", "submitted", "compared", "similarity")
         output.println("+".repeat(LINE_LENGTH))
-        reports.forEach {
+        reports.sortedByDescending { it.similarity }.forEach {
             output.format("|%-80s|%-80s|%10.2f|%n", it.submittedProject.name, it.comparedProject.name, it.similarity)
         }
         output.println("+".repeat(LINE_LENGTH))
