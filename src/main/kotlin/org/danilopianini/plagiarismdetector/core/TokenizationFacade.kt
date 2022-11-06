@@ -36,22 +36,19 @@ class TokenizationFacade(private val configs: TokenizationConfig) : TechniqueFac
         logger.info("Comparing ${submittedRepository.name} with ${comparedRepository.name}")
         val submittedAnalyzed = analyze(submittedRepository, filesToExclude)
         val corpusAnalyzed = analyze(comparedRepository, filesToExclude)
-        return ReportImpl(
-            submittedRepository,
-            comparedRepository,
-            compare(submittedAnalyzed, corpusAnalyzed, minDuplicatedPercentage)
-        )
+        val results = compare(submittedAnalyzed, corpusAnalyzed, minDuplicatedPercentage)
+        return ReportImpl(submittedRepository, comparedRepository, results)
     }
 
     /**
      * Performs the analysis of the [repository] sources returning a
      * [Sequence] of concrete [SourceRepresentation].
      */
-    private fun analyze(repository: Repository, filesToExclude: Set<String>) = repository
-        .getSources(configs.language.fileExtensions)
-        .filter { it.name !in filesToExclude }
-        .map(analyzer)
-        .filter { it.representation.any() }
+    private fun analyze(repository: Repository, filesToExclude: Set<String>): Sequence<TokenizedSource> =
+        repository.getSources(configs.language.fileExtensions)
+            .filter { it.name !in filesToExclude }
+            .map(analyzer)
+            .filter { it.representation.any() }
 
     /**
      * Performs the comparison between the [analyzedSubmission] and
