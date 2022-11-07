@@ -5,7 +5,6 @@ import org.danilopianini.plagiarismdetector.commons.Java
 import org.danilopianini.plagiarismdetector.core.detector.ComparisonResult
 import org.danilopianini.plagiarismdetector.core.detector.Match
 import org.danilopianini.plagiarismdetector.repository.Repository
-import kotlin.math.max
 import kotlin.math.min
 
 /**
@@ -20,7 +19,10 @@ class ReportImpl<out M : Match>(
     override val similarity: Double = ProjectsSimilarityEstimator {
         with(Percentile()) {
             data = it.map { it.similarity }.toDoubleArray()
-            val reported = min(it.count().toDouble() / comparedProject.getSources(Java.fileExtensions).count(), 1.0)
+            val reported = min(
+                it.count().toDouble() / comparedProject.getSources(Java.fileExtensions).count(),
+                1.0
+            )
             reported * evaluate(75.0)
         }
     }.invoke(comparisonResult)
