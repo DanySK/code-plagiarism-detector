@@ -21,11 +21,9 @@ class ProviderTest : FunSpec() {
         private const val PR_BUILD_VARIABLE = "PR_BUILD"
         private const val GH_URL_PREFIX = "https://github.com"
         private const val BB_URL_PREFIX = "https://bitbucket.org"
-        private const val DANYSK_NAME = "Danilo Pianini"
-        private const val DANYSK_GH_USER = "DanySK"
-        private const val DANYSK_BB_USER = "danysk"
+        private const val OOP_PROJECTS_ORGANIZATION = "unibo-oop-projects"
+        private const val DANYSK_USER = "danysk"
         private const val TASSILUCA_USER = "tassiLuca"
-        private const val TASSILUCA_NAME = "Luca Tassinari"
         private const val BB_AUTH_USER_VAR = "BB_USER"
         private const val BB_AUTH_TOKEN_VAR = "BB_TOKEN"
         private const val GH_AUTH_TOKEN_VAR = "GH_TOKEN"
@@ -51,17 +49,15 @@ class ProviderTest : FunSpec() {
         test("Searching by existing name and user should return repos matching those criteria") {
             var searchedRepoName = "Project-OOP"
             testByExistingName(
-                githubProvider.byCriteria(ByGitHubName(searchedRepoName, ByGitHubUser(DANYSK_GH_USER))),
+                githubProvider.byCriteria(ByGitHubName(searchedRepoName, ByGitHubUser(OOP_PROJECTS_ORGANIZATION))),
                 searchedRepoName,
-                DANYSK_NAME,
-                DANYSK_GH_USER
+                OOP_PROJECTS_ORGANIZATION,
             )
             searchedRepoName = "OOP"
             testByExistingName(
-                bitbucketProvider.byCriteria(ByBitbucketName(searchedRepoName, ByBitbucketUser(DANYSK_BB_USER))),
+                bitbucketProvider.byCriteria(ByBitbucketName(searchedRepoName, ByBitbucketUser(DANYSK_USER))),
                 searchedRepoName,
-                DANYSK_NAME,
-                DANYSK_BB_USER
+                DANYSK_USER,
             )
         }
 
@@ -71,22 +67,22 @@ class ProviderTest : FunSpec() {
             testByExistingUrl(
                 githubProvider.byLink(URL(expectedRepoUrl)),
                 repoName,
-                TASSILUCA_NAME
+                TASSILUCA_USER
             )
             expectedRepoUrl = "$BB_URL_PREFIX/$TASSILUCA_USER/$repoName"
             testByExistingUrl(
                 bitbucketProvider.byLink(URL(expectedRepoUrl)),
                 repoName,
-                TASSILUCA_NAME
+                TASSILUCA_USER
             )
         }
 
         test("Searching by *non-existing* URL should throw an exception") {
             shouldThrow<IllegalArgumentException> {
-                githubProvider.byLink(URL("$GH_URL_PREFIX/$DANYSK_GH_USER/non-existing-repo"))
+                githubProvider.byLink(URL("$GH_URL_PREFIX/$DANYSK_USER/non-existing-repo"))
             }
             shouldThrow<IllegalArgumentException> {
-                bitbucketProvider.byLink(URL("$BB_URL_PREFIX/$DANYSK_BB_USER/non-existing-repo"))
+                bitbucketProvider.byLink(URL("$BB_URL_PREFIX/$DANYSK_USER/non-existing-repo"))
             }
         }
 
@@ -96,7 +92,7 @@ class ProviderTest : FunSpec() {
             }
             shouldThrow<java.lang.IllegalArgumentException> {
                 githubProvider.byLink(
-                    URL("$GH_URL_PREFIX/$DANYSK_GH_USER/code-plagiarism-detector/tree/master/src/")
+                    URL("$GH_URL_PREFIX/$DANYSK_USER/code-plagiarism-detector/tree/master/src/")
                 )
             }
             shouldThrow<java.lang.IllegalArgumentException> {
@@ -104,17 +100,17 @@ class ProviderTest : FunSpec() {
             }
             shouldThrow<java.lang.IllegalArgumentException> {
                 bitbucketProvider.byLink(
-                    URL("$BB_URL_PREFIX/$DANYSK_BB_USER/courses-oop-gradle-jfx-template/src/")
+                    URL("$BB_URL_PREFIX/$DANYSK_USER/courses-oop-gradle-jfx-template/src/")
                 )
             }
         }
 
         test("Searching by a *non-existing* name should return an empty collection of repos") {
             githubProvider.byCriteria(
-                ByGitHubName("non-existing-repo", ByGitHubUser(DANYSK_GH_USER))
+                ByGitHubName("non-existing-repo", ByGitHubUser(DANYSK_USER))
             ).toSet().shouldBeEmpty()
             bitbucketProvider.byCriteria(
-                ByBitbucketName("non-existing-repo", ByBitbucketUser(DANYSK_GH_USER))
+                ByBitbucketName("non-existing-repo", ByBitbucketUser(DANYSK_USER))
             ).toSet().shouldBeEmpty()
         }
 
@@ -133,13 +129,12 @@ class ProviderTest : FunSpec() {
     private fun testByExistingName(
         result: Sequence<Repository>,
         expectedRepositoryName: String,
-        expectedUser: String,
         expectedUsername: String
     ) {
         result.toSet().shouldNotBeEmpty()
         result.forEach {
             it.name shouldContainIgnoringCase expectedRepositoryName
-            it.owner shouldMatch expectedUser
+            it.owner shouldMatch expectedUsername
             it.cloneUrl.path shouldContain Regex(
                 "^/$expectedUsername/.*$expectedRepositoryName.*",
                 RegexOption.IGNORE_CASE
