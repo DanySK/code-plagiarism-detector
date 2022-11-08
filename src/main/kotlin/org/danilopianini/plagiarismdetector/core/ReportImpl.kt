@@ -20,7 +20,7 @@ class ReportImpl<out M : Match>(
         with(Percentile()) {
             data = it.map { it.similarity }.toDoubleArray()
             val reported = min(
-                it.count().toDouble() / comparedProject.getSources(Java.fileExtensions).count(),
+                it.count().toDouble() / submittedProject.getSources(Java.fileExtensions).count(),
                 1.0
             )
             reported * evaluate(75.0)
