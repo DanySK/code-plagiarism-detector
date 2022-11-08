@@ -44,10 +44,9 @@ sealed class ProviderCommand(
         criteriaOptions?.criteria
     }
 
-    override fun run() = checkInputs(url, criteriaOptions)
-
-    private fun checkInputs(url: List<URL>?, criteria: CriteriaOptions?) =
-        require(url != null || criteria != null) { "At least one between url and criteria must be valued." }
+    override fun run() = require(url != null || criteriaOptions != null) {
+        "At least one between url and criteria must be valued in `$commandName` command."
+    }
 
     companion object {
         private const val URL_HELP_MSG = "The URL address of the repository."
