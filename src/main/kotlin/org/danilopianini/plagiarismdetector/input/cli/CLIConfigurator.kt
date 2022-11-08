@@ -48,7 +48,7 @@ class CLIConfigurator : RunConfigurator {
     }
 
     private fun extract(providerConfigs: ProviderCommand): Sequence<Repository> = with(providerConfigs) {
-        url?.map { byLink(it, serviceByUr(it)) }?.asSequence() ?: searchCriteria?.flatMap { byCriteria(it) } ?: error(
+        url?.map { byLink(it, serviceByUrl(it)) }?.asSequence() ?: searchCriteria?.flatMap { byCriteria(it) } ?: error(
             "Neither url nor criteria are valued."
         )
     }
@@ -64,7 +64,7 @@ class CLIConfigurator : RunConfigurator {
         else -> error("The extracted criteria is not valid.")
     }
 
-    private fun serviceByUr(url: URL): HostingService =
+    private fun serviceByUrl(url: URL): HostingService =
         SupportedOptions.services.find { it.host == url.host } ?: error("${url.host} not supported!")
 
     companion object {
