@@ -3,6 +3,7 @@ package org.danilopianini.plagiarismdetector.repository.content
 import org.apache.commons.io.FileUtils
 import org.apache.commons.io.filefilter.DirectoryFileFilter
 import org.apache.commons.io.filefilter.RegexFileFilter
+import org.danilopianini.plagiarismdetector.caching.FileKnowledgeBaseManager
 import org.eclipse.jgit.api.Git
 import java.io.File
 import java.net.URL
@@ -16,22 +17,29 @@ class RepoContentSupplierCloneStrategy(private val cloneUrl: URL) : RepoContentS
     companion object {
         private const val URL_SEPARATOR = "/"
     }
-    private val clonedRepoDirectory: File
+    private val repoContentDirectory: File
+    private val knowledgeBaseManager = FileKnowledgeBaseManager()
 
     init {
-        clonedRepoDirectory = Files.createTempDirectory(cloneUrl.path.substringAfterLast(URL_SEPARATOR)).toFile()
-        Git.cloneRepository()
-            .setURI("$cloneUrl")
-            .setDirectory(clonedRepoDirectory)
-            .call()
-        /* In order to work, no additional files and/or folders must be created
-         * inside the directory after forceDeleteOnExit() is called. */
-        FileUtils.forceDeleteOnExit(clonedRepoDirectory)
+        val repoName = cloneUrl.path.substringAfterLast(URL_SEPARATOR)
+        if (knowledgeBaseManager.isCached(repoName)) {
+            repoContentDirectory = knowledgeBaseManager.load(repoName)
+        } else {
+            repoContentDirectory = Files.createTempDirectory(cloneUrl.path.substringAfterLast(URL_SEPARATOR)).toFile()
+            Git.cloneRepository()
+                .setURI("$cloneUrl")
+                .setDirectory(repoContentDirectory)
+                .call()
+            knowledgeBaseManager.save(repoName, repoContentDirectory)
+            /* In order to work, no additional files and/or folders must be created
+             * inside the directory after forceDeleteOnExit() is called. */
+            FileUtils.forceDeleteOnExit(repoContentDirectory)
+        }
     }
 
     override fun filesMatching(pattern: Regex): Sequence<File> =
         FileUtils.listFiles(
-            clonedRepoDirectory,
+            repoContentDirectory,
             RegexFileFilter(pattern.toPattern()),
             DirectoryFileFilter.DIRECTORY
         ).asSequence()
