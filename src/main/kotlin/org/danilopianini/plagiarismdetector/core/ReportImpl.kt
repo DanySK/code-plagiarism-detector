@@ -21,9 +21,14 @@ class ReportImpl<out M : Match>(
             data = it.map { it.similarity }.toDoubleArray()
             val reported = min(
                 it.count().toDouble() / submittedProject.getSources(Java.fileExtensions).count(),
-                1.0
+                MAX_REPORTED_RATIO
             )
-            reported * evaluate(75.0)
+            reported * evaluate(DEFAULT_PERCENTILE_VALUE)
         }
     }.invoke(comparisonResult)
+
+    companion object {
+        private const val DEFAULT_PERCENTILE_VALUE = 75.0
+        private const val MAX_REPORTED_RATIO = 1.0
+    }
 }
