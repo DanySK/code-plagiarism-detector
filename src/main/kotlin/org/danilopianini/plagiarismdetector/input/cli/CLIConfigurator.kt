@@ -47,11 +47,13 @@ class CLIConfigurator : RunConfigurator {
         return AntiPlagiarismSessionImpl(config)
     }
 
-    private fun repositoriesFrom(configs: ProviderCommand): Set<Repository> = with(configs) {
-        url?.map { byLink(it, serviceByUrl(it)) }?.toSet() ?: criteria?.flatMap { byCriteria(it) }?.toSet() ?: error(
-            "Neither url nor criteria are valued!"
-        )
-    }
+    private fun repositoriesFrom(configs: ProviderCommand): Set<Repository> = runCatching {
+        with(configs) {
+            url?.map { byLink(it, serviceBy(it)) }?.toSet() ?: criteria?.flatMap { byCriteria(it) }?.toSet() ?: error(
+                "Neither url nor criteria are valued!"
+            )
+        }
+    }.getOrElse { throw IllegalArgumentException("Both `corpus` and `provider` subcommands are required.") }
 
     private fun byLink(link: URL, service: HostingService): Repository = when (service) {
         GitHub -> githubProvider.byLink(link)
@@ -66,7 +68,7 @@ class CLIConfigurator : RunConfigurator {
         }
     }.getOrElse { emptySet() }
 
-    private fun serviceByUrl(url: URL): HostingService =
+    private fun serviceBy(url: URL): HostingService =
         SupportedOptions.services.find { it.host == url.host } ?: error("${url.host} not supported!")
 
     companion object {
