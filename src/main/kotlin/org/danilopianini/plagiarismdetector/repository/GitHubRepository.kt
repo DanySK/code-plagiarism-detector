@@ -10,7 +10,7 @@ import java.net.URL
 data class GitHubRepository(private val repository: GHRepository) : AbstractRepository() {
     override val name: String by lazy { repository.name }
 
-    override val owner: String by lazy { repository.owner.name }
+    override val owner: String by lazy { repository.ownerName }
 
     override val cloneUrl: URL by lazy { repository.htmlUrl }
 
