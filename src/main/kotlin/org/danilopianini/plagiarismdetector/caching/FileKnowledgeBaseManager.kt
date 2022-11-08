@@ -5,6 +5,9 @@ import org.apache.commons.io.filefilter.FalseFileFilter
 import org.apache.commons.io.filefilter.NameFileFilter
 import java.io.File
 
+/**
+ * A file based knowledge base manager which caches data on files.
+ */
 class FileKnowledgeBaseManager : KnowledgeBaseManager {
     private val separator = System.getProperty("file.separator")
     private val homeDirectory = System.getProperty("user.home")
