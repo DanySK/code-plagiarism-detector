@@ -1,8 +1,10 @@
 package org.danilopianini.plagiarismdetector.input.cli
 
+import com.github.ajalt.clikt.core.BadParameterValue
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.engine.spec.tempdir
+import io.kotest.engine.spec.tempfile
 import io.kotest.matchers.string.shouldStartWith
 
 class CLIConfiguratorTest : FunSpec({
@@ -43,5 +45,13 @@ class CLIConfiguratorTest : FunSpec({
             CLIConfigurator().sessionFrom(args)
         }
         exception.message shouldStartWith "Both `corpus` and `provider` subcommands are required"
+    }
+
+    test("If output path is not a directory should throw an exception") {
+        val outputFile = tempfile()
+        val args = listOf("--o", outputFile.path)
+        shouldThrow<BadParameterValue> {
+            CLI().parse(args)
+        }
     }
 })
