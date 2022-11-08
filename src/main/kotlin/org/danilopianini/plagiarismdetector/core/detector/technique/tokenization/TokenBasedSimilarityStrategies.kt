@@ -20,7 +20,7 @@ class NormalizedMaxSimilarityStrategy : TokenBasedSimilarityStrategy {
         matches: Set<TokenMatch>,
     ): Double {
         val matchedTokens = matches.sumOf { it.length }
-        val matchedSubsequences = matches.count()
+        val matchedSubsequences = if (matches.isEmpty()) 0 else matches.count() - 1
         return (matchedTokens - matchedSubsequences).toDouble() / min(
             representations.first.representation.count(),
             representations.second.representation.count()
@@ -39,7 +39,7 @@ class NormalizedAverageSimilarityStrategy : TokenBasedSimilarityStrategy {
     ): Double {
         val totalTokens = representations.first.representation.count() + representations.second.representation.count()
         val matchedTokens = matches.sumOf { it.length }
-        val matchedSubsequences = matches.count()
-        return (2 * (matchedTokens - (matchedSubsequences - 1))).toDouble() / totalTokens
+        val matchedSubsequences = if (matches.isEmpty()) 0 else matches.count() - 1
+        return (2 * (matchedTokens - matchedSubsequences)).toDouble() / totalTokens
     }
 }
