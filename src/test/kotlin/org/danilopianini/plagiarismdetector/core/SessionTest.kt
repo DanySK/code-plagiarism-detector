@@ -24,8 +24,8 @@ class SessionTest : FunSpec() {
             val configuration = RunConfigurationImpl(
                 mockk<TokenizationFacade>(),
                 0.5,
-                sequenceOf(mockk<GitHubRepository>()),
-                emptySequence(),
+                setOf(mockk<GitHubRepository>()),
+                emptySet(),
                 emptySet(),
                 PlainFileExporter(temporaryDirectory.toPath())
             )
@@ -39,7 +39,7 @@ class SessionTest : FunSpec() {
                 every { minimumTokens } returns 15
                 every { filterThreshold } returns null
             }
-            val submission = sequenceOf<Repository>(
+            val submission = setOf<Repository>(
                 spyk {
                     every { name } returns "test-submission-1"
                     every { getSources(any()) } returns loadFiles(
@@ -56,7 +56,7 @@ class SessionTest : FunSpec() {
                     )
                 }
             )
-            val corpus = sequenceOf<Repository>(
+            val corpus = setOf<Repository>(
                 spyk {
                     every { name } returns "test-corpus-1"
                     every { getSources(any()) } returns loadFiles(

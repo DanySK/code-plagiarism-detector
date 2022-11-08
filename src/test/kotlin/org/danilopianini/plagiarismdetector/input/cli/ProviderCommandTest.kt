@@ -51,7 +51,7 @@ class ProviderCommandTest : FunSpec() {
             parsedCommands(args) {
                 it.url.shouldNotBeNull()
                 it.url!! shouldBe listOf(URL(urlString))
-                it.searchCriteria.shouldBeNull()
+                it.criteria.shouldBeNull()
             }
         }
 
@@ -61,7 +61,7 @@ class ProviderCommandTest : FunSpec() {
             parsedCommands(args) {
                 it.url.shouldNotBeNull()
                 it.url!! shouldBe urls.map(::URL)
-                it.searchCriteria.shouldBeNull()
+                it.criteria.shouldBeNull()
             }
         }
 
@@ -69,9 +69,9 @@ class ProviderCommandTest : FunSpec() {
             val args = listOf("--repository-name", "repo1", "--user", "user1", "--service", "github")
             parsedCommands(args) {
                 it.url.shouldBeNull()
-                it.searchCriteria.shouldNotBeNull()
-                it.searchCriteria!!.count() shouldBe 1
-                it.searchCriteria!!.first().shouldBeTypeOf<ByGitHubName>()
+                it.criteria.shouldNotBeNull()
+                it.criteria!!.count() shouldBe 1
+                it.criteria!!.first().shouldBeTypeOf<ByGitHubName>()
             }
         }
 
@@ -89,8 +89,8 @@ class ProviderCommandTest : FunSpec() {
             )
             parsedCommands(args) {
                 it.url.shouldBeNull()
-                it.searchCriteria.shouldNotBeNull()
-                it.searchCriteria!!.count() shouldBe (users.count() * repositories.count() * services.count())
+                it.criteria.shouldNotBeNull()
+                it.criteria!!.count() shouldBe (users.count() * repositories.count() * services.count())
             }
         }
 
@@ -108,9 +108,9 @@ class ProviderCommandTest : FunSpec() {
             parsedCommands(args) {
                 it.url.shouldNotBeNull()
                 it.url shouldBe listOf(URL("https://test.com"))
-                it.searchCriteria.shouldNotBeNull()
-                it.searchCriteria!!.count() shouldBe 1
-                it.searchCriteria!!.first().shouldBeTypeOf<ByGitHubName>()
+                it.criteria.shouldNotBeNull()
+                it.criteria!!.count() shouldBe 1
+                it.criteria!!.first().shouldBeTypeOf<ByGitHubName>()
             }
         }
     }

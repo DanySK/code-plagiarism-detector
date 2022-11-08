@@ -23,12 +23,12 @@ interface RunConfiguration<M : Match> {
     /**
      * The submission set to check.
      */
-    val submission: Sequence<Repository>
+    val submission: Set<Repository>
 
     /**
      * The corpus set on which test similarities.
      */
-    val corpus: Sequence<Repository>
+    val corpus: Set<Repository>
 
     /**
      * Set of file names to exclude during the comparison.

@@ -39,17 +39,17 @@ class CLIConfigurator : RunConfigurator {
         val config = RunConfigurationImpl(
             technique = commonCommand.techniqueType.facade,
             minDuplicatedPercentage = commonCommand.minimumDuplication,
-            submission = extract(submissionCommand),
-            corpus = extract(corpusCommand),
+            submission = repositoriesFrom(submissionCommand),
+            corpus = repositoriesFrom(corpusCommand),
             filesToExclude = commonCommand.exclude?.toSet() ?: emptySet(),
             exporter = commonCommand.exporterType.exporter
         )
         return AntiPlagiarismSessionImpl(config)
     }
 
-    private fun extract(providerConfigs: ProviderCommand): Sequence<Repository> = with(providerConfigs) {
-        url?.map { byLink(it, serviceByUrl(it)) }?.asSequence() ?: searchCriteria?.flatMap { byCriteria(it) } ?: error(
-            "Neither url nor criteria are valued."
+    private fun repositoriesFrom(configs: ProviderCommand): Set<Repository> = with(configs) {
+        url?.map { byLink(it, serviceByUrl(it)) }?.toSet() ?: criteria?.flatMap { byCriteria(it) }?.toSet() ?: error(
+            "Neither url nor criteria are valued!"
         )
     }
 
@@ -58,11 +58,13 @@ class CLIConfigurator : RunConfigurator {
         BitBucket -> bitbucketProvider.byLink(link)
     }
 
-    private fun byCriteria(criteria: SearchCriteria<*, *>): Sequence<Repository> = when (criteria) {
-        is GitHubSearchCriteria -> githubProvider.byCriteria(criteria)
-        is BitbucketSearchCriteria -> bitbucketProvider.byCriteria(criteria)
-        else -> error("The extracted criteria is not valid.")
-    }
+    private fun byCriteria(criteria: SearchCriteria<*, *>): Set<Repository> = runCatching {
+        when (criteria) {
+            is GitHubSearchCriteria -> githubProvider.byCriteria(criteria).toSet()
+            is BitbucketSearchCriteria -> bitbucketProvider.byCriteria(criteria).toSet()
+            else -> error("The extracted criteria is not valid.")
+        }
+    }.getOrElse { emptySet() }
 
     private fun serviceByUrl(url: URL): HostingService =
         SupportedOptions.services.find { it.host == url.host } ?: error("${url.host} not supported!")

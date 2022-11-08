@@ -11,8 +11,8 @@ import org.danilopianini.plagiarismdetector.repository.Repository
 data class RunConfigurationImpl<M : Match>(
     override val technique: TechniqueFacade<M>,
     override val minDuplicatedPercentage: Double,
-    override val submission: Sequence<Repository>,
-    override val corpus: Sequence<Repository>,
+    override val submission: Set<Repository>,
+    override val corpus: Set<Repository>,
     override val filesToExclude: Set<String>,
     override val exporter: ReportsExporter<M>
 ) : RunConfiguration<M>
