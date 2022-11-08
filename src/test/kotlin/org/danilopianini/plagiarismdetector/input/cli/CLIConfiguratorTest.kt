@@ -6,8 +6,20 @@ import io.kotest.core.spec.style.FunSpec
 import io.kotest.engine.spec.tempdir
 import io.kotest.engine.spec.tempfile
 import io.kotest.matchers.string.shouldStartWith
+import io.mockk.every
+import io.mockk.spyk
+import org.danilopianini.plagiarismdetector.provider.BitbucketProvider
+import org.danilopianini.plagiarismdetector.provider.GitHubProvider
 
 class CLIConfiguratorTest : FunSpec({
+
+    val configurator = spyk<CLIConfigurator>()
+    every { configurator getProperty "githubProvider" } propertyType GitHubProvider::class answers {
+        GitHubProvider.connectAnonymously()
+    }
+    every { configurator getProperty "bitbucketProvider" } propertyType BitbucketProvider::class answers {
+        BitbucketProvider.connectAnonymously()
+    }
 
     test(
         "Launching CLI configuration with multiple users which are not" +
@@ -27,7 +39,7 @@ class CLIConfiguratorTest : FunSpec({
             "--service",
             "github,bitbucket"
         )
-        CLIConfigurator().sessionFrom(args)
+        configurator.sessionFrom(args)
     }
 
     test(
@@ -42,7 +54,7 @@ class CLIConfiguratorTest : FunSpec({
             "https://github.com/DanySK/code-plagiarism-detector",
         )
         val exception = shouldThrow<IllegalArgumentException> {
-            CLIConfigurator().sessionFrom(args)
+            configurator.sessionFrom(args)
         }
         exception.message shouldStartWith "Both `corpus` and `provider` subcommands are required"
     }

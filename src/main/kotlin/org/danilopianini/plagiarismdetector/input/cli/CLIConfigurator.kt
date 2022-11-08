@@ -26,10 +26,14 @@ import java.net.URL
  */
 class CLIConfigurator : RunConfigurator {
 
-    private val githubProvider = GitHubProvider.connectWithToken(EnvironmentTokenSupplier(GH_AUTH_TOKEN_VAR))
-    private val bitbucketProvider = BitbucketProvider.connectWithToken(
-        EnvironmentTokenSupplier(BB_AUTH_USER_VAR, BB_AUTH_TOKEN_VAR, separator = ":")
-    )
+    private val githubProvider by lazy {
+        GitHubProvider.connectWithToken(EnvironmentTokenSupplier(GH_AUTH_TOKEN_VAR))
+    }
+    private val bitbucketProvider by lazy {
+        BitbucketProvider.connectWithToken(
+            EnvironmentTokenSupplier(BB_AUTH_USER_VAR, BB_AUTH_TOKEN_VAR, separator = ":")
+        )
+    }
 
     override fun sessionFrom(arguments: List<String>): AntiPlagiarismSession {
         val submissionCommand = SubmissionProviderCommand()
