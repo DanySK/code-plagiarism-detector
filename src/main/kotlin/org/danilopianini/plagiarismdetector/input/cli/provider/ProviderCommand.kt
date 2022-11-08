@@ -40,7 +40,7 @@ sealed class ProviderCommand(
     /**
      * The [SearchCriteria] to use.
      */
-    val searchCriteria by lazy {
+    val criteria by lazy {
         criteriaOptions?.criteria
     }
 
