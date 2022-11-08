@@ -14,7 +14,7 @@ data class BitbucketRepository(private val repositoryInfo: JSONObject) : Abstrac
         private const val CLONE_FIELD = "clone"
         private const val HREF_FIELD = "href"
         private const val OWNER_FIELD = "owner"
-        private const val OWNER_NAME_FIELD = "display_name"
+        private const val OWNER_NAME_FIELD = "nickname"
     }
 
     override val name: String by lazy {
