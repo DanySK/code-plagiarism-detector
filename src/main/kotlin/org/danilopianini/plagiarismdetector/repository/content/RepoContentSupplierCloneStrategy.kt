@@ -31,9 +31,7 @@ class RepoContentSupplierCloneStrategy(private val cloneUrl: URL) : RepoContentS
                 .setDirectory(repoContentDirectory)
                 .call()
             knowledgeBaseManager.save(repoName, repoContentDirectory)
-            /* In order to work, no additional files and/or folders must be created
-             * inside the directory after forceDeleteOnExit() is called. */
-            FileUtils.forceDeleteOnExit(repoContentDirectory)
+            FileUtils.deleteDirectory(repoContentDirectory)
         }
     }
 
