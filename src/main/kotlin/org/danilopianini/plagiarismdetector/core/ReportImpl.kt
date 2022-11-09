@@ -16,9 +16,14 @@ class ReportImpl<out M : Match>(
 ) : Report<M> {
 
     override val similarity: Double = ProjectsSimilarityEstimator {
-        with(Percentile()) {
-            data = it.map { it.similarity }.toDoubleArray()
-            reportedRatio * evaluate(DEFAULT_PERCENTILE_VALUE)
+        if (reportedRatio == 0.0) {
+            reportedRatio
+        } else {
+            with(Percentile()) {
+                data = it.map { it.similarity }.toDoubleArray()
+                val p = evaluate(DEFAULT_PERCENTILE_VALUE)
+                reportedRatio * p
+            }
         }
     }.invoke(comparisonResult)
 
