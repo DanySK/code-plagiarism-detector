@@ -23,10 +23,7 @@ class FileKnowledgeBaseManagerTest : FunSpec() {
                 Files.createFile(Path.of(srcDir.pathString, "testSource.java"))
                 knowledgeBaseManager.save("testProject", tmpDir)
                 knowledgeBaseManager.isCached("testProject") shouldBe true
-                with(knowledgeBaseManager.load("testProject")) {
-                    shouldNotBeEmpty()
-                    length() != 0L
-                }
+                knowledgeBaseManager.load("testProject").shouldNotBeEmpty()
                 knowledgeBaseManager.clean("testProject")
                 knowledgeBaseManager.isCached("testProject") shouldBe false
             }
@@ -39,10 +36,7 @@ class FileKnowledgeBaseManagerTest : FunSpec() {
                 Files.createFile(Path.of(srcDir.pathString, "testSource.java"))
                 knowledgeBaseManager.save("testProjectWithNestedSrcFolder", tmpDir)
                 knowledgeBaseManager.isCached("testProjectWithNestedSrcFolder") shouldBe true
-                with(knowledgeBaseManager.load("testProjectWithNestedSrcFolder")) {
-                    shouldNotBeEmpty()
-                    length() != 0L
-                }
+                knowledgeBaseManager.load("testProjectWithNestedSrcFolder").shouldNotBeEmpty()
                 knowledgeBaseManager.clean("testProjectWithNestedSrcFolder")
                 knowledgeBaseManager.isCached("testProjectWithNestedSrcFolder") shouldBe false
             }
