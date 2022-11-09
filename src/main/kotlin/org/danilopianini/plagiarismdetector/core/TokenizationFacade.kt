@@ -37,7 +37,7 @@ class TokenizationFacade(private val configs: TokenizationConfig) : TechniqueFac
         val submittedAnalyzed = analyze(submittedRepository, filesToExclude)
         val corpusAnalyzed = analyze(comparedRepository, filesToExclude)
         val results = compare(submittedAnalyzed, corpusAnalyzed, minDuplicatedPercentage)
-        return ReportImpl(submittedRepository, comparedRepository, results)
+        return ReportImpl(submittedRepository, comparedRepository, results, reportedRatio(results, submittedAnalyzed))
     }
 
     /**
@@ -62,4 +62,21 @@ class TokenizationFacade(private val configs: TokenizationConfig) : TechniqueFac
         .flatMap { s -> filter(s, analyzedCorpus).map { c -> detector(Pair(s, c)) } }
         .filter { it.similarity > minDuplicatedPercentage }
         .toSet()
+
+    private fun reportedRatio(
+        results: Set<ComparisonResult<TokenMatch>>,
+        submittedAnalyzed: Sequence<TokenizedSource>,
+    ): Double {
+        val submittedSources = submittedAnalyzed
+            .filter { it.representation.count() >= configs.minimumTokens }
+            .map { it.sourceFile }
+        val reportedSources = results.flatMap { it.matches }
+            .flatMap { sequenceOf(it.pattern.first.sourceFile, it.text.first.sourceFile) }
+            .distinctBy { it.path }
+            .filter { it in submittedSources }
+        return with(reportedSources.count().toDouble() / submittedSources.count()) {
+            check(this <= 1.0) { "$this > 1 and is not possible!" }
+            this
+        }
+    }
 }
