@@ -1,8 +1,8 @@
 package org.danilopianini.plagiarismdetector.caching
 
+import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.engine.spec.tempdir
-import io.kotest.matchers.collections.shouldNotBeEmpty
 import io.kotest.matchers.file.shouldNotBeEmpty
 import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.Dispatchers
@@ -45,6 +45,17 @@ class FileKnowledgeBaseManagerTest : FunSpec() {
                 }
                 knowledgeBaseManager.clean("testProjectWithNestedSrcFolder")
                 knowledgeBaseManager.isCached("testProjectWithNestedSrcFolder") shouldBe false
+            }
+        }
+
+        test("Testing caching of a project with no `src` folder") {
+            val tmpDir = tempdir()
+            withContext(Dispatchers.IO) {
+                Files.createFile(Path.of(tmpDir.path, "script.kts"))
+                knowledgeBaseManager.save("projectWithoutSrcFolder", tmpDir)
+                shouldThrow<IllegalArgumentException> {
+                    knowledgeBaseManager.load("projectWithoutSrcFolder")
+                }
             }
         }
     }

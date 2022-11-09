@@ -13,16 +13,17 @@ class FileKnowledgeBaseManager : KnowledgeBaseManager {
     private val homeDirectory = System.getProperty("user.home")
     private val repositoryFolder = File(homeDirectory + separator + REPOSITORY_FOLDER_NAME)
 
-    override fun save(projectName: String, projectDirectory: File): File {
-        val directory = File(repositoryFolder.path + separator + projectName)
-        val sources = FileUtils.listFilesAndDirs(
+    override fun save(projectName: String, projectDirectory: File) =
+        with(File(repositoryFolder.path + separator + projectName)) {
+            extractSources(projectDirectory).forEach { FileUtils.copyDirectory(it, this) }
+        }
+
+    private fun extractSources(projectDirectory: File): List<File> =
+        FileUtils.listFilesAndDirs(
             projectDirectory,
             NameFileFilter(SOURCE_FOLDER),
             TrueFileFilter.INSTANCE,
         ).filter { it.name == SOURCE_FOLDER }
-        sources.forEach { FileUtils.copyDirectory(it, directory) }
-        return directory
-    }
 
     override fun isCached(projectName: String) =
         with(File(repositoryFolder.path + separator + projectName)) {
@@ -30,7 +31,7 @@ class FileKnowledgeBaseManager : KnowledgeBaseManager {
         }
 
     override fun load(projectName: String): File {
-        require(isCached(projectName))
+        require(isCached(projectName)) { "$projectName not in cache!" }
         return File(repositoryFolder.path + separator + projectName)
     }
 
