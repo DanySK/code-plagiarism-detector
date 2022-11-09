@@ -21,15 +21,31 @@ class FileKnowledgeBaseManagerTest : FunSpec() {
             withContext(Dispatchers.IO) {
                 val srcDir = Files.createDirectory(Path.of(tmpDir.path, "src"))
                 Files.createFile(Path.of(srcDir.pathString, "testSource.java"))
+                knowledgeBaseManager.save("testProject", tmpDir)
+                knowledgeBaseManager.isCached("testProject") shouldBe true
+                with(knowledgeBaseManager.load("testProject")) {
+                    shouldNotBeEmpty()
+                    length() != 0L
+                }
+                knowledgeBaseManager.clean("testProject")
+                knowledgeBaseManager.isCached("testProject") shouldBe false
             }
-            knowledgeBaseManager.save("testProject", tmpDir)
-            knowledgeBaseManager.isCached("testProject") shouldBe true
-            with(knowledgeBaseManager.load("testProject")) {
-                shouldNotBeEmpty()
-                length() != 0L
+        }
+
+        test("Testing caching project sources with `src` not in the root directory") {
+            val tmpDir = tempdir()
+            withContext(Dispatchers.IO) {
+                val srcDir = Files.createDirectories(Path.of(tmpDir.path, "core", "src"))
+                Files.createFile(Path.of(srcDir.pathString, "testSource.java"))
+                knowledgeBaseManager.save("testProjectWithNestedSrcFolder", tmpDir)
+                knowledgeBaseManager.isCached("testProjectWithNestedSrcFolder") shouldBe true
+                with(knowledgeBaseManager.load("testProjectWithNestedSrcFolder")) {
+                    shouldNotBeEmpty()
+                    length() != 0L
+                }
+                knowledgeBaseManager.clean("testProjectWithNestedSrcFolder")
+                knowledgeBaseManager.isCached("testProjectWithNestedSrcFolder") shouldBe false
             }
-            knowledgeBaseManager.clean("testProject")
-            knowledgeBaseManager.isCached("testProject") shouldBe false
         }
     }
 }
