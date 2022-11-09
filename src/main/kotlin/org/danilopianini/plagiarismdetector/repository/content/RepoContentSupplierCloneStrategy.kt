@@ -25,13 +25,13 @@ class RepoContentSupplierCloneStrategy(private val cloneUrl: URL) : RepoContentS
         if (knowledgeBaseManager.isCached(repoName)) {
             repoContentDirectory = knowledgeBaseManager.load(repoName)
         } else {
-            repoContentDirectory = Files.createTempDirectory(cloneUrl.path.substringAfterLast(URL_SEPARATOR)).toFile()
+            val tmpContentDir = Files.createTempDirectory(cloneUrl.path.substringAfterLast(URL_SEPARATOR)).toFile()
             Git.cloneRepository()
                 .setURI("$cloneUrl")
-                .setDirectory(repoContentDirectory)
+                .setDirectory(tmpContentDir)
                 .call()
-            knowledgeBaseManager.save(repoName, repoContentDirectory)
-            FileUtils.deleteDirectory(repoContentDirectory)
+            repoContentDirectory = knowledgeBaseManager.save(repoName, tmpContentDir)
+            FileUtils.deleteDirectory(tmpContentDir)
         }
     }
 
