@@ -1,11 +1,9 @@
 package org.danilopianini.plagiarismdetector.core
 
 import org.apache.commons.math3.stat.descriptive.rank.Percentile
-import org.danilopianini.plagiarismdetector.commons.Java
 import org.danilopianini.plagiarismdetector.core.detector.ComparisonResult
 import org.danilopianini.plagiarismdetector.core.detector.Match
 import org.danilopianini.plagiarismdetector.repository.Repository
-import kotlin.math.min
 
 /**
  * A simple implementation of the [Report] interface.
@@ -13,22 +11,18 @@ import kotlin.math.min
 class ReportImpl<out M : Match>(
     override val submittedProject: Repository,
     override val comparedProject: Repository,
-    override val comparisonResult: Set<ComparisonResult<M>>
+    override val comparisonResult: Set<ComparisonResult<M>>,
+    private val reportedRatio: Double,
 ) : Report<M> {
 
     override val similarity: Double = ProjectsSimilarityEstimator {
         with(Percentile()) {
             data = it.map { it.similarity }.toDoubleArray()
-            val reported = min(
-                it.count().toDouble() / submittedProject.getSources(Java.fileExtensions).count(),
-                MAX_REPORTED_RATIO
-            )
-            reported * evaluate(DEFAULT_PERCENTILE_VALUE)
+            reportedRatio * evaluate(DEFAULT_PERCENTILE_VALUE)
         }
     }.invoke(comparisonResult)
 
     companion object {
         private const val DEFAULT_PERCENTILE_VALUE = 75.0
-        private const val MAX_REPORTED_RATIO = 1.0
     }
 }
