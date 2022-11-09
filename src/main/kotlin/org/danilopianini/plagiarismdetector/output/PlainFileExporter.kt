@@ -13,19 +13,13 @@ class PlainFileExporter<in M : Match>(outputDirectory: Path) : FileExporter<M>(o
 
     override val fileExtension: String = "txt"
 
-    override fun exportSummary(reports: Set<Report<M>>, output: PrintWriter) {
-        output.println("+".repeat(LINE_LENGTH))
-        output.format("|%-80s|%-80s|%s|%n", "submitted", "compared", "similarity")
-        output.println("+".repeat(LINE_LENGTH))
-        reports.sortedByDescending { it.similarity }.forEach {
-            output.format("|%-80s|%-80s|%10.2f|%n", it.submittedProject.name, it.comparedProject.name, it.similarity)
-        }
-        output.println("+".repeat(LINE_LENGTH))
-    }
-
     override fun export(reports: Set<Report<M>>, output: PrintWriter) {
         printHeader(output)
-        reports.forEach { printBody(it, output) }
+        printSummary(reports, output)
+        reports.asSequence()
+            .filter { it.similarity > LOWER_BOUND_SIMILARITY }
+            .toSortedSet(compareByDescending { it.similarity })
+            .forEach { printBody(it, output) }
     }
 
     private fun printHeader(out: PrintWriter) {
@@ -34,8 +28,25 @@ class PlainFileExporter<in M : Match>(outputDirectory: Path) : FileExporter<M>(o
         out.println("*".repeat(LINE_LENGTH))
     }
 
+    private fun printSummary(reports: Set<Report<M>>, output: PrintWriter) {
+        output.println()
+        output.format("%-${LINE_LENGTH}s%n", "Submitted Project: ${reports.first().submittedProject}")
+        output.println()
+        output.println("${"+".repeat(SHORT_LINE_LENGTH)} SUMMARY  ${"+".repeat(SHORT_LINE_LENGTH)}")
+        output.println("Compared with ${reports.count()} repositories.")
+        output.println("-".repeat(LINE_LENGTH))
+        output.format("|%-107s|%s|%n", "compared with", "similarity")
+        output.println("-".repeat(LINE_LENGTH))
+        reports.sortedByDescending { it.similarity }.forEach {
+            output.format("|%-107s|%10.2f|%n", it.comparedProject.name, it.similarity)
+        }
+        output.println("-".repeat(LINE_LENGTH))
+        output.println("+".repeat(LINE_LENGTH))
+        output.println()
+    }
+
     private fun printBody(report: Report<M>, out: PrintWriter) {
-        out.println("> Matches between ${report.submittedProject.name} and ${report.comparedProject.name}")
+        out.println("> Matches found with ${report.comparedProject.name}")
         report.comparisonResult
             .filter { it.matches.any() }
             .groupBy { it.similarity }
@@ -57,7 +68,9 @@ class PlainFileExporter<in M : Match>(outputDirectory: Path) : FileExporter<M>(o
     }
 
     companion object {
-        private const val LINE_LENGTH = 174
-        private const val FILE_PREAMBLE = "This is the generated report from plagiarism detector tool at "
+        private const val LOWER_BOUND_SIMILARITY = 0.4
+        private const val LINE_LENGTH = 120
+        private const val SHORT_LINE_LENGTH = 55
+        private const val FILE_PREAMBLE = "This is the generated report from plagiarism detector tool at"
     }
 }
