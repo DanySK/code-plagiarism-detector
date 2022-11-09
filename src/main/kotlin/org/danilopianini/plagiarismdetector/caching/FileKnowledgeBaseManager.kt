@@ -1,8 +1,8 @@
 package org.danilopianini.plagiarismdetector.caching
 
 import org.apache.commons.io.FileUtils
-import org.apache.commons.io.filefilter.FalseFileFilter
 import org.apache.commons.io.filefilter.NameFileFilter
+import org.apache.commons.io.filefilter.TrueFileFilter
 import java.io.File
 
 /**
@@ -17,10 +17,9 @@ class FileKnowledgeBaseManager : KnowledgeBaseManager {
         val directory = File(repositoryFolder.path + separator + projectName)
         val sources = FileUtils.listFilesAndDirs(
             projectDirectory,
-            FalseFileFilter.INSTANCE,
-            NameFileFilter("src")
-        )
-        sources.remove(projectDirectory)
+            NameFileFilter(SOURCE_FOLDER),
+            TrueFileFilter.INSTANCE,
+        ).filter { it.name == SOURCE_FOLDER }
         sources.forEach { FileUtils.copyDirectory(it, directory) }
     }
 
@@ -42,5 +41,6 @@ class FileKnowledgeBaseManager : KnowledgeBaseManager {
 
     companion object {
         private const val REPOSITORY_FOLDER_NAME = ".code-plagiarism-detector"
+        private const val SOURCE_FOLDER = "src"
     }
 }
