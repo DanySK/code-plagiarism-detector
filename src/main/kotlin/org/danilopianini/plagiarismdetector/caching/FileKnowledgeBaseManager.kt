@@ -13,7 +13,7 @@ class FileKnowledgeBaseManager : KnowledgeBaseManager {
     private val homeDirectory = System.getProperty("user.home")
     private val repositoryFolder = File(homeDirectory + separator + REPOSITORY_FOLDER_NAME)
 
-    override fun save(projectName: String, projectDirectory: File) {
+    override fun save(projectName: String, projectDirectory: File): File {
         val directory = File(repositoryFolder.path + separator + projectName)
         val sources = FileUtils.listFilesAndDirs(
             projectDirectory,
@@ -21,6 +21,7 @@ class FileKnowledgeBaseManager : KnowledgeBaseManager {
             TrueFileFilter.INSTANCE,
         ).filter { it.name == SOURCE_FOLDER }
         sources.forEach { FileUtils.copyDirectory(it, directory) }
+        return directory
     }
 
     override fun isCached(projectName: String) =

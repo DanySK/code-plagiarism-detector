@@ -9,9 +9,10 @@ import java.io.File
 interface KnowledgeBaseManager {
 
     /**
-     * Cache the content of the repo which is inside of [projectDirectory].
+     * Cache the content of the repo which is inside of [projectDirectory]
+     * and returns the directory in which has been stored.
      */
-    fun save(projectName: String, projectDirectory: File)
+    fun save(projectName: String, projectDirectory: File): File
 
     /**
      * Returns if the given [repository] content is already been cached.
