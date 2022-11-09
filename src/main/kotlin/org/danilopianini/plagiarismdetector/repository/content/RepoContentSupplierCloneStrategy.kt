@@ -14,31 +14,31 @@ import java.nio.file.Files
  * @property cloneUrl the repository [URL] to clone.
  */
 class RepoContentSupplierCloneStrategy(private val cloneUrl: URL) : RepoContentSupplierStrategy {
-    companion object {
-        private const val URL_SEPARATOR = "/"
-    }
-    private val repoContentDirectory: File
+
+    private val repoName = cloneUrl.path.substringAfterLast(URL_SEPARATOR)
     private val knowledgeBaseManager = FileKnowledgeBaseManager()
 
     init {
-        val repoName = cloneUrl.path.substringAfterLast(URL_SEPARATOR)
-        if (knowledgeBaseManager.isCached(repoName)) {
-            repoContentDirectory = knowledgeBaseManager.load(repoName)
-        } else {
+        if (!knowledgeBaseManager.isCached(repoName)) {
             val tmpContentDir = Files.createTempDirectory(cloneUrl.path.substringAfterLast(URL_SEPARATOR)).toFile()
             Git.cloneRepository()
                 .setURI("$cloneUrl")
                 .setDirectory(tmpContentDir)
                 .call()
-            repoContentDirectory = knowledgeBaseManager.save(repoName, tmpContentDir)
+            knowledgeBaseManager.save(repoName, tmpContentDir)
             FileUtils.deleteDirectory(tmpContentDir)
         }
     }
 
-    override fun filesMatching(pattern: Regex): Sequence<File> =
+    override fun filesMatching(pattern: Regex): Sequence<File> = runCatching {
         FileUtils.listFiles(
-            repoContentDirectory,
+            knowledgeBaseManager.load(repoName),
             RegexFileFilter(pattern.toPattern()),
             DirectoryFileFilter.DIRECTORY
         ).asSequence()
+    }.getOrDefault(emptySequence())
+
+    companion object {
+        private const val URL_SEPARATOR = "/"
+    }
 }
