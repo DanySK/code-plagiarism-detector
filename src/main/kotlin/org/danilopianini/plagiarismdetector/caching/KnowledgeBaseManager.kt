@@ -1,5 +1,6 @@
 package org.danilopianini.plagiarismdetector.caching
 
+import org.danilopianini.plagiarismdetector.repository.Repository
 import java.io.File
 
 /**
@@ -9,24 +10,24 @@ import java.io.File
 interface KnowledgeBaseManager {
 
     /**
-     * Cache the content of the repo which is inside of [projectDirectory].
+     * Cache the content of the project which is maintained inside the given [Repository].
      */
-    fun save(projectName: String, projectDirectory: File)
+    fun save(project: Repository)
 
     /**
-     * Returns if the project content with given [projectName] is already been cached.
+     * Returns if the given [project] content has already been cached.
      */
-    fun isCached(projectName: String): Boolean
+    fun isCached(project: Repository): Boolean
 
     /**
      * Loads the cached repository content.
      */
-    fun load(projectName: String): File
+    fun load(project: Repository): File
 
     /**
-     * Delete from cache the project with the given [projectName].
+     * Delete from cache the given [project].
      */
-    fun clean(projectName: String)
+    fun clean(project: Repository)
 
     /**
      * Clears the cache.

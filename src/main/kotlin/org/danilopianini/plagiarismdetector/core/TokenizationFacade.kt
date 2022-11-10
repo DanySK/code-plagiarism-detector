@@ -50,7 +50,7 @@ class TokenizationFacade(private val configs: TokenizationConfig) : TechniqueFac
         repository.getSources(configs.language.fileExtensions)
             .filter { it.name !in filesToExclude }
             .map(analyzer)
-            .filter { it.representation.any() }
+            .filter { it.representation.count() >= configs.minimumTokens }
 
     /**
      * Performs the comparison between the [analyzedSubmission] and
@@ -69,19 +69,17 @@ class TokenizationFacade(private val configs: TokenizationConfig) : TechniqueFac
         results: Set<ComparisonResult<TokenMatch>>,
         submittedAnalyzed: Sequence<TokenizedSource>,
         corpusAnalyzed: Sequence<TokenizedSource>
-    ): Double {
-        val submittedSources = submittedAnalyzed
-            .filter { it.representation.count() >= configs.minimumTokens }
-            .map { it.sourceFile }
-        val corpusSources = corpusAnalyzed
-            .filter { it.representation.count() >= configs.minimumTokens }
-            .map { it.sourceFile }
+    ): Double = if (results.isEmpty()) {
+        0.0
+    } else {
+        val submittedSources = submittedAnalyzed.map { it.sourceFile }
+        val corpusSources = corpusAnalyzed.map { it.sourceFile }
         val reportedSources = results.flatMap { it.matches }
             .flatMap { sequenceOf(it.pattern.first.sourceFile, it.text.first.sourceFile) }
             .distinctBy { it.path }
             .filter { it in submittedSources }
         val minSources = min(submittedSources.count().toDouble(), corpusSources.count().toDouble())
-        return with(reportedSources.count().toDouble() / minSources) {
+        with(reportedSources.count().toDouble() / minSources) {
             check(this <= 1.0) { "$this > 1 and is not possible!" }
             this
         }
