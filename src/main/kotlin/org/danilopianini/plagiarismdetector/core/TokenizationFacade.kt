@@ -12,6 +12,7 @@ import org.danilopianini.plagiarismdetector.core.filter.technique.tokenization.T
 import org.danilopianini.plagiarismdetector.input.cli.technique.TokenizationConfig
 import org.danilopianini.plagiarismdetector.repository.Repository
 import org.slf4j.LoggerFactory
+import java.lang.Double.max
 import java.lang.Double.min
 
 /**
@@ -78,10 +79,11 @@ class TokenizationFacade(private val configs: TokenizationConfig) : TechniqueFac
             .flatMap { sequenceOf(it.pattern.first.sourceFile, it.text.first.sourceFile) }
             .distinctBy { it.path }
             .filter { it in submittedSources }
-        val minSources = min(submittedSources.count().toDouble(), corpusSources.count().toDouble())
-        with(reportedSources.count().toDouble() / minSources) {
-            check(this <= 1.0) { "$this > 1 and is not possible!" }
-            this
-        }
+        val ratio = max(
+            reportedSources.count().toDouble() / submittedSources.count(),
+            min(reportedSources.count().toDouble() / corpusSources.count(), 1.0)
+        )
+        check(ratio <= 1.0) { "$this > 1 and is not possible!" }
+        ratio
     }
 }
