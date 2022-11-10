@@ -73,17 +73,15 @@ class TokenizationFacade(private val configs: TokenizationConfig) : TechniqueFac
     ): Double = if (results.isEmpty()) {
         0.0
     } else {
-        val submittedSources = submittedAnalyzed.map { it.sourceFile }
-        val corpusSources = corpusAnalyzed.map { it.sourceFile }
         val reportedSources = results.flatMap { it.matches }
             .flatMap { sequenceOf(it.pattern.first.sourceFile, it.text.first.sourceFile) }
             .distinctBy { it.path }
-            .filter { it in submittedSources }
-        val ratio = max(
-            reportedSources.count().toDouble() / submittedSources.count(),
-            min(reportedSources.count().toDouble() / corpusSources.count(), 1.0)
+        val reportedSubmittedSources = reportedSources.filter { it in submittedAnalyzed.map { it.sourceFile } }
+        val reportedCorpusSources = reportedSources.filter { it in corpusAnalyzed.map { it.sourceFile } }
+        min(
+            max(reportedSubmittedSources.count().toDouble(), reportedCorpusSources.count().toDouble()) /
+                min(submittedAnalyzed.count().toDouble(), corpusAnalyzed.count().toDouble()),
+            1.0
         )
-        check(ratio <= 1.0) { "$this > 1 and is not possible!" }
-        ratio
     }
 }
