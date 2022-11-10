@@ -12,7 +12,7 @@ class ReportImpl<out M : Match>(
     override val submittedProject: Repository,
     override val comparedProject: Repository,
     override val comparisonResult: Set<ComparisonResult<M>>,
-    private val reportedRatio: Double,
+    override val reportedRatio: Double,
 ) : Report<M> {
 
     override val similarity: Double = ProjectsSimilarityEstimator {
