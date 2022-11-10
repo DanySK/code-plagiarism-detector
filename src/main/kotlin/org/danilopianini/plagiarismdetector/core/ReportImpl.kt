@@ -21,8 +21,7 @@ class ReportImpl<out M : Match>(
         } else {
             with(Percentile()) {
                 data = it.map { it.similarity }.toDoubleArray()
-                val p = evaluate(DEFAULT_PERCENTILE_VALUE)
-                reportedRatio * p
+                reportedRatio * evaluate(DEFAULT_PERCENTILE_VALUE)
             }
         }
     }.invoke(comparisonResult)
