@@ -26,6 +26,7 @@ class RepoContentSupplierCloneStrategy(private val cloneUrl: URL) : RepoContentS
                 .setDirectory(tmpContentDir)
                 .call()
             knowledgeBaseManager.save(repoName, tmpContentDir)
+            Thread.sleep(ONE_SECOND)
             FileUtils.deleteDirectory(tmpContentDir)
         }
     }
@@ -40,5 +41,6 @@ class RepoContentSupplierCloneStrategy(private val cloneUrl: URL) : RepoContentS
 
     companion object {
         private const val URL_SEPARATOR = "/"
+        private const val ONE_SECOND = 1_000L
     }
 }
