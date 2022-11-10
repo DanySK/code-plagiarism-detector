@@ -12,6 +12,7 @@ import org.danilopianini.plagiarismdetector.core.filter.technique.tokenization.T
 import org.danilopianini.plagiarismdetector.input.cli.technique.TokenizationConfig
 import org.danilopianini.plagiarismdetector.repository.Repository
 import org.slf4j.LoggerFactory
+import java.lang.Double.min
 
 /**
  * A concrete [TechniqueFacade] which exploits the **Tokenization** technique.
@@ -37,7 +38,8 @@ class TokenizationFacade(private val configs: TokenizationConfig) : TechniqueFac
         val submittedAnalyzed = analyze(submittedRepository, filesToExclude)
         val corpusAnalyzed = analyze(comparedRepository, filesToExclude)
         val results = compare(submittedAnalyzed, corpusAnalyzed, minDuplicatedPercentage)
-        return ReportImpl(submittedRepository, comparedRepository, results, reportedRatio(results, submittedAnalyzed))
+        val reportedRatio = reportedRatio(results, submittedAnalyzed, corpusAnalyzed)
+        return ReportImpl(submittedRepository, comparedRepository, results, reportedRatio)
     }
 
     /**
@@ -66,15 +68,20 @@ class TokenizationFacade(private val configs: TokenizationConfig) : TechniqueFac
     private fun reportedRatio(
         results: Set<ComparisonResult<TokenMatch>>,
         submittedAnalyzed: Sequence<TokenizedSource>,
+        corpusAnalyzed: Sequence<TokenizedSource>
     ): Double {
         val submittedSources = submittedAnalyzed
+            .filter { it.representation.count() >= configs.minimumTokens }
+            .map { it.sourceFile }
+        val corpusSources = corpusAnalyzed
             .filter { it.representation.count() >= configs.minimumTokens }
             .map { it.sourceFile }
         val reportedSources = results.flatMap { it.matches }
             .flatMap { sequenceOf(it.pattern.first.sourceFile, it.text.first.sourceFile) }
             .distinctBy { it.path }
             .filter { it in submittedSources }
-        return with(reportedSources.count().toDouble() / submittedSources.count()) {
+        val minSources = min(submittedSources.count().toDouble(), corpusSources.count().toDouble())
+        return with(reportedSources.count().toDouble() / minSources) {
             check(this <= 1.0) { "$this > 1 and is not possible!" }
             this
         }
