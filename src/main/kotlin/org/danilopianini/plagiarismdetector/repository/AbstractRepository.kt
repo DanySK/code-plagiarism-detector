@@ -9,7 +9,7 @@ import java.io.File
 abstract class AbstractRepository : Repository {
 
     private val repositoryContentSupplier by lazy {
-        RepoContentSupplierCloneStrategy(cloneUrl)
+        RepoContentSupplierCloneStrategy(this)
     }
 
     override fun getSources(pattern: Regex): Sequence<File> =

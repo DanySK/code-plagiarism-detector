@@ -2,7 +2,10 @@ package org.danilopianini.plagiarismdetector.caching
 
 import org.apache.commons.io.FileUtils
 import org.apache.commons.io.filefilter.NameFileFilter
+import org.apache.commons.io.filefilter.NotFileFilter
 import org.apache.commons.io.filefilter.TrueFileFilter
+import org.danilopianini.plagiarismdetector.repository.Repository
+import org.eclipse.jgit.api.Git
 import java.io.File
 
 /**
@@ -13,30 +16,40 @@ class FileKnowledgeBaseManager : KnowledgeBaseManager {
     private val homeDirectory = System.getProperty("user.home")
     private val repositoryFolder = File(homeDirectory + separator + REPOSITORY_FOLDER_NAME)
 
-    override fun save(projectName: String, projectDirectory: File) =
-        with(File(repositoryFolder.path + separator + projectName)) {
-            extractSources(projectDirectory).forEach { FileUtils.copyDirectory(it, this) }
+    override fun save(project: Repository) =
+        with(File(repositoryFolder.path + separator + project.name)) {
+            clone(project, this)
+            clean(this)
         }
 
-    private fun extractSources(projectDirectory: File): List<File> =
-        FileUtils.listFilesAndDirs(
-            projectDirectory,
-            NameFileFilter(SOURCE_FOLDER),
-            TrueFileFilter.INSTANCE,
-        ).filter { it.name == SOURCE_FOLDER }
+    private fun clone(project: Repository, out: File) {
+        Git.cloneRepository()
+            .setURI("${project.cloneUrl}")
+            .setDirectory(out)
+            .call()
+    }
 
-    override fun isCached(projectName: String) =
-        with(File(repositoryFolder.path + separator + projectName)) {
+    private fun clean(out: File) {
+        val matching = FileUtils.listFiles(
+            out,
+            TrueFileFilter.INSTANCE,
+            NotFileFilter(NameFileFilter(SOURCE_FOLDER))
+        )
+        matching.forEach { FileUtils.delete(it) }
+    }
+
+    override fun isCached(project: Repository): Boolean =
+        with(File(repositoryFolder.path + separator + project.name)) {
             isDirectory && !FileUtils.isEmptyDirectory(this)
         }
 
-    override fun load(projectName: String): File {
-        require(isCached(projectName)) { "$projectName not in cache!" }
-        return File(repositoryFolder.path + separator + projectName)
+    override fun load(project: Repository): File {
+        require(isCached(project)) { "${project.name} not in cache!" }
+        return File(repositoryFolder.path + separator + project.name)
     }
 
-    override fun clean(projectName: String) = FileUtils.deleteDirectory(
-        File(repositoryFolder.path + separator + projectName)
+    override fun clean(project: Repository) = FileUtils.deleteDirectory(
+        File(repositoryFolder.path + separator + project.name)
     )
 
     override fun cleanAll() = FileUtils.cleanDirectory(repositoryFolder)
