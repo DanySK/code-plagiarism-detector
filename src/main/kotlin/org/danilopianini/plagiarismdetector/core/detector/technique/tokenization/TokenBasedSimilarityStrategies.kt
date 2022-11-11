@@ -41,7 +41,6 @@ class MaxSimilarityStrategy : TokenBasedSimilarityStrategy {
             representations.second.representation.count()
         )
     }
-
 }
 
 /**
