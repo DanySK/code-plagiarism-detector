@@ -13,15 +13,13 @@ import java.io.File
  */
 class RepoContentSupplierCloneStrategy(private val repository: Repository) : RepoContentSupplierStrategy {
 
-    private val knowledgeBaseManager = FileKnowledgeBaseManager()
+    private val knowledgeBaseManager = FileKnowledgeBaseManager().also {
+        if (!it.isCached(repository)) {
+            it.save(repository)
+        }
+    }
     private val contentDirectory by lazy {
         knowledgeBaseManager.load(repository)
-    }
-
-    init {
-        if (!knowledgeBaseManager.isCached(repository)) {
-            knowledgeBaseManager.save(repository)
-        }
     }
 
     override fun filesMatching(pattern: Regex): Sequence<File> =

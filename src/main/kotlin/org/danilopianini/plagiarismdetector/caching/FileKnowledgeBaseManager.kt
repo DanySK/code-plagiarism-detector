@@ -14,7 +14,9 @@ import java.io.File
 class FileKnowledgeBaseManager : KnowledgeBaseManager {
     private val separator = System.getProperty("file.separator")
     private val homeDirectory = System.getProperty("user.home")
-    private val repositoryFolder = File(homeDirectory + separator + REPOSITORY_FOLDER_NAME)
+    private val repositoryFolder by lazy {
+        File(homeDirectory + separator + REPOSITORY_FOLDER_NAME)
+    }
 
     override fun save(project: Repository) =
         with(File(repositoryFolder.path + separator + project.name)) {
@@ -35,7 +37,7 @@ class FileKnowledgeBaseManager : KnowledgeBaseManager {
             TrueFileFilter.INSTANCE,
             NotFileFilter(NameFileFilter(SOURCE_FOLDER))
         )
-        matching.forEach { FileUtils.delete(it) }
+        matching.forEach { FileUtils.deleteQuietly(it) }
     }
 
     override fun isCached(project: Repository): Boolean =
@@ -47,12 +49,6 @@ class FileKnowledgeBaseManager : KnowledgeBaseManager {
         require(isCached(project)) { "${project.name} not in cache!" }
         return File(repositoryFolder.path + separator + project.name)
     }
-
-    override fun clean(project: Repository) = FileUtils.deleteDirectory(
-        File(repositoryFolder.path + separator + project.name)
-    )
-
-    override fun cleanAll() = FileUtils.cleanDirectory(repositoryFolder)
 
     companion object {
         private const val REPOSITORY_FOLDER_NAME = ".code-plagiarism-detector"
