@@ -54,7 +54,7 @@ class NormalizedAverageSimilarityStrategy : TokenBasedSimilarityStrategy {
     ): Double {
         val totalTokens = representations.first.representation.count() + representations.second.representation.count()
         val matchedTokens = matches.sumOf { it.length }
-        val matchedSubsequences = if (matches.isEmpty()) 0 else matches.count() - 1
-        return (2 * (matchedTokens - matchedSubsequences)).toDouble() / totalTokens
+        // val matchedSubsequences = if (matches.isEmpty()) 0 else matches.count() - 1
+        return (2 * (matchedTokens)).toDouble() / totalTokens
     }
 }
