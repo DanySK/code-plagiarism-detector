@@ -26,7 +26,7 @@ class SimilarityEstimatorWithConstantWeight : ProjectsSimilarityEstimator {
 
     companion object {
         private const val WEIGHT_COEFFICIENT = 1.5
-        private const val DEFAULT_PERCENTILE_VALUE = 75.0
+        private const val DEFAULT_PERCENTILE_VALUE = 80.0
     }
 }
 
@@ -52,6 +52,6 @@ class SimilarityEstimatorWithLinearWeight : ProjectsSimilarityEstimator {
         private const val LOW_LEVEL = 0.5
         private const val AMPLITUDE = 0.5
         private const val MAX_WEIGHT_COEFFICIENT = 1.0
-        private const val DEFAULT_PERCENTILE_VALUE = 75.0
+        private const val DEFAULT_PERCENTILE_VALUE = 80.0
     }
 }
