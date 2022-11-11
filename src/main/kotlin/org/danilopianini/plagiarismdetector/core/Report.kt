@@ -30,9 +30,4 @@ interface Report<out M : Match> {
      * The overall similarity between [submittedProject] and [comparedProject].
      */
     val similarity: Double
-
-    /**
-     * The fraction of reported sources.
-     */
-    val reportedRatio: Double
 }

@@ -29,6 +29,22 @@ class NormalizedMaxSimilarityStrategy : TokenBasedSimilarityStrategy {
 }
 
 /**
+ * Computes the similarity with maximum similarities' formula.
+ */
+class MaxSimilarityStrategy : TokenBasedSimilarityStrategy {
+    override fun similarityOf(
+        representations: Pair<TokenizedSource, TokenizedSource>,
+        matches: Set<TokenMatch>
+    ): Double {
+        return matches.sumOf { it.length }.toDouble() / min(
+            representations.first.representation.count(),
+            representations.second.representation.count()
+        )
+    }
+
+}
+
+/**
  * Computes the similarity with average similarity normalization formula.
  */
 class NormalizedAverageSimilarityStrategy : TokenBasedSimilarityStrategy {

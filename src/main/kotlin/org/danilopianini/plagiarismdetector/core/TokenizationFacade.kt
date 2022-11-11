@@ -12,8 +12,6 @@ import org.danilopianini.plagiarismdetector.core.filter.technique.tokenization.T
 import org.danilopianini.plagiarismdetector.input.cli.technique.TokenizationConfig
 import org.danilopianini.plagiarismdetector.repository.Repository
 import org.slf4j.LoggerFactory
-import java.lang.Double.max
-import java.lang.Double.min
 
 /**
  * A concrete [TechniqueFacade] which exploits the **Tokenization** technique.
@@ -39,7 +37,7 @@ class TokenizationFacade(private val configs: TokenizationConfig) : TechniqueFac
         val submittedAnalyzed = analyze(submittedRepository, filesToExclude)
         val corpusAnalyzed = analyze(comparedRepository, filesToExclude)
         val results = compare(submittedAnalyzed, corpusAnalyzed, minDuplicatedPercentage)
-        val reportedRatio = reportedRatio(results, submittedAnalyzed, corpusAnalyzed)
+        val reportedRatio = reportedRatio(results, submittedAnalyzed)
         return ReportImpl(submittedRepository, comparedRepository, results, reportedRatio)
     }
 
@@ -69,19 +67,11 @@ class TokenizationFacade(private val configs: TokenizationConfig) : TechniqueFac
     private fun reportedRatio(
         results: Set<ComparisonResult<TokenMatch>>,
         submittedAnalyzed: Sequence<TokenizedSource>,
-        corpusAnalyzed: Sequence<TokenizedSource>
-    ): Double = if (results.isEmpty()) {
-        0.0
-    } else {
+    ): Double {
         val reportedSources = results.flatMap { it.matches }
             .flatMap { sequenceOf(it.pattern.first.sourceFile, it.text.first.sourceFile) }
             .distinctBy { it.path }
-        val reportedSubmittedSources = reportedSources.filter { it in submittedAnalyzed.map { it.sourceFile } }
-        val reportedCorpusSources = reportedSources.filter { it in corpusAnalyzed.map { it.sourceFile } }
-        min(
-            max(reportedSubmittedSources.count().toDouble(), reportedCorpusSources.count().toDouble()) /
-                min(submittedAnalyzed.count().toDouble(), corpusAnalyzed.count().toDouble()),
-            1.0
-        )
+            .count { it in submittedAnalyzed.map { it.sourceFile } }
+        return reportedSources.toDouble() / submittedAnalyzed.count().toDouble()
     }
 }

@@ -28,18 +28,17 @@ class ProjectsSimilarityEstimatorTest : FunSpec({
 
     test("Testing similarity estimation between projects with a single matches") {
         val reportedRatio = 0.5
-        val report = ReportImpl(
-            mockk(),
-            mockk(),
+        val similarity = SimilarityEstimatorWithConstantWeight()(
+            reportedRatio,
             setOf(
                 TokenBasedComparisonResult(0.63, emptySet()),
                 TokenBasedComparisonResult(1.0, emptySet()),
                 TokenBasedComparisonResult(0.44, emptySet()),
                 TokenBasedComparisonResult(0.78, emptySet()),
-            ),
-            reportedRatio
+            )
         )
+        val weightCoefficient = reportedRatio * 1.5
         val percentileValue = 0.945
-        report.similarity.shouldBe(reportedRatio * percentileValue plusOrMinus 0.00001)
+        similarity.shouldBe(weightCoefficient * percentileValue plusOrMinus 0.00001)
     }
 })
