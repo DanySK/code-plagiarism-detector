@@ -23,14 +23,4 @@ interface KnowledgeBaseManager {
      * Loads the cached repository content.
      */
     fun load(project: Repository): File
-
-    /**
-     * Delete from cache the given [project].
-     */
-    fun clean(project: Repository)
-
-    /**
-     * Clears the cache.
-     */
-    fun cleanAll()
 }

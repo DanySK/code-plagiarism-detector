@@ -4,7 +4,6 @@ import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.ints.shouldBeExactly
 import io.mockk.every
 import io.mockk.mockk
-import org.danilopianini.plagiarismdetector.caching.FileKnowledgeBaseManager
 import java.net.URL
 
 class RepositoryContentTest : FunSpec() {
@@ -40,11 +39,6 @@ class RepositoryContentTest : FunSpec() {
             val suffixFileJavaPattern = Regex(".*.cs")
             githubRepo.getSources(suffixFileJavaPattern).count() shouldBeExactly 0
             bitbucketRepo.getSources(suffixFileJavaPattern).count() shouldBeExactly 0
-        }
-
-        afterSpec {
-            FileKnowledgeBaseManager().clean(githubRepo)
-            FileKnowledgeBaseManager().clean(bitbucketRepo)
         }
     }
 
