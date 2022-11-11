@@ -1,6 +1,5 @@
 package org.danilopianini.plagiarismdetector.core.analyzer
 
-import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.engine.spec.tempfile
 import io.kotest.matchers.collections.shouldNotBeEmpty
@@ -16,7 +15,7 @@ class TokenizationAnalyzerTest : FunSpec() {
     private val analyzer = JavaTokenizationAnalyzer()
 
     init {
-        test("**Parsing** source file with errors should skip it and print an error message on logger") {
+        test("**Parsing** source file with errors should report on logger and continue") {
             val sourceFileWithError = tempfile()
             sourceFileWithError.writeText(
                 """
@@ -27,9 +26,7 @@ class TokenizationAnalyzerTest : FunSpec() {
                 }
                 """.trimIndent()
             )
-            shouldThrow<IllegalStateException> {
-                JavaParser()(sourceFileWithError)
-            }
+            JavaParser()(sourceFileWithError)
         }
 
         test("Processing phase should remove imports and package declarations, equals and hashcode functions") {

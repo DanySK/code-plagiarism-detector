@@ -3,6 +3,7 @@ package org.danilopianini.plagiarismdetector.core.analyzer.technique.tokenizatio
 import com.github.javaparser.ParserConfiguration
 import com.github.javaparser.ast.CompilationUnit
 import org.danilopianini.plagiarismdetector.core.analyzer.StepHandler
+import org.slf4j.LoggerFactory
 import java.io.File
 
 /**
@@ -10,14 +11,16 @@ import java.io.File
  */
 class JavaParser : StepHandler<File, CompilationUnit> {
 
+    private val logger = LoggerFactory.getLogger(javaClass)
+
     override operator fun invoke(input: File): CompilationUnit {
         val parserConfiguration = ParserConfiguration().setAttributeComments(false)
         val parser = com.github.javaparser.JavaParser(parserConfiguration)
-        return parser.parse(input).run {
-            check(isSuccessful) {
-                "Errors occurred parsing ${input.path}: ${problems.joinToString { it.verboseMessage }}"
+        return parser.parse(input).runCatching {
+            if (!isSuccessful) {
+                logger.error("Errors occurred parsing ${input.path}: ${problems.joinToString { it.verboseMessage }}")
             }
             result.get()
-        }
+        }.getOrElse { error("Parsing of ${input.path} failed completely") }
     }
 }
