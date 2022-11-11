@@ -17,14 +17,15 @@ abstract class FileExporter<in M : Match>(private val outputDirectory: Path) : R
     /**
      * Exports the given [reports] in a file inside [outputDirectory].
      */
-    override operator fun invoke(reports: Set<Report<M>>) {
-        val submittedProjectNames = reports.map { it.submittedProject.name }.distinct().joinToString("-")
-        val fileName = "report-$submittedProjectNames.txt"
-        val output = Paths.get(outputDirectory.pathString, fileName).toFile()
-        PrintWriter(FileOutputStream(output)).use {
-            export(reports, it)
+    override operator fun invoke(reports: Set<Report<M>>) = reports
+        .groupBy { it.submittedProject }
+        .forEach {
+            val fileName = "report-${it.key.name}.txt"
+            val output = Paths.get(outputDirectory.pathString, fileName).toFile()
+            PrintWriter(FileOutputStream(output)).use { out ->
+                export(reports, out)
+            }
         }
-    }
 
     /**
      * Formats the [reports] exporting them using the given [output].
