@@ -45,12 +45,15 @@ class SimilarityEstimatorWithLinearWeight : ProjectsSimilarityEstimator {
         }
 
     private fun estimateWeightCoefficient(x: Double) =
-        min(sin((PERIOD * x) - (Math.PI / 2)) * AMPLITUDE + LOW_LEVEL, MAX_WEIGHT_COEFFICIENT)
+        (sin((PERIOD * x) - (Math.PI / 2)) * AMPLITUDE + LOW_LEVEL).let {
+            if (x >= THR_MAX_WEIGHT) MAX_WEIGHT_COEFFICIENT else it
+        }
 
     companion object {
         private const val PERIOD = 4.5
         private const val LOW_LEVEL = 0.5
         private const val AMPLITUDE = 0.5
+        private const val THR_MAX_WEIGHT = 0.7
         private const val MAX_WEIGHT_COEFFICIENT = 1.0
         private const val DEFAULT_PERCENTILE_VALUE = 80.0
     }
