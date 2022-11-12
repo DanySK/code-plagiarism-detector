@@ -21,7 +21,7 @@ import org.danilopianini.plagiarismdetector.provider.criteria.SearchCriteria
 import java.net.URL
 
 /**
- * A class encapsulating repository provider configurations.
+ * An abstract class encapsulating repository provider configuration.
  */
 sealed class ProviderCommand(
     name: String,

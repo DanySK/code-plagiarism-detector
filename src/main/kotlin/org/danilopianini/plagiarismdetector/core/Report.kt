@@ -5,7 +5,7 @@ import org.danilopianini.plagiarismdetector.core.detector.Match
 import org.danilopianini.plagiarismdetector.repository.Repository
 
 /**
- * An interface for modeling the set of [ComparisonResult]
+ * An interface modeling the set of [ComparisonResult]
  * resulting from the comparison of two [Repository].
  */
 interface Report<out M : Match> {
