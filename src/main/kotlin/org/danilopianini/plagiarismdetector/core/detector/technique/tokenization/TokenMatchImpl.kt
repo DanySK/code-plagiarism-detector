@@ -15,21 +15,16 @@ data class TokenMatchImpl(
 ) : TokenMatch {
 
     override val formattedMatch: Pair<String, String> by lazy {
-        val patternLines = linesOfMatches(pattern.second)
-        val textLines = linesOfMatches(text.second)
-        val patternCode = FileUtils.readLines(pattern.first.sourceFile, Charset.defaultCharset())
-            .subList(patternLines.first - 1, patternLines.second)
-        val textCode = FileUtils.readLines(text.first.sourceFile, Charset.defaultCharset())
-            .subList(textLines.first - 1, textLines.second)
         Pair(
-            (listOf("[${pattern.first.sourceFile.path}]") + patternCode).joinToString(separator = "\n"),
-            (listOf("[${text.first.sourceFile.path}]") + textCode).joinToString(separator = "\n")
+            (listOf("[${pattern.first.sourceFile.path}]") + matchingSectionOf(pattern)).joinToString(separator = "\n"),
+            (listOf("[${text.first.sourceFile.path}]") + matchingSectionOf(text)).joinToString(separator = "\n")
         )
     }
 
-    private fun linesOfMatches(matches: List<Token>): Pair<Int, Int> {
-        val matchingLines = matches.sortedWith(compareBy({ it.line }, { it.column }))
-        return Pair(matchingLines.first().line, matchingLines.last().line)
+    private fun matchingSectionOf(tokens: Pair<TokenizedSource, List<Token>>): List<String> {
+        val matchingLines = tokens.second.sortedWith(compareBy({ it.line }, { it.column }))
+        return FileUtils.readLines(tokens.first.sourceFile, Charset.defaultCharset())
+            .subList(matchingLines.first().line - 1, matchingLines.last().line)
     }
 
     override fun toString(): String =
