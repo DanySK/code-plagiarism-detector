@@ -13,8 +13,8 @@ abstract class AbstractRepositoryProvider<I, O, in C : SearchCriteria<I, O>> : R
     }
 
     override fun byLink(url: URL): Repository {
-        require(urlIsValid(url)) { "The given URL is not valid: should point to the repository service." }
-        require(urlIsWellFormed(url)) { "The given URL must be in `owner/name` format." }
+        require(urlIsValid(url)) { "$url is not valid: should point to the repository service." }
+        require(urlIsWellFormed(url)) { "$url must be in `owner/name` format." }
         return getRepoByUrl(url)
     }
 
