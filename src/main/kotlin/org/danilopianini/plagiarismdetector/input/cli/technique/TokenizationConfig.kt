@@ -9,7 +9,7 @@ import org.danilopianini.plagiarismdetector.core.TokenizationFacade
 import org.danilopianini.plagiarismdetector.core.detector.technique.tokenization.TokenMatch
 
 /**
- * Tokenization configurations.
+ * A tokenization specific configuration
  */
 class TokenizationConfig : TechniqueConfig<TokenMatch>(TOKENIZATION_NAME) {
 

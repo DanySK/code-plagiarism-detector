@@ -10,7 +10,7 @@ import org.danilopianini.plagiarismdetector.output.ReportsExporter
 import java.nio.file.Path
 
 /**
- * A class encapsulating [ReportsExporter] configurations.
+ * An abstract class encapsulating [ReportsExporter] configuration.
  */
 sealed class ExporterConfig<in M : Match>(name: String) : OptionGroup(name = name) {
 

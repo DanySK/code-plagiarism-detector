@@ -5,7 +5,7 @@ import org.danilopianini.plagiarismdetector.output.PlainFileExporter
 import org.danilopianini.plagiarismdetector.output.ReportsExporter
 
 /**
- * [PlainFileExporter] configurations.
+ * A concrete [PlainFileExporter] configuration.
  */
 class PlainFileExporterConfig<in M : Match> : ExporterConfig<M>(PLAIN_FILE_NAME) {
 

@@ -20,7 +20,7 @@ interface Match {
 }
 
 /**
- * An interface modeling a comparison result object.
+ * An interface modeling the comparison result between two sources.
  */
 interface ComparisonResult<out M : Match> {
 

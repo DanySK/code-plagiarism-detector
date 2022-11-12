@@ -7,7 +7,7 @@ import java.util.stream.Collectors
 import kotlin.system.measureTimeMillis
 
 /**
- * A concrete sequential implementation of a [AntiPlagiarismSession].
+ * A **parallel** implementation of an [AntiPlagiarismSession].
  */
 class AntiPlagiarismSessionImpl<out C : RunConfiguration<M>, M : Match>(
     private val configuration: C
@@ -31,9 +31,6 @@ class AntiPlagiarismSessionImpl<out C : RunConfiguration<M>, M : Match>(
         }
     }
 
-    /**
-     * Logs the elapsed time used to execute the given [block].
-     */
     private fun logExecutionTime(block: () -> Unit) {
         val elapsedTime = measureTimeMillis(block)
         logger.info("> Elapsed time: ${elapsedTime.toDouble() / MILLISECONDS_IN_ONE_MINUTE} min.")

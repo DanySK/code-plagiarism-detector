@@ -12,7 +12,7 @@ import org.danilopianini.plagiarismdetector.core.detector.Match
 import org.danilopianini.plagiarismdetector.input.SupportedOptions
 
 /**
- * Technique configurations.
+ * An abstract class encapsulating specific technique configuration.
  */
 sealed class TechniqueConfig<out M : Match>(name: String) : OptionGroup(name = name) {
 

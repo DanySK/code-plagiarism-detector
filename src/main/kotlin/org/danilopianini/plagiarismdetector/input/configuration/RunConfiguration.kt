@@ -31,7 +31,7 @@ interface RunConfiguration<M : Match> {
     val corpus: Set<Repository>
 
     /**
-     * Set of file names to exclude during the comparison.
+     * The set of file names to exclude during the comparison.
      */
     val filesToExclude: Set<String>
 

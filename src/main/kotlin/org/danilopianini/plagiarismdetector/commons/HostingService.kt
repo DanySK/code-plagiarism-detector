@@ -1,7 +1,7 @@
 package org.danilopianini.plagiarismdetector.commons
 
 /**
- * An interface modeling an hosting service.
+ * An interface modeling a hosting service.
  */
 sealed interface HostingService {
 
