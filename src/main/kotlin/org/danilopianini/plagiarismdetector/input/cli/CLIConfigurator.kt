@@ -53,7 +53,8 @@ class CLIConfigurator : RunConfigurator {
 
     private fun repositoriesFrom(configs: ProviderCommand): Set<Repository> = try {
         with(configs) {
-            url?.map { byLink(it, serviceBy(it)) }?.toSet() ?: criteria?.flatMap { byCriteria(it) }?.toSet() ?: error(
+            url?.map { byLink(it, SupportedOptions.serviceBy(it)) }?.toSet()
+                ?: criteria?.flatMap { byCriteria(it) }?.toSet() ?: error(
                 "Neither url nor criteria are valued!"
             )
         }
@@ -73,9 +74,6 @@ class CLIConfigurator : RunConfigurator {
             else -> error("The extracted criteria is not valid.")
         }
     }.getOrElse { emptySet() }
-
-    private fun serviceBy(url: URL): HostingService =
-        SupportedOptions.services.find { it.host == url.host } ?: error("${url.host} not supported!")
 
     companion object {
         private const val BB_AUTH_USER_VAR = "BB_USER"

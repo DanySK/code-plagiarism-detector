@@ -78,13 +78,10 @@ sealed class ProviderCommand(
          * Gets a sequence of configured [SearchCriteria], with all combinations of given options.
          */
         val criteria: Sequence<SearchCriteria<*, *>> by lazy {
-            service.map(this::serviceBy)
+            service.map(SupportedOptions::serviceBy)
                 .flatMap { s -> user.flatMap { u -> repositoryName.map { byCriteria(s, u, it) } } }
                 .asSequence()
         }
-
-        private fun serviceBy(name: String): HostingService =
-            SupportedOptions.services.find { it.name == name } ?: error("$name not supported!")
 
         private fun byCriteria(service: HostingService, user: String, repositoryName: String?): SearchCriteria<*, *> =
             when (service) {
