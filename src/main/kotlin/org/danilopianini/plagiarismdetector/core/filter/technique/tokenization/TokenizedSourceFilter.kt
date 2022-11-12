@@ -21,10 +21,9 @@ class TokenizedSourceFilter(
         submission: TokenizedSource,
         corpus: Sequence<TokenizedSource>
     ): Sequence<TokenizedSource> {
-        val indexedSubmission: Map<TokenType, Int> = indexer(submission)
         val similarities = corpus
             .associateWith(indexer)
-            .mapValues { cosineSimilarityOf(indexedSubmission, it.value) }
+            .mapValues { cosineSimilarityOf(indexer(submission), it.value) }
         val minSimilarity = similarities.values.min()
         val maxSimilarity = similarities.values.max()
         val cutoffValue = minSimilarity + threshold * (maxSimilarity - minSimilarity)
@@ -38,7 +37,7 @@ class TokenizedSourceFilter(
             index1.values.norm() * index2.values.norm()
         )
 
-    private fun Collection<Int>.norm() = sqrt(this.sumOf { it.squared() })
+    private fun Collection<Int>.norm(): Double = sqrt(this.sumOf { it.squared() })
 
-    private fun Int.squared() = this.toDouble().pow(2)
+    private fun Int.squared(): Double = this.toDouble().pow(2)
 }
