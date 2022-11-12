@@ -51,13 +51,15 @@ class CLIConfigurator : RunConfigurator {
         return AntiPlagiarismSessionImpl(config)
     }
 
-    private fun repositoriesFrom(configs: ProviderCommand): Set<Repository> = runCatching {
+    private fun repositoriesFrom(configs: ProviderCommand): Set<Repository> = try {
         with(configs) {
             url?.map { byLink(it, serviceBy(it)) }?.toSet() ?: criteria?.flatMap { byCriteria(it) }?.toSet() ?: error(
                 "Neither url nor criteria are valued!"
             )
         }
-    }.getOrElse { throw IllegalArgumentException("Both `corpus` and `provider` subcommands are required.") }
+    } catch (e: IllegalStateException) {
+        throw IllegalArgumentException("Both `corpus` and `provider` subcommands are required \n$e")
+    }
 
     private fun byLink(link: URL, service: HostingService): Repository = when (service) {
         GitHub -> githubProvider.byLink(link)

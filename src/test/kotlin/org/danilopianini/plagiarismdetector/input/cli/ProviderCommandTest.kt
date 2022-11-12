@@ -2,6 +2,7 @@ package org.danilopianini.plagiarismdetector.input.cli
 
 import com.github.ajalt.clikt.core.BadParameterValue
 import com.github.ajalt.clikt.core.MissingOption
+import com.github.ajalt.clikt.core.PrintMessage
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.nulls.shouldBeNull
@@ -18,7 +19,7 @@ class ProviderCommandTest : FunSpec() {
 
     init {
         test("No arguments to provider subcommands should throw exception") {
-            shouldThrow<IllegalArgumentException> {
+            shouldThrow<PrintMessage> {
                 SubmissionProviderCommand().parse(emptyList())
                 CorpusProviderCommand().parse(emptyList())
             }

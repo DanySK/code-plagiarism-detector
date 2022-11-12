@@ -1,6 +1,7 @@
 package org.danilopianini.plagiarismdetector.input.cli.provider
 
 import com.github.ajalt.clikt.core.CliktCommand
+import com.github.ajalt.clikt.core.PrintMessage
 import com.github.ajalt.clikt.parameters.groups.OptionGroup
 import com.github.ajalt.clikt.parameters.groups.cooccurring
 import com.github.ajalt.clikt.parameters.options.convert
@@ -44,8 +45,13 @@ sealed class ProviderCommand(
         criteriaOptions?.criteria
     }
 
-    override fun run() = require(url != null || criteriaOptions != null) {
-        "At least one between url and criteria must be valued in `$commandName` command."
+    override fun run() {
+        if (url == null && criteriaOptions == null) {
+            throw PrintMessage(
+                message = "At least one between `url` and `criteria` must be valued in `$commandName` command.",
+                error = true
+            )
+        }
     }
 
     companion object {
