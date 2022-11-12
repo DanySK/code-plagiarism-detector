@@ -18,7 +18,6 @@ import java.io.File
 class SessionTest : FunSpec() {
 
     init {
-
         test("If no corpus is found to check no file is generated") {
             val temporaryDirectory = tempdir()
             val configuration = RunConfigurationImpl(
