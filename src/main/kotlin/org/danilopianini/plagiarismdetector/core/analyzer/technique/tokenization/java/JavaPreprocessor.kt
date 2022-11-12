@@ -7,7 +7,7 @@ import org.danilopianini.plagiarismdetector.core.analyzer.StepHandler
 
 /**
  * A java source file preprocessor, which removes noisy information
- * (import and packages declarations) that can affect the overall detection
+ * (like import and packages declarations) that can affect the overall detection
  * accuracy of the system.
  */
 class JavaPreprocessor : StepHandler<CompilationUnit, CompilationUnit> {
