@@ -12,6 +12,7 @@ import org.danilopianini.plagiarismdetector.core.filter.technique.tokenization.T
 import org.danilopianini.plagiarismdetector.input.cli.technique.TokenizationConfig
 import org.danilopianini.plagiarismdetector.repository.Repository
 import org.slf4j.LoggerFactory
+import kotlin.math.max
 
 /**
  * A concrete [TechniqueFacade] which exploits the **Tokenization** technique.
@@ -37,7 +38,7 @@ class TokenizationFacade(private val configs: TokenizationConfig) : TechniqueFac
         val submittedAnalyzed = analyze(submittedRepository, filesToExclude)
         val corpusAnalyzed = analyze(comparedRepository, filesToExclude)
         val results = compare(submittedAnalyzed, corpusAnalyzed, minDuplicatedPercentage)
-        val reportedRatio = reportedRatio(results, submittedAnalyzed)
+        val reportedRatio = reportedRatio(results, submittedAnalyzed, corpusAnalyzed)
         return ReportImpl(submittedRepository, comparedRepository, results, reportedRatio)
     }
 
@@ -67,11 +68,19 @@ class TokenizationFacade(private val configs: TokenizationConfig) : TechniqueFac
     private fun reportedRatio(
         results: Set<ComparisonResult<TokenMatch>>,
         submittedAnalyzed: Sequence<TokenizedSource>,
+        corpusAnalyzed: Sequence<TokenizedSource>
     ): Double {
-        val reportedSources = results.flatMap { it.matches }
+        val reportedCorpus = results.flatMap { it.matches }
+            .flatMap { sequenceOf(it.pattern.first.sourceFile, it.text.first.sourceFile) }
+            .distinctBy { it.path }
+            .count { it in corpusAnalyzed.map { it.sourceFile } }
+        val reportedSubmission = results.flatMap { it.matches }
             .flatMap { sequenceOf(it.pattern.first.sourceFile, it.text.first.sourceFile) }
             .distinctBy { it.path }
             .count { it in submittedAnalyzed.map { it.sourceFile } }
-        return reportedSources.toDouble() / submittedAnalyzed.count().toDouble()
+        return max(
+            reportedSubmission.toDouble() / submittedAnalyzed.count().toDouble(),
+            reportedCorpus.toDouble() / corpusAnalyzed.count().toDouble()
+        )
     }
 }
