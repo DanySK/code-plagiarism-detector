@@ -6,6 +6,8 @@ import io.mockk.mockk
 import org.danilopianini.plagiarismdetector.core.analyzer.representation.TokenizedSourceImpl
 import org.danilopianini.plagiarismdetector.core.analyzer.representation.token.TokenImpl
 import org.danilopianini.plagiarismdetector.core.analyzer.representation.token.TokenTypeImpl
+import org.danilopianini.plagiarismdetector.core.detector.technique.tokenization.AverageSimilarityStrategy
+import org.danilopianini.plagiarismdetector.core.detector.technique.tokenization.MaxSimilarityStrategy
 import org.danilopianini.plagiarismdetector.core.detector.technique.tokenization.NormalizedAverageSimilarityStrategy
 import org.danilopianini.plagiarismdetector.core.detector.technique.tokenization.NormalizedMaxSimilarityStrategy
 import org.danilopianini.plagiarismdetector.core.detector.technique.tokenization.TokenMatchImpl
@@ -41,23 +43,35 @@ class TokenBasedSimilarityStrategiesTest : FunSpec() {
 
     init {
         test("Testing `NormalizedAverageSimilarityStrategy` with no matches") {
-            val strategy = NormalizedAverageSimilarityStrategy()
-            strategy.similarityOf(representation, emptySet()) shouldBe 0
+            NormalizedAverageSimilarityStrategy().similarityOf(representation, emptySet()) shouldBe 0
         }
 
         test("Testing `NormalizedMaxSimilarityStrategy` with no matches") {
-            val strategy = NormalizedMaxSimilarityStrategy()
-            strategy.similarityOf(representation, emptySet()) shouldBe 0
+            NormalizedMaxSimilarityStrategy().similarityOf(representation, emptySet()) shouldBe 0
+        }
+
+        test("Testing `MaxSimilarityStrategy` with no matches") {
+            MaxSimilarityStrategy().similarityOf(representation, emptySet()) shouldBe 0
+        }
+
+        test("Testing `AverageSimilarityStrategy` with no matches") {
+            AverageSimilarityStrategy().similarityOf(representation, emptySet()) shouldBe 0
         }
 
         test("Testing `NormalizedAverageSimilarityStrategy` with sample data") {
-            val strategy = NormalizedAverageSimilarityStrategy()
-            strategy.similarityOf(representation, matches) shouldBe 0.6
+            NormalizedAverageSimilarityStrategy().similarityOf(representation, matches) shouldBe 0.6
         }
 
         test("Testing `NormalizedMaxSimilarityStrategy` with sample data") {
-            val strategy = NormalizedMaxSimilarityStrategy()
-            strategy.similarityOf(representation, matches) shouldBe 0.75
+            NormalizedMaxSimilarityStrategy().similarityOf(representation, matches) shouldBe 0.75
+        }
+
+        test("Testing `AverageSimilarityStrategy` with sample data") {
+            AverageSimilarityStrategy().similarityOf(representation, matches) shouldBe 0.8
+        }
+
+        test("Testing `MaxSimilarityStrategy` with sample data") {
+            MaxSimilarityStrategy().similarityOf(representation, matches) shouldBe 1.0
         }
     }
 }
