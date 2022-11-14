@@ -3,3 +3,4 @@ build/
 .idea/
 .vscode
 bin
+.DS_Store
