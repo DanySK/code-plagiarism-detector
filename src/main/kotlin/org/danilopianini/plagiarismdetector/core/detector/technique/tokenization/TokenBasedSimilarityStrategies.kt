@@ -11,7 +11,21 @@ import kotlin.math.min
 fun interface TokenBasedSimilarityStrategy : SimilarityEstimationStrategy<TokenizedSource, Sequence<Token>, TokenMatch>
 
 /**
- * Computes the similarity with maximum similarities' normalization formula.
+ * Computes the similarity using maximum similarities' formula.
+ */
+class MaxSimilarityStrategy : TokenBasedSimilarityStrategy {
+
+    override fun similarityOf(
+        representations: Pair<TokenizedSource, TokenizedSource>,
+        matches: Set<TokenMatch>
+    ): Double = matches.sumOf { it.length }.toDouble() / min(
+        representations.first.representation.count(),
+        representations.second.representation.count()
+    )
+}
+
+/**
+ * Computes the similarity using maximum similarities' normalization formula.
  */
 class NormalizedMaxSimilarityStrategy : TokenBasedSimilarityStrategy {
 
@@ -29,22 +43,22 @@ class NormalizedMaxSimilarityStrategy : TokenBasedSimilarityStrategy {
 }
 
 /**
- * Computes the similarity with maximum similarities' formula.
+ * Computes the similarity using the average similarities' formula.
  */
-class MaxSimilarityStrategy : TokenBasedSimilarityStrategy {
+class AverageSimilarityStrategy : TokenBasedSimilarityStrategy {
+
     override fun similarityOf(
         representations: Pair<TokenizedSource, TokenizedSource>,
         matches: Set<TokenMatch>
     ): Double {
-        return matches.sumOf { it.length }.toDouble() / min(
-            representations.first.representation.count(),
-            representations.second.representation.count()
-        )
+        val totalTokens = representations.first.representation.count() + representations.second.representation.count()
+        val matchedTokens = matches.sumOf { it.length }
+        return (2 * (matchedTokens)).toDouble() / totalTokens
     }
 }
 
 /**
- * Computes the similarity with average similarity normalization formula.
+ * Computes the similarity using average similarity normalization formula.
  */
 class NormalizedAverageSimilarityStrategy : TokenBasedSimilarityStrategy {
 
@@ -54,7 +68,7 @@ class NormalizedAverageSimilarityStrategy : TokenBasedSimilarityStrategy {
     ): Double {
         val totalTokens = representations.first.representation.count() + representations.second.representation.count()
         val matchedTokens = matches.sumOf { it.length }
-        // val matchedSubsequences = if (matches.isEmpty()) 0 else matches.count() - 1
-        return (2 * (matchedTokens)).toDouble() / totalTokens
+        val matchedSubsequences = if (matches.isEmpty()) 0 else matches.count() - 1
+        return (2 * (matchedTokens - matchedSubsequences)).toDouble() / totalTokens
     }
 }
