@@ -1,3 +1,108 @@
+## [5.0.0](https://github.com/DanySK/code-plagiarism-detector/compare/4.0.1...5.0.0) (2022-11-15)
+
+
+### ⚠ BREAKING CHANGES
+
+* **parser:** do not throw exception unless parsing failed completely
+
+### Features
+
+* add session, input cli and exporters ([a69f1b4](https://github.com/DanySK/code-plagiarism-detector/commit/a69f1b4e06ba22135721967ef6d5e60a2467c515))
+* **cli:** add support for multiple entries for provider and corpus ([d6eb1f6](https://github.com/DanySK/code-plagiarism-detector/commit/d6eb1f66ceb5a8df5a857f0ead0aeb1f6129e400))
+* **core:** add support for filtering ([0307968](https://github.com/DanySK/code-plagiarism-detector/commit/0307968e89d536f329e970a34b7594169aa53e7a))
+
+
+### Bug Fixes
+
+* **analyzer:** fix bug in remove equals and hashcode members of a class ([cc72316](https://github.com/DanySK/code-plagiarism-detector/commit/cc72316e6f4f04cdddc8876b082b11009ec211c7))
+* **detector:** fix bug similarity calc if matches is empty ([ad3a047](https://github.com/DanySK/code-plagiarism-detector/commit/ad3a0473cb5ba9e0a3d16984a3d7f6ade3203e5a))
+* **filter:** return 0 instead of nan if map is empty ([3e97b5a](https://github.com/DanySK/code-plagiarism-detector/commit/3e97b5a4c20a1a8a68fa23af8b75c82446b6916b))
+* **provider:** replace empty char with + char in url ([e7e3b10](https://github.com/DanySK/code-plagiarism-detector/commit/e7e3b103272e28ac0ed7e0949bce0a88cca1cf6c))
+
+
+### Build and continuous integration
+
+* **deps:** update danysk/build-check-deploy-gradle-action action to v2.1.12 ([88c0028](https://github.com/DanySK/code-plagiarism-detector/commit/88c0028c169523651c7a15df3707e0c595d7d4e3))
+* **deps:** update danysk/build-check-deploy-gradle-action action to v2.1.13 ([52f965d](https://github.com/DanySK/code-plagiarism-detector/commit/52f965db483d7f84ec8f4d12d7ca5071732e47cc))
+* **deps:** update danysk/build-check-deploy-gradle-action action to v2.1.14 ([461c494](https://github.com/DanySK/code-plagiarism-detector/commit/461c4941bcc4a16b6e5ae9255a4dfc5f54513d7c))
+
+
+### Dependency updates
+
+* **deps:** update dependency semantic-release-preconfigured-conventional-commits to v1.1.14 ([eca79d8](https://github.com/DanySK/code-plagiarism-detector/commit/eca79d8d8c1a5d692ddc305f76b12c246575c85a))
+* **deps:** update dependency semantic-release-preconfigured-conventional-commits to v1.1.15 ([84b9c95](https://github.com/DanySK/code-plagiarism-detector/commit/84b9c95d7ea1fd2c459bd10fcd1d8c92365997e2))
+* **deps:** update kotest to v5.5.2 ([524627b](https://github.com/DanySK/code-plagiarism-detector/commit/524627b304094a2120b86077297242c450dcb609))
+* **deps:** update kotest to v5.5.3 ([5c27a16](https://github.com/DanySK/code-plagiarism-detector/commit/5c27a168815de3679525b631776593e67166a9cb))
+* **deps:** update kotest to v5.5.4 ([6f11bac](https://github.com/DanySK/code-plagiarism-detector/commit/6f11bac9fa3d9499c0a9de14b7d776cc818d954a))
+* **deps:** update node.js to 18.12 ([d89a7c1](https://github.com/DanySK/code-plagiarism-detector/commit/d89a7c16e5526be22cf553d076a8cea09283e2f9))
+* **deps:** update node.js to v18 ([361a1d4](https://github.com/DanySK/code-plagiarism-detector/commit/361a1d440249e282ec58ed052f143a22c0a8c428))
+* **deps:** update plugin kotlin-qa to v0.27.0 ([4fcf69d](https://github.com/DanySK/code-plagiarism-detector/commit/4fcf69d327e1050677f28614b803364a5bfef65e))
+
+
+### General maintenance
+
+* missing ; in test sources ([3a50432](https://github.com/DanySK/code-plagiarism-detector/commit/3a5043238b844f0cce1a0e85273bb18398364e0c))
+
+
+### Tests
+
+* **analyzer:** add check not empty ([899a7cd](https://github.com/DanySK/code-plagiarism-detector/commit/899a7cdc2498979a5d895e5a37111dd880a8c2c0))
+* **analyzer:** add test case for sources with errors ([d4e35fb](https://github.com/DanySK/code-plagiarism-detector/commit/d4e35fb7507e9d79f1d381410380ac57bd690339))
+* **analyzer:** add test processing stage ([1452bd9](https://github.com/DanySK/code-plagiarism-detector/commit/1452bd97f1c842b882caee96bc2352606d080c38))
+* **analyzer:** merge tokenization and preprocessor test ([43d9eac](https://github.com/DanySK/code-plagiarism-detector/commit/43d9eac30012fddae5214f2ed793edec7f3e82f7))
+* **cli:** add provider command test ([6cf9655](https://github.com/DanySK/code-plagiarism-detector/commit/6cf965521cdc664ebb53bdf469d58340ccdbc2b6))
+* **cli:** add test for output directory ([43ff668](https://github.com/DanySK/code-plagiarism-detector/commit/43ff6681f0ec4a5b6f2961b0824fdf4bf5e5d267))
+* **core:** add test for file exclusion in detection process ([e713d00](https://github.com/DanySK/code-plagiarism-detector/commit/e713d00841fb0c340d2bd6372558f33a30021318))
+* **provider:** refactor test since projects have moved in [@unibo-oop-projects](https://github.com/unibo-oop-projects) ([a2638b7](https://github.com/DanySK/code-plagiarism-detector/commit/a2638b7a211d47dea373cc6fcf7cfdcfcd172746))
+* **repository:** replace content supplier test with testing get sources method of repository ([bb8cb1f](https://github.com/DanySK/code-plagiarism-detector/commit/bb8cb1f5bfbbec6f38085eb7165f7a26b33c5441))
+* **session:** add test for no corpus found ([61202fc](https://github.com/DanySK/code-plagiarism-detector/commit/61202fc1fffba93c3bf4812382fa71ef66f580bc))
+* **session:** add test for session ([d84c0bc](https://github.com/DanySK/code-plagiarism-detector/commit/d84c0bc621406e143d87abc7365d97d1f673da96))
+
+
+### Documentation
+
+* improve documentation ([8e623d4](https://github.com/DanySK/code-plagiarism-detector/commit/8e623d4738c6e5282a6d77f06205490e39d24c38))
+
+
+### Refactoring
+
+* **analyzer:** add try catch to intercept source compilation errrors and do not stop computation ([0a52ef5](https://github.com/DanySK/code-plagiarism-detector/commit/0a52ef549d9128a2bf04579ec6ebce45e36ee8cb))
+* **analyzer:** replace message with verbose message in error msg ([85e1898](https://github.com/DanySK/code-plagiarism-detector/commit/85e189867929db38119036252aa1dc9a13f0749e))
+* **cli:** check -> require ([800bb9f](https://github.com/DanySK/code-plagiarism-detector/commit/800bb9fcf74f9bbfeedc87bd52d2833589b44da7))
+* **cli:** check in run function with better message ([d7525bf](https://github.com/DanySK/code-plagiarism-detector/commit/d7525bf8b958aed5edd4b9a46149c3ed48c0c16d))
+* **cli:** convert get functions in lazy properties ([9f94898](https://github.com/DanySK/code-plagiarism-detector/commit/9f948988fbf493db7c84b793483e9ab920288a98))
+* **cli:** improve error messages ([42bfff6](https://github.com/DanySK/code-plagiarism-detector/commit/42bfff6798198a972c5e14c72c43b8be6885b7e3))
+* **cli:** now is the configurator which retrieves repos: provider commands just contains options ([1a66806](https://github.com/DanySK/code-plagiarism-detector/commit/1a668063c95844488ab2ba69ec5026b7be4737aa))
+* **cli:** split in different files interfaces and implementations ([a5a5f25](https://github.com/DanySK/code-plagiarism-detector/commit/a5a5f259a8033d46cb6204a6dd68e3e79fdd3c97))
+* **configurator:** handle exception not valid user. ([696b4a0](https://github.com/DanySK/code-plagiarism-detector/commit/696b4a060b81f2c583da17352f2c71f1655186b0))
+* **configurator:** made provider properties lazy in order to mock them and run test even in pull request ci ([99bdd32](https://github.com/DanySK/code-plagiarism-detector/commit/99bdd3259632272643338319d4ca751268f3bb10))
+* **core:** do not consider source with empty representations ([928cee6](https://github.com/DanySK/code-plagiarism-detector/commit/928cee669ef25dc970ec9be571f39383112a39a8))
+* **detector:** extracted common code ([d9f57bc](https://github.com/DanySK/code-plagiarism-detector/commit/d9f57bca1fb18c5cd3527b9f515e8afa0669b2b8))
+* **exporter:** rename exported file with submitted project name ([800b2b6](https://github.com/DanySK/code-plagiarism-detector/commit/800b2b686da657965be0f1ee01054684b1086285))
+* **filter:** move from lambda to method reference ([abb50d6](https://github.com/DanySK/code-plagiarism-detector/commit/abb50d69897da093cad3bad7c39e9806e23b80e7))
+* move CLIConfigurator inside cli package ([1948868](https://github.com/DanySK/code-plagiarism-detector/commit/19488682555cc369d2fb34cdd6bf90788f8123fc))
+* **options:** extracted common utilities functions in SupportedOptions object ([962c439](https://github.com/DanySK/code-plagiarism-detector/commit/962c4399423aed1b85dedcc2986bfaeb19ed8e3f))
+* **output:** distinct submission name in file name ([ab4fefc](https://github.com/DanySK/code-plagiarism-detector/commit/ab4fefc456f9c79bc1d96ba7390269696da3706b))
+* **output:** group reports by submission ([d708560](https://github.com/DanySK/code-plagiarism-detector/commit/d7085601e517a00bf85c4a534bbcc2641ca1e808))
+* **parser:** do not throw exception unless parsing failed completely ([8ee76ee](https://github.com/DanySK/code-plagiarism-detector/commit/8ee76ee685e0132d9035da6afb4d5f2370851b13))
+* **repository:** change owner method to include organizations ([b7fd69c](https://github.com/DanySK/code-plagiarism-detector/commit/b7fd69c0c43f2d304eb1b3f63caa684fdea3292b))
+* **repository:** made coherent with github repos ([d08ccfb](https://github.com/DanySK/code-plagiarism-detector/commit/d08ccfbd4f14afa447c3a4fd0ccced9868088029))
+* **repository:** throw an illegal argument exception with explanatory message if corpus or submission subcommand is not valued ([af24cd1](https://github.com/DanySK/code-plagiarism-detector/commit/af24cd19a097ace9007f7871f3cd179de3f8aff6))
+* use sequence and convert to set if necessary ([28d7eca](https://github.com/DanySK/code-plagiarism-detector/commit/28d7eca691d7b0ddd1d3816fa4a21a330691c739))
+
+
+### Style improvements
+
+* add . at the end of doc comment ([f95879c](https://github.com/DanySK/code-plagiarism-detector/commit/f95879c034ab1d1b34d7c462382e66046d50f763))
+* add return type ([68156d2](https://github.com/DanySK/code-plagiarism-detector/commit/68156d2c7ffc579d9f455316ab3fec19d7486735))
+* **analyzer:** change type O parater to S ([7f6f736](https://github.com/DanySK/code-plagiarism-detector/commit/7f6f736b190e290d24379bd74222103a1231df6d))
+* **cli:** improve error message ([2a9242a](https://github.com/DanySK/code-plagiarism-detector/commit/2a9242a562aceebc93be3e97541b666d2767fcc8))
+* **core:** add logger prints ([773547d](https://github.com/DanySK/code-plagiarism-detector/commit/773547de7565343f171db2e0556e107c0b20270e))
+* fix typo in function name ([66e3e0e](https://github.com/DanySK/code-plagiarism-detector/commit/66e3e0e5e2ad5812a66944bf2b2bb84189b0871a))
+* improve function name ([24ff929](https://github.com/DanySK/code-plagiarism-detector/commit/24ff929c45861b0b33800c82918fde5bfbda4430))
+* remove trailing line, improve doc ([106a034](https://github.com/DanySK/code-plagiarism-detector/commit/106a0344cdddb1dcccc12d5095ae7b853733b727))
+* **reporter:** rename Result to Report ([5f3afb3](https://github.com/DanySK/code-plagiarism-detector/commit/5f3afb3e4d8183d264c4a345e6b60f69c959866d))
+
 ## [4.0.1](https://github.com/DanySK/code-plagiarism-detector/compare/4.0.0...4.0.1) (2022-10-24)
 
 
