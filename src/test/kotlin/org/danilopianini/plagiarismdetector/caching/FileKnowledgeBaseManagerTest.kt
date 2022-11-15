@@ -2,20 +2,20 @@ package org.danilopianini.plagiarismdetector.caching
 
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.FunSpec
-import io.kotest.engine.spec.tempdir
 import io.kotest.matchers.file.shouldContainFile
 import io.kotest.matchers.file.shouldNotBeEmpty
 import io.kotest.matchers.shouldBe
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.spyk
+import org.apache.commons.io.FileUtils
 import org.danilopianini.plagiarismdetector.repository.Repository
 import java.io.File
 import java.net.URL
+import java.nio.file.Files
 
 class FileKnowledgeBaseManagerTest : FunSpec() {
 
-    private val cacheDir = tempdir()
     private val sampleBitbucketRepo = mockk<Repository> {
         every { name } returns "test-repo-cache-simple"
         every { cloneUrl } returns URL(BB_SAMPLE_REPO_URL)
@@ -26,13 +26,14 @@ class FileKnowledgeBaseManagerTest : FunSpec() {
     }
 
     init {
+        val cacheDir = Files.createTempDirectory("cache-dir").toFile()
         val knowledgeBaseManager = spyk<FileKnowledgeBaseManager>(recordPrivateCalls = true)
         every { knowledgeBaseManager getProperty "repositoryFolder" } propertyType File::class answers { cacheDir }
 
         test("Testing caching sources") {
             knowledgeBaseManager.isCached(sampleBitbucketRepo) shouldBe false
             shouldThrow<IllegalArgumentException> {
-                knowledgeBaseManager.load(sampleBitbucketRepo).shouldNotBeEmpty()
+                knowledgeBaseManager.load(sampleBitbucketRepo)
             }
             knowledgeBaseManager.save(sampleBitbucketRepo)
             knowledgeBaseManager.isCached(sampleBitbucketRepo) shouldBe true
@@ -45,7 +46,7 @@ class FileKnowledgeBaseManagerTest : FunSpec() {
         test("Testing caching project sources with `src` not in the root directory") {
             knowledgeBaseManager.isCached(sampleGitHubRepo) shouldBe false
             shouldThrow<IllegalArgumentException> {
-                knowledgeBaseManager.load(sampleGitHubRepo).shouldNotBeEmpty()
+                knowledgeBaseManager.load(sampleGitHubRepo)
             }
             knowledgeBaseManager.save(sampleGitHubRepo)
             knowledgeBaseManager.isCached(sampleGitHubRepo) shouldBe true
@@ -53,6 +54,10 @@ class FileKnowledgeBaseManagerTest : FunSpec() {
             repoDir.shouldNotBeEmpty()
             repoDir.path.substringAfterLast(System.getProperty("file.separator")) shouldBe sampleGitHubRepo.name
             repoDir.shouldContainFile("app")
+        }
+
+        afterSpec {
+            FileUtils.forceDeleteOnExit(cacheDir)
         }
     }
 
