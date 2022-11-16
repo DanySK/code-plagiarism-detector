@@ -70,17 +70,19 @@ class TokenizationFacade(private val configs: TokenizationConfig) : TechniqueFac
         submittedAnalyzed: Sequence<TokenizedSource>,
         corpusAnalyzed: Sequence<TokenizedSource>
     ): Double {
-        val reportedCorpus = results.flatMap { it.matches }
-            .flatMap { sequenceOf(it.pattern.first.sourceFile, it.text.first.sourceFile) }
-            .distinctBy { it.path }
-            .count { it in corpusAnalyzed.map { it.sourceFile } }
-        val reportedSubmission = results.flatMap { it.matches }
-            .flatMap { sequenceOf(it.pattern.first.sourceFile, it.text.first.sourceFile) }
-            .distinctBy { it.path }
-            .count { it in submittedAnalyzed.map { it.sourceFile } }
+        val reportedCorpus = countReportedSourcesOf(results, corpusAnalyzed)
+        val reportedSubmission = countReportedSourcesOf(results, submittedAnalyzed)
         return max(
             reportedSubmission.toDouble() / submittedAnalyzed.count().toDouble(),
             reportedCorpus.toDouble() / corpusAnalyzed.count().toDouble()
         )
     }
+
+    private fun countReportedSourcesOf(
+        results: Set<ComparisonResult<TokenMatch>>,
+        representations: Sequence<TokenizedSource>
+    ): Int = results.flatMap { it.matches }
+        .flatMap { sequenceOf(it.pattern.first.sourceFile, it.text.first.sourceFile) }
+        .distinctBy { it.path }
+        .count { it in representations.map { t -> t.sourceFile } }
 }
