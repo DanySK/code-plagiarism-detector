@@ -22,7 +22,7 @@ class AntiPlagiarismSessionImpl<out C : RunConfiguration<M>, M : Match>(
     override operator fun invoke() = logExecutionTime {
         with(configuration) {
             submission.forEach { submission ->
-                val result = process(submission).toMutableSet()
+                val result = processNotYetProcessed(submission).toMutableSet()
                 result.addAll(retrieveAlreadyProcessed(submission))
                 processedResult.addAll(result)
                 if (result.isNotEmpty()) {
@@ -32,7 +32,7 @@ class AntiPlagiarismSessionImpl<out C : RunConfiguration<M>, M : Match>(
         }
     }
 
-    private fun process(submission: Repository): Set<Report<M>> = with(configuration) {
+    private fun processNotYetProcessed(submission: Repository): Set<Report<M>> = with(configuration) {
         corpus.filter { it.name != submission.name && submission hasNotYetComparedAgainst it }
             .toSet()
             .parallelStream()
