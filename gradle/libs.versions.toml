@@ -1,7 +1,7 @@
 [versions]
 kotest = "5.5.4"
 kotlin = "1.7.21"
-mockito = "4.8.1"
+mockito = "4.9.0"
 logback = "1.4.4"
 
 [libraries]
