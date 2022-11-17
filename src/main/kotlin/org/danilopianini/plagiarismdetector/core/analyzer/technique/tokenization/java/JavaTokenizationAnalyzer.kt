@@ -11,14 +11,14 @@ import java.io.File
  */
 class JavaTokenizationAnalyzer : TokenizationAnalyzer(
     object : StepHandler<File, List<Token>> {
-        override operator fun invoke(input: File): List<Token> = runCatching {
+        override operator fun invoke(input: File): List<Token> = try {
             JavaTokenizer()(
                 JavaPreprocessor()(
                     JavaParser()(input)
                 )
             )
-        }.getOrElse {
-            LoggerFactory.getLogger(this.javaClass).error("Skipping ${input.name} due to: ${it.message}")
+        } catch (e: IllegalStateException) {
+            LoggerFactory.getLogger(this.javaClass).error("Skipping ${input.name} due to: ${e.message}")
             emptyList()
         }
     }
