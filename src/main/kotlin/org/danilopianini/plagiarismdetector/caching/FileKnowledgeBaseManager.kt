@@ -6,12 +6,15 @@ import org.apache.commons.io.filefilter.NotFileFilter
 import org.apache.commons.io.filefilter.TrueFileFilter
 import org.danilopianini.plagiarismdetector.repository.Repository
 import org.eclipse.jgit.api.Git
+import org.slf4j.LoggerFactory
 import java.io.File
 
 /**
  * A file based knowledge base manager which caches data on files.
  */
 class FileKnowledgeBaseManager : KnowledgeBaseManager {
+
+    private val logger = LoggerFactory.getLogger(javaClass)
     private val separator = System.getProperty("file.separator")
     private val homeDirectory = System.getProperty("user.home")
     private val repositoryFolder by lazy {
@@ -20,6 +23,7 @@ class FileKnowledgeBaseManager : KnowledgeBaseManager {
 
     override fun save(project: Repository) =
         with(File(repositoryFolder.path + separator + project.name)) {
+            logger.info("Cloning ${project.name}")
             clone(project, this)
             clean(this)
         }
