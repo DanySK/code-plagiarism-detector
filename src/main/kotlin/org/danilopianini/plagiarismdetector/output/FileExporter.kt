@@ -2,6 +2,7 @@ package org.danilopianini.plagiarismdetector.output
 
 import org.danilopianini.plagiarismdetector.core.Report
 import org.danilopianini.plagiarismdetector.core.detector.Match
+import org.slf4j.LoggerFactory
 import java.io.FileOutputStream
 import java.io.PrintWriter
 import java.nio.file.Path
@@ -14,6 +15,8 @@ import kotlin.io.path.pathString
  */
 abstract class FileExporter<in M : Match>(private val outputDirectory: Path) : ReportsExporter<M> {
 
+    private val logger = LoggerFactory.getLogger(javaClass)
+
     /**
      * Exports the given [reports] in a file inside [outputDirectory].
      */
@@ -22,6 +25,7 @@ abstract class FileExporter<in M : Match>(private val outputDirectory: Path) : R
         .forEach {
             val fileName = "report-${it.key.name}.$fileExtension"
             val output = Paths.get(outputDirectory.pathString, fileName).toFile()
+            logger.info("Exporting report at ${output.path}")
             PrintWriter(FileOutputStream(output)).use { out ->
                 export(reports, out)
             }
