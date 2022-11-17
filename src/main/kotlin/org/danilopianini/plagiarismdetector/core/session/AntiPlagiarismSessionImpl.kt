@@ -22,40 +22,38 @@ class AntiPlagiarismSessionImpl<out C : RunConfiguration<M>, M : Match>(
     override operator fun invoke() = logExecutionTime {
         with(configuration) {
             submission.forEach { submission ->
-                val result = corpus
-                    .filter { it.name != submission.name && hasNotYetProcessed(submission, it) }
-                    .toSet()
-                    .parallelStream()
-                    .map { technique.execute(submission, it, filesToExclude, minDuplicatedPercentage) }
-                    .collect(Collectors.toSet())
-                corpus.filter { hasAlreadyBeenProcessed(submission, it) }
-                    .forEach {
-                        alreadyProcessed(submission, it)?.run {
-                            result.add(ReportImpl(submission, it, comparisonResult, reportedRatio))
-                        }
-                    }
+                val result = process(submission).toMutableSet()
+                result.addAll(retrieveAlreadyProcessed(submission))
                 processedResult.addAll(result)
                 if (result.isNotEmpty()) {
-                    configuration.exporter(result)
+                    exporter(result)
                 }
             }
         }
     }
 
-    private fun hasAlreadyBeenProcessed(repo1: Repository, repo2: Repository): Boolean =
-        !hasNotYetProcessed(repo1, repo2)
+    private fun process(submission: Repository): Set<Report<M>> = with(configuration) {
+        corpus.filter { it.name != submission.name && submission hasNotYetComparedAgainst it }
+            .toSet()
+            .parallelStream()
+            .map { technique.execute(submission, it, filesToExclude, minDuplicatedPercentage) }
+            .collect(Collectors.toSet())
+    }
 
-    private fun hasNotYetProcessed(repo1: Repository, repo2: Repository): Boolean =
-        processedResult.none {
-            (it.comparedProject.name == repo1.name && it.submittedProject.name == repo2.name) ||
-                (it.comparedProject.name == repo2.name && it.submittedProject.name == repo1.name)
-        }
+    private fun retrieveAlreadyProcessed(submission: Repository): Set<Report<M>> = with(configuration) {
+        corpus.mapNotNull { corpus ->
+            processedResult.find { it.refersTo(submission, corpus) }?.run {
+                ReportImpl(submission, corpus, comparisonResult, reportedRatio)
+            }
+        }.toSet()
+    }
 
-    private fun alreadyProcessed(repo1: Repository, repo2: Repository): Report<M>? =
-        processedResult.find {
-            (it.comparedProject.name == repo1.name && it.submittedProject.name == repo2.name) ||
-                (it.comparedProject.name == repo2.name && it.submittedProject.name == repo1.name)
-        }
+    private infix fun Repository.hasNotYetComparedAgainst(other: Repository): Boolean =
+        processedResult.none { it.refersTo(this, other) }
+
+    private fun Report<M>.refersTo(repo1: Repository, repo2: Repository): Boolean =
+        (comparedProject.name == repo1.name && submittedProject.name == repo2.name) ||
+            (comparedProject.name == repo2.name && submittedProject.name == repo1.name)
 
     /**
      * Logs the elapsed time used to execute the given [block].
