@@ -14,19 +14,18 @@ import java.io.File
 class RepoContentSupplierCloneStrategy(private val repository: Repository) : RepoContentSupplierStrategy {
 
     private val knowledgeBaseManager = FileKnowledgeBaseManager()
+    private val contentDirectory by lazy {
+        if (!knowledgeBaseManager.isCached(repository)) {
+            knowledgeBaseManager.save(repository)
+        }
+        knowledgeBaseManager.load(repository)
+    }
 
     override fun filesMatching(pattern: Regex): Sequence<File> = runCatching {
         FileUtils.listFiles(
-            saveAndLoad(),
+            contentDirectory,
             RegexFileFilter(pattern.toPattern()),
             DirectoryFileFilter.DIRECTORY
         ).asSequence()
     }.getOrElse { emptySequence() }
-
-    private fun saveAndLoad(): File = with(knowledgeBaseManager) {
-        if (!isCached(repository)) {
-            save(repository)
-        }
-        load(repository)
-    }
 }
