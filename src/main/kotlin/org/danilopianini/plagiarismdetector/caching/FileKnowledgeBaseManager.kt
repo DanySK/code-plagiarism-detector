@@ -28,12 +28,13 @@ class FileKnowledgeBaseManager : KnowledgeBaseManager {
             clean(this)
         }
 
-    private fun clone(project: Repository, out: File) {
+    private fun clone(project: Repository, out: File) = runCatching {
         Git.cloneRepository()
             .setURI("${project.cloneUrl}")
             .setDirectory(out)
             .call()
-    }
+            .close()
+    }.getOrElse { logger.error(it.message) }
 
     private fun clean(out: File) {
         val matching = FileUtils.listFiles(

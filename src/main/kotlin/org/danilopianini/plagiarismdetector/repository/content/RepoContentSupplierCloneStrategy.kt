@@ -13,19 +13,20 @@ import java.io.File
  */
 class RepoContentSupplierCloneStrategy(private val repository: Repository) : RepoContentSupplierStrategy {
 
-    private val knowledgeBaseManager = FileKnowledgeBaseManager().also {
-        if (!it.isCached(repository)) {
-            it.save(repository)
-        }
-    }
-    private val contentDirectory by lazy {
-        knowledgeBaseManager.load(repository)
-    }
+    private val knowledgeBaseManager = FileKnowledgeBaseManager()
 
-    override fun filesMatching(pattern: Regex): Sequence<File> =
+    override fun filesMatching(pattern: Regex): Sequence<File> = runCatching {
         FileUtils.listFiles(
-            contentDirectory,
+            saveAndLoad(),
             RegexFileFilter(pattern.toPattern()),
             DirectoryFileFilter.DIRECTORY
         ).asSequence()
+    }.getOrElse { emptySequence() }
+
+    private fun saveAndLoad(): File = with(knowledgeBaseManager) {
+        if (!isCached(repository)) {
+            save(repository)
+        }
+        load(repository)
+    }
 }
