@@ -14,10 +14,10 @@ import org.danilopianini.plagiarismdetector.provider.GitHubProvider
 class CLIConfiguratorTest : FunSpec({
 
     val configurator = spyk<CLIConfigurator>()
-    every { configurator getProperty "githubProvider" } propertyType GitHubProvider::class answers {
+    every { configurator getProperty "github" } propertyType GitHubProvider::class answers {
         GitHubProvider.connectAnonymously()
     }
-    every { configurator getProperty "bitbucketProvider" } propertyType BitbucketProvider::class answers {
+    every { configurator getProperty "bitbucket" } propertyType BitbucketProvider::class answers {
         BitbucketProvider.connectAnonymously()
     }
 

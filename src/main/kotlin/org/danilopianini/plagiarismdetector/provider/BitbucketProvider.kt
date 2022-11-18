@@ -67,10 +67,10 @@ class BitbucketProvider private constructor(
     private fun getResponses(url: String): Set<JSONObject> {
         val responses = mutableSetOf<JSONObject>()
         responses.add(doGETRequest(url))
-        require(!checkError(responses.last())) {
+        check(!responses.last().hasError()) {
             responses.last().getJSONObject(ERROR_FIELD).get(MESSAGE_FIELD).toString()
         }
-        if (hasNext(responses.last())) {
+        if (responses.last().hasNext()) {
             responses.addAll(getResponses(responses.last().get(NEXT_PAGE_FIELD).toString()))
         }
         return responses
@@ -87,7 +87,7 @@ class BitbucketProvider private constructor(
         return JSONObject(IOUtils.toString(response.body, StandardCharsets.UTF_8))
     }
 
-    private fun checkError(responseObject: JSONObject) = !responseObject.isNull(ERROR_FIELD)
+    private fun JSONObject.hasError(): Boolean = !isNull(ERROR_FIELD)
 
-    private fun hasNext(responseObject: JSONObject) = !responseObject.isNull(NEXT_PAGE_FIELD)
+    private fun JSONObject.hasNext(): Boolean = !isNull(NEXT_PAGE_FIELD)
 }
