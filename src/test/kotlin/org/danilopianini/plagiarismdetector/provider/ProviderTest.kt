@@ -78,10 +78,10 @@ class ProviderTest : FunSpec() {
         }
 
         test("Searching by *non-existing* URL should throw an exception") {
-            shouldThrow<IllegalArgumentException> {
+            shouldThrow<IllegalStateException> {
                 githubProvider.byLink(URL("$GH_URL_PREFIX/$DANYSK_USER/non-existing-repo"))
             }
-            shouldThrow<IllegalArgumentException> {
+            shouldThrow<IllegalStateException> {
                 bitbucketProvider.byLink(URL("$BB_URL_PREFIX/$DANYSK_USER/non-existing-repo"))
             }
         }
@@ -115,10 +115,10 @@ class ProviderTest : FunSpec() {
         }
 
         test("Searching by a *non-existing* user should throw an exception") {
-            shouldThrow<IllegalArgumentException> {
+            shouldThrow<IllegalStateException> {
                 githubProvider.byCriteria(ByGitHubUser("non-existing-user"))
             }
-            shouldThrow<IllegalArgumentException> {
+            shouldThrow<IllegalStateException> {
                 bitbucketProvider.byCriteria(ByBitbucketUser("non-existing-user"))
             }
         }

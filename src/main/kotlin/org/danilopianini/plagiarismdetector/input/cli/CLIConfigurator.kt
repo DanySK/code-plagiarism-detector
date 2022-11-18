@@ -26,10 +26,10 @@ import java.net.URL
  */
 class CLIConfigurator : RunConfigurator {
 
-    private val githubProvider by lazy {
+    private val github by lazy {
         GitHubProvider.connectWithToken(EnvironmentTokenSupplier(GH_AUTH_TOKEN_VAR))
     }
-    private val bitbucketProvider by lazy {
+    private val bitbucket by lazy {
         BitbucketProvider.connectWithToken(
             EnvironmentTokenSupplier(BB_AUTH_USER_VAR, BB_AUTH_TOKEN_VAR, separator = ":")
         )
@@ -63,17 +63,15 @@ class CLIConfigurator : RunConfigurator {
     }
 
     private fun byLink(link: URL, service: HostingService): Repository = when (service) {
-        GitHub -> githubProvider.byLink(link)
-        BitBucket -> bitbucketProvider.byLink(link)
+        GitHub -> github.byLink(link)
+        BitBucket -> bitbucket.byLink(link)
     }
 
-    private fun byCriteria(criteria: SearchCriteria<*, *>): Set<Repository> = runCatching {
-        when (criteria) {
-            is GitHubSearchCriteria -> githubProvider.byCriteria(criteria).toSet()
-            is BitbucketSearchCriteria -> bitbucketProvider.byCriteria(criteria).toSet()
-            else -> error("The extracted criteria is not valid.")
-        }
-    }.getOrElse { emptySet() }
+    private fun byCriteria(criteria: SearchCriteria<*, *>): Sequence<Repository> = when (criteria) {
+        is GitHubSearchCriteria -> github.runCatching { byCriteria(criteria) }.getOrElse { emptySequence() }
+        is BitbucketSearchCriteria -> bitbucket.runCatching { byCriteria(criteria) }.getOrElse { emptySequence() }
+        else -> error("The extracted criteria is not valid.")
+    }
 
     companion object {
         private const val BB_AUTH_USER_VAR = "BB_USER"

@@ -40,7 +40,7 @@ class GitHubProvider private constructor(
         try {
             return GitHubRepository(github.getRepository(repoName))
         } catch (e: GHFileNotFoundException) {
-            throw IllegalArgumentException("No repo found at the given address. $e")
+            error("No repo found at the given address. $e")
         } catch (e: HttpException) {
             error(e)
         }
@@ -53,7 +53,7 @@ class GitHubProvider private constructor(
             return getMatchingReposByCriteria(criteria)
         } catch (e: HttpException) {
             check(e.responseCode != UNAUTHORIZED_CODE) { "Unauthorized: $e" }
-            throw IllegalArgumentException("Error while searching repos matching the given criteria. $e")
+            error("Error while searching repos matching the given criteria. $e")
         }
     }
 
