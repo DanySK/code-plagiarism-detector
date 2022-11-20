@@ -36,6 +36,7 @@ dependencies {
     implementation(libs.slf4j.api)
     implementation(libs.logback.classic)
     implementation(libs.logback.core)
+    implementation(libs.progressbar)
     testImplementation(libs.bundles.kotlin.testing)
     testImplementation(libs.mockk)
 }
