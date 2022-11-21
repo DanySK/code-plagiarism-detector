@@ -23,7 +23,7 @@ class FileKnowledgeBaseManager : KnowledgeBaseManager {
 
     override fun save(project: Repository) =
         with(File(repositoryFolder.path + separator + project.name)) {
-            logger.info("Cloning ${project.name}")
+            logger.debug("Cloning ${project.name}")
             clone(project, this)
             clean(this)
         }
