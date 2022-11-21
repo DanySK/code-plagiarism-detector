@@ -18,7 +18,7 @@ interface RunConfiguration<M : Match> {
     /**
      * The percentage of duplicated code under which matches are not reported.
      */
-    val minDuplicatedPercentage: Double
+    val minDuplicationPercentage: Double
 
     /**
      * The submission set to check.

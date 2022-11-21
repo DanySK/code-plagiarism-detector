@@ -10,7 +10,7 @@ import org.danilopianini.plagiarismdetector.repository.Repository
  */
 data class RunConfigurationImpl<M : Match>(
     override val technique: TechniqueFacade<M>,
-    override val minDuplicatedPercentage: Double,
+    override val minDuplicationPercentage: Double,
     override val submission: Set<Repository>,
     override val corpus: Set<Repository>,
     override val filesToExclude: Set<String>,
