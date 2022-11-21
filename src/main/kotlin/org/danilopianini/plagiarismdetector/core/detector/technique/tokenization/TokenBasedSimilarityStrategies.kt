@@ -2,22 +2,25 @@ package org.danilopianini.plagiarismdetector.core.detector.technique.tokenizatio
 
 import org.danilopianini.plagiarismdetector.core.analyzer.representation.TokenizedSource
 import org.danilopianini.plagiarismdetector.core.analyzer.representation.token.Token
-import org.danilopianini.plagiarismdetector.core.detector.SimilarityEstimationStrategy
+import org.danilopianini.plagiarismdetector.core.detector.RepresentationsSimilarityEstimator
 import kotlin.math.min
 
 /**
  * Strategy to estimate similarities between [TokenizedSource], accordingly to the given [TokenMatch].
  */
-fun interface TokenBasedSimilarityStrategy : SimilarityEstimationStrategy<TokenizedSource, Sequence<Token>, TokenMatch>
+fun interface TokenizedSourceSimilarityEstimator :
+    RepresentationsSimilarityEstimator<TokenizedSource, Sequence<Token>, TokenMatch>
 
 /**
- * Computes the similarity using maximum similarities' formula.
+ * Computes the similarity using the maximum similarity normalization formula,
+ * which is computed by summing the number of matched tokens divided by the minimum
+ * length of the two representations in terms of tokens number.
  */
-class MaxSimilarityStrategy : TokenBasedSimilarityStrategy {
+class MaxSimilarityEstimator : TokenizedSourceSimilarityEstimator {
 
     override fun similarityOf(
         representations: Pair<TokenizedSource, TokenizedSource>,
-        matches: Set<TokenMatch>
+        matches: Set<TokenMatch>,
     ): Double = matches.sumOf { it.length }.toDouble() / min(
         representations.first.representation.count(),
         representations.second.representation.count()
@@ -25,9 +28,12 @@ class MaxSimilarityStrategy : TokenBasedSimilarityStrategy {
 }
 
 /**
- * Computes the similarity using maximum similarities' normalization formula.
+ * Computes the similarity using the **penalized** maximum similarity normalization formula.
+ * This is computed, according to [ES-Plag paper](https://onlinelibrary.wiley.com/doi/epdf/10.1002/cae.22066),
+ * as [MaxSimilarityEstimator] does, but subtracting from the number of matched tokens
+ * the number of matched subsequences.
  */
-class NormalizedMaxSimilarityStrategy : TokenBasedSimilarityStrategy {
+class PenalizedMaxSimilarityEstimator : TokenizedSourceSimilarityEstimator {
 
     override fun similarityOf(
         representations: Pair<TokenizedSource, TokenizedSource>,
@@ -43,13 +49,15 @@ class NormalizedMaxSimilarityStrategy : TokenBasedSimilarityStrategy {
 }
 
 /**
- * Computes the similarity using the average similarities' formula.
+ * Computes the similarity using the average similarity normalization formula,
+ * which is computed summing the number of matched tokens divided by the
+ * average length of representations, calculated in terms of tokens number.
  */
-class AverageSimilarityStrategy : TokenBasedSimilarityStrategy {
+class AverageSimilarityEstimator : TokenizedSourceSimilarityEstimator {
 
     override fun similarityOf(
         representations: Pair<TokenizedSource, TokenizedSource>,
-        matches: Set<TokenMatch>
+        matches: Set<TokenMatch>,
     ): Double {
         val totalTokens = representations.first.representation.count() + representations.second.representation.count()
         val matchedTokens = matches.sumOf { it.length }
@@ -58,9 +66,12 @@ class AverageSimilarityStrategy : TokenBasedSimilarityStrategy {
 }
 
 /**
- * Computes the similarity using average similarity normalization formula.
+ * Computes the similarity using the **penalized** average similarity normalization formula.
+ * This is computed, according to [ES-Plag paper](https://onlinelibrary.wiley.com/doi/epdf/10.1002/cae.22066),
+ * as [AverageSimilarityEstimator] does, but subtracting from the number of matched tokens
+ * the number of matched subsequences.
  */
-class NormalizedAverageSimilarityStrategy : TokenBasedSimilarityStrategy {
+class PenalizedAverageSimilarityEstimator : TokenizedSourceSimilarityEstimator {
 
     override fun similarityOf(
         representations: Pair<TokenizedSource, TokenizedSource>,

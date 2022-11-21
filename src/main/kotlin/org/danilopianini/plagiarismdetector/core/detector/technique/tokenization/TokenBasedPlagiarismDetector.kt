@@ -12,7 +12,7 @@ import org.danilopianini.plagiarismdetector.core.detector.PlagiarismDetector
  */
 class TokenBasedPlagiarismDetector(
     private val comparisonStrategy: ComparisonStrategy<TokenizedSource, Sequence<Token>, TokenMatch>,
-    private val similarityEstimationStrategy: TokenBasedSimilarityStrategy = AverageSimilarityStrategy(),
+    private val similarityEstimator: TokenizedSourceSimilarityEstimator = AverageSimilarityEstimator(),
 ) : PlagiarismDetector<TokenizedSource, Sequence<Token>, TokenMatch> {
 
     /**
@@ -24,7 +24,7 @@ class TokenBasedPlagiarismDetector(
     override operator fun invoke(
         input: Pair<TokenizedSource, TokenizedSource>,
     ): ComparisonResult<TokenMatch> = with(comparisonStrategy(input)) {
-        val scoreOfSimilarity = similarityEstimationStrategy.similarityOf(input, this)
+        val scoreOfSimilarity = similarityEstimator.similarityOf(input, this)
         TokenBasedComparisonResult(scoreOfSimilarity, this)
     }
 }
