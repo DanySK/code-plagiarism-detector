@@ -35,7 +35,7 @@ class AntiPlagiarismSessionImpl<out C : RunConfiguration<M>, M : Match>(
             .toSet()
             .parallelStream()
             .peek { output.tick() }
-            .map { technique.execute(submission, it, filesToExclude, minDuplicatedPercentage) }
+            .map { technique.execute(submission, it, filesToExclude, minDuplicationPercentage) }
             .collect(Collectors.toSet())
     }.also { output.endComparison() }
 

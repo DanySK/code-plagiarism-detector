@@ -48,7 +48,7 @@ class CLIConfigurator : RunConfigurator {
         val corpus = repositoriesFrom(corpusCommand).also { output.logInfo("Found ${it.count()} corpus") }
         val config = RunConfigurationImpl(
             technique = commonCommand.techniqueType.facade,
-            minDuplicatedPercentage = commonCommand.minimumDuplication,
+            minDuplicationPercentage = commonCommand.minimumDuplication,
             submission = submission,
             corpus = corpus,
             filesToExclude = commonCommand.exclude?.toSet() ?: emptySet(),
