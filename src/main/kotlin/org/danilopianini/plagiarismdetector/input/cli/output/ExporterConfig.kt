@@ -6,7 +6,7 @@ import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.options.required
 import com.github.ajalt.clikt.parameters.types.file
 import org.danilopianini.plagiarismdetector.core.detector.Match
-import org.danilopianini.plagiarismdetector.output.ReportsExporter
+import org.danilopianini.plagiarismdetector.output.exporter.ReportsExporter
 import java.nio.file.Path
 
 /**

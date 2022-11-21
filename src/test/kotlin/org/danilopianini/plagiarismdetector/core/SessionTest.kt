@@ -10,7 +10,7 @@ import org.danilopianini.plagiarismdetector.commons.Java
 import org.danilopianini.plagiarismdetector.core.session.AntiPlagiarismSessionImpl
 import org.danilopianini.plagiarismdetector.input.cli.technique.TokenizationConfig
 import org.danilopianini.plagiarismdetector.input.configuration.RunConfigurationImpl
-import org.danilopianini.plagiarismdetector.output.PlainFileExporter
+import org.danilopianini.plagiarismdetector.output.exporter.PlainFileExporter
 import org.danilopianini.plagiarismdetector.repository.GitHubRepository
 import org.danilopianini.plagiarismdetector.repository.Repository
 import java.io.File

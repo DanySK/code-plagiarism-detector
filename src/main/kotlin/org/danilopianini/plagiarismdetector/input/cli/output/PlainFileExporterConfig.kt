@@ -1,8 +1,8 @@
 package org.danilopianini.plagiarismdetector.input.cli.output
 
 import org.danilopianini.plagiarismdetector.core.detector.Match
-import org.danilopianini.plagiarismdetector.output.PlainFileExporter
-import org.danilopianini.plagiarismdetector.output.ReportsExporter
+import org.danilopianini.plagiarismdetector.output.exporter.PlainFileExporter
+import org.danilopianini.plagiarismdetector.output.exporter.ReportsExporter
 
 /**
  * A concrete [PlainFileExporter] configuration.
