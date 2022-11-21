@@ -12,6 +12,7 @@ import org.danilopianini.plagiarismdetector.input.cli.provider.ProviderCommand
 import org.danilopianini.plagiarismdetector.input.cli.provider.CorpusProviderCommand
 import org.danilopianini.plagiarismdetector.input.cli.provider.SubmissionProviderCommand
 import org.danilopianini.plagiarismdetector.input.configuration.RunConfigurationImpl
+import org.danilopianini.plagiarismdetector.output.StandardOutput
 import org.danilopianini.plagiarismdetector.provider.BitbucketProvider
 import org.danilopianini.plagiarismdetector.provider.GitHubProvider
 import org.danilopianini.plagiarismdetector.provider.authentication.EnvironmentTokenSupplier
@@ -20,12 +21,14 @@ import org.danilopianini.plagiarismdetector.provider.criteria.GitHubSearchCriter
 import org.danilopianini.plagiarismdetector.provider.criteria.SearchCriteria
 import org.danilopianini.plagiarismdetector.repository.Repository
 import java.net.URL
+import kotlin.system.exitProcess
 
 /**
  * A concrete [RunConfigurator] which parses CLI arguments to create a new run configuration.
  */
 class CLIConfigurator : RunConfigurator {
 
+    private val output = StandardOutput()
     private val github by lazy {
         GitHubProvider.connectWithToken(EnvironmentTokenSupplier(GH_AUTH_TOKEN_VAR))
     }
@@ -40,11 +43,14 @@ class CLIConfigurator : RunConfigurator {
         val corpusCommand = CorpusProviderCommand()
         val commonCommand = CLI()
         commonCommand.subcommands(submissionCommand, corpusCommand).main(arguments)
+        output.logInfo("Retrieving projects...")
+        val submission = repositoriesFrom(submissionCommand).also { output.logInfo("Found ${it.count()} submissions") }
+        val corpus = repositoriesFrom(corpusCommand).also { output.logInfo("Found ${it.count()} corpus") }
         val config = RunConfigurationImpl(
             technique = commonCommand.techniqueType.facade,
             minDuplicatedPercentage = commonCommand.minimumDuplication,
-            submission = repositoriesFrom(submissionCommand),
-            corpus = repositoriesFrom(corpusCommand),
+            submission = submission,
+            corpus = corpus,
             filesToExclude = commonCommand.exclude?.toSet() ?: emptySet(),
             exporter = commonCommand.exporterType.exporter
         )
@@ -59,7 +65,8 @@ class CLIConfigurator : RunConfigurator {
             )
         }
     } catch (e: IllegalStateException) {
-        throw IllegalArgumentException("Both `corpus` and `provider` subcommands are required \n$e")
+        output.logInfo("Both `corpus` and `provider` subcommands are required ($e)")
+        exitProcess(1)
     }
 
     private fun byLink(link: URL, service: HostingService): Repository = when (service) {
