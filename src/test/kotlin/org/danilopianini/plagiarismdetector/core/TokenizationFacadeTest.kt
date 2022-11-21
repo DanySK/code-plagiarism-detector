@@ -7,19 +7,20 @@ import io.kotest.matchers.shouldBe
 import io.mockk.every
 import io.mockk.mockk
 import org.danilopianini.plagiarismdetector.commons.Java
-import org.danilopianini.plagiarismdetector.input.cli.technique.TokenizationConfig
+import org.danilopianini.plagiarismdetector.input.configuration.TokenizationConfigurationImpl
 import org.danilopianini.plagiarismdetector.repository.Repository
 import java.io.File
 
 class TokenizationFacadeTest : FunSpec() {
 
     init {
-        val tokenizationConfig = mockk<TokenizationConfig> {
-            every { language } returns Java
-            every { filterThreshold } returns null
-            every { minimumTokens } returns 15
-        }
-        val tokenization = TokenizationFacade(tokenizationConfig)
+        val tokenization = TokenizationFacade(
+            TokenizationConfigurationImpl(
+                language = Java,
+                filterThreshold = null,
+                minimumTokens = 15
+            )
+        )
 
         test("Testing file exclusion from detection process") {
             val submittedProject = mockk<Repository> {

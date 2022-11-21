@@ -9,7 +9,7 @@ import org.danilopianini.plagiarismdetector.core.detector.technique.tokenization
 import org.danilopianini.plagiarismdetector.core.detector.technique.tokenization.TokenMatch
 import org.danilopianini.plagiarismdetector.core.filter.RepresentationFilter
 import org.danilopianini.plagiarismdetector.core.filter.technique.tokenization.TokenizedSourceFilter
-import org.danilopianini.plagiarismdetector.input.cli.technique.TokenizationConfig
+import org.danilopianini.plagiarismdetector.input.configuration.TokenizationConfiguration
 import org.danilopianini.plagiarismdetector.repository.Repository
 import org.slf4j.LoggerFactory
 import kotlin.math.max
@@ -17,7 +17,7 @@ import kotlin.math.max
 /**
  * A concrete [TechniqueFacade] which exploits the **Tokenization** technique.
  */
-class TokenizationFacade(private val configs: TokenizationConfig) : TechniqueFacade<TokenMatch> {
+class TokenizationFacade(private val configs: TokenizationConfiguration) : TechniqueFacade<TokenMatch> {
 
     private val logger = LoggerFactory.getLogger(javaClass)
     private val analyzer = when (configs.language) {

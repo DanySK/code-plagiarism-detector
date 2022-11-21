@@ -7,6 +7,7 @@ import com.github.ajalt.clikt.parameters.types.int
 import com.github.ajalt.clikt.parameters.types.restrictTo
 import org.danilopianini.plagiarismdetector.core.TokenizationFacade
 import org.danilopianini.plagiarismdetector.core.detector.technique.tokenization.TokenMatch
+import org.danilopianini.plagiarismdetector.input.configuration.TokenizationConfigurationImpl
 
 /**
  * A tokenization specific configuration.
@@ -28,7 +29,13 @@ class TokenizationConfig : TechniqueConfig<TokenMatch>(TOKENIZATION_NAME) {
         .restrictTo(0.0..1.0)
 
     override val facade: TokenizationFacade by lazy {
-        TokenizationFacade(this)
+        TokenizationFacade(
+            TokenizationConfigurationImpl(
+                language = language,
+                minimumTokens = minimumTokens,
+                filterThreshold = filterThreshold,
+            )
+        )
     }
 
     companion object {

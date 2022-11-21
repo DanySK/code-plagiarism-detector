@@ -8,8 +8,8 @@ import io.mockk.mockk
 import io.mockk.spyk
 import org.danilopianini.plagiarismdetector.commons.Java
 import org.danilopianini.plagiarismdetector.core.session.AntiPlagiarismSessionImpl
-import org.danilopianini.plagiarismdetector.input.cli.technique.TokenizationConfig
 import org.danilopianini.plagiarismdetector.input.configuration.RunConfigurationImpl
+import org.danilopianini.plagiarismdetector.input.configuration.TokenizationConfigurationImpl
 import org.danilopianini.plagiarismdetector.output.exporter.PlainFileExporter
 import org.danilopianini.plagiarismdetector.repository.GitHubRepository
 import org.danilopianini.plagiarismdetector.repository.Repository
@@ -34,11 +34,11 @@ class SessionTest : FunSpec() {
         }
 
         test("Testing tokenization technique session") {
-            val tokenizationConfigs = mockk<TokenizationConfig> {
-                every { language } returns Java
-                every { minimumTokens } returns 15
-                every { filterThreshold } returns null
-            }
+            val tokenizationConfigs = TokenizationConfigurationImpl(
+                language = Java,
+                filterThreshold = null,
+                minimumTokens = 15
+            )
             val submission = setOf<Repository>(
                 spyk {
                     every { name } returns "test-submission-1"
