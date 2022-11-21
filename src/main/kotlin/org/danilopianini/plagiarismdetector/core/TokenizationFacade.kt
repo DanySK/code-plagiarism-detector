@@ -19,7 +19,7 @@ import kotlin.math.max
  */
 class TokenizationFacade(private val configs: TokenizationConfig) : TechniqueFacade<TokenMatch> {
 
-    private val logger = LoggerFactory.getLogger(this.javaClass)
+    private val logger = LoggerFactory.getLogger(javaClass)
     private val analyzer = when (configs.language) {
         Java -> JavaTokenizationAnalyzer()
     }
@@ -34,7 +34,7 @@ class TokenizationFacade(private val configs: TokenizationConfig) : TechniqueFac
         filesToExclude: Set<String>,
         minDuplicatedPercentage: Double
     ): Report<TokenMatch> {
-        logger.info("Comparing ${submittedRepository.name} with ${comparedRepository.name}")
+        logger.debug("Comparing ${submittedRepository.name} with ${comparedRepository.name}")
         val submittedAnalyzed = analyze(submittedRepository, filesToExclude)
         val corpusAnalyzed = analyze(comparedRepository, filesToExclude)
         val results = compare(submittedAnalyzed, corpusAnalyzed, minDuplicatedPercentage)
