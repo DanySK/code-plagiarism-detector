@@ -18,7 +18,7 @@ class JavaTokenizationAnalyzer : TokenizationAnalyzer(
                 )
             )
         } catch (e: IllegalStateException) {
-            LoggerFactory.getLogger(this.javaClass).error("Skipping ${input.name} due to: ${e.message}")
+            LoggerFactory.getLogger(javaClass).error("Skipping ${input.name} due to: ${e.message}")
             emptyList()
         }
     }
