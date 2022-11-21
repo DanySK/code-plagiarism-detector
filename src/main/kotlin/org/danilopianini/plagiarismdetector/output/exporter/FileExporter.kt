@@ -1,4 +1,4 @@
-package org.danilopianini.plagiarismdetector.output
+package org.danilopianini.plagiarismdetector.output.exporter
 
 import org.danilopianini.plagiarismdetector.core.Report
 import org.danilopianini.plagiarismdetector.core.detector.Match
