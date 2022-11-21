@@ -6,12 +6,13 @@ import kotlin.math.min
 import kotlin.math.sin
 
 /**
- * A strategy to estimate the similarity.
+ * A strategy to estimate the similarity between a couple of projects.
  */
 fun interface ProjectsSimilarityEstimator : (Double, Set<ComparisonResult<*>>) -> Double
 
 /**
- * An estimator strategy which computes similarity using a fixed weight coefficient.
+ * An estimator strategy which computes projects similarity using a fixed
+ * weight coefficient to weight the statistical estimation of the similarity.
  */
 class SimilarityEstimatorWithConstantWeight : ProjectsSimilarityEstimator {
     override fun invoke(reportedRatio: Double, results: Set<ComparisonResult<*>>): Double =
@@ -31,7 +32,8 @@ class SimilarityEstimatorWithConstantWeight : ProjectsSimilarityEstimator {
 }
 
 /**
- * An estimator strategy which computes similarity using a function-based value.
+ * An estimator strategy that computes projects similarity using a
+ * linear function to weight the statistical estimation of similarity.
  */
 class SimilarityEstimatorWithLinearWeight : ProjectsSimilarityEstimator {
     override fun invoke(reportedRatio: Double, results: Set<ComparisonResult<*>>): Double =
