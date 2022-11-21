@@ -20,10 +20,11 @@ class SessionTest : FunSpec() {
     init {
         test("If no corpus is found to check no file is generated") {
             val temporaryDirectory = tempdir()
+            val repo = mockk<GitHubRepository> { every { name } returns "test-repo" }
             val configuration = RunConfigurationImpl(
                 mockk<TokenizationFacade>(),
                 0.5,
-                setOf(mockk<GitHubRepository>()),
+                setOf(repo),
                 emptySet(),
                 emptySet(),
                 PlainFileExporter(temporaryDirectory.toPath())
