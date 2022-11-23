@@ -42,7 +42,7 @@ class CLI : CliktCommand(
     /**
      * The percentage of duplicated code in a source file under which matches are not reported.
      */
-    val minimumDuplication by option(help = MIN_DUPLICATION_HELP_MSG)
+    val minimumDuplication by option("--min-duplication", help = MIN_DUPLICATION_HELP_MSG)
         .double()
         .restrictTo(0.0..1.0)
         .default(DEFAULT_MIN_DUPLICATION_PERCENTAGE)
@@ -66,7 +66,7 @@ class CLI : CliktCommand(
         private const val MIN_DUPLICATION_HELP_MSG = "The percentage of duplicated code in " +
             "a source file under which matches are not reported. Default: $DEFAULT_MIN_DUPLICATION_PERCENTAGE."
         private const val EXCLUDE_HELP_MSG = "Comma separated list of files to be excluded from the check."
-        private const val TECHNIQUE_HELP_MSG = "The technique used for analyze and detect similarities. " +
+        private const val TECHNIQUE_HELP_MSG = "The technique used to analyze and detect similarities. " +
             "Default: $DEFAULT_TECHNIQUE."
         private const val OUTPUT_HELP_MSG = "Output type format. Default: $DEFAULT_EXPORTER."
     }

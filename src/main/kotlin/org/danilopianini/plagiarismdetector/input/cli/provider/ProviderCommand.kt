@@ -55,10 +55,11 @@ sealed class ProviderCommand(
     }
 
     companion object {
-        private const val URL_HELP_MSG = "The URL address of the repository."
-        private const val SERVICE_HELP_MSG = "The hosting service."
-        private const val USER_HELP_MSG = "The hosting service username of the repositories owner to search."
-        private const val REPO_NAME_HELP_MSG = "The name of the searched repositories."
+        private const val MORE_ARGS_HELP = "possibly separated by commas"
+        private const val URL_HELP_MSG = "The URL addresses of the repositories to be retrieved, $MORE_ARGS_HELP."
+        private const val SERVICE_HELP_MSG = "The hosting services where are stored the repositories, $MORE_ARGS_HELP."
+        private const val USER_HELP_MSG = "The usernames of the repos owners, $MORE_ARGS_HELP."
+        private const val REPO_NAME_HELP_MSG = "The names of the searched repositories, $MORE_ARGS_HELP."
     }
 
     private inner class CriteriaOptions : OptionGroup("Options to specify for search by criteria") {
