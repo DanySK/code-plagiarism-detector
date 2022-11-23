@@ -88,5 +88,3 @@ For example:
   ```bash
   submission --repository-name oop --user danysk,unibo-oop-projects --service github,bitbucket
   ```
-
-
