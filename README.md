@@ -30,7 +30,7 @@ Usage: cli [OPTIONS] COMMAND [ARGS]...
 
 Tokenization options:
   --language VALUE          Sources code language. Default: Java.
-  --minimum-tokens INT      The minimum token length which should be reported
+  --min-tokens INT          The minimum token length which should be reported
                             as a duplicate. Default: 15.
   --filter-threshold FLOAT  The cutoff threshold used to filter comparison
                             pairs.This could affect the detection
