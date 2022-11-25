@@ -12,10 +12,10 @@ import java.io.File
  * A strategy that is responsible for saving and retrieving the [repository] sources
  * using a [knowledgeBaseManager], which is by default a [FileKnowledgeBaseManager].
  */
-class RepoContentSupplierCloneStrategy(
+class RepoContentSupplierImpl(
     private val repository: Repository,
     private val knowledgeBaseManager: KnowledgeBaseManager = FileKnowledgeBaseManager(),
-) : RepoContentSupplierStrategy {
+) : RepoContentSupplier {
 
     private val contentDirectory by lazy {
         if (!knowledgeBaseManager.isCached(repository)) {

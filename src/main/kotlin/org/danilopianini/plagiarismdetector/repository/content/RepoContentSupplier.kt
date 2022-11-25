@@ -5,7 +5,7 @@ import java.io.File
 /**
  * An interface modeling the strategy used for retrieve the repository content.
  */
-interface RepoContentSupplierStrategy {
+interface RepoContentSupplier {
 
     /**
      * @return the files match the given pattern.

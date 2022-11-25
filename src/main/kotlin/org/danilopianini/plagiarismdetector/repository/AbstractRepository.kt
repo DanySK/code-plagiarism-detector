@@ -1,6 +1,6 @@
 package org.danilopianini.plagiarismdetector.repository
 
-import org.danilopianini.plagiarismdetector.repository.content.RepoContentSupplierCloneStrategy
+import org.danilopianini.plagiarismdetector.repository.content.RepoContentSupplierImpl
 import java.io.File
 
 /**
@@ -9,7 +9,7 @@ import java.io.File
 abstract class AbstractRepository : Repository {
 
     private val repositoryContentSupplier by lazy {
-        RepoContentSupplierCloneStrategy(this)
+        RepoContentSupplierImpl(this)
     }
 
     override fun getSources(pattern: Regex): Sequence<File> =
