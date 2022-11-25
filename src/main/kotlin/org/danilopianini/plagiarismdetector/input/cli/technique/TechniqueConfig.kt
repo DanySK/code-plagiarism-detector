@@ -19,7 +19,7 @@ sealed class TechniqueConfig<out M : Match>(name: String) : OptionGroup(name = n
     /**
      * The language of sources to analyze.
      */
-    val language by option(help = LANGUAGE_HELP_MSG)
+    protected val language by option(help = LANGUAGE_HELP_MSG)
         .choice(*SupportedOptions.languages.map(Language::name).toTypedArray())
         .convert { langName ->
             SupportedOptions.languages.find { langName == it.name } ?: error("$langName is not a supported language")

@@ -17,14 +17,14 @@ class TokenizationConfig : TechniqueConfig<TokenMatch>(TOKENIZATION_NAME) {
     /**
      * The minimum token length which should be reported as a duplicate.
      */
-    val minimumTokens by option(help = MIN_TOKENS_HELP_MSG)
+    private val minimumTokens by option("--min-tokens", help = MIN_TOKENS_HELP_MSG)
         .int()
         .default(DEFAULT_MIN_TOKENS)
 
     /**
      * The cutoff threshold used to filter comparison pairs.
      */
-    val filterThreshold by option(help = FILTER_THRESHOLD_HELP_MSG)
+    private val filterThreshold by option(help = FILTER_THRESHOLD_HELP_MSG)
         .double()
         .restrictTo(0.0..1.0)
 
