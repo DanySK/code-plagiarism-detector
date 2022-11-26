@@ -14,7 +14,9 @@ class JavaParser : StepHandler<File, CompilationUnit> {
     private val logger = LoggerFactory.getLogger(javaClass)
 
     override operator fun invoke(input: File): CompilationUnit {
-        val parserConfiguration = ParserConfiguration().setAttributeComments(false)
+        val parserConfiguration = ParserConfiguration()
+            .setAttributeComments(false)
+            .setLanguageLevel(ParserConfiguration.LanguageLevel.CURRENT)
         val parser = com.github.javaparser.JavaParser(parserConfiguration)
         return parser.parse(input).runCatching {
             if (!isSuccessful) {
