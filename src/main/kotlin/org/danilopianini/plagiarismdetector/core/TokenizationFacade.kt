@@ -65,6 +65,11 @@ class TokenizationFacade(private val configs: TokenizationConfiguration) : Techn
         .filter { it.similarity > minDuplicatedPercentage }
         .toSet()
 
+    /**
+     * Returns the reported ratio, i.e. the maximum ratio between the number of
+     * reported sources on the total of submission set and the number of reported
+     * sources on the total of corpus set.
+     */
     private fun reportedRatio(
         results: Set<ComparisonResult<TokenMatch>>,
         submittedAnalyzed: Sequence<TokenizedSource>,
@@ -78,6 +83,9 @@ class TokenizationFacade(private val configs: TokenizationConfiguration) : Techn
         )
     }
 
+    /**
+     * Count the number of reported sources in the given [results] of [representations].
+     */
     private fun countReportedSourcesOf(
         results: Set<ComparisonResult<TokenMatch>>,
         representations: Sequence<TokenizedSource>
