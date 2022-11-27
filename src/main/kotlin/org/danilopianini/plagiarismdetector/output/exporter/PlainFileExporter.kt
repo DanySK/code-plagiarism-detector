@@ -2,6 +2,7 @@ package org.danilopianini.plagiarismdetector.output.exporter
 
 import org.danilopianini.plagiarismdetector.core.Report
 import org.danilopianini.plagiarismdetector.core.detector.Match
+import org.danilopianini.plagiarismdetector.output.Output
 import java.io.PrintWriter
 import java.nio.file.Path
 import java.time.LocalDateTime
@@ -9,7 +10,10 @@ import java.time.LocalDateTime
 /**
  * A very simple [ReportsExporter], which exports results on a plain file, inside [outputDirectory].
  */
-class PlainFileExporter<in M : Match>(outputDirectory: Path) : FileExporter<M>(outputDirectory) {
+class PlainFileExporter<in M : Match>(
+    outputDirectory: Path,
+    output: Output,
+) : FileExporter<M>(outputDirectory, output) {
 
     override val fileExtension: String = "txt"
 

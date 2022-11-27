@@ -1,6 +1,8 @@
 package org.danilopianini.plagiarismdetector
 
+import org.danilopianini.plagiarismdetector.core.session.AntiPlagiarismSessionImpl
 import org.danilopianini.plagiarismdetector.input.cli.CLIConfigurator
+import org.danilopianini.plagiarismdetector.output.StandardOutput
 import org.danilopianini.plagiarismdetector.utils.LoggerConfiguratorImpl
 
 /**
@@ -8,5 +10,7 @@ import org.danilopianini.plagiarismdetector.utils.LoggerConfiguratorImpl
  */
 fun main(args: Array<String>) {
     val configurationArgs = LoggerConfiguratorImpl()(args.toList())
-    CLIConfigurator().sessionFrom(configurationArgs)()
+    val output = StandardOutput()
+    val configuration = CLIConfigurator(output)(configurationArgs)
+    AntiPlagiarismSessionImpl(configuration, output)()
 }
