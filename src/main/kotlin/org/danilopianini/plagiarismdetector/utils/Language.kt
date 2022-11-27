@@ -1,4 +1,4 @@
-package org.danilopianini.plagiarismdetector.commons
+package org.danilopianini.plagiarismdetector.utils
 
 /**
  * An interface modeling a programming language.

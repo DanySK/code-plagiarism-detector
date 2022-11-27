@@ -3,8 +3,8 @@ package org.danilopianini.plagiarismdetector.input
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
-import org.danilopianini.plagiarismdetector.commons.BitBucket
-import org.danilopianini.plagiarismdetector.commons.GitHub
+import org.danilopianini.plagiarismdetector.utils.BitBucket
+import org.danilopianini.plagiarismdetector.utils.GitHub
 import java.net.URL
 
 class SupportedOptionsTest : FunSpec({

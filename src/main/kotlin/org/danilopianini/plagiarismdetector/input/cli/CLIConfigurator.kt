@@ -1,9 +1,9 @@
 package org.danilopianini.plagiarismdetector.input.cli
 
 import com.github.ajalt.clikt.core.subcommands
-import org.danilopianini.plagiarismdetector.commons.BitBucket
-import org.danilopianini.plagiarismdetector.commons.GitHub
-import org.danilopianini.plagiarismdetector.commons.HostingService
+import org.danilopianini.plagiarismdetector.utils.BitBucket
+import org.danilopianini.plagiarismdetector.utils.GitHub
+import org.danilopianini.plagiarismdetector.utils.HostingService
 import org.danilopianini.plagiarismdetector.core.session.AntiPlagiarismSession
 import org.danilopianini.plagiarismdetector.core.session.AntiPlagiarismSessionImpl
 import org.danilopianini.plagiarismdetector.input.RunConfigurator

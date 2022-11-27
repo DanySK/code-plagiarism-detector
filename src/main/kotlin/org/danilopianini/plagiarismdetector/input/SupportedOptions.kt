@@ -1,10 +1,10 @@
 package org.danilopianini.plagiarismdetector.input
 
-import org.danilopianini.plagiarismdetector.commons.BitBucket
-import org.danilopianini.plagiarismdetector.commons.GitHub
-import org.danilopianini.plagiarismdetector.commons.HostingService
-import org.danilopianini.plagiarismdetector.commons.Java
-import org.danilopianini.plagiarismdetector.commons.Language
+import org.danilopianini.plagiarismdetector.utils.BitBucket
+import org.danilopianini.plagiarismdetector.utils.GitHub
+import org.danilopianini.plagiarismdetector.utils.HostingService
+import org.danilopianini.plagiarismdetector.utils.Java
+import org.danilopianini.plagiarismdetector.utils.Language
 import java.net.URL
 
 /**

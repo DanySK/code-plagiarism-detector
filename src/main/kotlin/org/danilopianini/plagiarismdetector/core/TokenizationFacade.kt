@@ -1,6 +1,6 @@
 package org.danilopianini.plagiarismdetector.core
 
-import org.danilopianini.plagiarismdetector.commons.Java
+import org.danilopianini.plagiarismdetector.utils.Java
 import org.danilopianini.plagiarismdetector.core.analyzer.representation.SourceRepresentation
 import org.danilopianini.plagiarismdetector.core.analyzer.representation.TokenizedSource
 import org.danilopianini.plagiarismdetector.core.analyzer.technique.tokenization.java.JavaTokenizationAnalyzer
