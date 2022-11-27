@@ -6,7 +6,7 @@ import io.kotest.matchers.doubles.plusOrMinus
 import io.kotest.matchers.shouldBe
 import io.mockk.every
 import io.mockk.mockk
-import org.danilopianini.plagiarismdetector.commons.Java
+import org.danilopianini.plagiarismdetector.utils.Java
 import org.danilopianini.plagiarismdetector.input.configuration.TokenizationConfigurationImpl
 import org.danilopianini.plagiarismdetector.repository.Repository
 import java.io.File

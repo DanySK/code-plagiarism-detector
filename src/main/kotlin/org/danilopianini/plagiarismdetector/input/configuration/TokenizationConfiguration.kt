@@ -1,6 +1,6 @@
 package org.danilopianini.plagiarismdetector.input.configuration
 
-import org.danilopianini.plagiarismdetector.commons.Language
+import org.danilopianini.plagiarismdetector.utils.Language
 
 /**
  * An interface modeling a configuration related to the Tokenization technique.

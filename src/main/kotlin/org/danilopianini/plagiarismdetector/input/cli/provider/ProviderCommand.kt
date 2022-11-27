@@ -9,9 +9,9 @@ import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.options.required
 import com.github.ajalt.clikt.parameters.options.split
 import com.github.ajalt.clikt.parameters.types.choice
-import org.danilopianini.plagiarismdetector.commons.BitBucket
-import org.danilopianini.plagiarismdetector.commons.GitHub
-import org.danilopianini.plagiarismdetector.commons.HostingService
+import org.danilopianini.plagiarismdetector.utils.BitBucket
+import org.danilopianini.plagiarismdetector.utils.GitHub
+import org.danilopianini.plagiarismdetector.utils.HostingService
 import org.danilopianini.plagiarismdetector.input.SupportedOptions
 import org.danilopianini.plagiarismdetector.provider.criteria.ByBitbucketName
 import org.danilopianini.plagiarismdetector.provider.criteria.ByBitbucketUser

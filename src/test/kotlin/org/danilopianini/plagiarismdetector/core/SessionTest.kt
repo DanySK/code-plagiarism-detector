@@ -6,7 +6,7 @@ import io.kotest.matchers.file.shouldContainNFiles
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.spyk
-import org.danilopianini.plagiarismdetector.commons.Java
+import org.danilopianini.plagiarismdetector.utils.Java
 import org.danilopianini.plagiarismdetector.core.session.AntiPlagiarismSessionImpl
 import org.danilopianini.plagiarismdetector.input.configuration.RunConfigurationImpl
 import org.danilopianini.plagiarismdetector.input.configuration.TokenizationConfigurationImpl
