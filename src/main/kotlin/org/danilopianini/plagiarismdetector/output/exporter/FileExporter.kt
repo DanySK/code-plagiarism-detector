@@ -2,7 +2,7 @@ package org.danilopianini.plagiarismdetector.output.exporter
 
 import org.danilopianini.plagiarismdetector.core.Report
 import org.danilopianini.plagiarismdetector.core.detector.Match
-import org.danilopianini.plagiarismdetector.output.StandardOutput
+import org.danilopianini.plagiarismdetector.output.Output
 import java.io.FileOutputStream
 import java.io.PrintWriter
 import java.nio.file.Path
@@ -13,9 +13,10 @@ import kotlin.io.path.pathString
  * An abstract class implementing a file exporter.
  * @property outputDirectory the [Path] of the directory where store the results.
  */
-abstract class FileExporter<in M : Match>(private val outputDirectory: Path) : ReportsExporter<M> {
-
-    private val output = StandardOutput()
+abstract class FileExporter<in M : Match>(
+    private val outputDirectory: Path,
+    private val output: Output,
+) : ReportsExporter<M> {
 
     /**
      * Exports the given [reports] in a file inside [outputDirectory].

@@ -13,11 +13,12 @@ import org.danilopianini.plagiarismdetector.input.cli.output.ExporterConfig
 import org.danilopianini.plagiarismdetector.input.cli.output.PlainFileExporterConfig
 import org.danilopianini.plagiarismdetector.input.cli.technique.TechniqueConfig
 import org.danilopianini.plagiarismdetector.input.cli.technique.TokenizationConfig
+import org.danilopianini.plagiarismdetector.output.Output
 
 /**
  * The main Command Line Interface command.
  */
-class CLI : CliktCommand(
+class CLI(output: Output) : CliktCommand(
     help = HELP_MSG,
     printHelpOnEmptyArgs = true,
     allowMultipleSubcommands = true
@@ -36,7 +37,7 @@ class CLI : CliktCommand(
      */
     val exporterType by option(help = OUTPUT_HELP_MSG)
         .groupChoice<ExporterConfig<Match>>(
-            PLAIN_TEXT_COMMAND to PlainFileExporterConfig()
+            PLAIN_TEXT_COMMAND to PlainFileExporterConfig(output)
         ).defaultByName(PLAIN_TEXT_COMMAND)
 
     /**

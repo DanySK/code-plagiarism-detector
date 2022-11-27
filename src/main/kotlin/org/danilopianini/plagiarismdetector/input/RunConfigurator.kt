@@ -1,15 +1,9 @@
 package org.danilopianini.plagiarismdetector.input
 
-import org.danilopianini.plagiarismdetector.core.session.AntiPlagiarismSession
+import org.danilopianini.plagiarismdetector.input.configuration.RunConfiguration
 
 /**
- * An interface modeling a configuration manager.
+ * An interface modeling a configuration manager, which creates and
+ * returns a [RunConfiguration] accordingly to the given list of arguments.
  */
-interface RunConfigurator {
-
-    /**
-     * Returns a new [AntiPlagiarismSession] configured accordingly
-     * to the given list of [arguments].
-     */
-    fun sessionFrom(arguments: List<String>): AntiPlagiarismSession
-}
+interface RunConfigurator : (List<String>) -> (RunConfiguration<*>)

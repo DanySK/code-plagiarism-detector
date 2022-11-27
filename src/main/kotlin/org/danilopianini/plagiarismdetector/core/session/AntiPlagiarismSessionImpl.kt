@@ -4,7 +4,7 @@ import org.danilopianini.plagiarismdetector.core.Report
 import org.danilopianini.plagiarismdetector.core.ReportImpl
 import org.danilopianini.plagiarismdetector.core.detector.Match
 import org.danilopianini.plagiarismdetector.input.configuration.RunConfiguration
-import org.danilopianini.plagiarismdetector.output.StandardOutput
+import org.danilopianini.plagiarismdetector.output.Output
 import org.danilopianini.plagiarismdetector.repository.Repository
 import java.util.stream.Collectors
 
@@ -12,10 +12,10 @@ import java.util.stream.Collectors
  * A **parallel** implementation of an [AntiPlagiarismSession].
  */
 class AntiPlagiarismSessionImpl<out C : RunConfiguration<M>, M : Match>(
-    private val configuration: C
+    private val configuration: C,
+    private val output: Output,
 ) : AntiPlagiarismSession {
 
-    private val output = StandardOutput()
     private val processedResult = mutableSetOf<Report<M>>()
 
     override operator fun invoke() = with(configuration) {

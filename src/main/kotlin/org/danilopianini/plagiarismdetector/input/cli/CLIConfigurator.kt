@@ -4,15 +4,14 @@ import com.github.ajalt.clikt.core.subcommands
 import org.danilopianini.plagiarismdetector.utils.BitBucket
 import org.danilopianini.plagiarismdetector.utils.GitHub
 import org.danilopianini.plagiarismdetector.utils.HostingService
-import org.danilopianini.plagiarismdetector.core.session.AntiPlagiarismSession
-import org.danilopianini.plagiarismdetector.core.session.AntiPlagiarismSessionImpl
 import org.danilopianini.plagiarismdetector.input.RunConfigurator
 import org.danilopianini.plagiarismdetector.input.SupportedOptions
 import org.danilopianini.plagiarismdetector.input.cli.provider.ProviderCommand
 import org.danilopianini.plagiarismdetector.input.cli.provider.CorpusProviderCommand
 import org.danilopianini.plagiarismdetector.input.cli.provider.SubmissionProviderCommand
+import org.danilopianini.plagiarismdetector.input.configuration.RunConfiguration
 import org.danilopianini.plagiarismdetector.input.configuration.RunConfigurationImpl
-import org.danilopianini.plagiarismdetector.output.StandardOutput
+import org.danilopianini.plagiarismdetector.output.Output
 import org.danilopianini.plagiarismdetector.provider.BitbucketProvider
 import org.danilopianini.plagiarismdetector.provider.GitHubProvider
 import org.danilopianini.plagiarismdetector.provider.authentication.EnvironmentTokenSupplier
@@ -26,9 +25,8 @@ import kotlin.system.exitProcess
 /**
  * A concrete [RunConfigurator] which parses CLI arguments to create a new run configuration.
  */
-class CLIConfigurator : RunConfigurator {
+class CLIConfigurator(private val output: Output) : RunConfigurator {
 
-    private val output = StandardOutput()
     private val github by lazy {
         GitHubProvider.connectWithToken(EnvironmentTokenSupplier(GH_AUTH_TOKEN_VAR))
     }
@@ -38,15 +36,15 @@ class CLIConfigurator : RunConfigurator {
         )
     }
 
-    override fun sessionFrom(arguments: List<String>): AntiPlagiarismSession {
+    override fun invoke(arguments: List<String>): RunConfiguration<*> {
         val submissionCommand = SubmissionProviderCommand()
         val corpusCommand = CorpusProviderCommand()
-        val commonCommand = CLI()
+        val commonCommand = CLI(output)
         commonCommand.subcommands(submissionCommand, corpusCommand).main(arguments)
         output.logInfo("Retrieving projects...")
         val submission = repositoriesFrom(submissionCommand).also { output.logInfo("Found ${it.count()} submissions") }
         val corpus = repositoriesFrom(corpusCommand).also { output.logInfo("Found ${it.count()} corpus") }
-        val config = RunConfigurationImpl(
+        return RunConfigurationImpl(
             technique = commonCommand.techniqueType.facade,
             minDuplicationPercentage = commonCommand.minimumDuplication,
             submission = submission,
@@ -54,7 +52,6 @@ class CLIConfigurator : RunConfigurator {
             filesToExclude = commonCommand.exclude?.toSet() ?: emptySet(),
             exporter = commonCommand.exporterType.exporter
         )
-        return AntiPlagiarismSessionImpl(config)
     }
 
     private fun repositoriesFrom(configs: ProviderCommand): Set<Repository> = try {
