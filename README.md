@@ -50,6 +50,7 @@ Options:
   --exclude TEXT                   Comma separated list of files to be
                                    excluded from the check.
   -h, --help                       Show this message and exit
+  --verbose                        Prints debug logs
 
 Commands:
   submission  Submission options.
@@ -84,7 +85,7 @@ For example:
   ```bash
   submission --url https://github.com/unibo-oop-projects/Student-Project-OOP-21-Bragari-Mennuti-Violani-Volfgit,https://github.com/unibo-oop-projects/Student-Project-OOP21-Bianchi-Ciccioni-stubborn
   ```
-- to search according to the following criteria: all projects with name `oop` owned by `danysk` and `unibo-oop-projects` from, respectively, Github and Bitbucket:
+- to search according to the following criteria: all projects with name `oop` owned by `danysk` and `unibo-oop-projects` from GitHub and Bitbucket:
   ```bash
   submission --repository-name oop --user danysk,unibo-oop-projects --service github,bitbucket
   ```
