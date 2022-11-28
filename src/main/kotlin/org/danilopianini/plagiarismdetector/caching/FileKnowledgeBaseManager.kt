@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory
 import java.io.File
 
 /**
- * A file based knowledge base manager which caches data on files.
+ * A file based [KnowledgeBaseManager] which caches data on files.
  */
 class FileKnowledgeBaseManager : KnowledgeBaseManager {
 
