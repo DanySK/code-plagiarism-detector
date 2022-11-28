@@ -32,21 +32,21 @@ class PlainFileExporter<in M : Match>(
         out.println("*".repeat(LINE_LENGTH))
     }
 
-    private fun printSummary(reports: Set<Report<M>>, output: PrintWriter) {
-        output.println()
-        output.format("%-${LINE_LENGTH}s%n", "Submitted Project: ${reports.first().submittedProject}")
-        output.println()
-        output.println("${"+".repeat(SHORT_LINE_LENGTH)} SUMMARY  ${"+".repeat(SHORT_LINE_LENGTH)}")
-        output.println("Compared with ${reports.count()} repositories.")
-        output.println("-".repeat(LINE_LENGTH))
-        output.format("|%-107s|%s|%n", "compared with", "similarity")
-        output.println("-".repeat(LINE_LENGTH))
+    private fun printSummary(reports: Set<Report<M>>, output: PrintWriter) = with(output) {
+        println()
+        format("%-${LINE_LENGTH}s%n", "Submitted Project: ${reports.first().submittedProject}")
+        println()
+        println("${"+".repeat(SHORT_LINE_LENGTH)} SUMMARY  ${"+".repeat(SHORT_LINE_LENGTH)}")
+        println("Compared with ${reports.count()} repositories.")
+        println("-".repeat(LINE_LENGTH))
+        format("|%-107s|%s|%n", "compared with", "similarity")
+        println("-".repeat(LINE_LENGTH))
         reports.sortedByDescending { it.similarity }.forEach {
-            output.format("|%-107s|%10.2f|%n", it.comparedProject.name, it.similarity)
+            format("|%-107s|%10.2f|%n", it.comparedProject.name, it.similarity)
         }
-        output.println("-".repeat(LINE_LENGTH))
-        output.println("+".repeat(LINE_LENGTH))
-        output.println()
+        println("-".repeat(LINE_LENGTH))
+        println("+".repeat(LINE_LENGTH))
+        println()
     }
 
     private fun printBody(report: Report<M>, out: PrintWriter) {
