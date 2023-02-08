@@ -1,6 +1,7 @@
+var prepareCmd = `
+./gradlew shadowJar
+`
 var publishCmd = `
-git tag -a -f \${nextRelease.version} \${nextRelease.version} -F CHANGELOG.md || exit 1
-git push --force origin \${nextRelease.version} || exit 2
 ./gradlew uploadKotlin release || exit 3
 ./gradlew publishKotlinOSSRHPublicationToGithubRepository || true
 `
@@ -9,10 +10,19 @@ config.plugins.push(
     [
         "@semantic-release/exec",
         {
+            "prepareCmd": prepareCmd,
             "publishCmd": publishCmd,
         }
     ],
-    "@semantic-release/github",
+    [
+        "@semantic-release/github", {
+            "assets": [
+                {
+                    "path": "build/libs/*-all.jar"
+                },
+            ]
+        }
+    ],
     "@semantic-release/git",
 )
 module.exports = config
