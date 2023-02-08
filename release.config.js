@@ -1,7 +1,5 @@
-var prepareCmd = `
-./gradlew shadowJar
-`
 var publishCmd = `
+./gradlew shadowJar || exit 2
 ./gradlew uploadKotlin release || exit 3
 ./gradlew publishKotlinOSSRHPublicationToGithubRepository || true
 `
@@ -10,7 +8,6 @@ config.plugins.push(
     [
         "@semantic-release/exec",
         {
-            "prepareCmd": prepareCmd,
             "publishCmd": publishCmd,
         }
     ],
