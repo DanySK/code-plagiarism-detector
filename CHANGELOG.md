@@ -1,3 +1,30 @@
+## [6.0.2](https://github.com/DanySK/code-plagiarism-detector/compare/6.0.1...6.0.2) (2023-02-08)
+
+
+### Bug Fixes
+
+* **ci:** fix the github Maven repo publish task name ([a2b20d2](https://github.com/DanySK/code-plagiarism-detector/commit/a2b20d21fb1d39c924a4541b4d3101cd7ae3f8c8))
+
+
+### Build and continuous integration
+
+* **deps:** update danysk/build-check-deploy-gradle-action action to v2.1.22 ([be4de85](https://github.com/DanySK/code-plagiarism-detector/commit/be4de8512e3f8da6e8fb0c456f106199876709e2))
+* drop unused dependency ([0cb6eb1](https://github.com/DanySK/code-plagiarism-detector/commit/0cb6eb1fb9ea1d254728491704bfe5fd4a6dbb43))
+* **mergify:** speed up the auto-update process by merging bot-made update PRs ([c13f950](https://github.com/DanySK/code-plagiarism-detector/commit/c13f950ed9f4691d58e521ab3654315a6b0358b3))
+* publish the shadowJars on GitHub releases ([5d5d0af](https://github.com/DanySK/code-plagiarism-detector/commit/5d5d0af683c8d8ab2ec96acf59629994beae418b))
+* **release:** enforce the version of node from package.json in CI ([5cb6b4f](https://github.com/DanySK/code-plagiarism-detector/commit/5cb6b4f8ee79b06c1e1c1286159a2c096af095a2))
+* switch to the compact version for plugins descriptors ([a8a9974](https://github.com/DanySK/code-plagiarism-detector/commit/a8a9974563744da4a376d7763a19ea097b506766))
+
+
+### Dependency updates
+
+* **deps:** update kotest to v5.5.5 ([b93eee6](https://github.com/DanySK/code-plagiarism-detector/commit/b93eee60b25a9cf8b4e5b5136861b473b3fb2c4f))
+* **deps:** update node.js to 18.14 ([c513d50](https://github.com/DanySK/code-plagiarism-detector/commit/c513d502a8904dd7765671bb1ab37bee9a667195))
+* **deps:** update plugin com.gradle.enterprise to v3.12.3 ([d0706d3](https://github.com/DanySK/code-plagiarism-detector/commit/d0706d38102c7026fe9418fd38f2a68ab0f546c0))
+* **deps:** update plugin gitsemver to v1 ([a705253](https://github.com/DanySK/code-plagiarism-detector/commit/a70525320ea481b4e8083bc87607a8aeb403dff1))
+* **deps:** update plugin publishoncentral to v3 ([05c4c66](https://github.com/DanySK/code-plagiarism-detector/commit/05c4c6610a008bfb303788f88a00f1969f254fba))
+* **deps:** update plugin tasktree to v2.1.1 ([27c85d0](https://github.com/DanySK/code-plagiarism-detector/commit/27c85d0fbe95a00907a1d2296196534b810e0ef8))
+
 ## [6.0.1](https://github.com/DanySK/code-plagiarism-detector/compare/6.0.0...6.0.1) (2023-02-05)
 
 
