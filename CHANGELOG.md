@@ -1,3 +1,10 @@
+## [6.0.3](https://github.com/DanySK/code-plagiarism-detector/compare/6.0.2...6.0.3) (2023-02-08)
+
+
+### Bug Fixes
+
+* **ci:** release the fatJar with the correct version ([fbe7277](https://github.com/DanySK/code-plagiarism-detector/commit/fbe727710b89cf360e039482600d53f4b330a065))
+
 ## [6.0.2](https://github.com/DanySK/code-plagiarism-detector/compare/6.0.1...6.0.2) (2023-02-08)
 
 
