@@ -6,9 +6,6 @@ import java.util.TreeMap
 import kotlin.math.max
 import kotlin.math.min
 
-/** A map with (hash value, set of sequences with that hash value). */
-typealias HashTable = Map<Int, Set<Tokens>>
-
 /**
  * Thread safe implementation of Running-Karp-Rabin Greedy String Tiling.
  * @param minimumMatchLength the minimum matches length under which ignore them.
@@ -51,10 +48,10 @@ class RKRGreedyStringTiling(
      * Iterates the [text] tokens hashing the subsequences of length
      * [searchLength], returning the resulting [HashTable].
      */
-    private fun firstPhase(text: TokenizedSource, marked: MarkedTokens, searchLength: Int): HashTable {
-        val hashTable: MutableMap<Int, MutableSet<Tokens>> = mutableMapOf()
+    private fun firstPhase(text: TokenizedSource, marked: MarkedTokens, searchLength: Int): Map<Int, Set<List<Token>>> {
+        val hashTable: MutableMap<Int, MutableSet<List<Token>>> = mutableMapOf()
         phase(text.representation, marked.second, searchLength) { tokens ->
-            tokens.take(searchLength).run {
+            tokens.subList(0, searchLength).run {
                 val hashValue = hashValueOf(this)
                 hashTable[hashValue]?.add(this) ?: hashTable.put(hashValue, mutableSetOf(this))
             }
@@ -71,7 +68,7 @@ class RKRGreedyStringTiling(
         text: TokenizedSource,
         marked: MarkedTokens,
         searchLength: Int,
-        hashTable: HashTable,
+        hashTable: Map<Int, Set<List<Token>>>,
     ): Pair<MaximalMatches, Int> {
         val matches: MutableMap<Int, MutableList<TokenMatch>> = TreeMap()
         val patternTokens = pattern.representation
@@ -99,9 +96,10 @@ class RKRGreedyStringTiling(
         return Pair(matches, searchLength)
     }
 
-    private inline fun phase(tokens: Tokens, marked: Set<Token>, searchLength: Int, action: (Tokens) -> (Unit)) {
-        tokens.filterNot(marked::contains).forEach { actualToken ->
-            val tokensFromActual = tokens.dropWhile { it != actualToken }
+    private inline fun phase(tokens: Tokens, marked: Set<Token>, searchLength: Int, action: (List<Token>) -> (Unit)) {
+        val unmarked = tokens.filterNot(marked::contains).toList()
+        unmarked.indices.forEach { index ->
+            val tokensFromActual = unmarked.subList(index, unmarked.size)
             val distanceToNextTile = distanceToNextTile(tokensFromActual, marked)
             if (distanceToNextTile >= searchLength) {
                 action(tokensFromActual)
@@ -114,7 +112,7 @@ class RKRGreedyStringTiling(
      * Note that the computation of the modulus is avoided by using the implicit modular
      * arithmetic given by the hardware that forgets carries in integer operations.
      */
-    private fun hashValueOf(tokens: Tokens): Int {
+    private fun hashValueOf(tokens: List<Token>): Int {
         var hashValue = 0
         tokens.forEach {
             hashValue = ((hashValue shl 1) + it.type.hashCode())
@@ -125,16 +123,16 @@ class RKRGreedyStringTiling(
     /**
      * Returns if this sequence is equals to [other] in terms of their types.
      */
-    private infix fun Tokens.areEqualsTo(other: Tokens): Boolean =
+    private infix fun List<Token>.areEqualsTo(other: List<Token>): Boolean =
         if (this.count() == other.count()) zip(other).all { it.first.type == it.second.type } else false
 
     /**
      * Computes the distance between the first of [tokens] and the first unmarked one.
      * If no unmarked tokens are found before the end of the sequence, its length is returned.
      */
-    private fun distanceToNextTile(tokens: Tokens, marked: Set<Token>): Int {
+    private fun distanceToNextTile(tokens: List<Token>, marked: Set<Token>): Int {
         val result = tokens.indexOfFirst(marked::contains)
-        return if (result == -1) tokens.count() else result
+        return if (result == -1) tokens.size else result
     }
 
     /**

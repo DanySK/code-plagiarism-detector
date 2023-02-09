@@ -56,10 +56,14 @@ class CLIConfigurator(private val output: Output) : RunConfigurator {
 
     private fun repositoriesFrom(configs: ProviderCommand): Set<Repository> = try {
         with(configs) {
-            url?.map { byLink(it, SupportedOptions.serviceBy(it)) }?.toSet()
-                ?: criteria?.flatMap { byCriteria(it) }?.toSet() ?: error(
-                "Neither url nor criteria are valued!"
-            )
+            url?.map { byLink(it, SupportedOptions.serviceBy(it)) }
+                ?.toSet()
+                ?: criteria
+                    ?.flatMap { byCriteria(it) }
+                    ?.toSet()
+                ?: error(
+                    "Neither url nor criteria are valued!"
+                )
         }
     } catch (e: IllegalStateException) {
         output.logInfo("Both `corpus` and `provider` subcommands are required ($e)")
@@ -71,11 +75,15 @@ class CLIConfigurator(private val output: Output) : RunConfigurator {
         BitBucket -> bitbucket.byLink(link)
     }
 
-    private fun byCriteria(criteria: SearchCriteria<*, *>): Sequence<Repository> = when (criteria) {
-        is GitHubSearchCriteria -> github.runCatching { byCriteria(criteria) }.getOrElse { emptySequence() }
-        is BitbucketSearchCriteria -> bitbucket.runCatching { byCriteria(criteria) }.getOrElse { emptySequence() }
-        else -> error("The extracted criteria is not valid.")
-    }
+    private fun byCriteria(criteria: SearchCriteria<*, *>): Sequence<Repository> = runCatching {
+        when (criteria) {
+            is GitHubSearchCriteria -> github.byCriteria(criteria)
+            is BitbucketSearchCriteria -> bitbucket.byCriteria(criteria)
+            else -> error("The extracted criteria is not valid.")
+        }
+    }.onFailure {
+        output.logInfo(it.message ?: "${it::class.simpleName ?: it.javaClass.name} thrown with no message.")
+    }.getOrElse { emptySequence() }
 
     companion object {
         private const val BB_AUTH_USER_VAR = "BB_USER"
