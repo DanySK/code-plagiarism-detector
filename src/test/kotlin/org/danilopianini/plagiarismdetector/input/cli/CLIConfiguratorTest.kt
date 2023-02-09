@@ -35,10 +35,7 @@ class CLIConfiguratorTest : FunSpec() {
             BitbucketProvider.connectAnonymously()
         }
 
-        test(
-            "Launching CLI configuration with multiple users which are not" +
-                " present in both services should not throw an exception"
-        ) {
+        test("Launching CLI configuration user do not exists should throw exception") {
             val args = listOf(
                 "--output-dir",
                 tempdir().path,
@@ -46,14 +43,10 @@ class CLIConfiguratorTest : FunSpec() {
                 "--url",
                 "https://github.com/DanySK/code-plagiarism-detector",
                 "corpus",
-                "--repository-name",
-                "oop",
-                "--user",
-                "danysk,unibo-oop-projects",
                 "--service",
-                "github,bitbucket"
+                "github:a-non-existing-user",
             )
-            configurator(args)
+            shouldThrow<java.lang.IllegalStateException> { configurator(args) }
         }
 
         test("If `corpus` or `provider` command is not provided, the process exits with an error message") {
