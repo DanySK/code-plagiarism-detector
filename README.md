@@ -66,26 +66,22 @@ Usage: cli submission [OPTIONS]
 
   Submission options.
 
-Options to specify for search by criteria:
-  --service [github|bitbucket]  The hosting services where are stored the
-                                repositories, possibly separated by commas.
-  --user TEXT                   The usernames of the repos owners, possibly
-                                separated by commas.
-  --repository-name TEXT        The names of the searched repositories,
-                                possibly separated by commas.
-
 Options:
-  --url VALUE  The URL addresses of the repositories to be retrieved, possibly
-               separated by commas.
-  -h, --help   Show this message and exit
+  --service TEXT  A (list of) triple, possibly separated by commas, containing
+                  a supported hostingservice (github|bitbucket), the owner of
+                  the repo and an optional repository name to search,
+                  formatted: like this: `service-name:owner[/repo-name]`.
+  --url VALUE     The URL addresses of the repositories to be retrieved,
+                  possibly separated by commas.
+  -h, --help      Show this message and exit
 ```
 
-For example:
+For example (equivalent for `corpus` subcommand):
 - to search by multiple URL:
   ```bash
   submission --url https://github.com/unibo-oop-projects/Student-Project-OOP-21-Bragari-Mennuti-Violani-Volfgit,https://github.com/unibo-oop-projects/Student-Project-OOP21-Bianchi-Ciccioni-stubborn
   ```
-- to search according to the following criteria: all projects with name `oop` owned by `danysk` and `unibo-oop-projects` from GitHub and Bitbucket:
+- to search according to the following criteria: all GitHub repos owned by `unibo-oop-projects` and the Bitbucket repos named `oop` owned by `danysk`:
   ```bash
-  submission --repository-name oop --user danysk,unibo-oop-projects --service github,bitbucket
+  submission --service github:unibo-oop-projects,bitbucket:danysk/oop
   ```
