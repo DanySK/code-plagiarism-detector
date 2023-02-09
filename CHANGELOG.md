@@ -1,3 +1,10 @@
+## [6.1.0](https://github.com/DanySK/code-plagiarism-detector/compare/6.0.3...6.1.0) (2023-02-09)
+
+
+### Features
+
+* automatically create the destination directory ([517ce8f](https://github.com/DanySK/code-plagiarism-detector/commit/517ce8f7a97b981cd449fa4e6639ecca206c468a))
+
 ## [6.0.3](https://github.com/DanySK/code-plagiarism-detector/compare/6.0.2...6.0.3) (2023-02-08)
 
 
