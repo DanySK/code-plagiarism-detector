@@ -18,8 +18,11 @@ sealed class ExporterConfig<in M : Match>(name: String) : OptionGroup(name = nam
      * The path of the directory where to store the reports.
      */
     val outputPath: Path by option("--o", "--output-dir", help = OUTPUT_PATH_HELP_MSG)
-        .file(mustExist = true, canBeFile = false, mustBeWritable = true)
-        .convert { it.toPath() }
+        .file(mustExist = false, canBeFile = false)
+        .convert {
+            require(it.isDirectory || it.mkdirs())
+            it.toPath()
+        }
         .required()
 
     /**
