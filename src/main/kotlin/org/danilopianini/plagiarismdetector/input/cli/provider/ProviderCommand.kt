@@ -36,14 +36,14 @@ sealed class ProviderCommand(
         }
 
     /**
-     * The repository [URL]s to use.
+     * The repository [URL]s to use to retrieve searched repos.
      */
     val url: List<URL>? by option(help = URL_HELP_MSG)
         .convert { URL(it) }
         .split(",")
 
     /**
-     * Gets a sequence of configured [SearchCriteria], with all combinations of given options.
+     * Gets a [Sequence] of configured [SearchCriteria] to use to retrieve searched repos.
      */
     val criteria: Sequence<SearchCriteria<*, *>>? by lazy {
         if (service != null) {
