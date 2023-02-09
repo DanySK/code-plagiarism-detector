@@ -66,7 +66,7 @@ class CLIConfigurator(private val output: Output) : RunConfigurator {
                 )
         }
     } catch (e: IllegalStateException) {
-        output.logInfo("Both `corpus` and `provider` subcommands are required ($e)")
+        output.logInfo("Both `corpus` and `submission` subcommands are required ($e)")
         exitProcess(1)
     }
 
