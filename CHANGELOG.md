@@ -1,3 +1,10 @@
+## [6.1.1](https://github.com/DanySK/code-plagiarism-detector/compare/6.1.0...6.1.1) (2023-02-09)
+
+
+### Performance improvements
+
+* optimize the hottest point ([ab9e3c6](https://github.com/DanySK/code-plagiarism-detector/commit/ab9e3c696861d08935b3f29623f0d1327c553c9f))
+
 ## [6.1.0](https://github.com/DanySK/code-plagiarism-detector/compare/6.0.3...6.1.0) (2023-02-09)
 
 
