@@ -77,7 +77,7 @@ sealed class ProviderCommand(
     companion object {
         private const val MORE_ARGS_HELP = "possibly separated by commas"
         private const val URL_HELP_MSG = "The URL addresses of the repositories to be retrieved, $MORE_ARGS_HELP."
-        private const val SERVICE_HELP_MSG = "A (list of) triple, $MORE_ARGS_HELP, containing a supported hosting" +
+        private const val SERVICE_HELP_MSG = "A (list of) triple, $MORE_ARGS_HELP, containing a supported hosting " +
             "service (github|bitbucket), the owner of the repo and an optional repository name to search, formatted: " +
             "like this: `service-name:owner[/repo-name]`."
     }
