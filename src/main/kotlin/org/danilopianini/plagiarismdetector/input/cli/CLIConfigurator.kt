@@ -54,20 +54,24 @@ class CLIConfigurator(private val output: Output) : RunConfigurator {
         )
     }
 
-    private fun repositoriesFrom(configs: ProviderCommand): Set<Repository> = try {
-        with(configs) {
-            url?.map { byLink(it, SupportedOptions.serviceBy(it)) }
+    private fun repositoriesFrom(configs: ProviderCommand): Set<Repository> {
+        val url = runCatching { configs.url }
+            .onFailure { exitProcessWithMessage(ERROR_MSG_MISSING_SUBCOMMANDS) }
+            .getOrThrow()
+        val criteria = runCatching { configs.criteria }
+            .onFailure { exitProcessWithMessage(ERROR_MSG_MISSING_SUBCOMMANDS) }
+            .getOrThrow()
+        return url?.map { byLink(it, SupportedOptions.serviceBy(it)) }
+            ?.toSet()
+            ?: criteria
+                ?.flatMap { byCriteria(it) }
                 ?.toSet()
-                ?: criteria
-                    ?.flatMap { byCriteria(it) }
-                    ?.toSet()
-                ?: error(
-                    "Neither url nor criteria are valued!"
-                )
-        }
-    } catch (e: IllegalStateException) {
-        output.logInfo("Both `corpus` and `submission` subcommands are required ($e)")
-        exitProcess(1)
+            ?: error("Neither url nor criteria are valued!")
+    }
+
+    private fun exitProcessWithMessage(message: String, exitStatus: Int = 1) {
+        output.logInfo(message)
+        exitProcess(exitStatus)
     }
 
     private fun byLink(link: URL, service: HostingService): Repository = when (service) {
@@ -75,19 +79,17 @@ class CLIConfigurator(private val output: Output) : RunConfigurator {
         BitBucket -> bitbucket.byLink(link)
     }
 
-    private fun byCriteria(criteria: SearchCriteria<*, *>): Sequence<Repository> = runCatching {
-        when (criteria) {
-            is GitHubSearchCriteria -> github.byCriteria(criteria)
-            is BitbucketSearchCriteria -> bitbucket.byCriteria(criteria)
-            else -> error("The extracted criteria is not valid.")
-        }
-    }.onFailure {
-        output.logInfo(it.message ?: "${it::class.simpleName ?: it.javaClass.name} thrown with no message.")
-    }.getOrElse { emptySequence() }
+    private fun byCriteria(criteria: SearchCriteria<*, *>): Sequence<Repository> = when (criteria) {
+        is GitHubSearchCriteria -> github.byCriteria(criteria)
+        is BitbucketSearchCriteria -> bitbucket.byCriteria(criteria)
+        else -> error("The extracted criteria is not valid.")
+    }
 
     companion object {
         private const val BB_AUTH_USER_VAR = "BB_USER"
         private const val BB_AUTH_TOKEN_VAR = "BB_TOKEN"
         private const val GH_AUTH_TOKEN_VAR = "GH_TOKEN"
+        private const val ERROR_MSG_MISSING_SUBCOMMANDS =
+            "ERROR: `corpus` and `submission` subcommands are both required"
     }
 }
