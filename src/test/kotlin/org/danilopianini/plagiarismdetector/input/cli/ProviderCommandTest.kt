@@ -1,7 +1,6 @@
 package org.danilopianini.plagiarismdetector.input.cli
 
 import com.github.ajalt.clikt.core.BadParameterValue
-import com.github.ajalt.clikt.core.MissingOption
 import com.github.ajalt.clikt.core.PrintMessage
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.FunSpec
@@ -13,6 +12,7 @@ import org.danilopianini.plagiarismdetector.input.cli.provider.CorpusProviderCom
 import org.danilopianini.plagiarismdetector.input.cli.provider.ProviderCommand
 import org.danilopianini.plagiarismdetector.input.cli.provider.SubmissionProviderCommand
 import org.danilopianini.plagiarismdetector.provider.criteria.ByGitHubName
+import org.danilopianini.plagiarismdetector.provider.criteria.ByGitHubUser
 import java.net.URL
 
 class ProviderCommandTest : FunSpec() {
@@ -32,16 +32,9 @@ class ProviderCommandTest : FunSpec() {
             }
         }
 
-        test("No valid service should throw exception") {
-            val args = listOf("--service", "wrong-service", "--repository-name", "repo", "--user", "user")
+        test("Criteria options must be `service-name:owner[/repo-query]` formatted") {
+            val args = listOf("--service", "illegal-service-query")
             shouldThrow<BadParameterValue> {
-                parsedCommands(args)
-            }
-        }
-
-        test("Criteria options be all validated") {
-            val args = listOf("--service", "github")
-            shouldThrow<MissingOption> {
                 parsedCommands(args)
             }
         }
@@ -67,7 +60,7 @@ class ProviderCommandTest : FunSpec() {
         }
 
         test("Testing provider commands with a criteria") {
-            val args = listOf("--repository-name", "repo1", "--user", "user1", "--service", "github")
+            val args = listOf("--service", "github:user1/repo1")
             parsedCommands(args) {
                 it.url.shouldBeNull()
                 it.criteria.shouldNotBeNull()
@@ -76,33 +69,39 @@ class ProviderCommandTest : FunSpec() {
             }
         }
 
-        test("Testing provider commands with more than one criteria") {
-            val users = listOf("user1", "user2")
-            val repositories = listOf("repo1", "repo2")
-            val services = listOf("github", "bitbucket")
-            val args = listOf(
-                "--repository-name",
-                repositories.joinToString(","),
-                "--user",
-                users.joinToString(","),
-                "--service",
-                services.joinToString(",")
-            )
+        test("Criteria options without repository query must work as well") {
+            val args = listOf("--service", "github:danysk")
             parsedCommands(args) {
                 it.url.shouldBeNull()
                 it.criteria.shouldNotBeNull()
-                it.criteria!!.count() shouldBe (users.count() * repositories.count() * services.count())
+                it.criteria!!.count() shouldBe 1
+                it.criteria!!.first().shouldBeTypeOf<ByGitHubUser>()
+            }
+        }
+
+        test("Testing provider commands with more than one criteria") {
+            val users = listOf("user1", "user2")
+            val services = listOf("github", "bitbucket")
+            val repoNames = listOf("repo1", "repo2", "repo3")
+            val argsList = services.flatMap { s ->
+                users.flatMap { u ->
+                    repoNames.map {
+                        s.plus(":").plus(u).plus("/").plus(it)
+                    }
+                }
+            }
+            val args = listOf("--service", argsList.joinToString(separator = ","))
+            parsedCommands(args) {
+                it.url.shouldBeNull()
+                it.criteria.shouldNotBeNull()
+                it.criteria!!.count() shouldBe (users.count() * repoNames.count() * services.count())
             }
         }
 
         test("Testing provider commands with url and criteria") {
             val args = listOf(
-                "--repository-name",
-                "repo1",
-                "--user",
-                "danysk",
                 "--service",
-                "github",
+                "github:danysk/repo1",
                 "--url",
                 "https://test.com"
             )

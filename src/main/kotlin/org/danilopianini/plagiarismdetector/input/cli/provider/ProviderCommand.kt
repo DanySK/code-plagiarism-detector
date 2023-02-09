@@ -8,7 +8,7 @@ import com.github.ajalt.clikt.parameters.options.convert
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.options.required
 import com.github.ajalt.clikt.parameters.options.split
-import com.github.ajalt.clikt.parameters.types.choice
+import com.github.ajalt.clikt.parameters.options.validate
 import org.danilopianini.plagiarismdetector.utils.BitBucket
 import org.danilopianini.plagiarismdetector.utils.GitHub
 import org.danilopianini.plagiarismdetector.utils.HostingService
@@ -58,36 +58,46 @@ sealed class ProviderCommand(
         private const val MORE_ARGS_HELP = "possibly separated by commas"
         private const val URL_HELP_MSG = "The URL addresses of the repositories to be retrieved, $MORE_ARGS_HELP."
         private const val SERVICE_HELP_MSG = "The hosting services where are stored the repositories, $MORE_ARGS_HELP."
-        private const val USER_HELP_MSG = "The usernames of the repos owners, $MORE_ARGS_HELP."
-        private const val REPO_NAME_HELP_MSG = "The names of the searched repositories, $MORE_ARGS_HELP."
     }
 
     private inner class CriteriaOptions : OptionGroup("Options to specify for search by criteria") {
 
         private val service by option(help = SERVICE_HELP_MSG)
-            .choice(*SupportedOptions.services.map(HostingService::name).toTypedArray())
             .split(",")
             .required()
-        private val user by option(help = USER_HELP_MSG)
-            .split(",")
-            .required()
-        private val repositoryName by option(help = REPO_NAME_HELP_MSG)
-            .split(",")
-            .required()
+            .validate {
+                it.forEach {
+                    require(it.contains(Regex("\\w+:\\w+(\\/.*)?"))) {
+                        "must be `service-name:owner[/repo-query]` formatted"
+                    }
+                }
+            }
 
         /**
          * Gets a sequence of configured [SearchCriteria], with all combinations of given options.
          */
         val criteria: Sequence<SearchCriteria<*, *>> by lazy {
-            service.map(SupportedOptions::serviceBy)
-                .flatMap { s -> user.flatMap { u -> repositoryName.map { byCriteria(s, u, it) } } }
+            val services = service.map { it.substringBefore(":") }.map(SupportedOptions::serviceBy)
+            val owners = service.map { it.substringAfter(":").substringBefore("/") }
+            val repoNames = service.map { it.substringAfter("/", "") }
+            services.zip(owners)
+                .zip(repoNames) { a, b -> Triple(a.first, a.second, b) }
+                .map { byCriteria(it.first, it.second, it.third) }
                 .asSequence()
         }
 
-        private fun byCriteria(service: HostingService, user: String, repositoryName: String?): SearchCriteria<*, *> =
+        private fun byCriteria(service: HostingService, user: String, repositoryName: String): SearchCriteria<*, *> =
             when (service) {
-                GitHub -> repositoryName?.let { ByGitHubName(it, ByGitHubUser(user)) } ?: ByGitHubUser(user)
-                BitBucket -> repositoryName?.let { ByBitbucketName(it, ByBitbucketUser(user)) } ?: ByBitbucketUser(user)
+                GitHub -> {
+                    ByGitHubUser(user).run {
+                        if (repositoryName.isNotEmpty()) ByGitHubName(repositoryName, this) else this
+                    }
+                }
+                BitBucket -> {
+                    ByBitbucketUser(user).run {
+                        if (repositoryName.isNotEmpty()) ByBitbucketName(repositoryName, this) else this
+                    }
+                }
             }
     }
 }
