@@ -3,6 +3,7 @@ package org.danilopianini.plagiarismdetector.core.analyzer
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
+import io.kotest.matchers.shouldNotBe
 import org.danilopianini.plagiarismdetector.core.analyzer.representation.token.LanguageTokenTypesImpl
 import org.danilopianini.plagiarismdetector.core.analyzer.representation.token.TokenTypeImpl
 
@@ -18,9 +19,11 @@ class LanguageTokenTypesTest : FunSpec() {
     init {
         test("Extracting the token type name by a construct") {
             with("ForEachStmt") {
-                languageTypes.isToken(this) shouldBe true
-                languageTypes.tokenFor(this).name shouldBe tokenTypeName
-                languageTypes.tokenFor(this).languageConstructs shouldBe constructs
+                languageTypes.tokenFor(this).let {
+                    it shouldNotBe null
+                    it?.name shouldBe tokenTypeName
+                    it?.languageConstructs shouldBe constructs
+                }
             }
         }
 
