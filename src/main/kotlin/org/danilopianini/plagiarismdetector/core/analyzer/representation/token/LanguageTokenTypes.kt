@@ -5,12 +5,7 @@ package org.danilopianini.plagiarismdetector.core.analyzer.representation.token
  */
 interface LanguageTokenTypes {
     /**
-     * @return the [TokenType] associated to the given construct.
+     * @return the [TokenType] associated to the given construct, or null if the construct has no associated token.
      */
-    fun tokenFor(constructName: String): TokenType
-
-    /**
-     * @return true if the given construct name is valid, false otherwise.
-     */
-    fun isToken(constructName: String): Boolean
+    fun tokenFor(constructName: String): TokenType?
 }

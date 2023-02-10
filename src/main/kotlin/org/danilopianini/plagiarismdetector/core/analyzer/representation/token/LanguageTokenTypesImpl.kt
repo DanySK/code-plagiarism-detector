@@ -6,11 +6,9 @@ package org.danilopianini.plagiarismdetector.core.analyzer.representation.token
  */
 class LanguageTokenTypesImpl(private val tokensTypes: Set<TokenType>) : LanguageTokenTypes {
 
-    override fun tokenFor(constructName: String): TokenType =
-        tokensTypes.find { constructName in it.languageConstructs } ?: error(
-            "Token $constructName does not exist. Available constructs: $tokensTypes"
-        )
+    private val reverseLookup = tokensTypes
+        .flatMap { tokensType -> tokensType.languageConstructs.map { it to tokensType } }
+        .toMap()
 
-    override fun isToken(constructName: String): Boolean =
-        tokensTypes.any { constructName in it.languageConstructs }
+    override fun tokenFor(constructName: String): TokenType? = reverseLookup[constructName]
 }

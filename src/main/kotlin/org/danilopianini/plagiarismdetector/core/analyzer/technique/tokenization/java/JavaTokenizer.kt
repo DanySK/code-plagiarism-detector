@@ -44,14 +44,8 @@ class JavaTokenizer : StepHandler<CompilationUnit, List<Token>> {
         private fun tokenize(node: Node?) {
             check(node != null)
             val tokenTypeName = node::class.java.simpleName
-            if (javaTokenTypes.isToken(tokenTypeName)) {
-                tokens.add(
-                    TokenImpl(
-                        node.begin.get().line,
-                        node.begin.get().column,
-                        javaTokenTypes.tokenFor(tokenTypeName)
-                    )
-                )
+            javaTokenTypes.tokenFor(tokenTypeName)?.also { tokenType ->
+                tokens.add(TokenImpl(node.begin.get().line, node.begin.get().column, tokenType))
             }
         }
     }
