@@ -31,6 +31,7 @@ class FileKnowledgeBaseManager : KnowledgeBaseManager {
     private fun clone(project: Repository, out: File) = runCatching {
         Git.cloneRepository()
             .setURI("${project.cloneUrl}")
+            .setDepth(1)
             .setDirectory(out)
             .call()
             .close()
