@@ -1,3 +1,52 @@
+## [7.0.0](https://github.com/DanySK/code-plagiarism-detector/compare/6.1.1...7.0.0) (2023-02-10)
+
+
+### ⚠ BREAKING CHANGES
+
+* **cli:** move to new syntax to specify criteria
+* speed up the token creation
+
+### Bug Fixes
+
+* **cli:** replace provider with submission subcommand in error msg ([9692a72](https://github.com/DanySK/code-plagiarism-detector/commit/9692a72ca97022f589c714a848aa8a271c308071))
+
+
+### Performance improvements
+
+* assume different TokenTypes to always have different names ([59166e5](https://github.com/DanySK/code-plagiarism-detector/commit/59166e5f1f799545f59eb5b45518c2048b64ff45))
+* speed up the token creation ([3486bea](https://github.com/DanySK/code-plagiarism-detector/commit/3486bea8f4294b705fb2ae3f2366647a59dd992f))
+
+
+### Tests
+
+* **cli:** modify to test an `IllegalStateException` is thrown when no correct user is provided ([2b0db1c](https://github.com/DanySK/code-plagiarism-detector/commit/2b0db1c3189e7cc754ba55094ce9471a111197b8))
+* update test to the new API ([a61d941](https://github.com/DanySK/code-plagiarism-detector/commit/a61d9418713435eb3893d6c862964fdf78250d1e))
+* update test to the new API ([ffa6bfa](https://github.com/DanySK/code-plagiarism-detector/commit/ffa6bfa9fdc461a0906fce7e3f3a4b837de75d8c))
+
+
+### Documentation
+
+* **cli:** improve url+criteria properties documentation ([0014bac](https://github.com/DanySK/code-plagiarism-detector/commit/0014bacba91897028199c493f477a4c36b218bf1))
+
+
+### Refactoring
+
+* **cli-configurator:** throw exception if some user do not exists ([867778b](https://github.com/DanySK/code-plagiarism-detector/commit/867778beeed83f8d7ed9cdf6083b276bc651bbe6))
+* **cli:** improve help messages ([5bcb364](https://github.com/DanySK/code-plagiarism-detector/commit/5bcb3648580d8a7d302d8111dcf5ada3de5ff879))
+* **cli:** move to new syntax to specify criteria ([dbd34c0](https://github.com/DanySK/code-plagiarism-detector/commit/dbd34c0456a0bc392606ef031fe5209b16ac7e08))
+* **cli:** remove not more useful inner class ([b28f814](https://github.com/DanySK/code-plagiarism-detector/commit/b28f814d7c5293ea4ad17f0a6cacb4b397a283af))
+
+
+### Style improvements
+
+* **cli:** add whitespace ([512650d](https://github.com/DanySK/code-plagiarism-detector/commit/512650d0eb8667a4740fc375ca4dbf9b126d802b))
+
+
+### General maintenance
+
+* **readme:** fix typo ([297a60d](https://github.com/DanySK/code-plagiarism-detector/commit/297a60d916cb9f1f3753e759b54b0c9ed2011910))
+* **readme:** update README according to new provider syntax ([bdae55f](https://github.com/DanySK/code-plagiarism-detector/commit/bdae55f762381b50db33775821b7a988e4f57830))
+
 ## [6.1.1](https://github.com/DanySK/code-plagiarism-detector/compare/6.1.0...6.1.1) (2023-02-09)
 
 
