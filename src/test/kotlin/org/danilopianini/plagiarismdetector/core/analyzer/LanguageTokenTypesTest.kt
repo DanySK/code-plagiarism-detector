@@ -1,6 +1,5 @@
 package org.danilopianini.plagiarismdetector.core.analyzer
 
-import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
@@ -27,10 +26,8 @@ class LanguageTokenTypesTest : FunSpec() {
             }
         }
 
-        test("Trying to extract the token type name of a non-existing construct") {
-            shouldThrow<IllegalStateException> {
-                languageTypes.tokenFor("non-existing-token-name")
-            }
+        test("Trying to extract the token type name of a non-existing construct should return null") {
+            languageTypes.tokenFor("non-existing-token-name") shouldBe null
         }
     }
 }
