@@ -1,3 +1,10 @@
+## [7.0.1](https://github.com/DanySK/code-plagiarism-detector/compare/7.0.0...7.0.1) (2023-02-10)
+
+
+### Performance improvements
+
+* use shallow clone ([cc54d99](https://github.com/DanySK/code-plagiarism-detector/commit/cc54d9932d760d8dca44d3eee171d4b5f34bff19))
+
 ## [7.0.0](https://github.com/DanySK/code-plagiarism-detector/compare/6.1.1...7.0.0) (2023-02-10)
 
 
