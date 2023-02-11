@@ -16,10 +16,10 @@ class TokenBasedPlagiarismDetector(
 ) : PlagiarismDetector<TokenizedSource, Sequence<Token>, TokenMatch> {
 
     /**
-     * Creates a detector using, as detection strategy, [RKRGreedyStringTiling]
+     * Creates a detector using, as detection strategy, [SimpleMatcheTiling]
      * with minimum match length searched set to [minimumMatchLength].
      */
-    constructor(minimumMatchLength: Int) : this(RKRGreedyStringTiling(minimumMatchLength))
+    constructor(minimumMatchLength: Int) : this(SimpleMatcheTiling(minimumMatchLength))
 
     override operator fun invoke(
         input: Pair<TokenizedSource, TokenizedSource>,
