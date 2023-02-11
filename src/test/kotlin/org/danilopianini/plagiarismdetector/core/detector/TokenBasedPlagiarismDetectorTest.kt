@@ -6,6 +6,7 @@ import io.kotest.matchers.doubles.shouldBeExactly
 import io.kotest.mpp.timeInMillis
 import org.danilopianini.plagiarismdetector.core.analyzer.technique.tokenization.java.JavaTokenizationAnalyzer
 import org.danilopianini.plagiarismdetector.core.detector.technique.tokenization.GreedyStringTiling
+import org.danilopianini.plagiarismdetector.core.detector.technique.tokenization.RKRGreedyStringTiling
 import org.danilopianini.plagiarismdetector.core.detector.technique.tokenization.TokenBasedPlagiarismDetector
 import org.danilopianini.plagiarismdetector.core.detector.technique.tokenization.TokenMatch
 import org.slf4j.LoggerFactory
@@ -56,7 +57,10 @@ class TokenBasedPlagiarismDetectorTest : FunSpec() {
             TokenBasedPlagiarismDetector(GreedyStringTiling(DEFAULT_MIN_TOKEN_LEN)),
             files
         )
-        val (RKRElapsedTime, RKRResult) = detect(TokenBasedPlagiarismDetector(DEFAULT_MIN_TOKEN_LEN), files)
+        val (RKRElapsedTime, RKRResult) = detect(
+            TokenBasedPlagiarismDetector(RKRGreedyStringTiling(DEFAULT_MIN_TOKEN_LEN)),
+            files
+        )
         if (printStats) {
             printStats("Greedy String Tiling", GSTElapsedTime, GSTResult)
             printStats("Running-Karp-Rabin Greedy String Tiling", RKRElapsedTime, RKRResult)

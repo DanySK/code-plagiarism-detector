@@ -23,7 +23,7 @@ class JavaTokenizer : StepHandler<CompilationUnit, List<Token>> {
      * A generator of tokens, obtained by visiting the AST of the source file.
      */
     private class TokenizerTreeVisitor : TreeVisitor() {
-        private val javaTokenTypes = FileTokenTypesSupplier(CONFIG_FILE_NAME).types
+        private val javaTokenTypes = FileTokenTypesSupplier.supplierFor(CONFIG_FILE_NAME).types
         private val tokens = mutableListOf<Token>()
 
         /**
@@ -37,12 +37,7 @@ class JavaTokenizer : StepHandler<CompilationUnit, List<Token>> {
             return tokens
         }
 
-        override fun process(node: Node?) {
-            tokenize(node)
-        }
-
-        private fun tokenize(node: Node?) {
-            check(node != null)
+        override fun process(node: Node) {
             val tokenTypeName = node::class.java.simpleName
             javaTokenTypes.tokenFor(tokenTypeName)?.also { tokenType ->
                 tokens.add(TokenImpl(node.begin.get().line, node.begin.get().column, tokenType))

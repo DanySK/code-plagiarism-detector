@@ -3,24 +3,33 @@ package org.danilopianini.plagiarismdetector.core.detector.technique.tokenizatio
 import org.danilopianini.plagiarismdetector.core.analyzer.representation.TokenizedSource
 import org.danilopianini.plagiarismdetector.core.analyzer.representation.token.Token
 import org.danilopianini.plagiarismdetector.core.detector.ComparisonStrategy
-import kotlin.math.max
 
-class SimpleMatcheTiling(val minimumMatchLength: Int) : ComparisonStrategy<TokenizedSource, Sequence<Token>, TokenMatch> {
+/**
+ * Simple match tiling algorithm. Scans for the largest tile, then run recursively on the remainder of the tokens.
+ * The algorithm finds matches larger than [minimumMatchLength].
+ */
+class SimpleMatchTiling(
+    val minimumMatchLength: Int
+) : ComparisonStrategy<TokenizedSource, Sequence<Token>, TokenMatch> {
 
     private data class Match(val patternOffset: Int, val textOffset: Int, val size: Int)
 
     private fun <T> List<T>.cutSlice(begin: Int, sliceSize: Int): Pair<List<T>, List<T>> =
-        subList(0, begin) to subList(begin+sliceSize, size)
+        subList(0, begin) to subList(begin + sliceSize, size)
+
+    private fun List<Token>.indicizedByType() = indices.groupBy { this[it].type }
 
     private fun longestMatch(pattern: List<Token>, text: List<Token>, minLength: Int): Match? {
-        var outer = 0
         var bestMatch: Match? = null
-        val indicesByMatchType = text.subList(0, max(0, text.size - minLength)).indices.groupBy { text[it].type }
-        while (pattern.size - outer > minLength) {
-            for (inner in indicesByMatchType[pattern[outer].type].orEmpty()) {
-                if (text.size - inner > minLength) {
+        val textIndicesByMatchType = text.indicizedByType()
+        val patternIndicesByMatchType = pattern
+            .filter { it.type in textIndicesByMatchType.keys }
+            .indicizedByType()
+        for ((type, indices) in patternIndicesByMatchType) {
+            for (outer in indices) {
+                for (inner in textIndicesByMatchType[type].orEmpty()) {
                     var size = 1
-                    while(
+                    while (
                         outer + size < pattern.size &&
                         inner + size < text.size &&
                         pattern[outer + size].type == text[inner + size].type
@@ -32,12 +41,14 @@ class SimpleMatcheTiling(val minimumMatchLength: Int) : ComparisonStrategy<Token
                     }
                 }
             }
-            outer++
         }
         return bestMatch
     }
 
     private fun searchSplit(pattern: List<Token>, text: List<Token>, minLength: Int): Set<Match> {
+        if (pattern.size < minLength || text.size < minLength) {
+            return emptySet()
+        }
         val longest = longestMatch(pattern, text, minLength)
         val result = mutableSetOf<Match>()
         if (longest != null) {

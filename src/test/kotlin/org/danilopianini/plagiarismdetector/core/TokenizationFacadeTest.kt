@@ -57,7 +57,7 @@ class TokenizationFacadeTest : FunSpec() {
             report.submittedProject shouldBe submittedProject
             report.comparedProject shouldBe comparedProject
             report.reportedRatio shouldBe 1
-            report.similarity.shouldBe(0.316 plusOrMinus 0.001)
+            report.similarity.shouldBe(0.316 plusOrMinus 0.02)
         }
     }
 

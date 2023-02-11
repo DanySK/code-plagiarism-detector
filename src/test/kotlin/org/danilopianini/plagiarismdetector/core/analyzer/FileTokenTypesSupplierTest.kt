@@ -14,12 +14,12 @@ class FileTokenTypesSupplierTest : FunSpec() {
     init {
         test("Trying to load java token types from a non-valid config file") {
             shouldThrow<IllegalStateException> {
-                FileTokenTypesSupplier("non-existing-file.yml")
+                FileTokenTypesSupplier.supplierFor("non-existing-file.yml")
             }
         }
 
         test("Loading java token types from an existing config file") {
-            FileTokenTypesSupplier(CONFIG_FILE_NAME).types.shouldBeInstanceOf<LanguageTokenTypes>()
+            FileTokenTypesSupplier.supplierFor(CONFIG_FILE_NAME).types.shouldBeInstanceOf<LanguageTokenTypes>()
         }
     }
 }
