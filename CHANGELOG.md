@@ -1,3 +1,20 @@
+## [8.0.0](https://github.com/DanySK/code-plagiarism-detector/compare/7.0.1...8.0.0) (2023-02-12)
+
+
+### ⚠ BREAKING CHANGES
+
+* improve performance by about 40% by pre-indicizing the tokens' positions
+
+### Features
+
+* print time after execution ([b306418](https://github.com/DanySK/code-plagiarism-detector/commit/b306418222e0140c19f60fe28b2e61cba7aac6ee))
+
+
+### Performance improvements
+
+* improve performance by about 40% by pre-indicizing the tokens' positions ([e19397c](https://github.com/DanySK/code-plagiarism-detector/commit/e19397ce7562621361dc7b54033b796c25f8f493))
+* switch to a much simpler, much faster tiling system ([2f4fef4](https://github.com/DanySK/code-plagiarism-detector/commit/2f4fef4f90e19d64ab1b15cbf2fb5b19697fa3ab))
+
 ## [7.0.1](https://github.com/DanySK/code-plagiarism-detector/compare/7.0.0...7.0.1) (2023-02-10)
 
 
