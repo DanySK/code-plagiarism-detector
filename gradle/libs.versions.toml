@@ -37,4 +37,4 @@ multiJvmTesting = "org.danilopianini.multi-jvm-test-plugin:0.4.17"
 publishOnCentral = "org.danilopianini.publish-on-central:3.3.0"
 taskTree = "com.dorongold.task-tree:2.1.1"
 serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
-shadowJar = "com.github.johnrengelman.shadow:7.1.2"
+shadowJar = "com.github.johnrengelman.shadow:8.0.0"
