@@ -33,7 +33,7 @@ dokka = "org.jetbrains.dokka:1.8.10"
 gitSemVer = "org.danilopianini.git-sensitive-semantic-versioning:1.1.2"
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-qa = "org.danilopianini.gradle-kotlin-qa:0.29.2"
-multiJvmTesting = "org.danilopianini.multi-jvm-test-plugin:0.4.17"
+multiJvmTesting = "org.danilopianini.multi-jvm-test-plugin:0.4.18"
 publishOnCentral = "org.danilopianini.publish-on-central:3.3.0"
 taskTree = "com.dorongold.task-tree:2.1.1"
 serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
