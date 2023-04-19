@@ -30,7 +30,7 @@ kotlin-testing = [ "kotest-junit5-jvm", "kotest-assertions-core-jvm", "mockito-c
 
 [plugins]
 dokka = "org.jetbrains.dokka:1.8.10"
-gitSemVer = "org.danilopianini.git-sensitive-semantic-versioning:1.1.7"
+gitSemVer = "org.danilopianini.git-sensitive-semantic-versioning:1.1.8"
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-qa = "org.danilopianini.gradle-kotlin-qa:0.29.2"
 multiJvmTesting = "org.danilopianini.multi-jvm-test-plugin:0.4.21"
