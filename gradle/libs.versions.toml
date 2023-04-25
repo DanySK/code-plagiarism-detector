@@ -34,7 +34,7 @@ gitSemVer = "org.danilopianini.git-sensitive-semantic-versioning:1.1.9"
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-qa = "org.danilopianini.gradle-kotlin-qa:0.29.2"
 multiJvmTesting = "org.danilopianini.multi-jvm-test-plugin:0.4.23"
-publishOnCentral = "org.danilopianini.publish-on-central:5.0.4"
+publishOnCentral = "org.danilopianini.publish-on-central:5.0.5"
 taskTree = "com.dorongold.task-tree:2.1.1"
 serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 shadowJar = "com.github.johnrengelman.shadow:8.1.1"
