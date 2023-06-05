@@ -29,7 +29,7 @@ progressbar = "me.tongfei:progressbar:0.9.5"
 kotlin-testing = [ "kotest-junit5-jvm", "kotest-assertions-core-jvm", "mockito-core" ]
 
 [plugins]
-dokka = "org.jetbrains.dokka:1.8.10"
+dokka = "org.jetbrains.dokka:1.8.20"
 gitSemVer = "org.danilopianini.git-sensitive-semantic-versioning:1.1.9"
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-qa = "org.danilopianini.gradle-kotlin-qa:0.29.2"
