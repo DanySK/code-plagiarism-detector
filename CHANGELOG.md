@@ -1,3 +1,14 @@
+## [8.0.5](https://github.com/DanySK/code-plagiarism-detector/compare/8.0.4...8.0.5) (2023-06-07)
+
+
+### Dependency updates
+
+* **core-deps:** update dependency org.jetbrains.kotlin.jvm to v1.8.22 ([264944b](https://github.com/DanySK/code-plagiarism-detector/commit/264944bf32c083f6607447e1d335f1f09682ebc6))
+* **deps:** update dependency commons-io:commons-io to v2.13.0 ([dc7de6d](https://github.com/DanySK/code-plagiarism-detector/commit/dc7de6d0d4d1376273fd5e9d68cb88b7de733ae5))
+* **deps:** update plugin gitsemver to v1.1.10 ([bda6984](https://github.com/DanySK/code-plagiarism-detector/commit/bda6984ce0b9e96ff88c991eb99a816c9439fbb5))
+* **deps:** update plugin multijvmtesting to v0.5.2 ([4a364bf](https://github.com/DanySK/code-plagiarism-detector/commit/4a364bf36fd0a629b373da2389395e3aca30624d))
+* **deps:** update plugin org.danilopianini.gradle-pre-commit-git-hooks to v1.1.8 ([27ef66f](https://github.com/DanySK/code-plagiarism-detector/commit/27ef66ff2204c716c6ebb1f0a70557282120c341))
+
 ## [8.0.4](https://github.com/DanySK/code-plagiarism-detector/compare/8.0.3...8.0.4) (2023-06-05)
 
 
