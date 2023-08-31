@@ -1,3 +1,27 @@
+## [8.0.8](https://github.com/DanySK/code-plagiarism-detector/compare/8.0.7...8.0.8) (2023-08-31)
+
+
+### Build and continuous integration
+
+* **deps:** update actions/checkout action to v3.6.0 ([c8ee8b2](https://github.com/DanySK/code-plagiarism-detector/commit/c8ee8b2fda39761764d3df73d1d95d304b106ff9))
+* **deps:** update danysk/action-checkout action to v0.2.11 ([3a6c2c0](https://github.com/DanySK/code-plagiarism-detector/commit/3a6c2c09f15073082e02e65e746b8c6bb0985ffd))
+
+
+### Dependency updates
+
+* **deps:** update dependency com.github.javaparser:javaparser-core to v3.25.5 ([7559f9d](https://github.com/DanySK/code-plagiarism-detector/commit/7559f9d3b66fe888cf8b87365baf60f3dd2aa534))
+* **deps:** update dependency semantic-release-preconfigured-conventional-commits to v1.1.44 ([224d0a4](https://github.com/DanySK/code-plagiarism-detector/commit/224d0a43b23626eef85141a356c6b1d70636cd60))
+* **deps:** update dependency semantic-release-preconfigured-conventional-commits to v1.1.45 ([bf8ee6c](https://github.com/DanySK/code-plagiarism-detector/commit/bf8ee6c00d43a4406ce6719495facf77c700a54c))
+* **deps:** update dependency semantic-release-preconfigured-conventional-commits to v1.1.46 ([0dd8fd4](https://github.com/DanySK/code-plagiarism-detector/commit/0dd8fd48d71fa3b16e5b07f0314bbfe30ebeb842))
+* **deps:** update dependency semantic-release-preconfigured-conventional-commits to v1.1.47 ([5d788ec](https://github.com/DanySK/code-plagiarism-detector/commit/5d788ecadecc0fa99be4d5d718d7190727d71e5d))
+* **deps:** update dependency semantic-release-preconfigured-conventional-commits to v1.1.48 ([f55290f](https://github.com/DanySK/code-plagiarism-detector/commit/f55290f9c1b2f79cf4ca1f6d376703ac92cc8394))
+* **deps:** update plugin publishoncentral to v5.0.12 ([d275466](https://github.com/DanySK/code-plagiarism-detector/commit/d2754666e565eb884633033aa4ee754879af6656))
+
+
+### Documentation
+
+* **deps:** update plugin dokka to v1.9.0 ([1f18ef5](https://github.com/DanySK/code-plagiarism-detector/commit/1f18ef59ab0b889af53fdce167dca4a7d10d9cd3))
+
 ## [8.0.7](https://github.com/DanySK/code-plagiarism-detector/compare/8.0.6...8.0.7) (2023-08-23)
 
 
