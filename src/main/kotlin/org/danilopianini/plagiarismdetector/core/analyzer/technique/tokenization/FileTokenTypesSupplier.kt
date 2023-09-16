@@ -17,7 +17,7 @@ class FileTokenTypesSupplier private constructor(private val configurationFileNa
     }
 
     override val types: LanguageTokenTypes = LanguageTokenTypesImpl(
-        Yaml.default.decodeFromStream(SetSerializer(TokenTypeImpl.serializer()), configurationFile)
+        Yaml.default.decodeFromStream(SetSerializer(TokenTypeImpl.serializer()), configurationFile),
     )
 
     companion object {

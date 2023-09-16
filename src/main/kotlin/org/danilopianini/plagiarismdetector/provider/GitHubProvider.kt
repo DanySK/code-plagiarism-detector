@@ -14,7 +14,7 @@ import java.net.URL
  * A provider of GitHub repositories.
  */
 class GitHubProvider private constructor(
-    private var github: GitHub
+    private var github: GitHub,
 ) : AbstractRepositoryProvider<GitHub, GHRepositorySearchBuilder, GitHubSearchCriteria>() {
     companion object {
         private const val GITHUB_HOST = "github.com"

@@ -46,7 +46,7 @@ abstract class BitbucketCompoundCriteria(
  */
 class ByBitbucketName(
     private val repositoryName: String,
-    criteria: BitbucketSearchCriteria
+    criteria: BitbucketSearchCriteria,
 ) : BitbucketCompoundCriteria(criteria) {
     override fun apply(subject: String): String = StringBuilder(super.apply(subject))
         .append("name")

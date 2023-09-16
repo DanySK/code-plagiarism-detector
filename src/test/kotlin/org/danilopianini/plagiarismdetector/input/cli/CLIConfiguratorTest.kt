@@ -55,7 +55,7 @@ class CLIConfiguratorTest : FunSpec() {
                 tempdir().path,
                 "submission",
                 "--url",
-                "https://github.com/DanySK/code-plagiarism-detector"
+                "https://github.com/DanySK/code-plagiarism-detector",
             )
             val thrown = shouldThrow<SystemExitException> { configurator(args) }
             thrown.exitCode shouldBe 1

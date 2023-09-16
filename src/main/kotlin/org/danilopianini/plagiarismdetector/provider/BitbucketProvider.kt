@@ -15,7 +15,7 @@ import java.util.Base64
  * A provider of Bitbucket repositories.
  */
 class BitbucketProvider private constructor(
-    private var encodedAuthenticationToken: String? = null
+    private var encodedAuthenticationToken: String? = null,
 ) : AbstractRepositoryProvider<String, String, BitbucketSearchCriteria>() {
     companion object {
         private const val BITBUCKET_HOST = "bitbucket.org"
@@ -44,9 +44,7 @@ class BitbucketProvider private constructor(
          */
         fun connectWithToken(tokenSupplier: AuthenticationTokenSupplierStrategy) =
             BitbucketProvider(
-                Base64.getEncoder().encodeToString(
-                    tokenSupplier.token.toByteArray(StandardCharsets.UTF_8)
-                )
+                Base64.getEncoder().encodeToString(tokenSupplier.token.toByteArray(StandardCharsets.UTF_8)),
             )
     }
 

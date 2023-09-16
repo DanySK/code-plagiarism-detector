@@ -84,7 +84,7 @@ abstract class BaseGreedyStringTiling(
         match: TokenMatch,
         marked: MutableMarkedTokens,
         tiles: MutableSet<TokenMatch>,
-        elseBlock: () -> Unit = { }
+        elseBlock: () -> Unit = { },
     ) {
         if (isNotOccluded(match, marked)) {
             match.pattern.second.forEach(marked.first::add)

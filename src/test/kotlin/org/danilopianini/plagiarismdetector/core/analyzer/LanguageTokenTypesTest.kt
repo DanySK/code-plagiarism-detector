@@ -9,11 +9,7 @@ import org.danilopianini.plagiarismdetector.core.analyzer.representation.token.T
 class LanguageTokenTypesTest : FunSpec() {
     private val tokenTypeName = "loop-stmt"
     private val constructs = setOf("ForEachStmt", "ForStmt", "WhileStmt", "DoStmt")
-    private val languageTypes = LanguageTokenTypesImpl(
-        setOf(
-            TokenTypeImpl(tokenTypeName, constructs)
-        )
-    )
+    private val languageTypes = LanguageTokenTypesImpl(setOf(TokenTypeImpl(tokenTypeName, constructs)))
 
     init {
         test("Extracting the token type name by a construct") {

@@ -32,7 +32,7 @@ class CLIConfigurator(private val output: Output) : RunConfigurator {
     }
     private val bitbucket by lazy {
         BitbucketProvider.connectWithToken(
-            EnvironmentTokenSupplier(BB_AUTH_USER_VAR, BB_AUTH_TOKEN_VAR, separator = ":")
+            EnvironmentTokenSupplier(BB_AUTH_USER_VAR, BB_AUTH_TOKEN_VAR, separator = ":"),
         )
     }
 
@@ -49,8 +49,8 @@ class CLIConfigurator(private val output: Output) : RunConfigurator {
             minDuplicationPercentage = commonCommand.minimumDuplication,
             submission = submission,
             corpus = corpus,
-            filesToExclude = commonCommand.exclude?.toSet() ?: emptySet(),
-            exporter = commonCommand.exporterType.exporter
+            filesToExclude = commonCommand.exclude?.toSet().orEmpty(),
+            exporter = commonCommand.exporterType.exporter,
         )
     }
 

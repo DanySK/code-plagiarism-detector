@@ -34,7 +34,7 @@ abstract class GitHubCompoundCriteria(
  */
 class ByGitHubName(
     private val repositoryName: String,
-    criteria: GitHubSearchCriteria
+    criteria: GitHubSearchCriteria,
 ) : GitHubCompoundCriteria(criteria) {
     override fun apply(subject: GitHub): GHRepositorySearchBuilder =
         super.apply(subject).q(repositoryName).`in`("name")
