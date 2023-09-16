@@ -14,7 +14,7 @@ interface GitHubSearchCriteria : SearchCriteria<GitHub, GHRepositorySearchBuilde
  * @property username the GitHub username.
  */
 class ByGitHubUser(private val username: String) : GitHubSearchCriteria {
-    override fun apply(subject: GitHub): GHRepositorySearchBuilder =
+    override operator fun invoke(subject: GitHub): GHRepositorySearchBuilder =
         subject.searchRepositories().user(username).fork(GHFork.PARENT_AND_FORKS)
 }
 
@@ -22,10 +22,10 @@ class ByGitHubUser(private val username: String) : GitHubSearchCriteria {
  * A decorator of [GitHubSearchCriteria] for compound criteria.
  * @property criteria the base criteria to decorate.
  */
-abstract class GitHubCompoundCriteria(
-    private val criteria: GitHubSearchCriteria
+open class GitHubCompoundCriteria(
+    private val criteria: GitHubSearchCriteria,
 ) : GitHubSearchCriteria {
-    override fun apply(subject: GitHub): GHRepositorySearchBuilder = criteria.apply(subject)
+    override operator fun invoke(subject: GitHub): GHRepositorySearchBuilder = criteria(subject)
 }
 
 /**
@@ -36,6 +36,6 @@ class ByGitHubName(
     private val repositoryName: String,
     criteria: GitHubSearchCriteria,
 ) : GitHubCompoundCriteria(criteria) {
-    override fun apply(subject: GitHub): GHRepositorySearchBuilder =
-        super.apply(subject).q(repositoryName).`in`("name")
+    override operator fun invoke(subject: GitHub): GHRepositorySearchBuilder =
+        super.invoke(subject).q(repositoryName).`in`("name")
 }
