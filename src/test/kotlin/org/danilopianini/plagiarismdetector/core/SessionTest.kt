@@ -6,7 +6,6 @@ import io.kotest.matchers.file.shouldContainNFiles
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.spyk
-import org.danilopianini.plagiarismdetector.utils.Java
 import org.danilopianini.plagiarismdetector.core.session.AntiPlagiarismSessionImpl
 import org.danilopianini.plagiarismdetector.input.configuration.RunConfigurationImpl
 import org.danilopianini.plagiarismdetector.input.configuration.TokenizationConfigurationImpl
@@ -14,6 +13,7 @@ import org.danilopianini.plagiarismdetector.output.Output
 import org.danilopianini.plagiarismdetector.output.exporter.PlainFileExporter
 import org.danilopianini.plagiarismdetector.repository.GitHubRepository
 import org.danilopianini.plagiarismdetector.repository.Repository
+import org.danilopianini.plagiarismdetector.utils.Java
 import java.io.File
 
 class SessionTest : FunSpec() {
