@@ -55,9 +55,9 @@ class PlainFileExporter<in M : Match>(
             .filter { it.matches.any() }
             .groupBy { it.similarity }
             .toSortedMap(Comparator.reverseOrder())
-            .forEach {
-                out.println(">> With similarity: ${it.key}")
-                it.value.flatMap { it.matches }.forEach { formatDuplicatedSections(it, out) }
+            .forEach { (key, value) ->
+                out.println(">> With similarity: $key")
+                value.flatMap { it.matches }.forEach { formatDuplicatedSections(it, out) }
             }
     }
 
