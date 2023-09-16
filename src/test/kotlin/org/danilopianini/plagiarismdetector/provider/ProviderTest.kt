@@ -7,14 +7,14 @@ import io.kotest.matchers.collections.shouldNotBeEmpty
 import io.kotest.matchers.string.shouldContain
 import io.kotest.matchers.string.shouldContainIgnoringCase
 import io.kotest.matchers.string.shouldMatch
+import org.danilopianini.plagiarismdetector.provider.authentication.EnvironmentTokenSupplier
 import org.danilopianini.plagiarismdetector.provider.criteria.ByBitbucketName
 import org.danilopianini.plagiarismdetector.provider.criteria.ByBitbucketUser
 import org.danilopianini.plagiarismdetector.provider.criteria.ByGitHubName
 import org.danilopianini.plagiarismdetector.provider.criteria.ByGitHubUser
 import org.danilopianini.plagiarismdetector.repository.Repository
-import org.danilopianini.plagiarismdetector.provider.authentication.EnvironmentTokenSupplier
 import org.slf4j.LoggerFactory
-import java.net.URL
+import java.net.URI
 
 class ProviderTest : FunSpec() {
     companion object {
@@ -79,28 +79,28 @@ class ProviderTest : FunSpec() {
 
         test("Searching by *non-existing* URL should throw an exception") {
             shouldThrow<IllegalStateException> {
-                githubProvider.byLink(URL("$GH_URL_PREFIX/$DANYSK_USER/non-existing-repo"))
+                githubProvider.byLink(URI("$GH_URL_PREFIX/$DANYSK_USER/non-existing-repo"))
             }
             shouldThrow<IllegalStateException> {
-                bitbucketProvider.byLink(URL("$BB_URL_PREFIX/$DANYSK_USER/non-existing-repo"))
+                bitbucketProvider.byLink(URI("$BB_URL_PREFIX/$DANYSK_USER/non-existing-repo"))
             }
         }
 
         test("Searching by illegal URL should throw an exception") {
             shouldThrow<java.lang.IllegalArgumentException> {
-                githubProvider.byLink(URL("https://www.unibo.it/"))
+                githubProvider.byLink(URI("https://www.unibo.it/"))
             }
             shouldThrow<java.lang.IllegalArgumentException> {
                 githubProvider.byLink(
-                    URL("$GH_URL_PREFIX/$DANYSK_USER/code-plagiarism-detector/tree/master/src/")
+                    URI("$GH_URL_PREFIX/$DANYSK_USER/code-plagiarism-detector/tree/master/src/"),
                 )
             }
             shouldThrow<java.lang.IllegalArgumentException> {
-                bitbucketProvider.byLink(URL("https://www.unibo.it/"))
+                bitbucketProvider.byLink(URI("https://www.unibo.it/"))
             }
             shouldThrow<java.lang.IllegalArgumentException> {
                 bitbucketProvider.byLink(
-                    URL("$BB_URL_PREFIX/$DANYSK_USER/courses-oop-gradle-jfx-template/src/")
+                    URI("$BB_URL_PREFIX/$DANYSK_USER/courses-oop-gradle-jfx-template/src/"),
                 )
             }
         }
