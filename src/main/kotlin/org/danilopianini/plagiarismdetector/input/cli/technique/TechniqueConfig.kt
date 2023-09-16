@@ -5,11 +5,11 @@ import com.github.ajalt.clikt.parameters.options.convert
 import com.github.ajalt.clikt.parameters.options.default
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.types.choice
-import org.danilopianini.plagiarismdetector.utils.Java
-import org.danilopianini.plagiarismdetector.utils.Language
 import org.danilopianini.plagiarismdetector.core.TechniqueFacade
 import org.danilopianini.plagiarismdetector.core.detector.Match
 import org.danilopianini.plagiarismdetector.input.SupportedOptions
+import org.danilopianini.plagiarismdetector.utils.Java
+import org.danilopianini.plagiarismdetector.utils.Language
 
 /**
  * An abstract class encapsulating specific technique configuration.
