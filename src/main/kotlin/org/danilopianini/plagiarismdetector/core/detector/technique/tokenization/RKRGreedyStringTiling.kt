@@ -46,7 +46,7 @@ class RKRGreedyStringTiling(
 
     /**
      * Iterates the [text] tokens hashing the subsequences of length
-     * [searchLength], returning the resulting [HashTable].
+     * [searchLength], returning the resulting [Map].
      */
     private fun firstPhase(text: TokenizedSource, marked: MarkedTokens, searchLength: Int): Map<Int, Set<List<Token>>> {
         val hashTable: MutableMap<Int, MutableSet<List<Token>>> = mutableMapOf()
@@ -61,7 +61,7 @@ class RKRGreedyStringTiling(
 
     /**
      * Iterates the [pattern] looking for matches in [text] of length [searchLength].
-     * [HashTable] is used to skip sequence of tokens with different hash value.
+     * [Map] is used to skip sequence of tokens with different hash value.
      */
     private fun secondPhase(
         pattern: TokenizedSource,
