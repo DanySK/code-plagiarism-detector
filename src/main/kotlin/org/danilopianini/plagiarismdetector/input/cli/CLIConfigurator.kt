@@ -62,9 +62,7 @@ class CLIConfigurator(private val output: Output) : RunConfigurator {
             .getOrThrow()
         return url?.map { byLink(it, SupportedOptions.serviceBy(it)) }
             ?.toSet()
-            ?: criteria
-                ?.flatMap { byCriteria(it) }
-                ?.toSet()
+            ?: criteria?.flatMap { byCriteria(it) }?.toSet()
             ?: error("Neither url nor criteria are valued!")
     }
 
