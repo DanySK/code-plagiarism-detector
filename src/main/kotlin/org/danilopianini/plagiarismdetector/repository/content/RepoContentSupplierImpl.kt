@@ -28,7 +28,7 @@ class RepoContentSupplierImpl(
         FileUtils.listFiles(
             contentDirectory,
             RegexFileFilter(pattern.toPattern()),
-            DirectoryFileFilter.DIRECTORY
+            DirectoryFileFilter.DIRECTORY,
         ).asSequence()
     }.getOrElse { emptySequence() }
 }
