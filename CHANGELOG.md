@@ -1,3 +1,86 @@
+## [8.1.0](https://github.com/DanySK/code-plagiarism-detector/compare/8.0.8...8.1.0) (2023-09-16)
+
+
+### Features
+
+* add method do build a `Repository` from `URI` ([85325cb](https://github.com/DanySK/code-plagiarism-detector/commit/85325cb209685b39476c6ba9a67a539b527efcfa))
+
+
+### Dependency updates
+
+* **deps:** update dependency org.eclipse.jgit:org.eclipse.jgit to v6.6.1.202309021850-r ([f173d2e](https://github.com/DanySK/code-plagiarism-detector/commit/f173d2e2858fdacd079253e4d83d1d8cd74fb49a))
+* **deps:** update dependency org.eclipse.jgit:org.eclipse.jgit to v6.7.0.202309050840-r ([86d7ebd](https://github.com/DanySK/code-plagiarism-detector/commit/86d7ebd136b801e6393a5fef4c7764265996c6de))
+* **deps:** update dependency org.slf4j:slf4j-api to v2.0.9 ([01940d7](https://github.com/DanySK/code-plagiarism-detector/commit/01940d7acfbb733682542915fab63d4b62a84905))
+* **deps:** update dependency semantic-release-preconfigured-conventional-commits to v1.1.49 ([4e84562](https://github.com/DanySK/code-plagiarism-detector/commit/4e84562e67f9bde5e27dc9c9bd46a645f7e87036))
+* **deps:** update dependency semantic-release-preconfigured-conventional-commits to v1.1.50 ([da13409](https://github.com/DanySK/code-plagiarism-detector/commit/da13409633746e2e083d00fd08734f42246ecfea))
+* **deps:** update dependency semantic-release-preconfigured-conventional-commits to v1.1.51 ([58e3497](https://github.com/DanySK/code-plagiarism-detector/commit/58e34978731b0816cf287fc3009051d2f6adc063))
+* **deps:** update dependency semantic-release-preconfigured-conventional-commits to v1.1.52 ([a43cd10](https://github.com/DanySK/code-plagiarism-detector/commit/a43cd10ced40548c21c9913afc3dc18a50958a85))
+* **deps:** update dependency semantic-release-preconfigured-conventional-commits to v1.1.53 ([43ff9f3](https://github.com/DanySK/code-plagiarism-detector/commit/43ff9f3ccbd72925fc8e648361cf7df3905733e8))
+* **deps:** update dependency semantic-release-preconfigured-conventional-commits to v1.1.54 ([683b077](https://github.com/DanySK/code-plagiarism-detector/commit/683b0772ff6294200c13b7036d10bd3c9b8132b7))
+* **deps:** update dependency semantic-release-preconfigured-conventional-commits to v1.1.55 ([cff8cd7](https://github.com/DanySK/code-plagiarism-detector/commit/cff8cd7ceac7a0d34c71b6099b487a2ba5ba3e15))
+* **deps:** update kotest to v5.7.0 ([c31e629](https://github.com/DanySK/code-plagiarism-detector/commit/c31e629714f1c067a53274228bd13bdfc312fa23))
+* **deps:** update kotest to v5.7.1 ([4d3428d](https://github.com/DanySK/code-plagiarism-detector/commit/4d3428ded6648ae99dff11fef09a0711a52a0984))
+* **deps:** update kotest to v5.7.2 ([79b0358](https://github.com/DanySK/code-plagiarism-detector/commit/79b0358d7f17f54c21374acc4a272cdae73f2f3b))
+* **deps:** update plugin com.gradle.enterprise to v3.15 ([c9de30d](https://github.com/DanySK/code-plagiarism-detector/commit/c9de30db64b0adfa1f7c77ef6ae8cac77eb26721))
+* **deps:** update plugin kotlin-qa to v0.49.1 ([2859559](https://github.com/DanySK/code-plagiarism-detector/commit/28595599aa8d3af440e7ac12b83711017898a9d3))
+* **deps:** update plugin multijvmtesting to v0.5.5 ([9f86ab7](https://github.com/DanySK/code-plagiarism-detector/commit/9f86ab78ae4f78d5dae3d00c2d1f59eef8471625))
+* **deps:** update plugin org.danilopianini.gradle-pre-commit-git-hooks to v1.1.10 ([c4ef98d](https://github.com/DanySK/code-plagiarism-detector/commit/c4ef98d8a2667d928bce63ee99f7af3835a01cff))
+* **deps:** update plugin publishoncentral to v5.0.13 ([26c73bb](https://github.com/DanySK/code-plagiarism-detector/commit/26c73bb8773221d94d2ab7969c63182df59d934e))
+* **deps:** update plugin publishoncentral to v5.0.14 ([9270d16](https://github.com/DanySK/code-plagiarism-detector/commit/9270d16f36299d7f285f2651c1945201c2bcd6b3))
+
+
+### Documentation
+
+* fix unresolved symbol in `RKRGreedyStringTiling` ([15c647b](https://github.com/DanySK/code-plagiarism-detector/commit/15c647bc22af4860955c5fed31a5a9fec88241b3))
+
+
+### Performance improvements
+
+* do not use template strings in logger calls ([d99d1ea](https://github.com/DanySK/code-plagiarism-detector/commit/d99d1ea80037e632eb4753c66110f68999dffbd5))
+* make abstract class with no abstract method an open class ([f34634a](https://github.com/DanySK/code-plagiarism-detector/commit/f34634aa82dbfb83156a6147e352d02122d7b62d))
+
+
+### Build and continuous integration
+
+* **deps:** update actions/checkout action to v4 ([5c17a8b](https://github.com/DanySK/code-plagiarism-detector/commit/5c17a8bf99090f349d521eb4f906e59990dbcf07))
+* **deps:** update danysk/action-checkout action to v0.2.12 ([25e26eb](https://github.com/DanySK/code-plagiarism-detector/commit/25e26ebede399c2883296556838ef1689a160ac6))
+* **deps:** update danysk/build-check-deploy-gradle-action action to v2.2.9 ([cf961a6](https://github.com/DanySK/code-plagiarism-detector/commit/cf961a66b01ca0f06b0e8511e4356fbbc1663fc1))
+* import `TestLogEvent` ([a4042a8](https://github.com/DanySK/code-plagiarism-detector/commit/a4042a89346b075465a460697384a3f856578955))
+* remove call to deprecated `toLowerCase` ([d65678b](https://github.com/DanySK/code-plagiarism-detector/commit/d65678ba0dc75d418dc62b6ee4e5a9863b17a54d))
+
+
+### General maintenance
+
+* add missing import in `CLIConfigurator` ([f948630](https://github.com/DanySK/code-plagiarism-detector/commit/f94863051442f215f8c0053ef4aafe7af8fbdd15))
+
+
+### Style improvements
+
+* add several missing trailing commas ([5bcaa5f](https://github.com/DanySK/code-plagiarism-detector/commit/5bcaa5ffaca9d5b96be95c15b45756e283d93a3e))
+* add several missing trailing commas ([b23c0f8](https://github.com/DanySK/code-plagiarism-detector/commit/b23c0f8e72022aa625e0d872b6ec18ed395f0374))
+* add several missing trailing commas ([8b9ec25](https://github.com/DanySK/code-plagiarism-detector/commit/8b9ec255731872032575c386b2d08d374d9a2cb3))
+* avoid call to deprecated URL constructor in `ProviderCommandTest` ([b5e387b](https://github.com/DanySK/code-plagiarism-detector/commit/b5e387bda954aa0893bd7e092e4d33b2841e16c2))
+* avoid calling the deprecated `URL` constructor in `ProviderTest` ([c4b5e42](https://github.com/DanySK/code-plagiarism-detector/commit/c4b5e42d8419dc21f417b5a415915a03b859a4b0))
+* avoid variable name shadowing in `PlainFileExporter` ([8da320f](https://github.com/DanySK/code-plagiarism-detector/commit/8da320fbe1f94c4c69b8c849bf0e264b90b9f643))
+* avoid variable name shadowing in `ProviderCommand` ([edcf6bd](https://github.com/DanySK/code-plagiarism-detector/commit/edcf6bd854fbfe813ef09f8bf137075f7b0ce24a))
+* disable unsupported rule suppression ([484b797](https://github.com/DanySK/code-plagiarism-detector/commit/484b7979849acfc5a73c7f3e4fa02fc1010e7859))
+* improve indentation in `BitbucketProvider` ([1d97a3f](https://github.com/DanySK/code-plagiarism-detector/commit/1d97a3f5eaaf2774566af4c55173237d53feb857))
+* improve indentation in `CLIConfigurator` ([0989c7c](https://github.com/DanySK/code-plagiarism-detector/commit/0989c7cbfd9f1507b47309b3c6f4f4a37a604b97))
+* improve style in `ProviderCommandTest` ([ad6b907](https://github.com/DanySK/code-plagiarism-detector/commit/ad6b90753c3d6f7b0151a1d34b1641603b3aaa8e))
+* locally capture a variable to avoid null assertions in `ProviderCommand` ([405b066](https://github.com/DanySK/code-plagiarism-detector/commit/405b06687d24aa2ada4c4a03f3a259439a63480f))
+* sort imports and avoid call to deprecated `URL` constructor in `ProviderCommand` ([6039832](https://github.com/DanySK/code-plagiarism-detector/commit/60398326c33301cebc9e05b00a2a87f3dbfa80b2))
+* sort imports in `BitbucketProvider` ([683ee5e](https://github.com/DanySK/code-plagiarism-detector/commit/683ee5eec633435e1ea8bca735c4057e6b8e5f41))
+* sort imports in `CLIConfigurator` ([54d8a7c](https://github.com/DanySK/code-plagiarism-detector/commit/54d8a7ca129da182a9fda067ac5f8c94cb70102e))
+* sort imports in `GitHubProvider` ([4297ec1](https://github.com/DanySK/code-plagiarism-detector/commit/4297ec10367cea0c1a80881096ec59d1556ae45a))
+* sort imports in `SessionTest` ([f4c3e7a](https://github.com/DanySK/code-plagiarism-detector/commit/f4c3e7ab20d5107387dd71ab1e62d8ec0f0b1174))
+* sort imports in `TechniqueConfig` ([ed89485](https://github.com/DanySK/code-plagiarism-detector/commit/ed89485292dcc463cb8f5f6357e15dfa48d9cc3d))
+* sort imports in `TokenizationFacadeTest` and `TokenizationFacade` ([91c7ab4](https://github.com/DanySK/code-plagiarism-detector/commit/91c7ab42a4936107a46b89906b6e1ebad1a1e489))
+
+
+### Refactoring
+
+* make `SearchCriteria` a function ([f92dfda](https://github.com/DanySK/code-plagiarism-detector/commit/f92dfdadd2083ee9ce6e6e650e15f92d1805ccb2))
+
 ## [8.0.8](https://github.com/DanySK/code-plagiarism-detector/compare/8.0.7...8.0.8) (2023-08-31)
 
 
