@@ -13,7 +13,7 @@ import org.danilopianini.plagiarismdetector.input.cli.provider.ProviderCommand
 import org.danilopianini.plagiarismdetector.input.cli.provider.SubmissionProviderCommand
 import org.danilopianini.plagiarismdetector.provider.criteria.ByGitHubName
 import org.danilopianini.plagiarismdetector.provider.criteria.ByGitHubUser
-import java.net.URL
+import java.net.URI
 
 class ProviderCommandTest : FunSpec() {
 
@@ -43,8 +43,7 @@ class ProviderCommandTest : FunSpec() {
             val urlString = "https://test1.com"
             val args = listOf("--url", urlString)
             parsedCommands(args) {
-                it.url.shouldNotBeNull()
-                it.url!! shouldBe listOf(URL(urlString))
+                it.url.shouldNotBeNull() shouldBe listOf(URI(urlString).toURL())
                 it.criteria.shouldBeNull()
             }
         }
@@ -52,10 +51,9 @@ class ProviderCommandTest : FunSpec() {
         test("Testing provider commands with more than one url") {
             val urls = listOf("https://test1.com", "https://test2.com")
             val args = listOf("--url", urls.joinToString(","))
-            parsedCommands(args) {
-                it.url.shouldNotBeNull()
-                it.url!! shouldBe urls.map(::URL)
-                it.criteria.shouldBeNull()
+            parsedCommands(args) { argument ->
+                argument.url.shouldNotBeNull() shouldBe urls.map(::URI).map { it.toURL() }
+                argument.criteria.shouldBeNull()
             }
         }
 
@@ -63,9 +61,9 @@ class ProviderCommandTest : FunSpec() {
             val args = listOf("--service", "github:user1/repo1")
             parsedCommands(args) {
                 it.url.shouldBeNull()
-                it.criteria.shouldNotBeNull()
-                it.criteria!!.count() shouldBe 1
-                it.criteria!!.first().shouldBeTypeOf<ByGitHubName>()
+                val criteria = it.criteria.shouldNotBeNull()
+                criteria.count() shouldBe 1
+                criteria.first().shouldBeTypeOf<ByGitHubName>()
             }
         }
 
@@ -73,9 +71,9 @@ class ProviderCommandTest : FunSpec() {
             val args = listOf("--service", "github:danysk")
             parsedCommands(args) {
                 it.url.shouldBeNull()
-                it.criteria.shouldNotBeNull()
-                it.criteria!!.count() shouldBe 1
-                it.criteria!!.first().shouldBeTypeOf<ByGitHubUser>()
+                val criteria = it.criteria.shouldNotBeNull()
+                criteria.count() shouldBe 1
+                criteria.first().shouldBeTypeOf<ByGitHubUser>()
             }
         }
 
@@ -93,8 +91,7 @@ class ProviderCommandTest : FunSpec() {
             val args = listOf("--service", argsList.joinToString(separator = ","))
             parsedCommands(args) {
                 it.url.shouldBeNull()
-                it.criteria.shouldNotBeNull()
-                it.criteria!!.count() shouldBe (users.count() * repoNames.count() * services.count())
+                it.criteria.shouldNotBeNull().count() shouldBe (users.count() * repoNames.count() * services.count())
             }
         }
 
@@ -106,10 +103,8 @@ class ProviderCommandTest : FunSpec() {
                 "https://test.com",
             )
             parsedCommands(args) {
-                it.url.shouldNotBeNull()
-                it.url shouldBe listOf(URL("https://test.com"))
-                it.criteria.shouldNotBeNull()
-                it.criteria!!.count() shouldBe 1
+                it.url.shouldNotBeNull() shouldBe listOf(URI("https://test.com").toURL())
+                it.criteria.shouldNotBeNull().count() shouldBe 1
                 it.criteria!!.first().shouldBeTypeOf<ByGitHubName>()
             }
         }
