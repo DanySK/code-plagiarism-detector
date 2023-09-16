@@ -46,10 +46,11 @@ sealed class ProviderCommand(
      * Gets a [Sequence] of configured [SearchCriteria] to use to retrieve searched repos.
      */
     val criteria: Sequence<SearchCriteria<*, *>>? by lazy {
-        if (service != null) {
-            val services = service!!.map { it.substringBefore(":") }.map(SupportedOptions::serviceBy)
-            val owners = service!!.map { it.substringAfter(":").substringBefore("/") }
-            val repoNames = service!!.map { it.substringAfter("/", "") }
+        val boundService = service
+        if (boundService != null) {
+            val services = boundService.map { it.substringBefore(":") }.map(SupportedOptions::serviceBy)
+            val owners = boundService.map { it.substringAfter(":").substringBefore("/") }
+            val repoNames = boundService.map { it.substringAfter("/", "") }
             services.zip(owners)
                 .zip(repoNames) { a, b -> Triple(a.first, a.second, b) }
                 .map { byCriteria(it.first, it.second, it.third) }
