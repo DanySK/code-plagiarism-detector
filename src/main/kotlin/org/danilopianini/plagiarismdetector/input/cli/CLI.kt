@@ -21,7 +21,7 @@ import org.danilopianini.plagiarismdetector.output.Output
 class CLI(output: Output) : CliktCommand(
     help = HELP_MSG,
     printHelpOnEmptyArgs = true,
-    allowMultipleSubcommands = true
+    allowMultipleSubcommands = true,
 ) {
 
     /**
@@ -37,7 +37,7 @@ class CLI(output: Output) : CliktCommand(
      */
     val exporterType by option(help = OUTPUT_HELP_MSG)
         .groupChoice<ExporterConfig<Match>>(
-            PLAIN_TEXT_COMMAND to PlainFileExporterConfig(output)
+            PLAIN_TEXT_COMMAND to PlainFileExporterConfig(output),
         ).defaultByName(PLAIN_TEXT_COMMAND)
 
     /**

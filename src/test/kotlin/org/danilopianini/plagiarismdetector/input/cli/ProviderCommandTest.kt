@@ -103,7 +103,7 @@ class ProviderCommandTest : FunSpec() {
                 "--service",
                 "github:danysk/repo1",
                 "--url",
-                "https://test.com"
+                "https://test.com",
             )
             parsedCommands(args) {
                 it.url.shouldNotBeNull()

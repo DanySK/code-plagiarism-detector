@@ -42,7 +42,7 @@ class ProviderTest : FunSpec() {
         } else {
             githubProvider = GitHubProvider.connectWithToken(EnvironmentTokenSupplier(GH_AUTH_TOKEN_VAR))
             bitbucketProvider = BitbucketProvider.connectWithToken(
-                EnvironmentTokenSupplier(BB_AUTH_USER_VAR, BB_AUTH_TOKEN_VAR, separator = ":")
+                EnvironmentTokenSupplier(BB_AUTH_USER_VAR, BB_AUTH_TOKEN_VAR, separator = ":"),
             )
         }
 
@@ -65,15 +65,15 @@ class ProviderTest : FunSpec() {
             val repoName = "test-app-for-code-plagiarism-detector"
             var expectedRepoUrl = "$GH_URL_PREFIX/$TASSILUCA_USER/$repoName"
             testByExistingUrl(
-                githubProvider.byLink(URL(expectedRepoUrl)),
+                githubProvider.byLink(URI(expectedRepoUrl)),
                 repoName,
-                TASSILUCA_USER
+                TASSILUCA_USER,
             )
             expectedRepoUrl = "$BB_URL_PREFIX/$TASSILUCA_USER/$repoName"
             testByExistingUrl(
-                bitbucketProvider.byLink(URL(expectedRepoUrl)),
+                bitbucketProvider.byLink(URI(expectedRepoUrl)),
                 repoName,
-                TASSILUCA_USER
+                TASSILUCA_USER,
             )
         }
 
@@ -107,10 +107,10 @@ class ProviderTest : FunSpec() {
 
         test("Searching by a *non-existing* name should return an empty collection of repos") {
             githubProvider.byCriteria(
-                ByGitHubName("non-existing-repo", ByGitHubUser(DANYSK_USER))
+                ByGitHubName("non-existing-repo", ByGitHubUser(DANYSK_USER)),
             ).toSet().shouldBeEmpty()
             bitbucketProvider.byCriteria(
-                ByBitbucketName("non-existing-repo", ByBitbucketUser(DANYSK_USER))
+                ByBitbucketName("non-existing-repo", ByBitbucketUser(DANYSK_USER)),
             ).toSet().shouldBeEmpty()
         }
 
@@ -129,7 +129,7 @@ class ProviderTest : FunSpec() {
     private fun testByExistingName(
         result: Sequence<Repository>,
         expectedRepositoryName: String,
-        expectedUsername: String
+        expectedUsername: String,
     ) {
         result.toSet().shouldNotBeEmpty()
         result.forEach {
@@ -137,7 +137,7 @@ class ProviderTest : FunSpec() {
             it.owner shouldMatch expectedUsername
             it.cloneUrl.path shouldContain Regex(
                 "^/$expectedUsername/.*$expectedRepositoryName.*",
-                RegexOption.IGNORE_CASE
+                RegexOption.IGNORE_CASE,
             )
         }
     }

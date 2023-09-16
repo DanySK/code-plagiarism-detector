@@ -21,7 +21,7 @@ class ProjectsSimilarityEstimatorTest : FunSpec({
             mockk(),
             mockk(),
             emptySet<ComparisonResult<TokenMatch>>(),
-            0.0
+            0.0,
         )
         report.similarity shouldBeExactly 0.0
     }
@@ -35,7 +35,7 @@ class ProjectsSimilarityEstimatorTest : FunSpec({
                 TokenBasedComparisonResult(1.0, emptySet()),
                 TokenBasedComparisonResult(0.44, emptySet()),
                 TokenBasedComparisonResult(0.78, emptySet()),
-            )
+            ),
         )
         val weightCoefficient = reportedRatio * 1.5
         val percentileValue = 0.945

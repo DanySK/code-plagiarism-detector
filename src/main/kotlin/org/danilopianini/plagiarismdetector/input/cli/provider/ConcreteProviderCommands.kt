@@ -5,7 +5,7 @@ package org.danilopianini.plagiarismdetector.input.cli.provider
  */
 class SubmissionProviderCommand : ProviderCommand(
     name = "submission",
-    help = "Submission options."
+    help = "Submission options.",
 )
 
 /**
@@ -13,5 +13,5 @@ class SubmissionProviderCommand : ProviderCommand(
  */
 class CorpusProviderCommand : ProviderCommand(
     name = "corpus",
-    help = "Corpus Options."
+    help = "Corpus Options.",
 )

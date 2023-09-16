@@ -41,7 +41,7 @@ class FileKnowledgeBaseManager : KnowledgeBaseManager {
         val matching = FileUtils.listFiles(
             out,
             TrueFileFilter.INSTANCE,
-            NotFileFilter(NameFileFilter(SOURCE_FOLDER))
+            NotFileFilter(NameFileFilter(SOURCE_FOLDER)),
         )
         matching.forEach { FileUtils.deleteQuietly(it) }
     }
