@@ -1,13 +1,10 @@
 package org.danilopianini.plagiarismdetector.input.cli
 
 import com.github.ajalt.clikt.core.subcommands
-import org.danilopianini.plagiarismdetector.utils.BitBucket
-import org.danilopianini.plagiarismdetector.utils.GitHub
-import org.danilopianini.plagiarismdetector.utils.HostingService
 import org.danilopianini.plagiarismdetector.input.RunConfigurator
 import org.danilopianini.plagiarismdetector.input.SupportedOptions
-import org.danilopianini.plagiarismdetector.input.cli.provider.ProviderCommand
 import org.danilopianini.plagiarismdetector.input.cli.provider.CorpusProviderCommand
+import org.danilopianini.plagiarismdetector.input.cli.provider.ProviderCommand
 import org.danilopianini.plagiarismdetector.input.cli.provider.SubmissionProviderCommand
 import org.danilopianini.plagiarismdetector.input.configuration.RunConfiguration
 import org.danilopianini.plagiarismdetector.input.configuration.RunConfigurationImpl
@@ -17,8 +14,10 @@ import org.danilopianini.plagiarismdetector.provider.GitHubProvider
 import org.danilopianini.plagiarismdetector.provider.authentication.EnvironmentTokenSupplier
 import org.danilopianini.plagiarismdetector.provider.criteria.BitbucketSearchCriteria
 import org.danilopianini.plagiarismdetector.provider.criteria.GitHubSearchCriteria
-import org.danilopianini.plagiarismdetector.provider.criteria.SearchCriteria
 import org.danilopianini.plagiarismdetector.repository.Repository
+import org.danilopianini.plagiarismdetector.utils.BitBucket
+import org.danilopianini.plagiarismdetector.utils.GitHub
+import org.danilopianini.plagiarismdetector.utils.HostingService
 import java.net.URL
 import kotlin.system.exitProcess
 
