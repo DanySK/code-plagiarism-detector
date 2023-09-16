@@ -4,13 +4,13 @@ import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.ints.shouldBeExactly
 import io.mockk.every
 import io.mockk.mockk
-import java.net.URL
+import java.net.URI
 
 class RepositoryContentTest : FunSpec() {
 
     private val githubRepo = GitHubRepository(
         mockk {
-            every { htmlUrl } returns URL(GH_SAMPLE_REPO_URL)
+            every { htmlUrl } returns URI(GH_SAMPLE_REPO_URL).toURL()
             every { name } returns "test-github-repo-content"
         },
     )
