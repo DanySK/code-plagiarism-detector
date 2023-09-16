@@ -27,8 +27,8 @@ sealed class ProviderCommand(
 
     private val service by option(help = SERVICE_HELP_MSG)
         .split(",")
-        .validate {
-            it.forEach {
+        .validate { strings ->
+            strings.forEach {
                 require(it.contains(Regex("\\w+:\\w+(/.*)?"))) {
                     "$it is not compliant to `service-name:owner[/repo-name]` format."
                 }
