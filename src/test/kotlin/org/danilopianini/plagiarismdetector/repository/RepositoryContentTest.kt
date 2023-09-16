@@ -12,7 +12,7 @@ class RepositoryContentTest : FunSpec() {
         mockk {
             every { htmlUrl } returns URL(GH_SAMPLE_REPO_URL)
             every { name } returns "test-github-repo-content"
-        }
+        },
     )
     private val bitbucketRepo = BitbucketRepository(
         mockk {
@@ -25,7 +25,7 @@ class RepositoryContentTest : FunSpec() {
             every {
                 this@mockk.get(any()).toString()
             } returns "test-bitbucket-repo-content"
-        }
+        },
     )
 
     init {
