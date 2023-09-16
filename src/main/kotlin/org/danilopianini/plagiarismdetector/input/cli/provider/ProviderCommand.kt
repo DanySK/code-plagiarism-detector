@@ -6,15 +6,16 @@ import com.github.ajalt.clikt.parameters.options.convert
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.options.split
 import com.github.ajalt.clikt.parameters.options.validate
-import org.danilopianini.plagiarismdetector.utils.BitBucket
-import org.danilopianini.plagiarismdetector.utils.GitHub
-import org.danilopianini.plagiarismdetector.utils.HostingService
 import org.danilopianini.plagiarismdetector.input.SupportedOptions
 import org.danilopianini.plagiarismdetector.provider.criteria.ByBitbucketName
 import org.danilopianini.plagiarismdetector.provider.criteria.ByBitbucketUser
 import org.danilopianini.plagiarismdetector.provider.criteria.ByGitHubName
 import org.danilopianini.plagiarismdetector.provider.criteria.ByGitHubUser
 import org.danilopianini.plagiarismdetector.provider.criteria.SearchCriteria
+import org.danilopianini.plagiarismdetector.utils.BitBucket
+import org.danilopianini.plagiarismdetector.utils.GitHub
+import org.danilopianini.plagiarismdetector.utils.HostingService
+import java.net.URI
 import java.net.URL
 
 /**
@@ -39,7 +40,7 @@ sealed class ProviderCommand(
      * The repository [URL]s to use to retrieve searched repos.
      */
     val url: List<URL>? by option(help = URL_HELP_MSG)
-        .convert { URL(it) }
+        .convert { URI(it).toURL() }
         .split(",")
 
     /**
