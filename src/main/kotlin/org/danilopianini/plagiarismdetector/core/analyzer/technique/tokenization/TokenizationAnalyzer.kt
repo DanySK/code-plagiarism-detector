@@ -10,7 +10,7 @@ import java.io.File
 /**
  * An abstract [Analyzer] which executes source code tokenization.
  */
-abstract class TokenizationAnalyzer(
+open class TokenizationAnalyzer(
     private val pipeline: StepHandler<File, List<Token>>,
 ) : Analyzer<TokenizedSource, Sequence<Token>> {
 
