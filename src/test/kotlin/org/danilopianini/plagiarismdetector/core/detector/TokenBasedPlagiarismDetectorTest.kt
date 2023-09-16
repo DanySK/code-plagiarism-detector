@@ -83,6 +83,6 @@ class TokenBasedPlagiarismDetectorTest : FunSpec() {
         logger.info("> $strategyName")
         logger.info(">> Elapsed time: $elapsedTime ms")
         logger.info(">> Score of similarity: ${result.similarity}")
-        logger.debug(">> Matches: ${result.matches.map(TokenMatch::toString).forEach(logger::info)}")
+        logger.debug(">> Matches: {}", result.matches.map(TokenMatch::toString).forEach(logger::info))
     }
 }
