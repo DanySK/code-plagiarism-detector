@@ -50,17 +50,12 @@ class BitbucketProvider private constructor(
 
     override fun urlIsValid(url: URL): Boolean = url.host == BITBUCKET_HOST
 
-    override fun getRepoByUrl(url: URL): Repository {
-        return BitbucketRepository(
-            getResponses(BASE_URL.plus(url.path)).first()
-        )
-    }
+    override fun getRepoByUrl(url: URL): Repository = BitbucketRepository(getResponses(BASE_URL.plus(url.path)).first())
 
-    override fun byCriteria(criteria: BitbucketSearchCriteria): Sequence<Repository> {
-        return getResponses(criteria.apply(BASE_URL)).asSequence()
-            .flatMap { it.getJSONArray(VALUES_FIELD) }
-            .map { BitbucketRepository(JSONObject("$it")) }
-    }
+    override fun byCriteria(criteria: BitbucketSearchCriteria): Sequence<Repository> = getResponses(criteria(BASE_URL))
+        .asSequence()
+        .flatMap { it.getJSONArray(VALUES_FIELD) }
+        .map { BitbucketRepository(JSONObject("$it")) }
 
     private fun getResponses(url: String): Set<JSONObject> {
         val responses = mutableSetOf<JSONObject>()
