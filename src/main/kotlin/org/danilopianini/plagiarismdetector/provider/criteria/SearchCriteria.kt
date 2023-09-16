@@ -5,9 +5,4 @@ package org.danilopianini.plagiarismdetector.provider.criteria
  * @param I the subject type.
  * @param O the result type returned applying the criteria.
  */
-interface SearchCriteria<in I, out O> {
-    /**
-     * Apply the criteria.
-     */
-    fun apply(subject: I): O
-}
+interface SearchCriteria<in I, out O> : (I) -> O
