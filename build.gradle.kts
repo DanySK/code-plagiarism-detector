@@ -77,7 +77,7 @@ signing {
 publishOnCentral {
     projectLongName.set("Code Plagiarism Detector")
     projectDescription.set("A tool for scanning existing projects in search of potential signs of plagiarism")
-    repository("https://maven.pkg.github.com/danysk/${rootProject.name}".toLowerCase()) {
+    repository("https://maven.pkg.github.com/danysk/${rootProject.name}".lowercase()) {
         user.set("DanySK")
         password.set(System.getenv("GITHUB_TOKEN"))
     }
