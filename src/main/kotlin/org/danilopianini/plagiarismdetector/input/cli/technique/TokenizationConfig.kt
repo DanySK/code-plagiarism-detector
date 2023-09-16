@@ -34,7 +34,7 @@ class TokenizationConfig : TechniqueConfig<TokenMatch>(TOKENIZATION_NAME) {
                 language = language,
                 minimumTokens = minimumTokens,
                 filterThreshold = filterThreshold,
-            )
+            ),
         )
     }
 

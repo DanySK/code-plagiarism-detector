@@ -14,5 +14,5 @@ data class RunConfigurationImpl<M : Match>(
     override val submission: Set<Repository>,
     override val corpus: Set<Repository>,
     override val filesToExclude: Set<String>,
-    override val exporter: ReportsExporter<M>
+    override val exporter: ReportsExporter<M>,
 ) : RunConfiguration<M>

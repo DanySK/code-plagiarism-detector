@@ -55,11 +55,11 @@ class TokenBasedPlagiarismDetectorTest : FunSpec() {
     private fun runDetection(files: Pair<File, File>, printStats: Boolean = false) {
         val (GSTElapsedTime, GSTResult) = detect(
             TokenBasedPlagiarismDetector(GreedyStringTiling(DEFAULT_MIN_TOKEN_LEN)),
-            files
+            files,
         )
         val (RKRElapsedTime, RKRResult) = detect(
             TokenBasedPlagiarismDetector(RKRGreedyStringTiling(DEFAULT_MIN_TOKEN_LEN)),
-            files
+            files,
         )
         if (printStats) {
             printStats("Greedy String Tiling", GSTElapsedTime, GSTResult)

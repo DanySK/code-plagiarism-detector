@@ -29,5 +29,5 @@ interface TokenizationConfiguration {
 class TokenizationConfigurationImpl(
     override val language: Language,
     override val minimumTokens: Int,
-    override val filterThreshold: Double?
+    override val filterThreshold: Double?,
 ) : TokenizationConfiguration

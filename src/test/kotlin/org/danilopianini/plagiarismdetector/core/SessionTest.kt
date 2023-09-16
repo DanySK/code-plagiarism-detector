@@ -36,7 +36,7 @@ class SessionTest : FunSpec() {
                 setOf(repo),
                 emptySet(),
                 emptySet(),
-                PlainFileExporter(temporaryDirectory.toPath(), output)
+                PlainFileExporter(temporaryDirectory.toPath(), output),
             )
             AntiPlagiarismSessionImpl(configuration, output)()
             temporaryDirectory shouldContainNFiles 0
@@ -46,7 +46,7 @@ class SessionTest : FunSpec() {
             val tokenizationConfigs = TokenizationConfigurationImpl(
                 language = Java,
                 filterThreshold = null,
-                minimumTokens = 15
+                minimumTokens = 15,
             )
             val submission = setOf<Repository>(
                 spyk {
@@ -54,23 +54,23 @@ class SessionTest : FunSpec() {
                     every { getSources(any()) } returns loadFiles(
                         "CaveGenerator.java",
                         "EditorBoard.java",
-                        "TestAnalyzer.java"
+                        "TestAnalyzer.java",
                     )
                 },
                 spyk {
                     every { name } returns "test-submission-2"
                     every { getSources(any()) } returns loadFiles(
                         "ValidatorTest.java",
-                        "TestAnalyzer.java"
+                        "TestAnalyzer.java",
                     )
-                }
+                },
             )
             val corpus = setOf<Repository>(
                 spyk {
                     every { name } returns "test-corpus-1"
                     every { getSources(any()) } returns loadFiles(
                         "CaveGeneratorImpl.java",
-                        "PlayerImplTest.java"
+                        "PlayerImplTest.java",
                     )
                 },
                 spyk {
@@ -78,9 +78,9 @@ class SessionTest : FunSpec() {
                     every { getSources(any()) } returns loadFiles(
                         "InventoryControllerImpl.java",
                         "StandardLevelIncreaseStrategyTest.java",
-                        "ValidatorTest.java"
+                        "ValidatorTest.java",
                     )
-                }
+                },
             )
             val temporaryDirectory = tempdir()
             val configuration = RunConfigurationImpl(
@@ -89,7 +89,7 @@ class SessionTest : FunSpec() {
                 submission,
                 corpus,
                 emptySet(),
-                PlainFileExporter(temporaryDirectory.toPath(), output)
+                PlainFileExporter(temporaryDirectory.toPath(), output),
             )
             AntiPlagiarismSessionImpl(configuration, output)()
             temporaryDirectory shouldContainNFiles 2
