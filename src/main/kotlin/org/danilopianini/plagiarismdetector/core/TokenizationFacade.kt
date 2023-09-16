@@ -1,6 +1,5 @@
 package org.danilopianini.plagiarismdetector.core
 
-import org.danilopianini.plagiarismdetector.utils.Java
 import org.danilopianini.plagiarismdetector.core.analyzer.representation.SourceRepresentation
 import org.danilopianini.plagiarismdetector.core.analyzer.representation.TokenizedSource
 import org.danilopianini.plagiarismdetector.core.analyzer.technique.tokenization.java.JavaTokenizationAnalyzer
@@ -11,6 +10,7 @@ import org.danilopianini.plagiarismdetector.core.filter.RepresentationFilter
 import org.danilopianini.plagiarismdetector.core.filter.technique.tokenization.TokenizedSourceFilter
 import org.danilopianini.plagiarismdetector.input.configuration.TokenizationConfiguration
 import org.danilopianini.plagiarismdetector.repository.Repository
+import org.danilopianini.plagiarismdetector.utils.Java
 import org.slf4j.LoggerFactory
 import kotlin.math.max
 
