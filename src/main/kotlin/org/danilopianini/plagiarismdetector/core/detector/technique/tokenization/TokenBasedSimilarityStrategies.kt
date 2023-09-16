@@ -23,7 +23,7 @@ class MaxSimilarityEstimator : TokenizedSourceSimilarityEstimator {
         matches: Set<TokenMatch>,
     ): Double = matches.sumOf { it.length }.toDouble() / min(
         representations.first.representation.count(),
-        representations.second.representation.count()
+        representations.second.representation.count(),
     )
 }
 
@@ -43,7 +43,7 @@ class PenalizedMaxSimilarityEstimator : TokenizedSourceSimilarityEstimator {
         val matchedSubsequences = if (matches.isEmpty()) 0 else matches.count() - 1
         return (matchedTokens - matchedSubsequences).toDouble() / min(
             representations.first.representation.count(),
-            representations.second.representation.count()
+            representations.second.representation.count(),
         )
     }
 }

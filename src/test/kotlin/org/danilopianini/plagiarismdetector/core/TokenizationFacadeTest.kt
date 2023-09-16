@@ -18,8 +18,8 @@ class TokenizationFacadeTest : FunSpec() {
             TokenizationConfigurationImpl(
                 language = Java,
                 filterThreshold = null,
-                minimumTokens = 15
-            )
+                minimumTokens = 15,
+            ),
         )
 
         test("Testing file exclusion from detection process") {
@@ -35,7 +35,7 @@ class TokenizationFacadeTest : FunSpec() {
                 submittedProject,
                 comparedProject,
                 setOf("EditorBoard.java"),
-                0.3
+                0.3,
             )
             result.submittedProject shouldBe submittedProject
             result.comparedProject shouldBe comparedProject

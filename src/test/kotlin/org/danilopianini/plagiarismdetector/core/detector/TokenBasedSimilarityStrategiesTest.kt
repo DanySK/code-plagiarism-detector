@@ -22,7 +22,7 @@ class TokenBasedSimilarityStrategiesTest : FunSpec() {
                 TokenImpl(0, 1, TokenTypeImpl("B", emptySet())),
                 TokenImpl(0, 2, TokenTypeImpl("C", emptySet())),
                 TokenImpl(0, 3, TokenTypeImpl("E", emptySet())),
-            )
+            ),
         ),
         TokenizedSourceImpl(
             mockk(),
@@ -33,12 +33,12 @@ class TokenBasedSimilarityStrategiesTest : FunSpec() {
                 TokenImpl(1, 3, TokenTypeImpl("C", emptySet())),
                 TokenImpl(1, 4, TokenTypeImpl("E", emptySet())),
                 TokenImpl(1, 5, TokenTypeImpl("D", emptySet())),
-            )
-        )
+            ),
+        ),
     )
     private val matches = setOf(
         TokenMatchImpl(mockk(), mockk(), 2),
-        TokenMatchImpl(mockk(), mockk(), 2)
+        TokenMatchImpl(mockk(), mockk(), 2),
     )
 
     init {

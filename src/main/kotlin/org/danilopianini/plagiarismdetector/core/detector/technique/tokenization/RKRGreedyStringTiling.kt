@@ -185,7 +185,7 @@ class RKRGreedyStringTiling(
             TokenMatchImpl(
                 Pair(match.pattern.first, match.pattern.second.subList(fromIndex, toIndex)),
                 Pair(match.text.first, match.text.second.subList(fromIndex, toIndex)),
-                toIndex - fromIndex
+                toIndex - fromIndex,
             )
         }
 }

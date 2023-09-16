@@ -24,7 +24,7 @@ class TokenizationAnalyzerTest : FunSpec() {
                         System.out.println("Hello World")   // This line does not end with semicolon!
                     }
                 }
-                """.trimIndent()
+                """.trimIndent(),
             )
             JavaParser()(sourceFileWithError)
         }
@@ -36,7 +36,7 @@ class TokenizationAnalyzerTest : FunSpec() {
             result.forEach {
                 it.line shouldBeInRange IntRange(
                     FIRST_LINE_CLASS,
-                    LAST_LINE_CLASS_WITHOUT_EQUALS_AND_HASHCODE
+                    LAST_LINE_CLASS_WITHOUT_EQUALS_AND_HASHCODE,
                 )
             }
         }

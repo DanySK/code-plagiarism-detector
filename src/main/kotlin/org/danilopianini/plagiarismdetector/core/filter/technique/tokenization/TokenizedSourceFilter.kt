@@ -12,14 +12,14 @@ import kotlin.math.sqrt
  * A [RepresentationFilter] for [TokenizedSource].
  */
 class TokenizedSourceFilter(
-    private val threshold: Double
+    private val threshold: Double,
 ) : RepresentationFilter<TokenizedSource, Sequence<Token>> {
 
     private val indexer = TokenBasedIndexer()
 
     override operator fun invoke(
         submission: TokenizedSource,
-        corpus: Sequence<TokenizedSource>
+        corpus: Sequence<TokenizedSource>,
     ): Sequence<TokenizedSource> {
         val similarities = corpus
             .associateWith(indexer)
@@ -34,7 +34,7 @@ class TokenizedSourceFilter(
 
     private fun cosineSimilarityOf(index1: Map<TokenType, Int>, index2: Map<TokenType, Int>): Double =
         index1.keys.sumOf { index2[it]?.times(index1[it] ?: 0) ?: 0 }.div(
-            index1.values.norm() * index2.values.norm()
+            index1.values.norm() * index2.values.norm(),
         )
 
     private fun Collection<Int>.norm(): Double = sqrt(this.sumOf { it.squared() })

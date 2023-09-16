@@ -23,8 +23,8 @@ class TokenizedSourceFilterTest : FunSpec({
                 TokenImpl(0, 4, TokenTypeImpl("unary-expr", emptySet())),
                 TokenImpl(0, 5, TokenTypeImpl("name-expr", emptySet())),
                 TokenImpl(0, 6, TokenTypeImpl("block-stmt", emptySet())),
-                TokenImpl(0, 7, TokenTypeImpl("literal-expr", emptySet()))
-            )
+                TokenImpl(0, 7, TokenTypeImpl("literal-expr", emptySet())),
+            ),
         )
         val expectedResult = TokenizedSourceImpl(
             mockk(),
@@ -33,8 +33,8 @@ class TokenizedSourceFilterTest : FunSpec({
                 TokenImpl(2, 1, TokenTypeImpl("unary-expr", emptySet())),
                 TokenImpl(2, 2, TokenTypeImpl("name-expr", emptySet())),
                 TokenImpl(2, 3, TokenTypeImpl("block-stmt", emptySet())),
-                TokenImpl(2, 4, TokenTypeImpl("literal-expr", emptySet()))
-            )
+                TokenImpl(2, 4, TokenTypeImpl("literal-expr", emptySet())),
+            ),
         )
         val corpus = sequenceOf(
             TokenizedSourceImpl(
@@ -46,10 +46,10 @@ class TokenizedSourceFilterTest : FunSpec({
                     TokenImpl(1, 3, TokenTypeImpl("literal-expr", emptySet())),
                     TokenImpl(1, 4, TokenTypeImpl("unary-expr", emptySet())),
                     TokenImpl(1, 5, TokenTypeImpl("literal-expr", emptySet())),
-                    TokenImpl(1, 6, TokenTypeImpl("binary-expr", emptySet()))
-                )
+                    TokenImpl(1, 6, TokenTypeImpl("binary-expr", emptySet())),
+                ),
             ),
-            expectedResult
+            expectedResult,
         )
         TokenizedSourceFilter(threshold)(submission, corpus).toList() shouldBe listOf(expectedResult)
     }

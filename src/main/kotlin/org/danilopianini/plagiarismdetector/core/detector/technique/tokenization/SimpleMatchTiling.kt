@@ -9,7 +9,7 @@ import org.danilopianini.plagiarismdetector.core.detector.ComparisonStrategy
  * The algorithm finds matches larger than [minimumMatchLength].
  */
 class SimpleMatchTiling(
-    val minimumMatchLength: Int
+    val minimumMatchLength: Int,
 ) : ComparisonStrategy<TokenizedSource, Sequence<Token>, TokenMatch> {
 
     private data class Match(val patternOffset: Int, val textOffset: Int, val size: Int)
@@ -74,7 +74,7 @@ class SimpleMatchTiling(
             TokenMatchImpl(
                 patternPair.first to pattern.subList(it.patternOffset, it.patternOffset + it.size),
                 textPair.first to text.subList(it.textOffset, it.textOffset + it.size),
-                it.size
+                it.size,
             )
         }.toSet()
     }

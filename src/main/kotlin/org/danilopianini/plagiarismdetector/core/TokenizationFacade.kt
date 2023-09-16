@@ -32,7 +32,7 @@ class TokenizationFacade(private val configs: TokenizationConfiguration) : Techn
         submittedRepository: Repository,
         comparedRepository: Repository,
         filesToExclude: Set<String>,
-        minDuplicatedPercentage: Double
+        minDuplicatedPercentage: Double,
     ): Report<TokenMatch> {
         logger.debug("Comparing ${submittedRepository.name} with ${comparedRepository.name}")
         val submittedAnalyzed = analyze(submittedRepository, filesToExclude)
@@ -59,7 +59,7 @@ class TokenizationFacade(private val configs: TokenizationConfiguration) : Techn
     private fun compare(
         analyzedSubmission: Sequence<TokenizedSource>,
         analyzedCorpus: Sequence<TokenizedSource>,
-        minDuplicatedPercentage: Double
+        minDuplicatedPercentage: Double,
     ): Set<ComparisonResult<TokenMatch>> = analyzedSubmission
         .flatMap { s -> filter(s, analyzedCorpus).map { c -> detector(Pair(s, c)) } }
         .filter { it.similarity > minDuplicatedPercentage }
@@ -73,13 +73,13 @@ class TokenizationFacade(private val configs: TokenizationConfiguration) : Techn
     private fun reportedRatio(
         results: Set<ComparisonResult<TokenMatch>>,
         submittedAnalyzed: Sequence<TokenizedSource>,
-        corpusAnalyzed: Sequence<TokenizedSource>
+        corpusAnalyzed: Sequence<TokenizedSource>,
     ): Double {
         val reportedCorpus = countReportedSourcesOf(results, corpusAnalyzed)
         val reportedSubmission = countReportedSourcesOf(results, submittedAnalyzed)
         return max(
             reportedSubmission.toDouble() / submittedAnalyzed.count().toDouble(),
-            reportedCorpus.toDouble() / corpusAnalyzed.count().toDouble()
+            reportedCorpus.toDouble() / corpusAnalyzed.count().toDouble(),
         )
     }
 
@@ -88,7 +88,7 @@ class TokenizationFacade(private val configs: TokenizationConfiguration) : Techn
      */
     private fun countReportedSourcesOf(
         results: Set<ComparisonResult<TokenMatch>>,
-        representations: Sequence<TokenizedSource>
+        representations: Sequence<TokenizedSource>,
     ): Int = results.flatMap { it.matches }
         .flatMap { sequenceOf(it.pattern.first.sourceFile, it.text.first.sourceFile) }
         .distinctBy { it.path }
