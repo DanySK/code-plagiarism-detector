@@ -14,6 +14,7 @@ import org.danilopianini.plagiarismdetector.provider.GitHubProvider
 import org.danilopianini.plagiarismdetector.provider.authentication.EnvironmentTokenSupplier
 import org.danilopianini.plagiarismdetector.provider.criteria.BitbucketSearchCriteria
 import org.danilopianini.plagiarismdetector.provider.criteria.GitHubSearchCriteria
+import org.danilopianini.plagiarismdetector.provider.criteria.SearchCriteria
 import org.danilopianini.plagiarismdetector.repository.Repository
 import org.danilopianini.plagiarismdetector.utils.BitBucket
 import org.danilopianini.plagiarismdetector.utils.GitHub
