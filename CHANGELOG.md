@@ -1,3 +1,18 @@
+## [8.1.3](https://github.com/DanySK/code-plagiarism-detector/compare/8.1.2...8.1.3) (2023-10-31)
+
+
+### Dependency updates
+
+* **deps:** update dependency com.github.ajalt.clikt:clikt to v4 ([b44107d](https://github.com/DanySK/code-plagiarism-detector/commit/b44107d7fa056c2c2a9b0c04ca378e3fb63f1fce))
+* **deps:** update plugin gitsemver to v2.0.1 ([8ea6fbb](https://github.com/DanySK/code-plagiarism-detector/commit/8ea6fbb5f820f12ad440f504d004e7e2e533f41c))
+* **deps:** update plugin kotlin-qa to v0.53.0 ([9f580c4](https://github.com/DanySK/code-plagiarism-detector/commit/9f580c4b4c6950407ecedaadd73485f674bf91c4))
+* **deps:** update plugin org.danilopianini.gradle-pre-commit-git-hooks to v1.1.14 ([cfda674](https://github.com/DanySK/code-plagiarism-detector/commit/cfda67423cca42697f7757a5e4bb38ca39c391ec))
+
+
+### Bug Fixes
+
+* **cli:** exit returning 1 on missing both `url` and `criteria` ([8e4407d](https://github.com/DanySK/code-plagiarism-detector/commit/8e4407d29cdfb777c49e1c583a02ac3400f5c5b3))
+
 ## [8.1.2](https://github.com/DanySK/code-plagiarism-detector/compare/8.1.1...8.1.2) (2023-10-30)
 
 
