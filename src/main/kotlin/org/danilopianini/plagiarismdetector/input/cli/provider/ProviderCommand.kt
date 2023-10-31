@@ -71,7 +71,8 @@ sealed class ProviderCommand(
         if (url == null && service == null) {
             throw PrintMessage(
                 message = "At least one between `url` and `criteria` must be valued in `$commandName` command.",
-                error = true,
+                statusCode = 1,
+                printError = true,
             )
         }
     }
