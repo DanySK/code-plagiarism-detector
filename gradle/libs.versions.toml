@@ -1,6 +1,6 @@
 [versions]
 kotest = "5.8.0"
-kotlin = "1.9.21"
+kotlin = "1.9.22"
 mockito = "5.8.0"
 logback = "1.4.14"
 
