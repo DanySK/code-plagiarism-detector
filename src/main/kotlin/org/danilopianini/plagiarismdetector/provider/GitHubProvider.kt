@@ -52,8 +52,10 @@ class GitHubProvider private constructor(
         try {
             return getMatchingReposByCriteria(criteria)
         } catch (e: HttpException) {
-            check(e.responseCode != UNAUTHORIZED_CODE) { "Unauthorized: $e" }
-            error("Error while searching repos matching the given criteria. $e")
+            check(e.responseCode != UNAUTHORIZED_CODE) {
+                "Unauthorized access to ${e.url} with criteria $criteria: $e"
+            }
+            error("Error accessing ${e.url} when matching criteria $criteria. $e")
         }
     }
 
