@@ -1,3 +1,31 @@
+## [8.1.7](https://github.com/DanySK/code-plagiarism-detector/compare/8.1.6...8.1.7) (2024-03-04)
+
+
+### Dependency updates
+
+* **deps:** update dependency ch.qos.logback:logback-core to v1.5.1 ([13e93c6](https://github.com/DanySK/code-plagiarism-detector/commit/13e93c644137977c1e3de532266e32c2134df9da))
+* **deps:** update dependency io.mockk:mockk to v1.13.10 ([135063b](https://github.com/DanySK/code-plagiarism-detector/commit/135063b8db11f81c79ddd001e91018e721c14ceb))
+* **deps:** update dependency org.json:json to v20240303 ([277af81](https://github.com/DanySK/code-plagiarism-detector/commit/277af813ccd377319cc83ccda3ea05a9d7b03f7d))
+* **deps:** update dependency org.kohsuke:github-api to v1.319 ([576f1df](https://github.com/DanySK/code-plagiarism-detector/commit/576f1dff0d543d0519ac389f2cb70f343cc74093))
+* **deps:** update dependency org.mockito:mockito-core to v5.11.0 ([102413c](https://github.com/DanySK/code-plagiarism-detector/commit/102413c41e2987abb60864197c0e157df9273ac3))
+* **deps:** update logback to v1.5.2 ([01bee5c](https://github.com/DanySK/code-plagiarism-detector/commit/01bee5cfd343a836e11c166603e654c20f47166e))
+* **deps:** update logback to v1.5.3 ([9445f50](https://github.com/DanySK/code-plagiarism-detector/commit/9445f505b5bf76081d9894e2368e4ba169bc004f))
+* **deps:** update plugin gitsemver to v3.1.2 ([e913119](https://github.com/DanySK/code-plagiarism-detector/commit/e91311903d86bd205f5b57fc7684bbd540d073ac))
+* **deps:** update plugin org.danilopianini.gradle-pre-commit-git-hooks to v2.0.2 ([cd5478e](https://github.com/DanySK/code-plagiarism-detector/commit/cd5478ec8cca427b03159b88bbe0215cc6d784a9))
+
+
+### Documentation
+
+* **deps:** update plugin dokka to v1.9.20 ([7c01d07](https://github.com/DanySK/code-plagiarism-detector/commit/7c01d07537e4cfd764718f47d535be42d6cea084))
+
+
+### Build and continuous integration
+
+* **deps:** update danysk/build-check-deploy-gradle-action action to v2.4.3 ([f9aa26c](https://github.com/DanySK/code-plagiarism-detector/commit/f9aa26c9476c3616c0e38ccf35bac52dbf01c0ca))
+* **deps:** update danysk/build-check-deploy-gradle-action action to v2.4.4 ([f1a2e59](https://github.com/DanySK/code-plagiarism-detector/commit/f1a2e59162ce9e626c57321d05b02caf19aadd9d))
+* **deps:** update danysk/build-check-deploy-gradle-action action to v2.4.5 ([9f32a12](https://github.com/DanySK/code-plagiarism-detector/commit/9f32a12a97fca91de73d526f9f3406e758d17dfc))
+* **deps:** update danysk/build-check-deploy-gradle-action action to v2.4.6 ([90991ca](https://github.com/DanySK/code-plagiarism-detector/commit/90991cad16830e263cdf1dec834e24ee3f312f29))
+
 ## [8.1.6](https://github.com/DanySK/code-plagiarism-detector/compare/8.1.5...8.1.6) (2024-02-19)
 
 
