@@ -1,6 +1,7 @@
 package org.danilopianini.plagiarismdetector.core.analyzer.technique.tokenization
 
 import com.charleskorn.kaml.Yaml
+import com.charleskorn.kaml.decodeFromStream
 import kotlinx.serialization.builtins.SetSerializer
 import org.danilopianini.plagiarismdetector.core.analyzer.representation.token.LanguageTokenTypes
 import org.danilopianini.plagiarismdetector.core.analyzer.representation.token.LanguageTokenTypesImpl
