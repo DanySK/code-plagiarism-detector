@@ -19,7 +19,7 @@ org-eclipse-jgit = "org.eclipse.jgit:org.eclipse.jgit:6.9.0.202403050737-r"
 commons-io = "commons-io:commons-io:2.16.1"
 javaparser-core = "com.github.javaparser:javaparser-core:3.25.10"
 commons-math = "org.apache.commons:commons-math3:3.6.1"
-slf4j-api = "org.slf4j:slf4j-api:2.0.12"
+slf4j-api = "org.slf4j:slf4j-api:2.0.13"
 logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
 logback-core = { module = "ch.qos.logback:logback-core", version.ref = "logback" }
 mockk = "io.mockk:mockk:1.13.10"
