@@ -1,3 +1,59 @@
+## [8.1.9](https://github.com/DanySK/code-plagiarism-detector/compare/8.1.8...8.1.9) (2024-05-07)
+
+
+### Dependency updates
+
+* **core-deps:** update kotlin monorepo to v1.9.24 ([d64b15e](https://github.com/DanySK/code-plagiarism-detector/commit/d64b15e0907f9a6dac3a426382a420a0d5eb5c5f))
+* **deps:** update dependency com.charleskorn.kaml:kaml to v0.58.0 ([f002d2c](https://github.com/DanySK/code-plagiarism-detector/commit/f002d2c081e3a6fe6d7e6682a0cc84521d48e565))
+* **deps:** update dependency com.charleskorn.kaml:kaml to v0.59.0 ([e09b8da](https://github.com/DanySK/code-plagiarism-detector/commit/e09b8da971cf8bf4f21605513d1b9e466755be8c))
+* **deps:** update dependency com.github.ajalt.clikt:clikt to v4.3.0 ([59f3376](https://github.com/DanySK/code-plagiarism-detector/commit/59f3376d95846bfeec49c6422a329712169b2a27))
+* **deps:** update dependency com.github.ajalt.clikt:clikt to v4.4.0 ([32e1c36](https://github.com/DanySK/code-plagiarism-detector/commit/32e1c3640ab31b23fd076568707ba5b953000b41))
+* **deps:** update dependency com.github.javaparser:javaparser-core to v3.25.10 ([943a2ab](https://github.com/DanySK/code-plagiarism-detector/commit/943a2ab295482239ec9aa66783a79d4d442986a2))
+* **deps:** update dependency commons-io:commons-io to v2.16.0 ([baa634f](https://github.com/DanySK/code-plagiarism-detector/commit/baa634f506a81cb1912a0410efb0589f11f9040f))
+* **deps:** update dependency commons-io:commons-io to v2.16.1 ([6dd6fa6](https://github.com/DanySK/code-plagiarism-detector/commit/6dd6fa6abde2d3438b83e44164e81ec62a72412f))
+* **deps:** update dependency gradle to v8.7 ([ecd30f4](https://github.com/DanySK/code-plagiarism-detector/commit/ecd30f42a6b47929496155836b609acd5be4b802))
+* **deps:** update dependency me.tongfei:progressbar to v0.10.1 ([3cf7aa3](https://github.com/DanySK/code-plagiarism-detector/commit/3cf7aa37905e212e441a22107c5681adbb5a2d1c))
+* **deps:** update dependency org.eclipse.jgit:org.eclipse.jgit to v6.9.0.202403050737-r ([87a5b47](https://github.com/DanySK/code-plagiarism-detector/commit/87a5b479f155281b6f694b86a3b8aa5b9346c8fe))
+* **deps:** update dependency org.kohsuke:github-api to v1.320 ([540154c](https://github.com/DanySK/code-plagiarism-detector/commit/540154c18eb6423cd0a2256c1e1d377a98a19b0e))
+* **deps:** update dependency org.kohsuke:github-api to v1.321 ([2bf5531](https://github.com/DanySK/code-plagiarism-detector/commit/2bf5531dba2c835f96efd2bb73528791e028e8fd))
+* **deps:** update dependency org.slf4j:slf4j-api to v2.0.13 ([7f4f0a5](https://github.com/DanySK/code-plagiarism-detector/commit/7f4f0a549921c6d2aeba966ac113bed0a1b3e9df))
+* **deps:** update kotest to v5.8.1 ([3cfaab9](https://github.com/DanySK/code-plagiarism-detector/commit/3cfaab935e293fe5a2bb62eeeccaef7271af9d78))
+* **deps:** update logback to v1.5.4 ([5279475](https://github.com/DanySK/code-plagiarism-detector/commit/5279475b91fcb45134bc9b393a1184ac51338527))
+* **deps:** update logback to v1.5.5 ([577d663](https://github.com/DanySK/code-plagiarism-detector/commit/577d663706288fc4005a3c16a54f980ac5956df6))
+* **deps:** update logback to v1.5.6 ([c702735](https://github.com/DanySK/code-plagiarism-detector/commit/c7027356372c545ab79243c4ca8049c19aff6732))
+* **deps:** update node.js to 20.12 ([e0525a9](https://github.com/DanySK/code-plagiarism-detector/commit/e0525a962ef08b7a1d89560950645a93d260b8d2))
+* **deps:** update plugin com.gradle.enterprise to v3.17 ([966aadb](https://github.com/DanySK/code-plagiarism-detector/commit/966aadb5f16a4c213d65c192561aa338aed0da3f))
+* **deps:** update plugin com.gradle.enterprise to v3.17.1 ([f2e94a6](https://github.com/DanySK/code-plagiarism-detector/commit/f2e94a64a274a8ceab16e73aeeb4801087919956))
+* **deps:** update plugin com.gradle.enterprise to v3.17.2 ([8e6af5d](https://github.com/DanySK/code-plagiarism-detector/commit/8e6af5dceadebe16ff3eca61f44b5a827bf38c89))
+* **deps:** update plugin gitsemver to v3.1.3 ([5d09a5d](https://github.com/DanySK/code-plagiarism-detector/commit/5d09a5dc3f2b772c87552116fa3ece8a474489c9))
+* **deps:** update plugin gitsemver to v3.1.4 ([caebf9c](https://github.com/DanySK/code-plagiarism-detector/commit/caebf9c1f1d3df7ebba428a5c69b5ce26eba9429))
+* **deps:** update plugin kotlin-qa to v0.60.4 ([8fe13d0](https://github.com/DanySK/code-plagiarism-detector/commit/8fe13d00335fd3e1d4fd539f6bd48bec59c0558f))
+* **deps:** update plugin kotlin-qa to v0.61.0 ([a74dac1](https://github.com/DanySK/code-plagiarism-detector/commit/a74dac1a50189e545e79e01a84bb9a19bcc3e2a7))
+* **deps:** update plugin org.danilopianini.gradle-pre-commit-git-hooks to v2.0.4 ([fe88a82](https://github.com/DanySK/code-plagiarism-detector/commit/fe88a82abebd1773fb3dc1ea621b3abaa61709a6))
+* **deps:** update plugin publishoncentral to v5.0.26 ([7470c7b](https://github.com/DanySK/code-plagiarism-detector/commit/7470c7b422e87ee9e41cd6ff73100128e003610a))
+* **deps:** update plugin publishoncentral to v5.1.0 ([2e6384e](https://github.com/DanySK/code-plagiarism-detector/commit/2e6384e190ed12cb725679f076a27ff265e9b788))
+* **deps:** update plugin tasktree to v3 ([c1d1696](https://github.com/DanySK/code-plagiarism-detector/commit/c1d1696da3f5435500f5c90730847eba102c917c))
+
+
+### Build and continuous integration
+
+* **deps:** update actions/checkout action to v4.1.3 ([fe5363d](https://github.com/DanySK/code-plagiarism-detector/commit/fe5363d814445e1adde3553f0ad6feaf77189b48))
+* **deps:** update actions/checkout action to v4.1.4 ([918ec64](https://github.com/DanySK/code-plagiarism-detector/commit/918ec64a3373483a04ec3a850d659fd38797c44d))
+* **deps:** update danysk/action-checkout action to v0.2.15 ([79c249b](https://github.com/DanySK/code-plagiarism-detector/commit/79c249b656ec81915773f22e77e5a80d84cebc4b))
+* **deps:** update danysk/action-checkout action to v0.2.16 ([6f498f7](https://github.com/DanySK/code-plagiarism-detector/commit/6f498f7cc9c122d835f3e64a2cb82a7592f88270))
+* **deps:** update danysk/build-check-deploy-gradle-action action to v2.4.10 ([6dc7bf6](https://github.com/DanySK/code-plagiarism-detector/commit/6dc7bf609cb82a5851738e6076b345eb1ebcae3e))
+* **deps:** update danysk/build-check-deploy-gradle-action action to v2.4.11 ([af86648](https://github.com/DanySK/code-plagiarism-detector/commit/af8664899729b6e62be7ede9f835145b7f68f677))
+* **deps:** update danysk/build-check-deploy-gradle-action action to v2.4.12 ([fdd958f](https://github.com/DanySK/code-plagiarism-detector/commit/fdd958fbd6c45859d7f961ea8274b72064d0a675))
+* **deps:** update danysk/build-check-deploy-gradle-action action to v2.4.13 ([3135ae7](https://github.com/DanySK/code-plagiarism-detector/commit/3135ae745cd16f246984cd75a4d9da3f94a3ebdd))
+* **deps:** update danysk/build-check-deploy-gradle-action action to v2.4.14 ([657618e](https://github.com/DanySK/code-plagiarism-detector/commit/657618e07b1c0ae8d1541ff05c5de7857420feec))
+* **deps:** update danysk/build-check-deploy-gradle-action action to v2.4.15 ([e01e7ec](https://github.com/DanySK/code-plagiarism-detector/commit/e01e7ec8eb660a4594bf259c2513e553c8064507))
+* **deps:** update danysk/build-check-deploy-gradle-action action to v2.4.16 ([49724fd](https://github.com/DanySK/code-plagiarism-detector/commit/49724fdfa9e385bbcf55cb2f1c8fd0e2929f52bd))
+* **deps:** update danysk/build-check-deploy-gradle-action action to v2.4.17 ([dbde341](https://github.com/DanySK/code-plagiarism-detector/commit/dbde3415d63696fb6cac7acd930fdc6dc5610122))
+* **deps:** update danysk/build-check-deploy-gradle-action action to v2.4.18 ([aec47b7](https://github.com/DanySK/code-plagiarism-detector/commit/aec47b7cd33f202bba24ac5a87b8c83c16556f05))
+* **deps:** update danysk/build-check-deploy-gradle-action action to v2.4.7 ([4e0cd0c](https://github.com/DanySK/code-plagiarism-detector/commit/4e0cd0ca73ac0aa5b7d3554b00ecfbbdb6117d44))
+* **deps:** update danysk/build-check-deploy-gradle-action action to v2.4.8 ([278fa46](https://github.com/DanySK/code-plagiarism-detector/commit/278fa46d25a4ed142e22b14564fb4c050169b55e))
+* **deps:** update danysk/build-check-deploy-gradle-action action to v2.4.9 ([8d03381](https://github.com/DanySK/code-plagiarism-detector/commit/8d03381da15705634ff0f5f80530d5be37fb94b3))
+
 ## [8.1.8](https://github.com/DanySK/code-plagiarism-detector/compare/8.1.7...8.1.8) (2024-03-07)
 
 
