@@ -11,7 +11,7 @@ kotest-junit5-jvm = { module = "io.kotest:kotest-runner-junit5-jvm", version.ref
 kotest-assertions-core-jvm = { module = "io.kotest:kotest-assertions-core-jvm", version.ref = "kotest" }
 mockito-core = { module = "org.mockito:mockito-core", version.ref = "mockito" }
 clikt = "com.github.ajalt.clikt:clikt:4.4.0"
-github-api = "org.kohsuke:github-api:1.322"
+github-api = "org.kohsuke:github-api:1.323"
 unirest = "com.mashape.unirest:unirest-java:1.4.9"
 json = "org.json:json:20240303"
 kaml = "com.charleskorn.kaml:kaml:0.60.0"
