@@ -11,8 +11,7 @@ import io.kotest.matchers.types.shouldBeTypeOf
 import org.danilopianini.plagiarismdetector.input.cli.provider.CorpusProviderCommand
 import org.danilopianini.plagiarismdetector.input.cli.provider.ProviderCommand
 import org.danilopianini.plagiarismdetector.input.cli.provider.SubmissionProviderCommand
-import org.danilopianini.plagiarismdetector.provider.criteria.ByGitHubName
-import org.danilopianini.plagiarismdetector.provider.criteria.ByGitHubUser
+import org.danilopianini.plagiarismdetector.provider.criteria.ByGitHubUserGraphQL
 import java.net.URI
 
 class ProviderCommandTest : FunSpec() {
@@ -63,7 +62,7 @@ class ProviderCommandTest : FunSpec() {
                 it.url.shouldBeNull()
                 val criteria = it.criteria.shouldNotBeNull()
                 criteria.count() shouldBe 1
-                criteria.first().shouldBeTypeOf<ByGitHubName>()
+                criteria.first().shouldBeTypeOf<ByGitHubUserGraphQL>()
             }
         }
 
@@ -73,7 +72,7 @@ class ProviderCommandTest : FunSpec() {
                 it.url.shouldBeNull()
                 val criteria = it.criteria.shouldNotBeNull()
                 criteria.count() shouldBe 1
-                criteria.first().shouldBeTypeOf<ByGitHubUser>()
+                criteria.first().shouldBeTypeOf<ByGitHubUserGraphQL>()
             }
         }
 
@@ -105,7 +104,7 @@ class ProviderCommandTest : FunSpec() {
             parsedCommands(args) {
                 it.url.shouldNotBeNull() shouldBe listOf(URI("https://test.com").toURL())
                 it.criteria.shouldNotBeNull().count() shouldBe 1
-                it.criteria!!.first().shouldBeTypeOf<ByGitHubName>()
+                it.criteria!!.first().shouldBeTypeOf<ByGitHubUserGraphQL>()
             }
         }
     }

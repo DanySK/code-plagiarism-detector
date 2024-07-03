@@ -1,12 +1,15 @@
 [versions]
+apollo = "4.0.0-beta.7"
 kotest = "5.9.1"
 kotlin = "2.0.0"
 mockito = "5.12.0"
 logback = "1.5.6"
 
 [libraries]
+apollo-runtime = { module = "com.apollographql.apollo3:apollo-runtime", version.ref = "apollo" }
 kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin" }
 kotlin-stdlib-jdk8 = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk8", version.ref = "kotlin" }
+kotlinx-coroutines-core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.9.0-RC"
 kotest-junit5-jvm = { module = "io.kotest:kotest-runner-junit5-jvm", version.ref = "kotest" }
 kotest-assertions-core-jvm = { module = "io.kotest:kotest-assertions-core-jvm", version.ref = "kotest" }
 mockito-core = { module = "org.mockito:mockito-core", version.ref = "mockito" }
@@ -29,6 +32,7 @@ progressbar = "me.tongfei:progressbar:0.10.1"
 kotlin-testing = [ "kotest-junit5-jvm", "kotest-assertions-core-jvm", "mockito-core" ]
 
 [plugins]
+apollo = { id = "com.apollographql.apollo3", version.ref = "apollo" }
 dokka = "org.jetbrains.dokka:1.9.20"
 gitSemVer = "org.danilopianini.git-sensitive-semantic-versioning:3.1.7"
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }

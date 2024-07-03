@@ -9,11 +9,13 @@ import com.github.ajalt.clikt.parameters.options.validate
 import org.danilopianini.plagiarismdetector.input.SupportedOptions
 import org.danilopianini.plagiarismdetector.provider.criteria.ByBitbucketName
 import org.danilopianini.plagiarismdetector.provider.criteria.ByBitbucketUser
-import org.danilopianini.plagiarismdetector.provider.criteria.ByGitHubName
-import org.danilopianini.plagiarismdetector.provider.criteria.ByGitHubUser
+import org.danilopianini.plagiarismdetector.provider.criteria.ByGitHubNameRest
+import org.danilopianini.plagiarismdetector.provider.criteria.ByGitHubUserGraphQL
+import org.danilopianini.plagiarismdetector.provider.criteria.ByGitHubUserRest
 import org.danilopianini.plagiarismdetector.provider.criteria.SearchCriteria
 import org.danilopianini.plagiarismdetector.utils.BitBucket
-import org.danilopianini.plagiarismdetector.utils.GitHub
+import org.danilopianini.plagiarismdetector.utils.GitHubGraphQL
+import org.danilopianini.plagiarismdetector.utils.GitHubRest
 import org.danilopianini.plagiarismdetector.utils.HostingService
 import java.net.URI
 import java.net.URL
@@ -46,7 +48,7 @@ sealed class ProviderCommand(
     /**
      * Gets a [Sequence] of configured [SearchCriteria] to use to retrieve searched repos.
      */
-    val criteria: Sequence<SearchCriteria<*, *>>? by lazy {
+    val criteria: List<SearchCriteria<*, *>>? by lazy {
         val boundService = service
         if (boundService != null) {
             val services = boundService.map { it.substringBefore(":") }.map(SupportedOptions::serviceBy)
@@ -58,12 +60,15 @@ sealed class ProviderCommand(
                 .asSequence()
         } else {
             null
-        }
+        }?.toList()
     }
 
     private fun byCriteria(service: HostingService, user: String, repoName: String): SearchCriteria<*, *> =
         when (service) {
-            GitHub -> ByGitHubUser(user).let { if (repoName.isNotEmpty()) ByGitHubName(repoName, it) else it }
+            GitHubRest -> ByGitHubUserRest(
+                user,
+            ).let { if (repoName.isNotEmpty()) ByGitHubNameRest(repoName, it) else it }
+            GitHubGraphQL -> ByGitHubUserGraphQL(user, repoName)
             BitBucket -> ByBitbucketUser(user).let { if (repoName.isNotEmpty()) ByBitbucketName(repoName, it) else it }
         }
 

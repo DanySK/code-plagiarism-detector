@@ -12,23 +12,21 @@ import java.io.File
  * A strategy that is responsible for saving and retrieving the [repository] sources
  * using a [knowledgeBaseManager], which is by default a [FileKnowledgeBaseManager].
  */
-class RepoContentSupplierImpl(
+data class RepoContentSupplierImpl(
     private val repository: Repository,
     private val knowledgeBaseManager: KnowledgeBaseManager = FileKnowledgeBaseManager(),
 ) : RepoContentSupplier {
 
-    private val contentDirectory by lazy {
+    private val contentDirectory: File by lazy {
         if (!knowledgeBaseManager.isCached(repository)) {
             knowledgeBaseManager.save(repository)
         }
         knowledgeBaseManager.load(repository)
     }
 
-    override fun filesMatching(pattern: Regex): Sequence<File> = runCatching {
-        FileUtils.listFiles(
-            contentDirectory,
-            RegexFileFilter(pattern.toPattern()),
-            DirectoryFileFilter.DIRECTORY,
-        ).asSequence()
-    }.getOrElse { emptySequence() }
+    override fun filesMatching(pattern: Regex): Sequence<File> = FileUtils.listFiles(
+        contentDirectory,
+        RegexFileFilter(pattern.toPattern()),
+        DirectoryFileFilter.DIRECTORY,
+    ).asSequence()
 }

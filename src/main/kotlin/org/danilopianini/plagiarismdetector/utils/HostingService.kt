@@ -19,7 +19,15 @@ sealed interface HostingService {
 /**
  * GitHub hosting service.
  */
-object GitHub : HostingService {
+data object GitHubRest : HostingService {
+    override val name: String = "github-rest"
+    override val host: String = "$name.com"
+}
+
+/**
+ * GitHub hosting service.
+ */
+data object GitHubGraphQL : HostingService {
     override val name: String = "github"
     override val host: String = "$name.com"
 }
@@ -27,7 +35,7 @@ object GitHub : HostingService {
 /**
  * Bitbucket hosting service.
  */
-object BitBucket : HostingService {
+data object BitBucket : HostingService {
     override val name: String = "bitbucket"
     override val host: String = "$name.org"
 }

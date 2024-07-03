@@ -15,7 +15,7 @@ import java.io.File
 class FileKnowledgeBaseManager : KnowledgeBaseManager {
 
     private val logger = LoggerFactory.getLogger(javaClass)
-    private val separator = System.getProperty("file.separator")
+    private val separator = File.separator
     private val homeDirectory = System.getProperty("user.home")
     private val repositoryFolder by lazy {
         File(homeDirectory + separator + REPOSITORY_FOLDER_NAME)
@@ -28,14 +28,12 @@ class FileKnowledgeBaseManager : KnowledgeBaseManager {
             clean(this)
         }
 
-    private fun clone(project: Repository, out: File) = runCatching {
-        Git.cloneRepository()
-            .setURI("${project.cloneUrl}")
-            .setDepth(1)
-            .setDirectory(out)
-            .call()
-            .close()
-    }.getOrElse { logger.error(it.message) }
+    private fun clone(project: Repository, out: File) = Git.cloneRepository()
+        .setURI("${project.cloneUrl}")
+        .setDepth(1)
+        .setDirectory(out)
+        .call()
+        .close()
 
     private fun clean(out: File) {
         val matching = FileUtils.listFiles(

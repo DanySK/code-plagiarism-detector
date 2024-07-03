@@ -1,6 +1,8 @@
 .gradle/
 build/
 .idea/
+plagiarism-report/
 .vscode
 bin
 .DS_Store
+github.graphql
