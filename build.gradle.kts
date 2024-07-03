@@ -48,13 +48,9 @@ multiJvm {
 }
 
 kotlin {
-    target {
-        compilations.all {
-            kotlinOptions {
-                allWarningsAsErrors = true
-                freeCompilerArgs = listOf("-opt-in=kotlin.RequiresOptIn")
-            }
-        }
+    compilerOptions {
+        allWarningsAsErrors = true
+        freeCompilerArgs = listOf("-opt-in=kotlin.RequiresOptIn")
     }
 }
 
