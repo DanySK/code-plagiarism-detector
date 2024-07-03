@@ -21,11 +21,11 @@ class LoggerTest : FunSpec() {
             val listAppender = ListAppender<ILoggingEvent>()
             listAppender.start()
             logger.addAppender(listAppender)
-            logger.debug(LOGGING_MSG)
+            logger.info(LOGGING_MSG)
             val logs = listAppender.list
             logs.shouldNotBeEmpty()
             logs.map { it.message }.first().shouldMatch(LOGGING_MSG)
-            logs.map { it.level }.first().shouldBe(Level.DEBUG)
+            logs.map { it.level }.first().shouldBe(Level.INFO)
             listAppender.stop()
         }
 

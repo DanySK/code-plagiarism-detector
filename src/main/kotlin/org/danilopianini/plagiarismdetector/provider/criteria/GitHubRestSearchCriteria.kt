@@ -7,13 +7,13 @@ import org.kohsuke.github.GitHub
 /**
  * An interface modeling search criteria for searching GitHub repositories.
  */
-interface GitHubSearchCriteria : SearchCriteria<GitHub, GHRepositorySearchBuilder>
+interface GitHubRestSearchCriteria : SearchCriteria<GitHub, GHRepositorySearchBuilder>
 
 /**
  * A search criterion to filter by username.
  * @property username the GitHub username.
  */
-data class ByGitHubUser(val username: String) : GitHubSearchCriteria {
+data class ByGitHubUserRest(val username: String) : GitHubRestSearchCriteria {
     override operator fun invoke(subject: GitHub): GHRepositorySearchBuilder =
         subject.searchRepositories().user(username).fork(GHFork.PARENT_AND_FORKS)
 }
@@ -22,10 +22,10 @@ data class ByGitHubUser(val username: String) : GitHubSearchCriteria {
  * A search criterion to filter by the repository name.
  * @property userCriteria the criteria to search of a user the repository must belong to.
  */
-data class ByGitHubName(
+data class ByGitHubNameRest(
     private val repositoryName: String,
-    val userCriteria: ByGitHubUser,
-) : GitHubSearchCriteria {
+    val userCriteria: ByGitHubUserRest,
+) : GitHubRestSearchCriteria {
     override operator fun invoke(subject: GitHub): GHRepositorySearchBuilder =
         userCriteria.invoke(subject).q(repositoryName).`in`("name")
 }

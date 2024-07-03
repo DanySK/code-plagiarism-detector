@@ -1,18 +1,38 @@
 package org.danilopianini.plagiarismdetector.repository
 
+import org.eclipse.jgit.api.Git
+import org.eclipse.jgit.transport.CredentialsProvider
 import org.kohsuke.github.GHRepository
+import java.net.URI
 import java.net.URL
 
 /**
- * A GitHub repository adapter.
- * @property repository the [GHRepository] to be adapted.
+ * A GitHub repository.
  */
-data class GitHubRepository(private val repository: GHRepository) : AbstractRepository() {
-    override val name: String by lazy { repository.name }
+data class GitHubRepository(
+    override val owner: String,
+    override val name: String,
+) : AbstractRepository() {
 
-    override val owner: String by lazy { repository.ownerName }
+    constructor(queryResult: GHRepository) : this(queryResult.ownerName, queryResult.name)
 
-    override val cloneUrl: URL by lazy { repository.htmlUrl }
+    override val cloneUrl: URL = URI("https://github.com/$owner/$name.git").toURL()
 
-    override fun toString() = "git@github.com:$owner/$name"
+    /**
+     * Validate the existence of the repository.
+     */
+    fun validate(credentials: CredentialsProvider? = null) {
+        val validation = runCatching {
+            Git.lsRemoteRepository()
+                .setRemote(cloneUrl.toString())
+                .apply { credentials?.let { setCredentialsProvider(it) } }
+                .call()
+        }
+        if (validation.isFailure || validation.getOrThrow().isEmpty()) {
+            throw IllegalStateException(
+                "Repository $owner/$name does not exist or is not accessible.",
+                validation.exceptionOrNull(),
+            )
+        }
+    }
 }

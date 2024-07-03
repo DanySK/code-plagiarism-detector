@@ -1,0 +1,13 @@
+query GetUserRepositories($username: String!, $after: String) {
+  repositoryOwner(login: $username) {
+    repositories(first: 100, after: $after) {
+      nodes {
+        name
+      }
+      pageInfo {
+        endCursor
+        hasNextPage
+      }
+    }
+  }
+}

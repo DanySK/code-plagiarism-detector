@@ -13,7 +13,8 @@ import io.mockk.mockk
 import io.mockk.spyk
 import org.danilopianini.plagiarismdetector.output.Output
 import org.danilopianini.plagiarismdetector.provider.BitbucketProvider
-import org.danilopianini.plagiarismdetector.provider.GitHubProvider
+import org.danilopianini.plagiarismdetector.provider.GitHubGraphQLProvider
+import org.danilopianini.plagiarismdetector.provider.GitHubRestProvider
 
 class CLIConfiguratorTest : FunSpec() {
 
@@ -28,8 +29,11 @@ class CLIConfiguratorTest : FunSpec() {
             override fun logInfo(message: String) = println(message)
         }
         val configurator = spyk(CLIConfigurator(output))
-        every { configurator getProperty "github" } propertyType GitHubProvider::class answers {
-            GitHubProvider.connectAnonymously()
+        every { configurator getProperty "githubRest" } propertyType GitHubGraphQLProvider::class answers {
+            GitHubRestProvider.connectAnonymously()
+        }
+        every { configurator getProperty "githubGraphQL" } propertyType GitHubGraphQLProvider::class answers {
+            GitHubGraphQLProvider(null)
         }
         every { configurator getProperty "bitbucket" } propertyType BitbucketProvider::class answers {
             BitbucketProvider.connectAnonymously()

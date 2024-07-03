@@ -10,8 +10,8 @@ import io.kotest.matchers.string.shouldMatch
 import org.danilopianini.plagiarismdetector.provider.authentication.EnvironmentTokenSupplier
 import org.danilopianini.plagiarismdetector.provider.criteria.ByBitbucketName
 import org.danilopianini.plagiarismdetector.provider.criteria.ByBitbucketUser
-import org.danilopianini.plagiarismdetector.provider.criteria.ByGitHubName
-import org.danilopianini.plagiarismdetector.provider.criteria.ByGitHubUser
+import org.danilopianini.plagiarismdetector.provider.criteria.ByGitHubNameRest
+import org.danilopianini.plagiarismdetector.provider.criteria.ByGitHubUserRest
 import org.danilopianini.plagiarismdetector.repository.Repository
 import org.slf4j.LoggerFactory
 import java.net.URI
@@ -30,7 +30,7 @@ class ProviderTest : FunSpec() {
     }
 
     private val logger = LoggerFactory.getLogger(this.javaClass)
-    private val githubProvider: GitHubProvider
+    private val githubProvider: GitHubRestProvider
     private val bitbucketProvider: BitbucketProvider
 
     init {
@@ -38,9 +38,9 @@ class ProviderTest : FunSpec() {
         if (isExecutingOnPullRequest()) {
             logger.info("Testing providers with anonymous connections.")
             bitbucketProvider = BitbucketProvider.connectAnonymously()
-            githubProvider = GitHubProvider.connectAnonymously()
+            githubProvider = GitHubRestProvider.connectAnonymously()
         } else {
-            githubProvider = GitHubProvider.connectWithToken(EnvironmentTokenSupplier(GH_AUTH_TOKEN_VAR))
+            githubProvider = GitHubRestProvider.connectWithToken(EnvironmentTokenSupplier(GH_AUTH_TOKEN_VAR))
             bitbucketProvider = BitbucketProvider.connectWithToken(
                 EnvironmentTokenSupplier(BB_AUTH_USER_VAR, BB_AUTH_TOKEN_VAR, separator = ":"),
             )
@@ -49,7 +49,9 @@ class ProviderTest : FunSpec() {
         test("Searching by existing name and user should return repos matching those criteria") {
             var searchedRepoName = "Project-OOP"
             testByExistingName(
-                githubProvider.byCriteria(ByGitHubName(searchedRepoName, ByGitHubUser(OOP_PROJECTS_ORGANIZATION))),
+                githubProvider.byCriteria(
+                    ByGitHubNameRest(searchedRepoName, ByGitHubUserRest(OOP_PROJECTS_ORGANIZATION)),
+                ),
                 searchedRepoName,
                 OOP_PROJECTS_ORGANIZATION,
             )
@@ -88,14 +90,6 @@ class ProviderTest : FunSpec() {
 
         test("Searching by illegal URL should throw an exception") {
             shouldThrow<java.lang.IllegalArgumentException> {
-                githubProvider.byLink(URI("https://www.unibo.it/"))
-            }
-            shouldThrow<java.lang.IllegalArgumentException> {
-                githubProvider.byLink(
-                    URI("$GH_URL_PREFIX/$DANYSK_USER/code-plagiarism-detector/tree/master/src/"),
-                )
-            }
-            shouldThrow<java.lang.IllegalArgumentException> {
                 bitbucketProvider.byLink(URI("https://www.unibo.it/"))
             }
             shouldThrow<java.lang.IllegalArgumentException> {
@@ -103,11 +97,19 @@ class ProviderTest : FunSpec() {
                     URI("$BB_URL_PREFIX/$DANYSK_USER/courses-oop-gradle-jfx-template/src/"),
                 )
             }
+            shouldThrow<java.lang.IllegalArgumentException> {
+                githubProvider.byLink(URI("https://www.unibo.it/"))
+            }
+            shouldThrow<java.lang.IllegalArgumentException> {
+                githubProvider.byLink(
+                    URI("$GH_URL_PREFIX/$DANYSK_USER/code-plagiarism-detector/tree/master/src/"),
+                )
+            }
         }
 
         test("Searching by a *non-existing* name should return an empty collection of repos") {
             githubProvider.byCriteria(
-                ByGitHubName("non-existing-repo", ByGitHubUser(DANYSK_USER)),
+                ByGitHubNameRest("non-existing-repo", ByGitHubUserRest(DANYSK_USER)),
             ).toSet().shouldBeEmpty()
             bitbucketProvider.byCriteria(
                 ByBitbucketName("non-existing-repo", ByBitbucketUser(DANYSK_USER)),
@@ -116,7 +118,7 @@ class ProviderTest : FunSpec() {
 
         test("Searching by a *non-existing* user should throw an exception") {
             shouldThrow<IllegalStateException> {
-                githubProvider.byCriteria(ByGitHubUser("non-existing-user"))
+                githubProvider.byCriteria(ByGitHubUserRest("non-existing-user"))
             }
             shouldThrow<IllegalStateException> {
                 bitbucketProvider.byCriteria(ByBitbucketUser("non-existing-user"))

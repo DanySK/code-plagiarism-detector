@@ -1,7 +1,8 @@
 package org.danilopianini.plagiarismdetector.input
 
 import org.danilopianini.plagiarismdetector.utils.BitBucket
-import org.danilopianini.plagiarismdetector.utils.GitHub
+import org.danilopianini.plagiarismdetector.utils.GitHubGraphQL
+import org.danilopianini.plagiarismdetector.utils.GitHubRest
 import org.danilopianini.plagiarismdetector.utils.HostingService
 import org.danilopianini.plagiarismdetector.utils.Java
 import org.danilopianini.plagiarismdetector.utils.Language
@@ -20,7 +21,7 @@ internal object SupportedOptions {
     /**
      * Supported [HostingService]s.
      */
-    val services: Set<HostingService> = setOf(GitHub, BitBucket)
+    val services: List<HostingService> = listOf(GitHubGraphQL, GitHubRest, BitBucket)
 
     /**
      * Returns the [HostingService] with the given [name].

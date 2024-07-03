@@ -4,16 +4,11 @@ import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.ints.shouldBeExactly
 import io.mockk.every
 import io.mockk.mockk
-import java.net.URI
 
 class RepositoryContentTest : FunSpec() {
 
-    private val githubRepo = GitHubRepository(
-        mockk {
-            every { htmlUrl } returns URI(GH_SAMPLE_REPO_URL).toURL()
-            every { name } returns "test-github-repo-content"
-        },
-    )
+    private val githubRepo = GitHubRepository("tassiLuca", "test-app-for-code-plagiarism-detector")
+
     private val bitbucketRepo = BitbucketRepository(
         mockk {
             every {
@@ -43,7 +38,6 @@ class RepositoryContentTest : FunSpec() {
     }
 
     companion object {
-        private const val GH_SAMPLE_REPO_URL = "https://github.com/tassiLuca/test-app-for-code-plagiarism-detector"
         private const val BB_SAMPLE_REPO_URL = "https://bitbucket.org/tassiLuca/test-app-for-code-plagiarism-detector"
         private const val EXPECTED_SOURCES = 8
     }

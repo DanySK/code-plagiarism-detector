@@ -10,14 +10,17 @@ import org.danilopianini.plagiarismdetector.input.configuration.RunConfiguration
 import org.danilopianini.plagiarismdetector.input.configuration.RunConfigurationImpl
 import org.danilopianini.plagiarismdetector.output.Output
 import org.danilopianini.plagiarismdetector.provider.BitbucketProvider
-import org.danilopianini.plagiarismdetector.provider.GitHubProvider
+import org.danilopianini.plagiarismdetector.provider.GitHubGraphQLProvider
+import org.danilopianini.plagiarismdetector.provider.GitHubRestProvider
 import org.danilopianini.plagiarismdetector.provider.authentication.EnvironmentTokenSupplier
 import org.danilopianini.plagiarismdetector.provider.criteria.BitbucketSearchCriteria
-import org.danilopianini.plagiarismdetector.provider.criteria.GitHubSearchCriteria
+import org.danilopianini.plagiarismdetector.provider.criteria.GitHubGraphQLSearchCriteria
+import org.danilopianini.plagiarismdetector.provider.criteria.GitHubRestSearchCriteria
 import org.danilopianini.plagiarismdetector.provider.criteria.SearchCriteria
 import org.danilopianini.plagiarismdetector.repository.Repository
 import org.danilopianini.plagiarismdetector.utils.BitBucket
-import org.danilopianini.plagiarismdetector.utils.GitHub
+import org.danilopianini.plagiarismdetector.utils.GitHubGraphQL
+import org.danilopianini.plagiarismdetector.utils.GitHubRest
 import org.danilopianini.plagiarismdetector.utils.HostingService
 import java.net.URL
 import kotlin.system.exitProcess
@@ -27,10 +30,15 @@ import kotlin.system.exitProcess
  */
 class CLIConfigurator(private val output: Output) : RunConfigurator {
 
-    private val github by lazy {
-        GitHubProvider.connectWithToken(EnvironmentTokenSupplier(GH_AUTH_TOKEN_VAR))
+    private val githubRest: GitHubRestProvider by lazy {
+        GitHubRestProvider.connectWithToken(EnvironmentTokenSupplier(GH_AUTH_TOKEN_VAR))
     }
-    private val bitbucket by lazy {
+
+    private val githubGraphQL: GitHubGraphQLProvider by lazy {
+        GitHubGraphQLProvider(EnvironmentTokenSupplier(GH_AUTH_TOKEN_VAR).token)
+    }
+
+    private val bitbucket: BitbucketProvider by lazy {
         BitbucketProvider.connectWithToken(
             EnvironmentTokenSupplier(BB_AUTH_USER_VAR, BB_AUTH_TOKEN_VAR, separator = ":"),
         )
@@ -56,10 +64,10 @@ class CLIConfigurator(private val output: Output) : RunConfigurator {
 
     private fun repositoriesFrom(configs: ProviderCommand): Set<Repository> {
         val url = runCatching { configs.url }
-            .onFailure { exitProcessWithMessage(ERROR_MSG_MISSING_SUBCOMMANDS) }
+            .onFailure { exitProcessWithMessage(it.message ?: ERROR_MSG_MISSING_SUBCOMMANDS) }
             .getOrThrow()
         val criteria = runCatching { configs.criteria }
-            .onFailure { exitProcessWithMessage(ERROR_MSG_MISSING_SUBCOMMANDS) }
+            .onFailure { exitProcessWithMessage(it.message ?: ERROR_MSG_MISSING_SUBCOMMANDS) }
             .getOrThrow()
         return url?.map { byLink(it, SupportedOptions.serviceBy(it)) }
             ?.toSet()
@@ -73,13 +81,15 @@ class CLIConfigurator(private val output: Output) : RunConfigurator {
     }
 
     private fun byLink(link: URL, service: HostingService): Repository = when (service) {
-        GitHub -> github.byLink(link)
+        GitHubRest -> githubRest.byLink(link)
+        GitHubGraphQL -> githubGraphQL.byLink(link)
         BitBucket -> bitbucket.byLink(link)
     }
 
     private fun byCriteria(criteria: SearchCriteria<*, *>): Sequence<Repository> = when (criteria) {
-        is GitHubSearchCriteria -> github.byCriteria(criteria)
+        is GitHubRestSearchCriteria -> githubRest.byCriteria(criteria)
         is BitbucketSearchCriteria -> bitbucket.byCriteria(criteria)
+        is GitHubGraphQLSearchCriteria -> criteria(githubGraphQL.client)
         else -> error("The extracted criteria is not valid.")
     }
 

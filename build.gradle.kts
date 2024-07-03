@@ -1,7 +1,10 @@
+import com.apollographql.apollo3.gradle.internal.ApolloDownloadSchemaTask
 import org.gradle.api.tasks.testing.logging.TestLogEvent
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
 
 @Suppress("DSL_SCOPE_VIOLATION")
 plugins {
+    alias(libs.plugins.apollo)
     alias(libs.plugins.dokka)
     alias(libs.plugins.gitSemVer)
     alias(libs.plugins.kotlin.jvm)
@@ -20,12 +23,50 @@ application {
     mainClass.set("$group.plagiarismdetector.MainKt")
 }
 
+apollo {
+    fun disableDownload() {
+        tasks.withType<ApolloDownloadSchemaTask>().configureEach {
+            enabled = false
+        }
+    }
+    service("github") {
+        val schema = file("src/main/resources/github.graphql")
+        packageName.set("org.danilopianini.plagiarismdetector.graphql.github")
+        schemaFiles.from(schema)
+        if (schema.exists()) {
+            disableDownload()
+        }
+        introspection {
+            endpointUrl.set("https://api.github.com/graphql")
+            schemaFile.set(schema)
+            val token = System.getenv("GH_TOKEN") ?: System.getenv("GITHUB_TOKEN")
+            if (token == null) {
+                project.logger.warn(
+                    "No token provided. Please set the GH_TOKEN or the GITHUB_TOKEN environment variable." +
+                        "Schema download is disabled.",
+                )
+                disableDownload()
+            }
+            headers.set(
+                mapOf(
+                    "Authorization" to "Bearer $token",
+                ),
+            )
+        }
+    }
+}
+
+tasks.withType<KotlinCompilationTask<*>>().configureEach {
+    dependsOn(tasks.withType<ApolloDownloadSchemaTask>().filter { it.name.contains("FromIntrospection") })
+}
+
 repositories {
     mavenCentral()
 }
 
 dependencies {
     implementation(libs.kotlin.stdlib)
+    implementation(libs.apollo.runtime)
     implementation(libs.clikt)
     implementation(libs.github.api)
     implementation(libs.unirest)
@@ -51,6 +92,20 @@ kotlin {
     compilerOptions {
         allWarningsAsErrors = true
         freeCompilerArgs = listOf("-opt-in=kotlin.RequiresOptIn")
+    }
+}
+
+tasks.withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach {
+    exclude {
+        it.file.path.contains("generated")
+    }
+}
+
+ktlint {
+    filter {
+        exclude {
+            it.file.absolutePath.contains("generated")
+        }
     }
 }
 
