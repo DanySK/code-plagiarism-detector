@@ -95,9 +95,14 @@ kotlin {
     }
 }
 
-tasks.withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach {
-    exclude {
-        it.file.path.contains("generated")
+/*
+ * Disable verification tasks for generated sources
+ */
+tasks.withType<SourceTask>().configureEach {
+    if (this is VerificationTask) {
+        exclude {
+            it.file.path.contains("generated")
+        }
     }
 }
 
