@@ -1,4 +1,5 @@
 import com.apollographql.apollo3.gradle.internal.ApolloDownloadSchemaTask
+import com.apollographql.apollo3.gradle.internal.ApolloGenerateSourcesTask
 import org.gradle.api.tasks.testing.logging.TestLogEvent
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
 
@@ -100,8 +101,9 @@ kotlin {
  */
 tasks.withType<SourceTask>().configureEach {
     if (this is VerificationTask) {
+        dependsOn(tasks.withType<ApolloGenerateSourcesTask>())
         exclude {
-            it.file.path.contains("generated")
+            it.file.absolutePath.contains("generated", ignoreCase = true)
         }
     }
 }
