@@ -1,3 +1,18 @@
+## [9.0.2](https://github.com/DanySK/code-plagiarism-detector/compare/9.0.1...9.0.2) (2024-08-13)
+
+### Dependency updates
+
+* **core-deps:** update dependency org.jetbrains.kotlinx:kotlinx-coroutines-core to v1.9.0-rc.2 ([0f01151](https://github.com/DanySK/code-plagiarism-detector/commit/0f01151a30458559a6b636add4bd8a4c1817e02f))
+* **deps:** update dependency org.slf4j:slf4j-api to v2.0.14 ([aea0886](https://github.com/DanySK/code-plagiarism-detector/commit/aea0886d7c9a559a8d51733f9001f02e271b0cf6))
+* **deps:** update dependency org.slf4j:slf4j-api to v2.0.15 ([400709e](https://github.com/DanySK/code-plagiarism-detector/commit/400709e355f5478cc6937f16fb0b360549e2b5b8))
+* **deps:** update dependency org.slf4j:slf4j-api to v2.0.16 ([077bb92](https://github.com/DanySK/code-plagiarism-detector/commit/077bb92408af39de9daac411c124c41c08a278a6))
+* **deps:** update plugin kotlin-qa to v0.65.1 ([4c74bb5](https://github.com/DanySK/code-plagiarism-detector/commit/4c74bb55895ba6fc3f05a562116994f7e848ed68))
+* **deps:** update plugin publishoncentral to v5.1.5 ([589a3cd](https://github.com/DanySK/code-plagiarism-detector/commit/589a3cd60034a5f3947172e5dc441304440a3290))
+
+### Build and continuous integration
+
+* **deps:** update danysk/build-check-deploy-gradle-action action to v3.5.3 ([1dc94ea](https://github.com/DanySK/code-plagiarism-detector/commit/1dc94ea3c14570c80c48aacde16693aecfe1f987))
+
 ## [9.0.1](https://github.com/DanySK/code-plagiarism-detector/compare/9.0.0...9.0.1) (2024-08-06)
 
 ### Dependency updates
