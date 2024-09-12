@@ -27,7 +27,7 @@ class LoggerConfiguratorImpl : LoggerConfigurator {
         }
     }
 
-    companion object {
+    private companion object {
         private const val VERBOSE_OPTION = "--verbose"
     }
 }

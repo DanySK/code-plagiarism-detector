@@ -56,7 +56,7 @@ class CLI(output: Output) : CliktCommand(
 
     override fun run() = Unit
 
-    companion object {
+    private companion object {
         private const val HELP_MSG = "code-plagiarism-detector is a command line tool for scanning " +
             "existing projects in search of potential signs of plagiarism."
         private const val TOKENIZATION_COMMAND = "tokenization"

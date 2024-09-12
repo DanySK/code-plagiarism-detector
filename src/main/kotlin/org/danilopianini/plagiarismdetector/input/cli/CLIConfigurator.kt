@@ -93,7 +93,7 @@ class CLIConfigurator(private val output: Output) : RunConfigurator {
         else -> error("The extracted criteria is not valid.")
     }
 
-    companion object {
+    private companion object {
         private const val BB_AUTH_USER_VAR = "BB_USER"
         private const val BB_AUTH_TOKEN_VAR = "BB_TOKEN"
         private const val GH_AUTH_TOKEN_VAR = "GH_TOKEN"

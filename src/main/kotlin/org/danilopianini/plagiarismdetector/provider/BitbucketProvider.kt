@@ -17,6 +17,10 @@ import java.util.Base64
 class BitbucketProvider private constructor(
     private var encodedAuthenticationToken: String? = null,
 ) : AbstractRepositoryProvider<String, String, BitbucketSearchCriteria>() {
+
+    /**
+     * A companion object to create instances of [BitbucketProvider].
+     */
     companion object {
         private const val BITBUCKET_HOST = "bitbucket.org"
         private const val BASE_URL = "https://api.bitbucket.org/2.0/repositories"

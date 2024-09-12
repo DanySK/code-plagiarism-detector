@@ -30,7 +30,7 @@ sealed class ExporterConfig<in M : Match>(name: String) : OptionGroup(name = nam
      */
     abstract val exporter: ReportsExporter<M>
 
-    companion object {
+    private companion object {
         private const val OUTPUT_PATH_HELP_MSG = "The path of the directory where to store the reports."
     }
 }

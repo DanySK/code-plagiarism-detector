@@ -38,7 +38,7 @@ class TokenizationConfig : TechniqueConfig<TokenMatch>(TOKENIZATION_NAME) {
         )
     }
 
-    companion object {
+    private companion object {
         private const val TOKENIZATION_NAME = "Tokenization options"
         private const val DEFAULT_MIN_TOKENS = 15
         private const val MIN_TOKENS_HELP_MSG = "The minimum token length which should be reported " +

@@ -15,7 +15,7 @@ data class TokenizedSourceImpl(
     val tokens: List<Token>,
 ) : TokenizedSource {
 
-    companion object {
+    private companion object {
         private const val SLIDING_STEP = 1
     }
 

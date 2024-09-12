@@ -14,7 +14,7 @@ class PlainFileExporterConfig<in M : Match>(output: Output) : ExporterConfig<M>(
         PlainFileExporter(outputPath, output)
     }
 
-    companion object {
+    private companion object {
         private const val PLAIN_FILE_NAME = "Plain file options"
     }
 }

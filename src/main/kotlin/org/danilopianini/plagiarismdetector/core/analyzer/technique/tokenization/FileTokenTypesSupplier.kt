@@ -21,6 +21,9 @@ class FileTokenTypesSupplier private constructor(private val configurationFileNa
         Yaml.default.decodeFromStream(SetSerializer(TokenTypeImpl.serializer()), configurationFile),
     )
 
+    /**
+     * A companion object to cache token suppliers.
+     */
     companion object {
         private var cache = emptyMap<String, FileTokenTypesSupplier>()
 

@@ -54,7 +54,7 @@ class FileKnowledgeBaseManager : KnowledgeBaseManager {
         return File(repositoryFolder.path + separator + project.name)
     }
 
-    companion object {
+    private companion object {
         private const val REPOSITORY_FOLDER_NAME = ".code-plagiarism-detector"
         private const val SOURCE_FOLDER = "src"
     }

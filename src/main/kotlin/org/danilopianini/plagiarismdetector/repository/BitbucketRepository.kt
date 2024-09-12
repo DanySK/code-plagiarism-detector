@@ -1,6 +1,7 @@
 package org.danilopianini.plagiarismdetector.repository
 
 import org.json.JSONObject
+import java.net.URI
 import java.net.URL
 
 /**
@@ -8,7 +9,8 @@ import java.net.URL
  * @property repositoryInfo the [JSONObject] containing all repo's infos.
  */
 data class BitbucketRepository(private val repositoryInfo: JSONObject) : AbstractRepository() {
-    companion object {
+
+    private companion object {
         private const val REPOSITORY_NAME_FIELD = "name"
         private const val LINKS_FIELD = "links"
         private const val CLONE_FIELD = "clone"
@@ -29,7 +31,7 @@ data class BitbucketRepository(private val repositoryInfo: JSONObject) : Abstrac
         repositoryInfo.getJSONObject(LINKS_FIELD)
             .getJSONArray(CLONE_FIELD)
             .getJSONObject(0)
-            .let { URL(it.getString(HREF_FIELD)) }
+            .let { URI(it.getString(HREF_FIELD)).toURL() }
     }
 
     override fun toString() = "git@bitbucket.org:$owner/$name.git"

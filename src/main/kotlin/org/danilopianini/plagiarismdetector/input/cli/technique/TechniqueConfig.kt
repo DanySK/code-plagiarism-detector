@@ -31,7 +31,7 @@ sealed class TechniqueConfig<out M : Match>(name: String) : OptionGroup(name = n
      */
     abstract val facade: TechniqueFacade<M>
 
-    companion object {
+    private companion object {
         private const val LANGUAGE_HELP_MSG = "Sources code language. Default: Java."
     }
 }

@@ -71,7 +71,7 @@ class PlainFileExporter<in M : Match>(
         out.println()
     }
 
-    companion object {
+    private companion object {
         private const val LOWER_BOUND_SIMILARITY = 0.4
         private const val LINE_LENGTH = 120
         private const val SHORT_LINE_LENGTH = 55
