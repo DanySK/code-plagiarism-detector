@@ -1,3 +1,15 @@
+## [9.0.5](https://github.com/DanySK/code-plagiarism-detector/compare/9.0.4...9.0.5) (2024-09-13)
+
+### Dependency updates
+
+* **core-deps:** update dependency org.jetbrains.kotlinx:kotlinx-coroutines-core to v1.9.0 ([c2806b9](https://github.com/DanySK/code-plagiarism-detector/commit/c2806b96ce01d564ffcda21561b8240719bb1c28))
+* **deps:** update plugin kotlin-qa to v0.67.2 ([51269b1](https://github.com/DanySK/code-plagiarism-detector/commit/51269b12c916259cd08968d6dfe78e80b3972967))
+
+### Build and continuous integration
+
+* **deps:** update danysk/build-check-deploy-gradle-action action to v3.5.6 ([1165038](https://github.com/DanySK/code-plagiarism-detector/commit/1165038fa0e2784dfa283baff6b296306400f65e))
+* disable fail-fast for matrix jobs ([acee7a9](https://github.com/DanySK/code-plagiarism-detector/commit/acee7a904582d2534e7ddb01e32bec09bc0b1653))
+
 ## [9.0.4](https://github.com/DanySK/code-plagiarism-detector/compare/9.0.3...9.0.4) (2024-09-12)
 
 ### Dependency updates
