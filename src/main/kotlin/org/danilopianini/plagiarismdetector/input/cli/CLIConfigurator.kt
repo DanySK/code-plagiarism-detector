@@ -1,5 +1,6 @@
 package org.danilopianini.plagiarismdetector.input.cli
 
+import com.github.ajalt.clikt.core.main
 import com.github.ajalt.clikt.core.subcommands
 import org.danilopianini.plagiarismdetector.input.RunConfigurator
 import org.danilopianini.plagiarismdetector.input.SupportedOptions

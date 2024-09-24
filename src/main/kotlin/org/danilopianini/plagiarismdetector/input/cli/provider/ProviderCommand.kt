@@ -1,6 +1,7 @@
 package org.danilopianini.plagiarismdetector.input.cli.provider
 
 import com.github.ajalt.clikt.core.CliktCommand
+import com.github.ajalt.clikt.core.Context
 import com.github.ajalt.clikt.core.PrintMessage
 import com.github.ajalt.clikt.parameters.options.convert
 import com.github.ajalt.clikt.parameters.options.option
@@ -25,8 +26,8 @@ import java.net.URL
  */
 sealed class ProviderCommand(
     name: String,
-    help: String,
-) : CliktCommand(name = name, help = help) {
+    private val help: String,
+) : CliktCommand(name = name) {
 
     private val service by option(help = SERVICE_HELP_MSG)
         .split(",")
@@ -71,6 +72,8 @@ sealed class ProviderCommand(
             GitHubGraphQL -> ByGitHubUserGraphQL(user, repoName)
             BitBucket -> ByBitbucketUser(user).let { if (repoName.isNotEmpty()) ByBitbucketName(repoName, it) else it }
         }
+
+    override fun help(context: Context) = help
 
     override fun run() {
         if (url == null && service == null) {
