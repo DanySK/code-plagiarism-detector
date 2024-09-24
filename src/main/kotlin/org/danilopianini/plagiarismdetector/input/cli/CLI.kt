@@ -1,6 +1,7 @@
 package org.danilopianini.plagiarismdetector.input.cli
 
 import com.github.ajalt.clikt.core.CliktCommand
+import com.github.ajalt.clikt.core.Context
 import com.github.ajalt.clikt.parameters.groups.defaultByName
 import com.github.ajalt.clikt.parameters.groups.groupChoice
 import com.github.ajalt.clikt.parameters.options.default
@@ -18,11 +19,11 @@ import org.danilopianini.plagiarismdetector.output.Output
 /**
  * The main Command Line Interface command.
  */
-class CLI(output: Output) : CliktCommand(
-    help = HELP_MSG,
-    printHelpOnEmptyArgs = true,
-    allowMultipleSubcommands = true,
-) {
+class CLI(output: Output) : CliktCommand() {
+
+    override val printHelpOnEmptyArgs: Boolean = true
+
+    override val allowMultipleSubcommands = true
 
     /**
      * The technique configuration.
@@ -53,6 +54,8 @@ class CLI(output: Output) : CliktCommand(
      */
     val exclude by option(help = EXCLUDE_HELP_MSG)
         .split(",")
+
+    override fun help(context: Context) = HELP_MSG
 
     override fun run() = Unit
 
