@@ -6,3 +6,4 @@ plagiarism-report/
 bin
 .DS_Store
 github.graphql
+*.hprof
