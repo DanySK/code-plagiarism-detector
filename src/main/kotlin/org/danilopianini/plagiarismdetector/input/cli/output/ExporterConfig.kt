@@ -13,7 +13,6 @@ import java.nio.file.Path
  * An abstract class encapsulating [ReportsExporter] configuration.
  */
 sealed class ExporterConfig<in M : Match>(name: String) : OptionGroup(name = name) {
-
     /**
      * The path of the directory where to store the reports.
      */

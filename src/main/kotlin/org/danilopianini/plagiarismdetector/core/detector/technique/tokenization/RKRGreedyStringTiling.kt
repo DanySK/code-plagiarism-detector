@@ -13,8 +13,10 @@ import kotlin.math.min
 class RKRGreedyStringTiling(
     minimumMatchLength: Int,
 ) : BaseGreedyStringTiling(minimumMatchLength) {
-
-    override fun runAlgorithm(pattern: TokenizedSource, text: TokenizedSource): Set<TokenMatch> {
+    override fun runAlgorithm(
+        pattern: TokenizedSource,
+        text: TokenizedSource,
+    ): Set<TokenMatch> {
         var searchLength = minimumMatchLength
         val tiles = mutableSetOf<TokenMatch>()
         val marked = Pair(mutableSetOf<Token>(), mutableSetOf<Token>())
@@ -48,7 +50,11 @@ class RKRGreedyStringTiling(
      * Iterates the [text] tokens hashing the subsequences of length
      * [searchLength], returning the resulting [Map].
      */
-    private fun firstPhase(text: TokenizedSource, marked: MarkedTokens, searchLength: Int): Map<Int, Set<List<Token>>> {
+    private fun firstPhase(
+        text: TokenizedSource,
+        marked: MarkedTokens,
+        searchLength: Int,
+    ): Map<Int, Set<List<Token>>> {
         val hashTable: MutableMap<Int, MutableSet<List<Token>>> = mutableMapOf()
         phase(text.representation, marked.second, searchLength) { tokens ->
             tokens.subList(0, searchLength).run {
@@ -96,7 +102,12 @@ class RKRGreedyStringTiling(
         return Pair(matches, searchLength)
     }
 
-    private inline fun phase(tokens: Tokens, marked: Set<Token>, searchLength: Int, action: (List<Token>) -> (Unit)) {
+    private inline fun phase(
+        tokens: Tokens,
+        marked: Set<Token>,
+        searchLength: Int,
+        action: (List<Token>) -> (Unit),
+    ) {
         val unmarked = tokens.filterNot(marked::contains).toList()
         unmarked.indices.forEach { index ->
             val tokensFromActual = unmarked.subList(index, unmarked.size)
@@ -130,7 +141,10 @@ class RKRGreedyStringTiling(
      * Computes the distance between the first of [tokens] and the first unmarked one.
      * If no unmarked tokens are found before the end of the sequence, its length is returned.
      */
-    private fun distanceToNextTile(tokens: List<Token>, marked: Set<Token>): Int {
+    private fun distanceToNextTile(
+        tokens: List<Token>,
+        marked: Set<Token>,
+    ): Int {
         val result = tokens.indexOfFirst(marked::contains)
         return if (result == -1) tokens.size else result
     }
@@ -138,7 +152,11 @@ class RKRGreedyStringTiling(
     /**
      * Marks and add to [tiles] all the unmarked [matches] given in input.
      */
-    private fun markMatches(tiles: MutableSet<TokenMatch>, marked: MutableMarkedTokens, matches: MaximalMatches) {
+    private fun markMatches(
+        tiles: MutableSet<TokenMatch>,
+        marked: MutableMarkedTokens,
+        matches: MaximalMatches,
+    ) {
         val myMatches = matches.toMutableMap()
         while (myMatches.isNotEmpty()) {
             val maxMatch = myMatches.keys.max()
@@ -159,7 +177,10 @@ class RKRGreedyStringTiling(
      * Returns a [TokenMatch] which is the unmarked (i.e. not contained in
      * [marked]) part remaining of the [match] given in input.
      */
-    private fun unmarkedPartOfMatch(match: TokenMatch, marked: MarkedTokens): TokenMatch {
+    private fun unmarkedPartOfMatch(
+        match: TokenMatch,
+        marked: MarkedTokens,
+    ): TokenMatch {
         val (firstUnmarkedOfPtn, lastUnmarkedOfPtn) = indexesOfUnmarked(match.pattern.second, marked.first)
         val (firstUnmarkedOfTxt, lastUnmarkedOfTxt) = indexesOfUnmarked(match.text.second, marked.second)
         val start = max(firstUnmarkedOfPtn, firstUnmarkedOfTxt)
@@ -170,15 +191,23 @@ class RKRGreedyStringTiling(
     /**
      * Returns a [Pair] with, respectively, the initial and final index of unmarked [tokens].
      */
-    private fun indexesOfUnmarked(tokens: List<Token>, marked: Set<Token>): Pair<Int, Int> = with(tokens) {
-        Pair(indexOfFirst { it !in marked }, indexOfLast { it !in marked })
-    }
+    private fun indexesOfUnmarked(
+        tokens: List<Token>,
+        marked: Set<Token>,
+    ): Pair<Int, Int> =
+        with(tokens) {
+            Pair(indexOfFirst { it !in marked }, indexOfLast { it !in marked })
+        }
 
     /**
      * Returns a new [TokenMatch] created from [match] one containing matches between
      * the specified [fromIndex] (inclusive) and [toIndex] (exclusive).
      */
-    private fun subMatch(fromIndex: Int, toIndex: Int, match: TokenMatch): TokenMatch =
+    private fun subMatch(
+        fromIndex: Int,
+        toIndex: Int,
+        match: TokenMatch,
+    ): TokenMatch =
         if (fromIndex < 0 || toIndex <= fromIndex) {
             TokenMatchImpl(Pair(match.pattern.first, emptyList()), Pair(match.text.first, emptyList()), 0)
         } else {

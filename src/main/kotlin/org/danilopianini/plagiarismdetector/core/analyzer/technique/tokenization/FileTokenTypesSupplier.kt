@@ -12,14 +12,15 @@ import org.danilopianini.plagiarismdetector.core.analyzer.representation.token.T
  * @property configurationFileName the name of the configuration file from which load token types.
  */
 class FileTokenTypesSupplier private constructor(private val configurationFileName: String) : TokenTypesSupplier {
+    private val configurationFile =
+        ClassLoader.getSystemResourceAsStream(configurationFileName) ?: error {
+            "Configuration file $configurationFileName not found."
+        }
 
-    private val configurationFile = ClassLoader.getSystemResourceAsStream(configurationFileName) ?: error {
-        "Configuration file $configurationFileName not found."
-    }
-
-    override val types: LanguageTokenTypes = LanguageTokenTypesImpl(
-        Yaml.default.decodeFromStream(SetSerializer(TokenTypeImpl.serializer()), configurationFile),
-    )
+    override val types: LanguageTokenTypes =
+        LanguageTokenTypesImpl(
+            Yaml.default.decodeFromStream(SetSerializer(TokenTypeImpl.serializer()), configurationFile),
+        )
 
     /**
      * A companion object to cache token suppliers.
@@ -30,7 +31,8 @@ class FileTokenTypesSupplier private constructor(private val configurationFileNa
         /**
          * Builds a new token supplier if needed, or fetches an existing one otherwise.
          */
-        fun supplierFor(configurationFileName: String) = cache[configurationFileName]
-            ?: FileTokenTypesSupplier(configurationFileName).also { cache += configurationFileName to it }
+        fun supplierFor(configurationFileName: String) =
+            cache[configurationFileName]
+                ?: FileTokenTypesSupplier(configurationFileName).also { cache += configurationFileName to it }
     }
 }

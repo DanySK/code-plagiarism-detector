@@ -13,8 +13,9 @@ class EnvironmentTokenSupplier(
     private val separator: CharSequence = "",
 ) : AuthenticationTokenSupplierStrategy {
     override val token: String
-        get() = listOf(environmentVariableName, *otherEnvironmentVariableNames)
-            .joinToString(separator) {
-                requireNotNull(System.getenv(it)) { "Environment variable $it not set" }
-            }
+        get() =
+            listOf(environmentVariableName, *otherEnvironmentVariableNames)
+                .joinToString(separator) {
+                    requireNotNull(System.getenv(it)) { "Environment variable $it not set" }
+                }
 }

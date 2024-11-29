@@ -13,7 +13,6 @@ import java.io.File
  * A file based [KnowledgeBaseManager] which caches data on files.
  */
 class FileKnowledgeBaseManager : KnowledgeBaseManager {
-
     private val logger = LoggerFactory.getLogger(javaClass)
     private val separator = File.separator
     private val homeDirectory = System.getProperty("user.home")
@@ -28,7 +27,10 @@ class FileKnowledgeBaseManager : KnowledgeBaseManager {
             clean(this)
         }
 
-    private fun clone(project: Repository, out: File) = Git.cloneRepository()
+    private fun clone(
+        project: Repository,
+        out: File,
+    ) = Git.cloneRepository()
         .setURI("${project.cloneUrl}")
         .setDepth(1)
         .setDirectory(out)
@@ -36,11 +38,12 @@ class FileKnowledgeBaseManager : KnowledgeBaseManager {
         .close()
 
     private fun clean(out: File) {
-        val matching = FileUtils.listFiles(
-            out,
-            TrueFileFilter.INSTANCE,
-            NotFileFilter(NameFileFilter(SOURCE_FOLDER)),
-        )
+        val matching =
+            FileUtils.listFiles(
+                out,
+                TrueFileFilter.INSTANCE,
+                NotFileFilter(NameFileFilter(SOURCE_FOLDER)),
+            )
         matching.forEach { FileUtils.deleteQuietly(it) }
     }
 

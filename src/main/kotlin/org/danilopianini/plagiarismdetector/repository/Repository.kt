@@ -7,7 +7,6 @@ import java.net.URL
  * An interface modeling a repository, a storage location for software packages.
  */
 interface Repository {
-
     /**
      * The name of the repository.
      */

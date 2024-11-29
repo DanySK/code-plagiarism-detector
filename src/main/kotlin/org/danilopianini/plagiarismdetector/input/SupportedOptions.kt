@@ -12,7 +12,6 @@ import java.net.URL
  * An object containing all supported options.
  */
 internal object SupportedOptions {
-
     /**
      * Supported programming [Language]s.
      */

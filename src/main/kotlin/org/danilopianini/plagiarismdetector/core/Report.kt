@@ -9,7 +9,6 @@ import org.danilopianini.plagiarismdetector.repository.Repository
  * resulting from the comparison of two [Repository].
  */
 interface Report<out M : Match> {
-
     /**
      * The project on which the analysis has been performed.
      */

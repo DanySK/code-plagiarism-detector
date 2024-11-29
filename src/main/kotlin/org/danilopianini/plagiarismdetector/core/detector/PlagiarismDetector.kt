@@ -12,7 +12,6 @@ interface PlagiarismDetector<in S : SourceRepresentation<T>, T, out M : Match> :
  * An interface modeling two sections of code that are similar.
  */
 interface Match {
-
     /**
      * Returns a [Pair] with the formatted matches.
      */
@@ -23,7 +22,6 @@ interface Match {
  * An interface modeling the comparison result between two sources.
  */
 interface ComparisonResult<out M : Match> {
-
     /**
      * The score of similarity, expressed as a value between 0 and 1.
      */

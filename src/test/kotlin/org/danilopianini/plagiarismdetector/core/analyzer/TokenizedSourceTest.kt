@@ -17,18 +17,20 @@ class TokenizedSourceTest : FunSpec() {
     private val token3 = TokenImpl(0, 2, TokenTypeImpl("C", emptySet()))
     private val token4 = TokenImpl(0, 3, TokenTypeImpl("D", emptySet()))
     private val token5 = TokenImpl(0, 4, TokenTypeImpl("E", emptySet()))
-    private val tokenizedSource = spyk(TokenizedSourceImpl(mockk(), mockk())) {
-        every { representation } returns sequenceOf(token1, token2, token3, token4, token5)
-    }
+    private val tokenizedSource =
+        spyk(TokenizedSourceImpl(mockk(), mockk())) {
+            every { representation } returns sequenceOf(token1, token2, token3, token4, token5)
+        }
 
     init {
         test("Token grams are correctly generated") {
             val gramSize = 3
-            val expectedGrams = listOf(
-                GramImpl(listOf(token1, token2, token3)),
-                GramImpl(listOf(token2, token3, token4)),
-                GramImpl(listOf(token3, token4, token5)),
-            )
+            val expectedGrams =
+                listOf(
+                    GramImpl(listOf(token1, token2, token3)),
+                    GramImpl(listOf(token2, token3, token4)),
+                    GramImpl(listOf(token3, token4, token5)),
+                )
             val grams = tokenizedSource.splitInGramsOf(gramSize)
             grams.count() shouldBeExactly gramSize
             grams.toList() shouldBe expectedGrams

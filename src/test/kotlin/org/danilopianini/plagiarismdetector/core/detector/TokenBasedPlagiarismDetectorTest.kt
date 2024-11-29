@@ -23,6 +23,7 @@ class TokenBasedPlagiarismDetectorTest : FunSpec() {
         private const val VALIDATOR_FILE_NAME = "ValidatorTest.java"
         private const val LEVEL_STRATEGY_FILE = "StandardLevelIncreaseStrategyTest.java"
     }
+
     private val logger = LoggerFactory.getLogger(this::class.java)
     private val analyzer = JavaTokenizationAnalyzer()
 
@@ -52,15 +53,20 @@ class TokenBasedPlagiarismDetectorTest : FunSpec() {
         }
     }
 
-    private fun runDetection(files: Pair<File, File>, printStats: Boolean = false) {
-        val (GSTElapsedTime, GSTResult) = detect(
-            TokenBasedPlagiarismDetector(GreedyStringTiling(DEFAULT_MIN_TOKEN_LEN)),
-            files,
-        )
-        val (RKRElapsedTime, RKRResult) = detect(
-            TokenBasedPlagiarismDetector(RKRGreedyStringTiling(DEFAULT_MIN_TOKEN_LEN)),
-            files,
-        )
+    private fun runDetection(
+        files: Pair<File, File>,
+        printStats: Boolean = false,
+    ) {
+        val (GSTElapsedTime, GSTResult) =
+            detect(
+                TokenBasedPlagiarismDetector(GreedyStringTiling(DEFAULT_MIN_TOKEN_LEN)),
+                files,
+            )
+        val (RKRElapsedTime, RKRResult) =
+            detect(
+                TokenBasedPlagiarismDetector(RKRGreedyStringTiling(DEFAULT_MIN_TOKEN_LEN)),
+                files,
+            )
         if (printStats) {
             printStats("Greedy String Tiling", GSTElapsedTime, GSTResult)
             printStats("Running-Karp-Rabin Greedy String Tiling", RKRElapsedTime, RKRResult)
@@ -79,7 +85,11 @@ class TokenBasedPlagiarismDetectorTest : FunSpec() {
         return Pair(stop - start, result)
     }
 
-    private fun printStats(strategyName: String, elapsedTime: Long, result: ComparisonResult<TokenMatch>) {
+    private fun printStats(
+        strategyName: String,
+        elapsedTime: Long,
+        result: ComparisonResult<TokenMatch>,
+    ) {
         logger.info("> $strategyName")
         logger.info(">> Elapsed time: $elapsedTime ms")
         logger.info(">> Score of similarity: ${result.similarity}")

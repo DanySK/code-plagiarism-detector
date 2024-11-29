@@ -12,31 +12,34 @@ import org.danilopianini.plagiarismdetector.utils.Java
 import java.io.File
 
 class TokenizationFacadeTest : FunSpec() {
-
     init {
-        val tokenization = TokenizationFacade(
-            TokenizationConfigurationImpl(
-                language = Java,
-                filterThreshold = null,
-                minimumTokens = 15,
-            ),
-        )
+        val tokenization =
+            TokenizationFacade(
+                TokenizationConfigurationImpl(
+                    language = Java,
+                    filterThreshold = null,
+                    minimumTokens = 15,
+                ),
+            )
 
         test("Testing file exclusion from detection process") {
-            val submittedProject = mockk<Repository> {
-                every { name } returns "test-submission"
-                every { getSources(any()) } returns loadFiles("EditorBoard.java")
-            }
-            val comparedProject = mockk<Repository> {
-                every { name } returns "test-corpus"
-                every { getSources(any()) } returns loadFiles("EditorBoard.java")
-            }
-            val result = tokenization.execute(
-                submittedProject,
-                comparedProject,
-                setOf("EditorBoard.java"),
-                0.3,
-            )
+            val submittedProject =
+                mockk<Repository> {
+                    every { name } returns "test-submission"
+                    every { getSources(any()) } returns loadFiles("EditorBoard.java")
+                }
+            val comparedProject =
+                mockk<Repository> {
+                    every { name } returns "test-corpus"
+                    every { getSources(any()) } returns loadFiles("EditorBoard.java")
+                }
+            val result =
+                tokenization.execute(
+                    submittedProject,
+                    comparedProject,
+                    setOf("EditorBoard.java"),
+                    0.3,
+                )
             result.submittedProject shouldBe submittedProject
             result.comparedProject shouldBe comparedProject
             result.comparisonResult.shouldBeEmpty()
@@ -45,14 +48,16 @@ class TokenizationFacadeTest : FunSpec() {
         test("Testing detection results") {
             val submittedSourceNames = listOf("CaveGenerator.java", "PlayerImplTest.java")
             val comparedSourceName = "CaveGeneratorImpl.java"
-            val submittedProject = mockk<Repository> {
-                every { name } returns "cave-generator"
-                every { getSources(any()) } returns loadFiles(*submittedSourceNames.toTypedArray())
-            }
-            val comparedProject = mockk<Repository> {
-                every { name } returns "cave-generator-plagiarized"
-                every { getSources(any()) } returns loadFiles(comparedSourceName)
-            }
+            val submittedProject =
+                mockk<Repository> {
+                    every { name } returns "cave-generator"
+                    every { getSources(any()) } returns loadFiles(*submittedSourceNames.toTypedArray())
+                }
+            val comparedProject =
+                mockk<Repository> {
+                    every { name } returns "cave-generator-plagiarized"
+                    every { getSources(any()) } returns loadFiles(comparedSourceName)
+                }
             val report = tokenization.execute(submittedProject, comparedProject, emptySet(), 0.3)
             report.submittedProject shouldBe submittedProject
             report.comparedProject shouldBe comparedProject

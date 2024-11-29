@@ -17,26 +17,28 @@ import org.danilopianini.plagiarismdetector.core.detector.technique.tokenization
 class ProjectsSimilarityEstimatorTest : FunSpec({
 
     test("Testing similarity estimation between projects with no matches") {
-        val report = ReportImpl(
-            mockk(),
-            mockk(),
-            emptySet<ComparisonResult<TokenMatch>>(),
-            0.0,
-        )
+        val report =
+            ReportImpl(
+                mockk(),
+                mockk(),
+                emptySet<ComparisonResult<TokenMatch>>(),
+                0.0,
+            )
         report.similarity shouldBeExactly 0.0
     }
 
     test("Testing similarity estimation between projects with a single matches") {
         val reportedRatio = 0.5
-        val similarity = SimilarityEstimatorWithConstantWeight()(
-            reportedRatio,
-            setOf(
-                TokenBasedComparisonResult(0.63, emptySet()),
-                TokenBasedComparisonResult(1.0, emptySet()),
-                TokenBasedComparisonResult(0.44, emptySet()),
-                TokenBasedComparisonResult(0.78, emptySet()),
-            ),
-        )
+        val similarity =
+            SimilarityEstimatorWithConstantWeight()(
+                reportedRatio,
+                setOf(
+                    TokenBasedComparisonResult(0.63, emptySet()),
+                    TokenBasedComparisonResult(1.0, emptySet()),
+                    TokenBasedComparisonResult(0.44, emptySet()),
+                    TokenBasedComparisonResult(0.78, emptySet()),
+                ),
+            )
         val weightCoefficient = reportedRatio * 1.5
         val percentileValue = 0.945
         similarity.shouldBe(weightCoefficient * percentileValue plusOrMinus 0.00001)

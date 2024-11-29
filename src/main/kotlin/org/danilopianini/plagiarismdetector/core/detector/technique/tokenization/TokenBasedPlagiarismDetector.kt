@@ -14,17 +14,15 @@ class TokenBasedPlagiarismDetector(
     private val comparisonStrategy: ComparisonStrategy<TokenizedSource, Sequence<Token>, TokenMatch>,
     private val similarityEstimator: TokenizedSourceSimilarityEstimator = AverageSimilarityEstimator(),
 ) : PlagiarismDetector<TokenizedSource, Sequence<Token>, TokenMatch> {
-
     /**
      * Creates a detector using, as detection strategy, [SimpleMatchTiling]
      * with minimum match length searched set to [minimumMatchLength].
      */
     constructor(minimumMatchLength: Int) : this(SimpleMatchTiling(minimumMatchLength))
 
-    override operator fun invoke(
-        input: Pair<TokenizedSource, TokenizedSource>,
-    ): ComparisonResult<TokenMatch> = with(comparisonStrategy(input)) {
-        val scoreOfSimilarity = similarityEstimator.similarityOf(input, this)
-        TokenBasedComparisonResult(scoreOfSimilarity, this)
-    }
+    override operator fun invoke(input: Pair<TokenizedSource, TokenizedSource>): ComparisonResult<TokenMatch> =
+        with(comparisonStrategy(input)) {
+            val scoreOfSimilarity = similarityEstimator.similarityOf(input, this)
+            TokenBasedComparisonResult(scoreOfSimilarity, this)
+        }
 }

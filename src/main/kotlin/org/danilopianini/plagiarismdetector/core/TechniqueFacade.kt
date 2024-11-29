@@ -8,7 +8,6 @@ import org.danilopianini.plagiarismdetector.repository.Repository
  * interface to execute the detection process in one shot.
  */
 interface TechniqueFacade<out M : Match> {
-
     /**
      * Runs the technique on the [submittedRepository] and the [comparedRepository].
      * During the process the given set of [filesToExclude] are skipped.

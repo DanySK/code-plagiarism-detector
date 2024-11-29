@@ -28,7 +28,6 @@ sealed class ProviderCommand(
     name: String,
     private val help: String,
 ) : CliktCommand(name = name) {
-
     private val service by option(help = SERVICE_HELP_MSG)
         .split(",")
         .validate { strings ->
@@ -64,11 +63,16 @@ sealed class ProviderCommand(
         }?.toList()
     }
 
-    private fun byCriteria(service: HostingService, user: String, repoName: String): SearchCriteria<*, *> =
+    private fun byCriteria(
+        service: HostingService,
+        user: String,
+        repoName: String,
+    ): SearchCriteria<*, *> =
         when (service) {
-            GitHubRest -> ByGitHubUserRest(
-                user,
-            ).let { if (repoName.isNotEmpty()) ByGitHubNameRest(repoName, it) else it }
+            GitHubRest ->
+                ByGitHubUserRest(
+                    user,
+                ).let { if (repoName.isNotEmpty()) ByGitHubNameRest(repoName, it) else it }
             GitHubGraphQL -> ByGitHubUserGraphQL(user, repoName)
             BitBucket -> ByBitbucketUser(user).let { if (repoName.isNotEmpty()) ByBitbucketName(repoName, it) else it }
         }
@@ -88,8 +92,9 @@ sealed class ProviderCommand(
     private companion object {
         private const val MORE_ARGS_HELP = "possibly separated by commas"
         private const val URL_HELP_MSG = "The URL addresses of the repositories to be retrieved, $MORE_ARGS_HELP."
-        private const val SERVICE_HELP_MSG = "A (list of) triple, $MORE_ARGS_HELP, containing a supported hosting " +
-            "service (github|bitbucket), the owner of the repo and an optional repository name to search, formatted: " +
-            "like this: `service-name:owner[/repo-name]`."
+        private const val SERVICE_HELP_MSG =
+            "A (list of) triple, $MORE_ARGS_HELP, containing a supported hosting " +
+                "service (github|bitbucket), the owner of the repo and an optional repository name to search," +
+                "formatted like this: `service-name:owner[/repo-name]`."
     }
 }

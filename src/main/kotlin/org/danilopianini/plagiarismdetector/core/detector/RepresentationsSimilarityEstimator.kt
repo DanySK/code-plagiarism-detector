@@ -7,9 +7,11 @@ import org.danilopianini.plagiarismdetector.core.analyzer.representation.SourceR
  * the similarities between a couple of [SourceRepresentation].
  */
 fun interface RepresentationsSimilarityEstimator<in S : SourceRepresentation<T>, T, in M : Match> {
-
     /**
      * Estimates the similarity between [representations] accordingly to the given [matches].
      */
-    fun similarityOf(representations: Pair<S, S>, matches: Set<M>): Double
+    fun similarityOf(
+        representations: Pair<S, S>,
+        matches: Set<M>,
+    ): Double
 }

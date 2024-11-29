@@ -16,7 +16,6 @@ import org.danilopianini.plagiarismdetector.provider.criteria.ByGitHubUserGraphQ
 import java.net.URI
 
 class ProviderCommandTest : FunSpec() {
-
     init {
         test("No arguments to provider subcommands should throw exception") {
             shouldThrow<PrintMessage> {
@@ -81,13 +80,14 @@ class ProviderCommandTest : FunSpec() {
             val users = listOf("user1", "user2")
             val services = listOf("github", "bitbucket")
             val repoNames = listOf("repo1", "repo2", "repo3")
-            val argsList = services.flatMap { s ->
-                users.flatMap { u ->
-                    repoNames.map {
-                        s.plus(":").plus(u).plus("/").plus(it)
+            val argsList =
+                services.flatMap { s ->
+                    users.flatMap { u ->
+                        repoNames.map {
+                            s.plus(":").plus(u).plus("/").plus(it)
+                        }
                     }
                 }
-            }
             val args = listOf("--service", argsList.joinToString(separator = ","))
             parsedCommands(args) {
                 it.url.shouldBeNull()
@@ -96,12 +96,13 @@ class ProviderCommandTest : FunSpec() {
         }
 
         test("Testing provider commands with url and criteria") {
-            val args = listOf(
-                "--service",
-                "github:danysk/repo1",
-                "--url",
-                "https://test.com",
-            )
+            val args =
+                listOf(
+                    "--service",
+                    "github:danysk/repo1",
+                    "--url",
+                    "https://test.com",
+                )
             parsedCommands(args) {
                 it.url.shouldNotBeNull() shouldBe listOf(URI("https://test.com").toURL())
                 it.criteria.shouldNotBeNull().count() shouldBe 1
@@ -110,7 +111,10 @@ class ProviderCommandTest : FunSpec() {
         }
     }
 
-    private fun parsedCommands(args: List<String>, actions: (ProviderCommand) -> Unit = { }) {
+    private fun parsedCommands(
+        args: List<String>,
+        actions: (ProviderCommand) -> Unit = { },
+    ) {
         with(SubmissionProviderCommand()) {
             parse(args)
             actions(this)

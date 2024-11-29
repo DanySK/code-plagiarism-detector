@@ -24,31 +24,34 @@ data class ByGitHubUserGraphQL(
     val repoFilter: String,
 ) : GitHubGraphQLSearchCriteria {
     override operator fun invoke(client: ApolloClient): Sequence<Repository> {
-        fun queryFor(page: String? = null): Repos = runBlocking {
-            client.query(
-                GetUserRepositoriesQuery(
-                    repoOwner,
-                    page?.let { Optional.present(it) } ?: Optional.absent(),
-                ),
-            ).execute().data
-        }
-        val emitter = generateSequence<Pair<String?, Repos>>(null to queryFor()) { (_, result) ->
-            checkNotNull(result) {
-                "No result from GitHub GraphQL API for repository owner '$repoOwner'"
+        fun queryFor(page: String? = null): Repos =
+            runBlocking {
+                client.query(
+                    GetUserRepositoriesQuery(
+                        repoOwner,
+                        page?.let { Optional.present(it) } ?: Optional.absent(),
+                    ),
+                ).execute().data
             }
-            checkNotNull(result.repositoryOwner) {
-                "No repository owner named '$repoOwner'"
+        val emitter =
+            generateSequence<Pair<String?, Repos>>(null to queryFor()) { (_, result) ->
+                checkNotNull(result) {
+                    "No result from GitHub GraphQL API for repository owner '$repoOwner'"
+                }
+                checkNotNull(result.repositoryOwner) {
+                    "No repository owner named '$repoOwner'"
+                }
+                if (result.repositoryOwner.repositories.pageInfo.hasNextPage) {
+                    val cursor = result.repositoryOwner.repositories.pageInfo.endCursor
+                    cursor to queryFor(cursor)
+                } else {
+                    null
+                }
             }
-            if (result.repositoryOwner.repositories.pageInfo.hasNextPage) {
-                val cursor = result.repositoryOwner.repositories.pageInfo.endCursor
-                cursor to queryFor(cursor)
-            } else {
-                null
+        val repoList =
+            emitter.flatMap { (_, repoList) ->
+                repoList?.repositoryOwner?.repositories?.nodes?.asSequence()?.filterNotNull().orEmpty()
             }
-        }
-        val repoList = emitter.flatMap { (_, repoList) ->
-            repoList?.repositoryOwner?.repositories?.nodes?.asSequence()?.filterNotNull().orEmpty()
-        }
         return repoList
             .filter {
                 it.name.contains(repoFilter)

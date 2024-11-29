@@ -17,80 +17,94 @@ import org.danilopianini.plagiarismdetector.utils.Java
 import java.io.File
 
 class SessionTest : FunSpec() {
-
     init {
-        val output = object : Output {
-            override fun startComparison(submissionName: String, totalComparisons: Int) =
-                println("Start comparison $submissionName ($totalComparisons)")
-            override fun tick() = Unit
-            override fun endComparison() = println("Ended")
-            override fun logInfo(message: String) = println(message)
-        }
+        val output =
+            object : Output {
+                override fun startComparison(
+                    submissionName: String,
+                    totalComparisons: Int,
+                ) = println("Start comparison $submissionName ($totalComparisons)")
+
+                override fun tick() = Unit
+
+                override fun endComparison() = println("Ended")
+
+                override fun logInfo(message: String) = println(message)
+            }
 
         test("If no corpus is found to check no file is generated") {
             val temporaryDirectory = tempdir()
             val repo = mockk<GitHubRepository> { every { name } returns "test-repo" }
-            val configuration = RunConfigurationImpl(
-                mockk<TokenizationFacade>(),
-                0.5,
-                setOf(repo),
-                emptySet(),
-                emptySet(),
-                PlainFileExporter(temporaryDirectory.toPath(), output),
-            )
+            val configuration =
+                RunConfigurationImpl(
+                    mockk<TokenizationFacade>(),
+                    0.5,
+                    setOf(repo),
+                    emptySet(),
+                    emptySet(),
+                    PlainFileExporter(temporaryDirectory.toPath(), output),
+                )
             AntiPlagiarismSessionImpl(configuration, output)()
             temporaryDirectory shouldContainNFiles 0
         }
 
         test("Testing tokenization technique session") {
-            val tokenizationConfigs = TokenizationConfigurationImpl(
-                language = Java,
-                filterThreshold = null,
-                minimumTokens = 15,
-            )
-            val submission = setOf<Repository>(
-                spyk {
-                    every { name } returns "test-submission-1"
-                    every { getSources(any()) } returns loadFiles(
-                        "CaveGenerator.java",
-                        "EditorBoard.java",
-                        "TestAnalyzer.java",
-                    )
-                },
-                spyk {
-                    every { name } returns "test-submission-2"
-                    every { getSources(any()) } returns loadFiles(
-                        "ValidatorTest.java",
-                        "TestAnalyzer.java",
-                    )
-                },
-            )
-            val corpus = setOf<Repository>(
-                spyk {
-                    every { name } returns "test-corpus-1"
-                    every { getSources(any()) } returns loadFiles(
-                        "CaveGeneratorImpl.java",
-                        "PlayerImplTest.java",
-                    )
-                },
-                spyk {
-                    every { name } returns "test-corpus-2"
-                    every { getSources(any()) } returns loadFiles(
-                        "InventoryControllerImpl.java",
-                        "StandardLevelIncreaseStrategyTest.java",
-                        "ValidatorTest.java",
-                    )
-                },
-            )
+            val tokenizationConfigs =
+                TokenizationConfigurationImpl(
+                    language = Java,
+                    filterThreshold = null,
+                    minimumTokens = 15,
+                )
+            val submission =
+                setOf<Repository>(
+                    spyk {
+                        every { name } returns "test-submission-1"
+                        every { getSources(any()) } returns
+                            loadFiles(
+                                "CaveGenerator.java",
+                                "EditorBoard.java",
+                                "TestAnalyzer.java",
+                            )
+                    },
+                    spyk {
+                        every { name } returns "test-submission-2"
+                        every { getSources(any()) } returns
+                            loadFiles(
+                                "ValidatorTest.java",
+                                "TestAnalyzer.java",
+                            )
+                    },
+                )
+            val corpus =
+                setOf<Repository>(
+                    spyk {
+                        every { name } returns "test-corpus-1"
+                        every { getSources(any()) } returns
+                            loadFiles(
+                                "CaveGeneratorImpl.java",
+                                "PlayerImplTest.java",
+                            )
+                    },
+                    spyk {
+                        every { name } returns "test-corpus-2"
+                        every { getSources(any()) } returns
+                            loadFiles(
+                                "InventoryControllerImpl.java",
+                                "StandardLevelIncreaseStrategyTest.java",
+                                "ValidatorTest.java",
+                            )
+                    },
+                )
             val temporaryDirectory = tempdir()
-            val configuration = RunConfigurationImpl(
-                TokenizationFacade(tokenizationConfigs),
-                0.3,
-                submission,
-                corpus,
-                emptySet(),
-                PlainFileExporter(temporaryDirectory.toPath(), output),
-            )
+            val configuration =
+                RunConfigurationImpl(
+                    TokenizationFacade(tokenizationConfigs),
+                    0.3,
+                    submission,
+                    corpus,
+                    emptySet(),
+                    PlainFileExporter(temporaryDirectory.toPath(), output),
+                )
             AntiPlagiarismSessionImpl(configuration, output)()
             temporaryDirectory shouldContainNFiles 2
         }

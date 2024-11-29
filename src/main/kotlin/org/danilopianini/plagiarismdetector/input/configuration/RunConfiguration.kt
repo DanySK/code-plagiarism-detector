@@ -9,7 +9,6 @@ import org.danilopianini.plagiarismdetector.repository.Repository
  * A run configuration encapsulating all the options to use during a detection session.
  */
 interface RunConfiguration<M : Match> {
-
     /**
      * The [TechniqueFacade] to use.
      */

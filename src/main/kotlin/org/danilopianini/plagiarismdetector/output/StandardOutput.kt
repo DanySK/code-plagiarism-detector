@@ -12,19 +12,22 @@ import kotlin.time.TimeSource
  */
 @OptIn(ExperimentalTime::class)
 class StandardOutput : Output {
-
     private lateinit var progressBar: ProgressBar
     private var start: TimeMark = TimeSource.Monotonic.markNow()
 
-    override fun startComparison(submissionName: String, totalComparisons: Int) {
-        progressBar = ProgressBarBuilder()
-            .setTaskName(submissionName)
-            .setStyle(ProgressBarStyle.COLORFUL_UNICODE_BLOCK)
-            .setInitialMax(totalComparisons.toLong())
-            .continuousUpdate()
-            .hideEta()
-            .clearDisplayOnFinish()
-            .build()
+    override fun startComparison(
+        submissionName: String,
+        totalComparisons: Int,
+    ) {
+        progressBar =
+            ProgressBarBuilder()
+                .setTaskName(submissionName)
+                .setStyle(ProgressBarStyle.COLORFUL_UNICODE_BLOCK)
+                .setInitialMax(totalComparisons.toLong())
+                .continuousUpdate()
+                .hideEta()
+                .clearDisplayOnFinish()
+                .build()
         start = TimeSource.Monotonic.markNow()
     }
 

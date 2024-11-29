@@ -5,12 +5,14 @@ package org.danilopianini.plagiarismdetector.output
  * to present output results.
  */
 interface Output {
-
     /**
      * Notifies the UI that the comparison of [submissionName] has started
      * and will last the given number of [totalComparisons].
      */
-    fun startComparison(submissionName: String, totalComparisons: Int)
+    fun startComparison(
+        submissionName: String,
+        totalComparisons: Int,
+    )
 
     /**
      * Notifies the UI a new comparison has been completed since the
