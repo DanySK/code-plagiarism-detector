@@ -30,7 +30,6 @@ import kotlin.system.exitProcess
  * A concrete [RunConfigurator] which parses CLI arguments to create a new run configuration.
  */
 class CLIConfigurator(private val output: Output) : RunConfigurator {
-
     private val githubRest: GitHubRestProvider by lazy {
         GitHubRestProvider.connectWithToken(EnvironmentTokenSupplier(GH_AUTH_TOKEN_VAR))
     }
@@ -64,35 +63,45 @@ class CLIConfigurator(private val output: Output) : RunConfigurator {
     }
 
     private fun repositoriesFrom(configs: ProviderCommand): Set<Repository> {
-        val url = runCatching { configs.url }
-            .onFailure { exitProcessWithMessage(it.message ?: ERROR_MSG_MISSING_SUBCOMMANDS) }
-            .getOrThrow()
-        val criteria = runCatching { configs.criteria }
-            .onFailure { exitProcessWithMessage(it.message ?: ERROR_MSG_MISSING_SUBCOMMANDS) }
-            .getOrThrow()
+        val url =
+            runCatching { configs.url }
+                .onFailure { exitProcessWithMessage(it.message ?: ERROR_MSG_MISSING_SUBCOMMANDS) }
+                .getOrThrow()
+        val criteria =
+            runCatching { configs.criteria }
+                .onFailure { exitProcessWithMessage(it.message ?: ERROR_MSG_MISSING_SUBCOMMANDS) }
+                .getOrThrow()
         return url?.map { byLink(it, SupportedOptions.serviceBy(it)) }
             ?.toSet()
             ?: criteria?.flatMap { byCriteria(it) }?.toSet()
             ?: error("Neither url nor criteria are valued!")
     }
 
-    private fun exitProcessWithMessage(message: String, exitStatus: Int = 1) {
+    private fun exitProcessWithMessage(
+        message: String,
+        exitStatus: Int = 1,
+    ) {
         output.logInfo(message)
         exitProcess(exitStatus)
     }
 
-    private fun byLink(link: URL, service: HostingService): Repository = when (service) {
-        GitHubRest -> githubRest.byLink(link)
-        GitHubGraphQL -> githubGraphQL.byLink(link)
-        BitBucket -> bitbucket.byLink(link)
-    }
+    private fun byLink(
+        link: URL,
+        service: HostingService,
+    ): Repository =
+        when (service) {
+            GitHubRest -> githubRest.byLink(link)
+            GitHubGraphQL -> githubGraphQL.byLink(link)
+            BitBucket -> bitbucket.byLink(link)
+        }
 
-    private fun byCriteria(criteria: SearchCriteria<*, *>): Sequence<Repository> = when (criteria) {
-        is GitHubRestSearchCriteria -> githubRest.byCriteria(criteria)
-        is BitbucketSearchCriteria -> bitbucket.byCriteria(criteria)
-        is GitHubGraphQLSearchCriteria -> criteria(githubGraphQL.client)
-        else -> error("The extracted criteria is not valid.")
-    }
+    private fun byCriteria(criteria: SearchCriteria<*, *>): Sequence<Repository> =
+        when (criteria) {
+            is GitHubRestSearchCriteria -> githubRest.byCriteria(criteria)
+            is BitbucketSearchCriteria -> bitbucket.byCriteria(criteria)
+            is GitHubGraphQLSearchCriteria -> criteria(githubGraphQL.client)
+            else -> error("The extracted criteria is not valid.")
+        }
 
     private companion object {
         private const val BB_AUTH_USER_VAR = "BB_USER"

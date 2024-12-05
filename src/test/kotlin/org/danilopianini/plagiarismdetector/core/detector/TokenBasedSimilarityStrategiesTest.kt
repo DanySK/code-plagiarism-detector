@@ -13,33 +13,34 @@ import org.danilopianini.plagiarismdetector.core.detector.technique.tokenization
 import org.danilopianini.plagiarismdetector.core.detector.technique.tokenization.TokenMatchImpl
 
 class TokenBasedSimilarityStrategiesTest : FunSpec() {
-
-    private val representation = Pair(
-        TokenizedSourceImpl(
-            mockk(),
-            listOf(
-                TokenImpl(0, 0, TokenTypeImpl("A", emptySet())),
-                TokenImpl(0, 1, TokenTypeImpl("B", emptySet())),
-                TokenImpl(0, 2, TokenTypeImpl("C", emptySet())),
-                TokenImpl(0, 3, TokenTypeImpl("E", emptySet())),
+    private val representation =
+        Pair(
+            TokenizedSourceImpl(
+                mockk(),
+                listOf(
+                    TokenImpl(0, 0, TokenTypeImpl("A", emptySet())),
+                    TokenImpl(0, 1, TokenTypeImpl("B", emptySet())),
+                    TokenImpl(0, 2, TokenTypeImpl("C", emptySet())),
+                    TokenImpl(0, 3, TokenTypeImpl("E", emptySet())),
+                ),
             ),
-        ),
-        TokenizedSourceImpl(
-            mockk(),
-            listOf(
-                TokenImpl(1, 0, TokenTypeImpl("A", emptySet())),
-                TokenImpl(1, 1, TokenTypeImpl("B", emptySet())),
-                TokenImpl(1, 2, TokenTypeImpl("H", emptySet())),
-                TokenImpl(1, 3, TokenTypeImpl("C", emptySet())),
-                TokenImpl(1, 4, TokenTypeImpl("E", emptySet())),
-                TokenImpl(1, 5, TokenTypeImpl("D", emptySet())),
+            TokenizedSourceImpl(
+                mockk(),
+                listOf(
+                    TokenImpl(1, 0, TokenTypeImpl("A", emptySet())),
+                    TokenImpl(1, 1, TokenTypeImpl("B", emptySet())),
+                    TokenImpl(1, 2, TokenTypeImpl("H", emptySet())),
+                    TokenImpl(1, 3, TokenTypeImpl("C", emptySet())),
+                    TokenImpl(1, 4, TokenTypeImpl("E", emptySet())),
+                    TokenImpl(1, 5, TokenTypeImpl("D", emptySet())),
+                ),
             ),
-        ),
-    )
-    private val matches = setOf(
-        TokenMatchImpl(mockk(), mockk(), 2),
-        TokenMatchImpl(mockk(), mockk(), 2),
-    )
+        )
+    private val matches =
+        setOf(
+            TokenMatchImpl(mockk(), mockk(), 2),
+            TokenMatchImpl(mockk(), mockk(), 2),
+        )
 
     init {
         test("Testing `NormalizedAverageSimilarityStrategy` with no matches") {

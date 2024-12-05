@@ -15,7 +15,6 @@ import org.danilopianini.plagiarismdetector.utils.Language
  * An abstract class encapsulating specific technique configuration.
  */
 sealed class TechniqueConfig<out M : Match>(name: String) : OptionGroup(name = name) {
-
     /**
      * The language of sources to analyze.
      */

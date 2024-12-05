@@ -14,7 +14,6 @@ import org.kohsuke.github.HttpException
 class GitHubRestProvider private constructor(
     private var github: GitHub,
 ) : AbstractGitHubProvider<GitHub, GHRepositorySearchBuilder, GitHubRestSearchCriteria>() {
-
     /**
      * A companion object to create instances of [GitHubRestProvider].
      */

@@ -13,7 +13,6 @@ data class TokenMatchImpl(
     override val text: Pair<TokenizedSource, List<Token>>,
     override val length: Int,
 ) : TokenMatch {
-
     override val formattedMatch: Pair<String, String> by lazy {
         Pair(
             (listOf("[${pattern.first.sourceFile.path}]") + matchingSectionOf(pattern)).joinToString(separator = "\n"),

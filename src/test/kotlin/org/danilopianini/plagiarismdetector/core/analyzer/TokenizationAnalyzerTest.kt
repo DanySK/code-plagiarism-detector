@@ -11,7 +11,6 @@ import org.danilopianini.plagiarismdetector.core.analyzer.technique.tokenization
 import java.io.File
 
 class TokenizationAnalyzerTest : FunSpec() {
-
     private val analyzer = JavaTokenizationAnalyzer()
 
     init {
@@ -34,10 +33,11 @@ class TokenizationAnalyzerTest : FunSpec() {
             val result = analyzer(sourceFile).representation.toList()
             result.shouldNotBeEmpty()
             result.forEach {
-                it.line shouldBeInRange IntRange(
-                    FIRST_LINE_CLASS,
-                    LAST_LINE_CLASS_WITHOUT_EQUALS_AND_HASHCODE,
-                )
+                it.line shouldBeInRange
+                    IntRange(
+                        FIRST_LINE_CLASS,
+                        LAST_LINE_CLASS_WITHOUT_EQUALS_AND_HASHCODE,
+                    )
             }
         }
 

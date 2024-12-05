@@ -10,18 +10,18 @@ import org.danilopianini.plagiarismdetector.repository.Repository
 class GitHubGraphQLProvider(
     token: String?,
 ) : AbstractGitHubProvider<ApolloClient, Sequence<Repository>, GitHubGraphQLSearchCriteria>() {
-
     /**
      * The [ApolloClient] to use to connect to GitHub.
      */
-    val client = ApolloClient.Builder()
-        .serverUrl("https://api.github.com/graphql")
-        .apply {
-            if (token != null) {
-                addHttpHeader("Authorization", "Bearer $token")
+    val client =
+        ApolloClient.Builder()
+            .serverUrl("https://api.github.com/graphql")
+            .apply {
+                if (token != null) {
+                    addHttpHeader("Authorization", "Bearer $token")
+                }
             }
-        }
-        .build()
+            .build()
 
     override fun byCriteria(criteria: GitHubGraphQLSearchCriteria): Sequence<Repository> = criteria(client)
 }

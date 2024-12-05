@@ -16,7 +16,6 @@ data class RepoContentSupplierImpl(
     private val repository: Repository,
     private val knowledgeBaseManager: KnowledgeBaseManager = FileKnowledgeBaseManager(),
 ) : RepoContentSupplier {
-
     private val contentDirectory: File by lazy {
         if (!knowledgeBaseManager.isCached(repository)) {
             knowledgeBaseManager.save(repository)
@@ -24,9 +23,10 @@ data class RepoContentSupplierImpl(
         knowledgeBaseManager.load(repository)
     }
 
-    override fun filesMatching(pattern: Regex): Sequence<File> = FileUtils.listFiles(
-        contentDirectory,
-        RegexFileFilter(pattern.toPattern()),
-        DirectoryFileFilter.DIRECTORY,
-    ).asSequence()
+    override fun filesMatching(pattern: Regex): Sequence<File> =
+        FileUtils.listFiles(
+            contentDirectory,
+            RegexFileFilter(pattern.toPattern()),
+            DirectoryFileFilter.DIRECTORY,
+        ).asSequence()
 }

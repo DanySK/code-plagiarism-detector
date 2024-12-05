@@ -8,7 +8,6 @@ import java.io.File
  * i.e. the component which takes care of caching repos content.
  */
 interface KnowledgeBaseManager {
-
     /**
      * Cache the content of the project which is maintained inside the given [Repository].
      */

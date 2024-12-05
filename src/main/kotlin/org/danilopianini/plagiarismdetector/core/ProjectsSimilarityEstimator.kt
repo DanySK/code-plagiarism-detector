@@ -15,7 +15,10 @@ fun interface ProjectsSimilarityEstimator : (Double, Set<ComparisonResult<*>>) -
  * weight coefficient to weight the statistical estimation of the similarity.
  */
 class SimilarityEstimatorWithConstantWeight : ProjectsSimilarityEstimator {
-    override fun invoke(reportedRatio: Double, results: Set<ComparisonResult<*>>): Double =
+    override fun invoke(
+        reportedRatio: Double,
+        results: Set<ComparisonResult<*>>,
+    ): Double =
         if (results.isEmpty()) {
             0.0
         } else {
@@ -36,7 +39,10 @@ class SimilarityEstimatorWithConstantWeight : ProjectsSimilarityEstimator {
  * linear function to weight the statistical estimation of similarity.
  */
 class SimilarityEstimatorWithLinearWeight : ProjectsSimilarityEstimator {
-    override fun invoke(reportedRatio: Double, results: Set<ComparisonResult<*>>): Double =
+    override fun invoke(
+        reportedRatio: Double,
+        results: Set<ComparisonResult<*>>,
+    ): Double =
         if (results.isEmpty()) {
             0.0
         } else {

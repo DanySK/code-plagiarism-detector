@@ -41,9 +41,10 @@ class ProviderTest : FunSpec() {
             githubProvider = GitHubRestProvider.connectAnonymously()
         } else {
             githubProvider = GitHubRestProvider.connectWithToken(EnvironmentTokenSupplier(GH_AUTH_TOKEN_VAR))
-            bitbucketProvider = BitbucketProvider.connectWithToken(
-                EnvironmentTokenSupplier(BB_AUTH_USER_VAR, BB_AUTH_TOKEN_VAR, separator = ":"),
-            )
+            bitbucketProvider =
+                BitbucketProvider.connectWithToken(
+                    EnvironmentTokenSupplier(BB_AUTH_USER_VAR, BB_AUTH_TOKEN_VAR, separator = ":"),
+                )
         }
 
         test("Searching by existing name and user should return repos matching those criteria") {
@@ -137,14 +138,19 @@ class ProviderTest : FunSpec() {
         result.forEach {
             it.name shouldContainIgnoringCase expectedRepositoryName
             it.owner shouldMatch expectedUsername
-            it.cloneUrl.path shouldContain Regex(
-                "^/$expectedUsername/.*$expectedRepositoryName.*",
-                RegexOption.IGNORE_CASE,
-            )
+            it.cloneUrl.path shouldContain
+                Regex(
+                    "^/$expectedUsername/.*$expectedRepositoryName.*",
+                    RegexOption.IGNORE_CASE,
+                )
         }
     }
 
-    private fun testByExistingUrl(result: Repository, expectedName: String, expectedUser: String) {
+    private fun testByExistingUrl(
+        result: Repository,
+        expectedName: String,
+        expectedUser: String,
+    ) {
         result.name shouldMatch expectedName
         result.owner shouldMatch expectedUser
     }

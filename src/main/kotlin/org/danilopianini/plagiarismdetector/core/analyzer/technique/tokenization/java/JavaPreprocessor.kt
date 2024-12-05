@@ -11,12 +11,12 @@ import org.danilopianini.plagiarismdetector.core.analyzer.StepHandler
  * accuracy of the system.
  */
 class JavaPreprocessor : StepHandler<CompilationUnit, CompilationUnit> {
-
-    override operator fun invoke(input: CompilationUnit): CompilationUnit = input.clone().also {
-        it.removePackageDeclaration()
-        it.removeImports()
-        it.removeEqualsAndHashCodeFunctions()
-    }
+    override operator fun invoke(input: CompilationUnit): CompilationUnit =
+        input.clone().also {
+            it.removePackageDeclaration()
+            it.removeImports()
+            it.removeEqualsAndHashCodeFunctions()
+        }
 
     private fun CompilationUnit.removeImports() {
         findAll(ImportDeclaration::class.java)

@@ -11,20 +11,26 @@ import org.danilopianini.plagiarismdetector.core.detector.ComparisonStrategy
 class SimpleMatchTiling(
     val minimumMatchLength: Int,
 ) : ComparisonStrategy<TokenizedSource, Sequence<Token>, TokenMatch> {
-
     private data class Match(val patternOffset: Int, val textOffset: Int, val size: Int)
 
-    private fun <T> List<T>.cutSlice(begin: Int, sliceSize: Int): Pair<List<T>, List<T>> =
-        subList(0, begin) to subList(begin + sliceSize, size)
+    private fun <T> List<T>.cutSlice(
+        begin: Int,
+        sliceSize: Int,
+    ): Pair<List<T>, List<T>> = subList(0, begin) to subList(begin + sliceSize, size)
 
     private fun List<Token>.indicizedByType() = indices.groupBy { this[it].type }
 
-    private fun longestMatch(pattern: List<Token>, text: List<Token>, minLength: Int): Match? {
+    private fun longestMatch(
+        pattern: List<Token>,
+        text: List<Token>,
+        minLength: Int,
+    ): Match? {
         var bestMatch: Match? = null
         val textIndicesByMatchType = text.indicizedByType()
-        val patternIndicesByMatchType = pattern
-            .filter { it.type in textIndicesByMatchType.keys }
-            .indicizedByType()
+        val patternIndicesByMatchType =
+            pattern
+                .filter { it.type in textIndicesByMatchType.keys }
+                .indicizedByType()
         for ((type, indices) in patternIndicesByMatchType) {
             for (outer in indices) {
                 for (inner in textIndicesByMatchType[type].orEmpty()) {
@@ -45,7 +51,11 @@ class SimpleMatchTiling(
         return bestMatch
     }
 
-    private fun searchSplit(pattern: List<Token>, text: List<Token>, minLength: Int): Set<Match> {
+    private fun searchSplit(
+        pattern: List<Token>,
+        text: List<Token>,
+        minLength: Int,
+    ): Set<Match> {
         if (pattern.size < minLength || text.size < minLength) {
             return emptySet()
         }
@@ -55,12 +65,13 @@ class SimpleMatchTiling(
             result.add(longest)
             val (leftPattern, rightPattern) = pattern.cutSlice(longest.patternOffset, longest.size)
             val (leftText, rightText) = text.cutSlice(longest.textOffset, longest.size)
-            val combinations = listOf(
-                leftPattern to leftText,
-                leftPattern to rightText,
-                rightPattern to leftText,
-                rightPattern to rightText,
-            )
+            val combinations =
+                listOf(
+                    leftPattern to leftText,
+                    leftPattern to rightText,
+                    rightPattern to leftText,
+                    rightPattern to rightText,
+                )
             result.addAll(combinations.flatMap { searchSplit(it.first, it.second, minLength) })
         }
         return result

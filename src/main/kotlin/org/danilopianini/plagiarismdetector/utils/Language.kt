@@ -4,7 +4,6 @@ package org.danilopianini.plagiarismdetector.utils
  * An interface modeling a programming language.
  */
 sealed interface Language {
-
     /**
      * The name of the language.
      */

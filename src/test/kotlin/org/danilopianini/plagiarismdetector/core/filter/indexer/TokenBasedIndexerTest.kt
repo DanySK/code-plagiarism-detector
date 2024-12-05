@@ -11,27 +11,28 @@ import org.danilopianini.plagiarismdetector.core.analyzer.representation.token.T
 import org.danilopianini.plagiarismdetector.core.filter.indexer.technique.tokenization.TokenBasedIndexer
 
 class TokenBasedIndexerTest : FunSpec() {
-
     private val indexer = TokenBasedIndexer()
 
     init {
         test("Test generation of right token indexes") {
-            val sampleTokens = listOf(
-                mockedToken("literal-expr"),
-                mockedToken("block-stmt"),
-                mockedToken("name-expr"),
-                mockedToken("if-stmt"),
-                mockedToken("name-expr"),
-                mockedToken("literal-expr"),
-                mockedToken("literal-expr"),
-            )
+            val sampleTokens =
+                listOf(
+                    mockedToken("literal-expr"),
+                    mockedToken("block-stmt"),
+                    mockedToken("name-expr"),
+                    mockedToken("if-stmt"),
+                    mockedToken("name-expr"),
+                    mockedToken("literal-expr"),
+                    mockedToken("literal-expr"),
+                )
             val tokenizedSource = spyk(TokenizedSourceImpl(mockk(), sampleTokens))
-            val expectedResult = mapOf(
-                "literal-expr" to 3,
-                "block-stmt" to 1,
-                "name-expr" to 2,
-                "if-stmt" to 1,
-            )
+            val expectedResult =
+                mapOf(
+                    "literal-expr" to 3,
+                    "block-stmt" to 1,
+                    "name-expr" to 2,
+                    "if-stmt" to 1,
+                )
             indexer(tokenizedSource).mapKeys { it.key.name } shouldBe expectedResult
         }
     }

@@ -8,6 +8,5 @@ data class TokenImpl(
     override val column: Int,
     override val type: TokenType,
 ) : Token {
-
     override fun toString(): String = "${type.name} (line=$line, column=$column)"
 }

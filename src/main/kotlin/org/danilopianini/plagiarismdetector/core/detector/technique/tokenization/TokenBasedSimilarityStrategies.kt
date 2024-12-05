@@ -17,14 +17,15 @@ fun interface TokenizedSourceSimilarityEstimator :
  * length of the two representations in terms of tokens number.
  */
 class MaxSimilarityEstimator : TokenizedSourceSimilarityEstimator {
-
     override fun similarityOf(
         representations: Pair<TokenizedSource, TokenizedSource>,
         matches: Set<TokenMatch>,
-    ): Double = matches.sumOf { it.length }.toDouble() / min(
-        representations.first.representation.count(),
-        representations.second.representation.count(),
-    )
+    ): Double =
+        matches.sumOf { it.length }.toDouble() /
+            min(
+                representations.first.representation.count(),
+                representations.second.representation.count(),
+            )
 }
 
 /**
@@ -34,17 +35,17 @@ class MaxSimilarityEstimator : TokenizedSourceSimilarityEstimator {
  * the number of matched subsequences.
  */
 class PenalizedMaxSimilarityEstimator : TokenizedSourceSimilarityEstimator {
-
     override fun similarityOf(
         representations: Pair<TokenizedSource, TokenizedSource>,
         matches: Set<TokenMatch>,
     ): Double {
         val matchedTokens = matches.sumOf { it.length }
         val matchedSubsequences = if (matches.isEmpty()) 0 else matches.count() - 1
-        return (matchedTokens - matchedSubsequences).toDouble() / min(
-            representations.first.representation.count(),
-            representations.second.representation.count(),
-        )
+        return (matchedTokens - matchedSubsequences).toDouble() /
+            min(
+                representations.first.representation.count(),
+                representations.second.representation.count(),
+            )
     }
 }
 
@@ -54,7 +55,6 @@ class PenalizedMaxSimilarityEstimator : TokenizedSourceSimilarityEstimator {
  * average length of representations, calculated in terms of tokens number.
  */
 class AverageSimilarityEstimator : TokenizedSourceSimilarityEstimator {
-
     override fun similarityOf(
         representations: Pair<TokenizedSource, TokenizedSource>,
         matches: Set<TokenMatch>,
@@ -72,7 +72,6 @@ class AverageSimilarityEstimator : TokenizedSourceSimilarityEstimator {
  * the number of matched subsequences.
  */
 class PenalizedAverageSimilarityEstimator : TokenizedSourceSimilarityEstimator {
-
     override fun similarityOf(
         representations: Pair<TokenizedSource, TokenizedSource>,
         matches: Set<TokenMatch>,

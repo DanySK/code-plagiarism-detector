@@ -36,7 +36,6 @@ typealias MutableMarkedTokens = Pair<MutableSet<Token>, MutableSet<Token>>
 abstract class BaseGreedyStringTiling(
     protected val minimumMatchLength: Int,
 ) : ComparisonStrategy<TokenizedSource, Sequence<Token>, TokenMatch> {
-
     override operator fun invoke(input: Pair<TokenizedSource, TokenizedSource>): Set<TokenMatch> {
         val (pattern, text) = orderInput(input)
         return runAlgorithm(pattern, text)
@@ -60,7 +59,10 @@ abstract class BaseGreedyStringTiling(
      * i.e. the one-to-one association of a subsequence of [Tokens] of the pattern with a matching
      * subsequence of [Tokens] from the text.
      */
-    protected abstract fun runAlgorithm(pattern: TokenizedSource, text: TokenizedSource): Set<TokenMatch>
+    protected abstract fun runAlgorithm(
+        pattern: TokenizedSource,
+        text: TokenizedSource,
+    ): Set<TokenMatch>
 
     /**
      * Searches for maximal matches at least of length [searchLength], not already marked
@@ -101,12 +103,19 @@ abstract class BaseGreedyStringTiling(
      * @return a [Pair] in which are encapsulated the matching [Token]s: in the first
      * position those of the pattern and in the second position those of the text.
      */
-    protected fun scan(pattern: Tokens, text: Tokens, marked: MarkedTokens): Pair<List<Token>, List<Token>> {
-        val (matchingPatternTokens, matchingTextTokens) = (0 until min(pattern.count(), text.count()))
-            .asSequence()
-            .map { Pair(pattern.elementAt(it), text.elementAt(it)) }
-            .takeWhile { it.first.type == it.second.type && it.first !in marked.first && it.second !in marked.second }
-            .unzip()
+    protected fun scan(
+        pattern: Tokens,
+        text: Tokens,
+        marked: MarkedTokens,
+    ): Pair<List<Token>, List<Token>> {
+        val (matchingPatternTokens, matchingTextTokens) =
+            (0 until min(pattern.count(), text.count()))
+                .asSequence()
+                .map { Pair(pattern.elementAt(it), text.elementAt(it)) }
+                .takeWhile {
+                    it.first.type == it.second.type && it.first !in marked.first && it.second !in marked.second
+                }
+                .unzip()
         return Pair(matchingPatternTokens, matchingTextTokens)
     }
 
@@ -115,6 +124,8 @@ abstract class BaseGreedyStringTiling(
      * the pattern and the text has been marked during the creation of an earlier tile or, equivalently,
      * are not in [marked].
      */
-    private fun isNotOccluded(tokenMatch: TokenMatch, marked: MarkedTokens) =
-        tokenMatch.pattern.second.all { it !in marked.first } && tokenMatch.text.second.all { it !in marked.second }
+    private fun isNotOccluded(
+        tokenMatch: TokenMatch,
+        marked: MarkedTokens,
+    ) = tokenMatch.pattern.second.all { it !in marked.first } && tokenMatch.text.second.all { it !in marked.second }
 }

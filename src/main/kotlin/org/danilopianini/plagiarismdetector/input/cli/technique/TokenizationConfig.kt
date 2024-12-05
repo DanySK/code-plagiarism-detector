@@ -13,7 +13,6 @@ import org.danilopianini.plagiarismdetector.input.configuration.TokenizationConf
  * A tokenization specific configuration.
  */
 class TokenizationConfig : TechniqueConfig<TokenMatch>(TOKENIZATION_NAME) {
-
     /**
      * The minimum token length which should be reported as a duplicate.
      */
@@ -41,9 +40,11 @@ class TokenizationConfig : TechniqueConfig<TokenMatch>(TOKENIZATION_NAME) {
     private companion object {
         private const val TOKENIZATION_NAME = "Tokenization options"
         private const val DEFAULT_MIN_TOKENS = 15
-        private const val MIN_TOKENS_HELP_MSG = "The minimum token length which should be reported " +
-            "as a duplicate. Default: $DEFAULT_MIN_TOKENS."
-        private const val FILTER_THRESHOLD_HELP_MSG = "The cutoff threshold used to filter comparison pairs." +
-            "This could affect the detection effectiveness."
+        private const val MIN_TOKENS_HELP_MSG =
+            "The minimum token length which should be reported " +
+                "as a duplicate. Default: $DEFAULT_MIN_TOKENS."
+        private const val FILTER_THRESHOLD_HELP_MSG =
+            "The cutoff threshold used to filter comparison pairs." +
+                "This could affect the detection effectiveness."
     }
 }

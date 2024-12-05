@@ -13,7 +13,6 @@ data class GitHubRepository(
     override val owner: String,
     override val name: String,
 ) : AbstractRepository() {
-
     constructor(queryResult: GHRepository) : this(queryResult.ownerName, queryResult.name)
 
     override val cloneUrl: URL = URI("https://github.com/$owner/$name.git").toURL()
@@ -22,12 +21,13 @@ data class GitHubRepository(
      * Validate the existence of the repository.
      */
     fun validate(credentials: CredentialsProvider? = null) {
-        val validation = runCatching {
-            Git.lsRemoteRepository()
-                .setRemote(cloneUrl.toString())
-                .apply { credentials?.let { setCredentialsProvider(it) } }
-                .call()
-        }
+        val validation =
+            runCatching {
+                Git.lsRemoteRepository()
+                    .setRemote(cloneUrl.toString())
+                    .apply { credentials?.let { setCredentialsProvider(it) } }
+                    .call()
+            }
         if (validation.isFailure || validation.getOrThrow().isEmpty()) {
             throw IllegalStateException(
                 "Repository $owner/$name does not exist or is not accessible.",

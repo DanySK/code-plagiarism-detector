@@ -12,7 +12,6 @@ import org.danilopianini.plagiarismdetector.core.analyzer.technique.tokenization
  * A Java source file tokenizer.
  */
 class JavaTokenizer : StepHandler<CompilationUnit, List<Token>> {
-
     private companion object {
         private const val CONFIG_FILE_NAME = "java-token-types.yml"
     }

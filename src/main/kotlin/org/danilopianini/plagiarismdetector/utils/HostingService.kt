@@ -4,7 +4,6 @@ package org.danilopianini.plagiarismdetector.utils
  * An interface modeling a hosting service.
  */
 sealed interface HostingService {
-
     /**
      * The name of the hosting service.
      */

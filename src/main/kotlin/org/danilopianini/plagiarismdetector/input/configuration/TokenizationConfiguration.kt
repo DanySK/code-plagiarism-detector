@@ -6,7 +6,6 @@ import org.danilopianini.plagiarismdetector.utils.Language
  * An interface modeling a configuration related to the Tokenization technique.
  */
 interface TokenizationConfiguration {
-
     /**
      * The language of sources to analyze.
      */

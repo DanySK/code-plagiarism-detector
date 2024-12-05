@@ -17,20 +17,20 @@ abstract class FileExporter<in M : Match>(
     private val outputDirectory: Path,
     private val output: Output,
 ) : ReportsExporter<M> {
-
     /**
      * Exports the given [reports] in a file inside [outputDirectory].
      */
-    override operator fun invoke(reports: Set<Report<M>>) = reports
-        .groupBy { it.submittedProject }
-        .forEach {
-            val fileName = "report-${it.key.name}.$fileExtension"
-            val outputFile = Paths.get(outputDirectory.pathString, fileName).toFile()
-            output.logInfo("Exporting report at ${outputFile.path}")
-            PrintWriter(FileOutputStream(outputFile)).use { out ->
-                export(reports, out)
+    override operator fun invoke(reports: Set<Report<M>>) =
+        reports
+            .groupBy { it.submittedProject }
+            .forEach {
+                val fileName = "report-${it.key.name}.$fileExtension"
+                val outputFile = Paths.get(outputDirectory.pathString, fileName).toFile()
+                output.logInfo("Exporting report at ${outputFile.path}")
+                PrintWriter(FileOutputStream(outputFile)).use { out ->
+                    export(reports, out)
+                }
             }
-        }
 
     /**
      * The file extension of the file.
@@ -40,5 +40,8 @@ abstract class FileExporter<in M : Match>(
     /**
      * Formats the [reports] exporting them using the given [output].
      */
-    protected abstract fun export(reports: Set<Report<M>>, output: PrintWriter)
+    protected abstract fun export(
+        reports: Set<Report<M>>,
+        output: PrintWriter,
+    )
 }

@@ -14,14 +14,14 @@ data class TokenizedSourceImpl(
     override val sourceFile: File,
     val tokens: List<Token>,
 ) : TokenizedSource {
-
     private companion object {
         private const val SLIDING_STEP = 1
     }
 
     override val representation: Sequence<Token> = tokens.asSequence()
 
-    override fun splitInGramsOf(size: Int): Sequence<Gram<Token>> = representation
-        .windowed(size, SLIDING_STEP)
-        .map(::GramImpl)
+    override fun splitInGramsOf(size: Int): Sequence<Gram<Token>> =
+        representation
+            .windowed(size, SLIDING_STEP)
+            .map(::GramImpl)
 }

@@ -13,6 +13,5 @@ class ReportImpl<out M : Match>(
     override val comparisonResult: Set<ComparisonResult<M>>,
     override val reportedRatio: Double,
 ) : Report<M> {
-
     override val similarity: Double = SimilarityEstimatorWithLinearWeight()(reportedRatio, comparisonResult)
 }

@@ -13,7 +13,5 @@ import java.io.File
 open class TokenizationAnalyzer(
     private val pipeline: StepHandler<File, List<Token>>,
 ) : Analyzer<TokenizedSource, Sequence<Token>> {
-
-    override operator fun invoke(input: File): TokenizedSource =
-        TokenizedSourceImpl(input, pipeline(input))
+    override operator fun invoke(input: File): TokenizedSource = TokenizedSourceImpl(input, pipeline(input))
 }

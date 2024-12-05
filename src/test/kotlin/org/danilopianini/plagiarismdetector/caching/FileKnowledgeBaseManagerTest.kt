@@ -15,15 +15,16 @@ import java.net.URL
 import java.nio.file.Files
 
 class FileKnowledgeBaseManagerTest : FunSpec() {
-
-    private val sampleBitbucketRepo = mockk<Repository> {
-        every { name } returns "test-repo-cache-simple"
-        every { cloneUrl } returns URL(BB_SAMPLE_REPO_URL)
-    }
-    private val sampleGitHubRepo = mockk<Repository> {
-        every { name } returns "test-repo-cache-without-src-root-folder"
-        every { cloneUrl } returns URL(GH_SAMPLE_REPO_URL)
-    }
+    private val sampleBitbucketRepo =
+        mockk<Repository> {
+            every { name } returns "test-repo-cache-simple"
+            every { cloneUrl } returns URL(BB_SAMPLE_REPO_URL)
+        }
+    private val sampleGitHubRepo =
+        mockk<Repository> {
+            every { name } returns "test-repo-cache-without-src-root-folder"
+            every { cloneUrl } returns URL(GH_SAMPLE_REPO_URL)
+        }
 
     init {
         val cacheDir = Files.createTempDirectory("cache-dir").toFile()

@@ -13,7 +13,6 @@ import org.danilopianini.plagiarismdetector.utils.LoggerConfiguratorImpl
 import org.slf4j.LoggerFactory
 
 class LoggerTest : FunSpec() {
-
     init {
         val logger = LoggerFactory.getLogger(this.javaClass) as Logger
 

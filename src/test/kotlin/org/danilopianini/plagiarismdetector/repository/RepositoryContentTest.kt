@@ -6,22 +6,22 @@ import io.mockk.every
 import io.mockk.mockk
 
 class RepositoryContentTest : FunSpec() {
-
     private val githubRepo = GitHubRepository("tassiLuca", "test-app-for-code-plagiarism-detector")
 
-    private val bitbucketRepo = BitbucketRepository(
-        mockk {
-            every {
-                this@mockk.getJSONObject(any())
-                    .getJSONArray(any())
-                    .getJSONObject(any())
-                    .getString(any())
-            } returns BB_SAMPLE_REPO_URL
-            every {
-                this@mockk.get(any()).toString()
-            } returns "test-bitbucket-repo-content"
-        },
-    )
+    private val bitbucketRepo =
+        BitbucketRepository(
+            mockk {
+                every {
+                    this@mockk.getJSONObject(any())
+                        .getJSONArray(any())
+                        .getJSONObject(any())
+                        .getString(any())
+                } returns BB_SAMPLE_REPO_URL
+                every {
+                    this@mockk.get(any()).toString()
+                } returns "test-bitbucket-repo-content"
+            },
+        )
 
     init {
         test("Check if returns all sources") {

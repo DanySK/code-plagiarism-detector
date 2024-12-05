@@ -9,6 +9,5 @@ class TokenBasedComparisonResult(
     override val similarity: Double,
     tokenMatches: Set<TokenMatch>,
 ) : ComparisonResult<TokenMatch> {
-
     override val matches: Sequence<TokenMatch> = tokenMatches.asSequence()
 }
