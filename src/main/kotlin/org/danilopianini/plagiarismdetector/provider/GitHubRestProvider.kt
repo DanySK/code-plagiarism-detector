@@ -46,8 +46,10 @@ class GitHubRestProvider private constructor(
         }
     }
 
-    private fun getMatchingReposByCriteria(criteria: GitHubRestSearchCriteria): Sequence<GitHubRepository> {
-        return criteria(github).list().toSet().asSequence()
+    private fun getMatchingReposByCriteria(criteria: GitHubRestSearchCriteria): Sequence<GitHubRepository> =
+        criteria(github)
+            .list()
+            .toSet()
+            .asSequence()
             .map(::GitHubRepository)
-    }
 }

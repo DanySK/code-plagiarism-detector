@@ -30,7 +30,8 @@ class FileKnowledgeBaseManager : KnowledgeBaseManager {
     private fun clone(
         project: Repository,
         out: File,
-    ) = Git.cloneRepository()
+    ) = Git
+        .cloneRepository()
         .setURI("${project.cloneUrl}")
         .setDepth(1)
         .setDirectory(out)

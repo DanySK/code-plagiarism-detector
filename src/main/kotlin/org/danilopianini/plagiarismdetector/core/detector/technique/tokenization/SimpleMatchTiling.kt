@@ -11,7 +11,11 @@ import org.danilopianini.plagiarismdetector.core.detector.ComparisonStrategy
 class SimpleMatchTiling(
     val minimumMatchLength: Int,
 ) : ComparisonStrategy<TokenizedSource, Sequence<Token>, TokenMatch> {
-    private data class Match(val patternOffset: Int, val textOffset: Int, val size: Int)
+    private data class Match(
+        val patternOffset: Int,
+        val textOffset: Int,
+        val size: Int,
+    )
 
     private fun <T> List<T>.cutSlice(
         begin: Int,
@@ -81,12 +85,13 @@ class SimpleMatchTiling(
         val (patternPair, textPair) = p1.toList().map { it to it.representation.toList() }.sortedBy { it.second.size }
         val pattern = patternPair.second
         val text = textPair.second
-        return searchSplit(pattern, text, minimumMatchLength).map {
-            TokenMatchImpl(
-                patternPair.first to pattern.subList(it.patternOffset, it.patternOffset + it.size),
-                textPair.first to text.subList(it.textOffset, it.textOffset + it.size),
-                it.size,
-            )
-        }.toSet()
+        return searchSplit(pattern, text, minimumMatchLength)
+            .map {
+                TokenMatchImpl(
+                    patternPair.first to pattern.subList(it.patternOffset, it.patternOffset + it.size),
+                    textPair.first to text.subList(it.textOffset, it.textOffset + it.size),
+                    it.size,
+                )
+            }.toSet()
     }
 }

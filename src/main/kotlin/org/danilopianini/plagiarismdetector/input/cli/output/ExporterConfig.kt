@@ -12,7 +12,9 @@ import java.nio.file.Path
 /**
  * An abstract class encapsulating [ReportsExporter] configuration.
  */
-sealed class ExporterConfig<in M : Match>(name: String) : OptionGroup(name = name) {
+sealed class ExporterConfig<in M : Match>(
+    name: String,
+) : OptionGroup(name = name) {
     /**
      * The path of the directory where to store the reports.
      */
@@ -21,8 +23,7 @@ sealed class ExporterConfig<in M : Match>(name: String) : OptionGroup(name = nam
         .convert {
             require(it.isDirectory || it.mkdirs())
             it.toPath()
-        }
-        .required()
+        }.required()
 
     /**
      * The [ReportsExporter] for the specific chosen exporter type.

@@ -13,7 +13,9 @@ interface GitHubRestSearchCriteria : SearchCriteria<GitHub, GHRepositorySearchBu
  * A search criterion to filter by username.
  * @property username the GitHub username.
  */
-data class ByGitHubUserRest(val username: String) : GitHubRestSearchCriteria {
+data class ByGitHubUserRest(
+    val username: String,
+) : GitHubRestSearchCriteria {
     override operator fun invoke(subject: GitHub): GHRepositorySearchBuilder =
         subject.searchRepositories().user(username).fork(GHFork.PARENT_AND_FORKS)
 }

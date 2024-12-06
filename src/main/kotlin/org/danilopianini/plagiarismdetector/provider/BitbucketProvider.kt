@@ -65,7 +65,11 @@ class BitbucketProvider private constructor(
         val responses = mutableSetOf<JSONObject>()
         responses.add(doGETRequest(url))
         check(!responses.last().hasError()) {
-            responses.last().getJSONObject(ERROR_FIELD).get(MESSAGE_FIELD).toString()
+            responses
+                .last()
+                .getJSONObject(ERROR_FIELD)
+                .get(MESSAGE_FIELD)
+                .toString()
         }
         if (responses.last().hasNext()) {
             responses.addAll(getResponses(responses.last().get(NEXT_PAGE_FIELD).toString()))
@@ -75,7 +79,8 @@ class BitbucketProvider private constructor(
 
     private fun doGETRequest(url: String): JSONObject {
         val request =
-            Unirest.get(url)
+            Unirest
+                .get(url)
                 .header(ACCEPT_HEADER_FIELD, ACCEPT_HEADER_VALUE)
         encodedAuthenticationToken?.let { request.header(AUTH_HEADER_FIELD, "$AUTH_HEADER_PREFIX $it") }
         val response = request.asBinary()

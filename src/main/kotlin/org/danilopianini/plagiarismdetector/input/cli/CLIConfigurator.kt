@@ -29,7 +29,9 @@ import kotlin.system.exitProcess
 /**
  * A concrete [RunConfigurator] which parses CLI arguments to create a new run configuration.
  */
-class CLIConfigurator(private val output: Output) : RunConfigurator {
+class CLIConfigurator(
+    private val output: Output,
+) : RunConfigurator {
     private val githubRest: GitHubRestProvider by lazy {
         GitHubRestProvider.connectWithToken(EnvironmentTokenSupplier(GH_AUTH_TOKEN_VAR))
     }
@@ -71,7 +73,8 @@ class CLIConfigurator(private val output: Output) : RunConfigurator {
             runCatching { configs.criteria }
                 .onFailure { exitProcessWithMessage(it.message ?: ERROR_MSG_MISSING_SUBCOMMANDS) }
                 .getOrThrow()
-        return url?.map { byLink(it, SupportedOptions.serviceBy(it)) }
+        return url
+            ?.map { byLink(it, SupportedOptions.serviceBy(it)) }
             ?.toSet()
             ?: criteria?.flatMap { byCriteria(it) }?.toSet()
             ?: error("Neither url nor criteria are valued!")

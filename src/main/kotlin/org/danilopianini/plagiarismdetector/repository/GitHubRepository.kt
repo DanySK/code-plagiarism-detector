@@ -23,7 +23,8 @@ data class GitHubRepository(
     fun validate(credentials: CredentialsProvider? = null) {
         val validation =
             runCatching {
-                Git.lsRemoteRepository()
+                Git
+                    .lsRemoteRepository()
                     .setRemote(cloneUrl.toString())
                     .apply { credentials?.let { setCredentialsProvider(it) } }
                     .call()

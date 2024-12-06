@@ -114,8 +114,7 @@ abstract class BaseGreedyStringTiling(
                 .map { Pair(pattern.elementAt(it), text.elementAt(it)) }
                 .takeWhile {
                     it.first.type == it.second.type && it.first !in marked.first && it.second !in marked.second
-                }
-                .unzip()
+                }.unzip()
         return Pair(matchingPatternTokens, matchingTextTokens)
     }
 

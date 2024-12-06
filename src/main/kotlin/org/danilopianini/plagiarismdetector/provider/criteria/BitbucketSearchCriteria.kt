@@ -18,7 +18,9 @@ interface BitbucketSearchCriteria : SearchCriteria<String, String>
  * A search criterion to filter by username.
  * @property username the Bitbucket username.
  */
-class ByBitbucketUser(private val username: String) : BitbucketSearchCriteria {
+class ByBitbucketUser(
+    private val username: String,
+) : BitbucketSearchCriteria {
     override operator fun invoke(subject: String): String =
         StringBuilder(subject)
             .append(URL_SEPARATOR)
@@ -55,5 +57,6 @@ class ByBitbucketName(
             .append(LIKE_CHAR)
             .append(QUOTATION_MARK)
             .append(repositoryName.replace(EMPTY_CHAR, PLUS_CHAR))
-            .append(QUOTATION_MARK).toString()
+            .append(QUOTATION_MARK)
+            .toString()
 }

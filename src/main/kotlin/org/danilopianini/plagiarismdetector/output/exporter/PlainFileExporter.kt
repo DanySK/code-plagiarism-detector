@@ -22,7 +22,8 @@ class PlainFileExporter<in M : Match>(
     ) {
         printHeader(output)
         printSummary(reports, output)
-        reports.asSequence()
+        reports
+            .asSequence()
             .filter { it.similarity > LOWER_BOUND_SIMILARITY }
             .toSortedSet(compareByDescending { it.similarity })
             .forEach { printBody(it, output) }

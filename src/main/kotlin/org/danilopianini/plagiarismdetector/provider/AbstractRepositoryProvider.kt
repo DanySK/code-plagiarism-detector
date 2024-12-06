@@ -33,7 +33,8 @@ abstract class AbstractRepositoryProvider<I, O, in C : SearchCriteria<I, O>> : R
     protected abstract fun getRepoByUrl(url: URL): Repository
 
     private fun urlIsWellFormed(url: URL): Boolean =
-        url.path.replace(Regex("^/|/$"), "")
+        url.path
+            .replace(Regex("^/|/$"), "")
             .split("/")
             .count() == EXPECTED_PATH_ARGS
 }

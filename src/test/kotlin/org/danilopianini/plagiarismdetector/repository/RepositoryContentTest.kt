@@ -12,7 +12,8 @@ class RepositoryContentTest : FunSpec() {
         BitbucketRepository(
             mockk {
                 every {
-                    this@mockk.getJSONObject(any())
+                    this@mockk
+                        .getJSONObject(any())
                         .getJSONArray(any())
                         .getJSONObject(any())
                         .getString(any())

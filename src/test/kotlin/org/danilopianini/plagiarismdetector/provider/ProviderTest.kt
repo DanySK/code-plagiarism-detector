@@ -109,12 +109,16 @@ class ProviderTest : FunSpec() {
         }
 
         test("Searching by a *non-existing* name should return an empty collection of repos") {
-            githubProvider.byCriteria(
-                ByGitHubNameRest("non-existing-repo", ByGitHubUserRest(DANYSK_USER)),
-            ).toSet().shouldBeEmpty()
-            bitbucketProvider.byCriteria(
-                ByBitbucketName("non-existing-repo", ByBitbucketUser(DANYSK_USER)),
-            ).toSet().shouldBeEmpty()
+            githubProvider
+                .byCriteria(
+                    ByGitHubNameRest("non-existing-repo", ByGitHubUserRest(DANYSK_USER)),
+                ).toSet()
+                .shouldBeEmpty()
+            bitbucketProvider
+                .byCriteria(
+                    ByBitbucketName("non-existing-repo", ByBitbucketUser(DANYSK_USER)),
+                ).toSet()
+                .shouldBeEmpty()
         }
 
         test("Searching by a *non-existing* user should throw an exception") {

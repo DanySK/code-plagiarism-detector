@@ -11,7 +11,9 @@ import org.danilopianini.plagiarismdetector.core.analyzer.representation.token.T
  * A supplier of [LanguageTokenTypes] for Java programming language.
  * @property configurationFileName the name of the configuration file from which load token types.
  */
-class FileTokenTypesSupplier private constructor(private val configurationFileName: String) : TokenTypesSupplier {
+class FileTokenTypesSupplier private constructor(
+    private val configurationFileName: String,
+) : TokenTypesSupplier {
     private val configurationFile =
         ClassLoader.getSystemResourceAsStream(configurationFileName) ?: error {
             "Configuration file $configurationFileName not found."

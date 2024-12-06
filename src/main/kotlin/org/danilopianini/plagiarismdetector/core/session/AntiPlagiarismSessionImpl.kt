@@ -32,7 +32,8 @@ class AntiPlagiarismSessionImpl<out C : RunConfiguration<M>, M : Match>(
     private fun processNotYetProcessed(submission: Repository): Set<Report<M>> =
         with(configuration) {
             output.startComparison(submission.name, configuration.corpus.count())
-            corpus.filter { it.name != submission.name && submission hasNotYetComparedAgainst it }
+            corpus
+                .filter { it.name != submission.name && submission hasNotYetComparedAgainst it }
                 .toSet()
                 .parallelStream()
                 .peek { output.tick() }
@@ -42,11 +43,12 @@ class AntiPlagiarismSessionImpl<out C : RunConfiguration<M>, M : Match>(
 
     private fun retrieveAlreadyProcessed(submission: Repository): Set<Report<M>> =
         with(configuration) {
-            corpus.mapNotNull { corpus ->
-                processedResult.find { it.refersTo(submission, corpus) }?.run {
-                    ReportImpl(submission, corpus, comparisonResult, reportedRatio)
-                }
-            }.toSet()
+            corpus
+                .mapNotNull { corpus ->
+                    processedResult.find { it.refersTo(submission, corpus) }?.run {
+                        ReportImpl(submission, corpus, comparisonResult, reportedRatio)
+                    }
+                }.toSet()
         }
 
     private infix fun Repository.hasNotYetComparedAgainst(other: Repository): Boolean =

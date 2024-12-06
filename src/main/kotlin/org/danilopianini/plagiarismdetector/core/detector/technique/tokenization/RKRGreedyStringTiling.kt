@@ -28,13 +28,12 @@ class RKRGreedyStringTiling(
         return tiles
     }
 
-    private fun updateSearchLength(actualSearchLength: Int): Int {
-        return when {
+    private fun updateSearchLength(actualSearchLength: Int): Int =
+        when {
             actualSearchLength > 2 * minimumMatchLength -> actualSearchLength / 2
             actualSearchLength > minimumMatchLength -> minimumMatchLength
             else -> 0
         }
-    }
 
     override fun searchMatches(
         pattern: TokenizedSource,

@@ -22,7 +22,8 @@ data class TokenMatchImpl(
 
     private fun matchingSectionOf(tokens: Pair<TokenizedSource, List<Token>>): List<String> {
         val matchingLines = tokens.second.sortedWith(compareBy({ it.line }, { it.column }))
-        return FileUtils.readLines(tokens.first.sourceFile, Charset.defaultCharset())
+        return FileUtils
+            .readLines(tokens.first.sourceFile, Charset.defaultCharset())
             .subList(matchingLines.first().line - 1, matchingLines.last().line)
     }
 

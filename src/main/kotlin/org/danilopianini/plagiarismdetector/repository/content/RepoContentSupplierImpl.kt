@@ -24,9 +24,10 @@ data class RepoContentSupplierImpl(
     }
 
     override fun filesMatching(pattern: Regex): Sequence<File> =
-        FileUtils.listFiles(
-            contentDirectory,
-            RegexFileFilter(pattern.toPattern()),
-            DirectoryFileFilter.DIRECTORY,
-        ).asSequence()
+        FileUtils
+            .listFiles(
+                contentDirectory,
+                RegexFileFilter(pattern.toPattern()),
+                DirectoryFileFilter.DIRECTORY,
+            ).asSequence()
 }

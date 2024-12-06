@@ -14,7 +14,9 @@ import org.danilopianini.plagiarismdetector.utils.Language
 /**
  * An abstract class encapsulating specific technique configuration.
  */
-sealed class TechniqueConfig<out M : Match>(name: String) : OptionGroup(name = name) {
+sealed class TechniqueConfig<out M : Match>(
+    name: String,
+) : OptionGroup(name = name) {
     /**
      * The language of sources to analyze.
      */
@@ -22,8 +24,7 @@ sealed class TechniqueConfig<out M : Match>(name: String) : OptionGroup(name = n
         .choice(*SupportedOptions.languages.map(Language::name).toTypedArray())
         .convert { langName ->
             SupportedOptions.languages.find { langName == it.name } ?: error("$langName is not a supported language")
-        }
-        .default(Java)
+        }.default(Java)
 
     /**
      * Returns the [TechniqueFacade] for the specific chosen technique.

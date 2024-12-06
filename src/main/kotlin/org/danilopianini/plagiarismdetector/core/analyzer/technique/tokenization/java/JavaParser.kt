@@ -18,11 +18,15 @@ class JavaParser : StepHandler<File, CompilationUnit> {
                 .setAttributeComments(false)
                 .setLanguageLevel(ParserConfiguration.LanguageLevel.CURRENT)
         val parser = com.github.javaparser.JavaParser(parserConfiguration)
-        return parser.parse(input).runCatching {
-            if (!isSuccessful) {
-                logger.error("Errors occurred parsing ${input.path}: ${problems.joinToString { it.verboseMessage }}")
-            }
-            result.get()
-        }.getOrElse { error("Parsing of ${input.path} failed completely") }
+        return parser
+            .parse(input)
+            .runCatching {
+                if (!isSuccessful) {
+                    logger.error(
+                        "Errors occurred parsing ${input.path}: ${problems.joinToString { it.verboseMessage }}",
+                    )
+                }
+                result.get()
+            }.getOrElse { error("Parsing of ${input.path} failed completely") }
     }
 }

@@ -17,7 +17,9 @@ import kotlin.math.max
 /**
  * A concrete [TechniqueFacade] which exploits the **Tokenization** technique.
  */
-class TokenizationFacade(private val configs: TokenizationConfiguration) : TechniqueFacade<TokenMatch> {
+class TokenizationFacade(
+    private val configs: TokenizationConfiguration,
+) : TechniqueFacade<TokenMatch> {
     private val logger = LoggerFactory.getLogger(javaClass)
     private val analyzer =
         when (configs.language) {
@@ -51,7 +53,8 @@ class TokenizationFacade(private val configs: TokenizationConfiguration) : Techn
         repository: Repository,
         filesToExclude: Set<String>,
     ): Sequence<TokenizedSource> =
-        repository.getSources(configs.language.fileExtensions)
+        repository
+            .getSources(configs.language.fileExtensions)
             .filter { it.name !in filesToExclude }
             .map(analyzer)
             .filter { it.representation.count() >= configs.minimumTokens }
@@ -95,7 +98,8 @@ class TokenizationFacade(private val configs: TokenizationConfiguration) : Techn
         results: Set<ComparisonResult<TokenMatch>>,
         representations: Sequence<TokenizedSource>,
     ): Int =
-        results.flatMap { it.matches }
+        results
+            .flatMap { it.matches }
             .flatMap { sequenceOf(it.pattern.first.sourceFile, it.text.first.sourceFile) }
             .distinctBy { it.path }
             .count { it in representations.map { t -> t.sourceFile } }

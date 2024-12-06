@@ -14,14 +14,14 @@ class GitHubGraphQLProvider(
      * The [ApolloClient] to use to connect to GitHub.
      */
     val client =
-        ApolloClient.Builder()
+        ApolloClient
+            .Builder()
             .serverUrl("https://api.github.com/graphql")
             .apply {
                 if (token != null) {
                     addHttpHeader("Authorization", "Bearer $token")
                 }
-            }
-            .build()
+            }.build()
 
     override fun byCriteria(criteria: GitHubGraphQLSearchCriteria): Sequence<Repository> = criteria(client)
 }

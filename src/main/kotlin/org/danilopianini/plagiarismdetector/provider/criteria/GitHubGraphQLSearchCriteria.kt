@@ -26,12 +26,14 @@ data class ByGitHubUserGraphQL(
     override operator fun invoke(client: ApolloClient): Sequence<Repository> {
         fun queryFor(page: String? = null): Repos =
             runBlocking {
-                client.query(
-                    GetUserRepositoriesQuery(
-                        repoOwner,
-                        page?.let { Optional.present(it) } ?: Optional.absent(),
-                    ),
-                ).execute().data
+                client
+                    .query(
+                        GetUserRepositoriesQuery(
+                            repoOwner,
+                            page?.let { Optional.present(it) } ?: Optional.absent(),
+                        ),
+                    ).execute()
+                    .data
             }
         val emitter =
             generateSequence<Pair<String?, Repos>>(null to queryFor()) { (_, result) ->
@@ -50,12 +52,17 @@ data class ByGitHubUserGraphQL(
             }
         val repoList =
             emitter.flatMap { (_, repoList) ->
-                repoList?.repositoryOwner?.repositories?.nodes?.asSequence()?.filterNotNull().orEmpty()
+                repoList
+                    ?.repositoryOwner
+                    ?.repositories
+                    ?.nodes
+                    ?.asSequence()
+                    ?.filterNotNull()
+                    .orEmpty()
             }
         return repoList
             .filter {
                 it.name.contains(repoFilter)
-            }
-            .map { GitHubRepository(owner = repoOwner, name = it.name) }
+            }.map { GitHubRepository(owner = repoOwner, name = it.name) }
     }
 }

@@ -27,7 +27,8 @@ class TokenizedSourceFilter(
         val minSimilarity = similarities.values.min()
         val maxSimilarity = similarities.values.max()
         val cutoffValue = minSimilarity + threshold * (maxSimilarity - minSimilarity)
-        return similarities.asSequence()
+        return similarities
+            .asSequence()
             .filter { it.value >= cutoffValue }
             .map { it.key }
     }

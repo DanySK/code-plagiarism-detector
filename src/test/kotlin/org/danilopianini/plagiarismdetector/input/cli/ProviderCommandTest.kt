@@ -84,7 +84,11 @@ class ProviderCommandTest : FunSpec() {
                 services.flatMap { s ->
                     users.flatMap { u ->
                         repoNames.map {
-                            s.plus(":").plus(u).plus("/").plus(it)
+                            s
+                                .plus(":")
+                                .plus(u)
+                                .plus("/")
+                                .plus(it)
                         }
                     }
                 }

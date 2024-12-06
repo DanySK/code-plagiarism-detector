@@ -8,7 +8,9 @@ import java.net.URL
  * A Bitbucket repository.
  * @property repositoryInfo the [JSONObject] containing all repo's infos.
  */
-data class BitbucketRepository(private val repositoryInfo: JSONObject) : AbstractRepository() {
+data class BitbucketRepository(
+    private val repositoryInfo: JSONObject,
+) : AbstractRepository() {
     private companion object {
         private const val REPOSITORY_NAME_FIELD = "name"
         private const val LINKS_FIELD = "links"
@@ -27,7 +29,8 @@ data class BitbucketRepository(private val repositoryInfo: JSONObject) : Abstrac
     }
 
     override val cloneUrl: URL by lazy {
-        repositoryInfo.getJSONObject(LINKS_FIELD)
+        repositoryInfo
+            .getJSONObject(LINKS_FIELD)
             .getJSONArray(CLONE_FIELD)
             .getJSONObject(0)
             .let { URI(it.getString(HREF_FIELD)).toURL() }
