@@ -1,9 +1,9 @@
 package org.danilopianini.plagiarismdetector.provider
 
+import java.net.URL
 import org.danilopianini.plagiarismdetector.provider.criteria.SearchCriteria
 import org.danilopianini.plagiarismdetector.repository.GitHubRepository
 import org.danilopianini.plagiarismdetector.repository.Repository
-import java.net.URL
 
 /**
  * A provider of GitHub repositories.

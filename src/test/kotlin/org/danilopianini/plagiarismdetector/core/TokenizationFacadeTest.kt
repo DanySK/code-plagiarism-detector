@@ -6,10 +6,10 @@ import io.kotest.matchers.doubles.plusOrMinus
 import io.kotest.matchers.shouldBe
 import io.mockk.every
 import io.mockk.mockk
+import java.io.File
 import org.danilopianini.plagiarismdetector.input.configuration.TokenizationConfigurationImpl
 import org.danilopianini.plagiarismdetector.repository.Repository
 import org.danilopianini.plagiarismdetector.utils.Java
-import java.io.File
 
 class TokenizationFacadeTest : FunSpec() {
     init {

@@ -8,11 +8,11 @@ import io.kotest.matchers.shouldBe
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.spyk
-import org.apache.commons.io.FileUtils
-import org.danilopianini.plagiarismdetector.repository.Repository
 import java.io.File
 import java.net.URL
 import java.nio.file.Files
+import org.apache.commons.io.FileUtils
+import org.danilopianini.plagiarismdetector.repository.Repository
 
 class FileKnowledgeBaseManagerTest : FunSpec() {
     private val sampleBitbucketRepo =

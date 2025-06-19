@@ -6,9 +6,9 @@ import io.kotest.matchers.collections.shouldNotBeEmpty
 import io.kotest.matchers.ints.shouldBeExactly
 import io.kotest.matchers.ints.shouldBeInRange
 import io.kotest.matchers.shouldBe
+import java.io.File
 import org.danilopianini.plagiarismdetector.core.analyzer.technique.tokenization.java.JavaParser
 import org.danilopianini.plagiarismdetector.core.analyzer.technique.tokenization.java.JavaTokenizationAnalyzer
-import java.io.File
 
 class TokenizationAnalyzerTest : FunSpec() {
     private val analyzer = JavaTokenizationAnalyzer()

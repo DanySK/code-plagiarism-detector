@@ -1,11 +1,11 @@
 package org.danilopianini.plagiarismdetector.output
 
-import me.tongfei.progressbar.ProgressBar
-import me.tongfei.progressbar.ProgressBarBuilder
-import me.tongfei.progressbar.ProgressBarStyle
 import kotlin.time.ExperimentalTime
 import kotlin.time.TimeMark
 import kotlin.time.TimeSource
+import me.tongfei.progressbar.ProgressBar
+import me.tongfei.progressbar.ProgressBarBuilder
+import me.tongfei.progressbar.ProgressBarStyle
 
 /**
  * A standard [Output] bound to the command line.
@@ -15,19 +15,15 @@ class StandardOutput : Output {
     private lateinit var progressBar: ProgressBar
     private var start: TimeMark = TimeSource.Monotonic.markNow()
 
-    override fun startComparison(
-        submissionName: String,
-        totalComparisons: Int,
-    ) {
-        progressBar =
-            ProgressBarBuilder()
-                .setTaskName(submissionName)
-                .setStyle(ProgressBarStyle.COLORFUL_UNICODE_BLOCK)
-                .setInitialMax(totalComparisons.toLong())
-                .continuousUpdate()
-                .hideEta()
-                .clearDisplayOnFinish()
-                .build()
+    override fun startComparison(submissionName: String, totalComparisons: Int) {
+        progressBar = ProgressBarBuilder()
+            .setTaskName(submissionName)
+            .setStyle(ProgressBarStyle.COLORFUL_UNICODE_BLOCK)
+            .setInitialMax(totalComparisons.toLong())
+            .continuousUpdate()
+            .hideEta()
+            .clearDisplayOnFinish()
+            .build()
         start = TimeSource.Monotonic.markNow()
     }
 

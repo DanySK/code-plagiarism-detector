@@ -1,5 +1,6 @@
 package org.danilopianini.plagiarismdetector.caching
 
+import java.io.File
 import org.apache.commons.io.FileUtils
 import org.apache.commons.io.filefilter.NameFileFilter
 import org.apache.commons.io.filefilter.NotFileFilter
@@ -7,7 +8,6 @@ import org.apache.commons.io.filefilter.TrueFileFilter
 import org.danilopianini.plagiarismdetector.repository.Repository
 import org.eclipse.jgit.api.Git
 import org.slf4j.LoggerFactory
-import java.io.File
 
 /**
  * A file based [KnowledgeBaseManager] which caches data on files.
@@ -20,17 +20,13 @@ class FileKnowledgeBaseManager : KnowledgeBaseManager {
         File(homeDirectory + separator + REPOSITORY_FOLDER_NAME)
     }
 
-    override fun save(project: Repository) =
-        with(File(repositoryFolder.path + separator + project.name)) {
-            logger.debug("Cloning ${project.name}")
-            clone(project, this)
-            clean(this)
-        }
+    override fun save(project: Repository) = with(File(repositoryFolder.path + separator + project.name)) {
+        logger.debug("Cloning ${project.name}")
+        clone(project, this)
+        clean(this)
+    }
 
-    private fun clone(
-        project: Repository,
-        out: File,
-    ) = Git
+    private fun clone(project: Repository, out: File) = Git
         .cloneRepository()
         .setURI("${project.cloneUrl}")
         .setDepth(1)
@@ -48,10 +44,9 @@ class FileKnowledgeBaseManager : KnowledgeBaseManager {
         matching.forEach { FileUtils.deleteQuietly(it) }
     }
 
-    override fun isCached(project: Repository): Boolean =
-        with(File(repositoryFolder.path + separator + project.name)) {
-            isDirectory && !FileUtils.isEmptyDirectory(this)
-        }
+    override fun isCached(project: Repository): Boolean = with(File(repositoryFolder.path + separator + project.name)) {
+        isDirectory && !FileUtils.isEmptyDirectory(this)
+    }
 
     override fun load(project: Repository): File {
         require(isCached(project)) { "${project.name} not in cache!" }

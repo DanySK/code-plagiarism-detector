@@ -1,8 +1,8 @@
 package org.danilopianini.plagiarismdetector.provider
 
+import java.net.URL
 import org.danilopianini.plagiarismdetector.provider.criteria.SearchCriteria
 import org.danilopianini.plagiarismdetector.repository.Repository
-import java.net.URL
 
 /**
  * A common base implementation to all concrete [RepositoryProvider].
@@ -32,9 +32,8 @@ abstract class AbstractRepositoryProvider<I, O, in C : SearchCriteria<I, O>> : R
      */
     protected abstract fun getRepoByUrl(url: URL): Repository
 
-    private fun urlIsWellFormed(url: URL): Boolean =
-        url.path
-            .replace(Regex("^/|/$"), "")
-            .split("/")
-            .count() == EXPECTED_PATH_ARGS
+    private fun urlIsWellFormed(url: URL): Boolean = url.path
+        .replace(Regex("^/|/$"), "")
+        .split("/")
+        .count() == EXPECTED_PATH_ARGS
 }

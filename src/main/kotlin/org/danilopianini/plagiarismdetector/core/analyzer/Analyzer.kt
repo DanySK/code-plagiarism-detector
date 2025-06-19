@@ -1,7 +1,7 @@
 package org.danilopianini.plagiarismdetector.core.analyzer
 
-import org.danilopianini.plagiarismdetector.core.analyzer.representation.SourceRepresentation
 import java.io.File
+import org.danilopianini.plagiarismdetector.core.analyzer.representation.SourceRepresentation
 
 /**
  * An interface modeling the analyzer, the component that analyze the source

@@ -7,6 +7,7 @@ import io.kotest.matchers.collections.shouldNotBeEmpty
 import io.kotest.matchers.string.shouldContain
 import io.kotest.matchers.string.shouldContainIgnoringCase
 import io.kotest.matchers.string.shouldMatch
+import java.net.URI
 import org.danilopianini.plagiarismdetector.provider.authentication.EnvironmentTokenSupplier
 import org.danilopianini.plagiarismdetector.provider.criteria.ByBitbucketName
 import org.danilopianini.plagiarismdetector.provider.criteria.ByBitbucketUser
@@ -14,7 +15,6 @@ import org.danilopianini.plagiarismdetector.provider.criteria.ByGitHubNameRest
 import org.danilopianini.plagiarismdetector.provider.criteria.ByGitHubUserRest
 import org.danilopianini.plagiarismdetector.repository.Repository
 import org.slf4j.LoggerFactory
-import java.net.URI
 
 class ProviderTest : FunSpec() {
     companion object {
@@ -150,11 +150,7 @@ class ProviderTest : FunSpec() {
         }
     }
 
-    private fun testByExistingUrl(
-        result: Repository,
-        expectedName: String,
-        expectedUser: String,
-    ) {
+    private fun testByExistingUrl(result: Repository, expectedName: String, expectedUser: String) {
         result.name shouldMatch expectedName
         result.owner shouldMatch expectedUser
     }

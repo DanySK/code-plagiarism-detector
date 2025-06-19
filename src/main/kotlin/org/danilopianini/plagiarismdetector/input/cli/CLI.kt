@@ -19,9 +19,7 @@ import org.danilopianini.plagiarismdetector.output.Output
 /**
  * The main Command Line Interface command.
  */
-class CLI(
-    output: Output,
-) : CliktCommand() {
+class CLI(output: Output) : CliktCommand() {
     override val printHelpOnEmptyArgs: Boolean = true
 
     override val allowMultipleSubcommands = true

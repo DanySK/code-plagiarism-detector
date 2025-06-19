@@ -1,29 +1,23 @@
 package org.danilopianini.plagiarismdetector.output.exporter
 
-import org.danilopianini.plagiarismdetector.core.Report
-import org.danilopianini.plagiarismdetector.core.detector.Match
-import org.danilopianini.plagiarismdetector.output.Output
 import java.io.PrintWriter
 import java.nio.file.Path
 import java.time.LocalDateTime
+import org.danilopianini.plagiarismdetector.core.Report
+import org.danilopianini.plagiarismdetector.core.detector.Match
+import org.danilopianini.plagiarismdetector.output.Output
 
 /**
  * A very simple [ReportsExporter], which exports results on a plain file, inside [outputDirectory].
  */
-class PlainFileExporter<in M : Match>(
-    outputDirectory: Path,
-    output: Output,
-) : FileExporter<M>(outputDirectory, output) {
+class PlainFileExporter<in M : Match>(outputDirectory: Path, output: Output) :
+    FileExporter<M>(outputDirectory, output) {
     override val fileExtension: String = "txt"
 
-    override fun export(
-        reports: Set<Report<M>>,
-        output: PrintWriter,
-    ) {
+    override fun export(reports: Set<Report<M>>, output: PrintWriter) {
         printHeader(output)
         printSummary(reports, output)
-        reports
-            .asSequence()
+        reports.asSequence()
             .filter { it.similarity > LOWER_BOUND_SIMILARITY }
             .toSortedSet(compareByDescending { it.similarity })
             .forEach { printBody(it, output) }
@@ -35,10 +29,7 @@ class PlainFileExporter<in M : Match>(
         out.println("*".repeat(LINE_LENGTH))
     }
 
-    private fun printSummary(
-        reports: Set<Report<M>>,
-        output: PrintWriter,
-    ) = with(output) {
+    private fun printSummary(reports: Set<Report<M>>, output: PrintWriter) = with(output) {
         println()
         format("%-${LINE_LENGTH}s%n", "Submitted Project: ${reports.first().submittedProject}")
         println()
@@ -55,10 +46,7 @@ class PlainFileExporter<in M : Match>(
         println()
     }
 
-    private fun printBody(
-        report: Report<M>,
-        out: PrintWriter,
-    ) {
+    private fun printBody(report: Report<M>, out: PrintWriter) {
         out.println("> Matches found with ${report.comparedProject.name}")
         report.comparisonResult
             .filter { it.matches.any() }
@@ -70,10 +58,7 @@ class PlainFileExporter<in M : Match>(
             }
     }
 
-    private fun formatDuplicatedSections(
-        match: M,
-        out: PrintWriter,
-    ) {
+    private fun formatDuplicatedSections(match: M, out: PrintWriter) {
         val (ptn, txt) = match.formattedMatch
         out.println(">".repeat(LINE_LENGTH))
         out.println(ptn)

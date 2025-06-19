@@ -2,9 +2,9 @@ package org.danilopianini.plagiarismdetector.core.analyzer.technique.tokenizatio
 
 import com.github.javaparser.ParserConfiguration
 import com.github.javaparser.ast.CompilationUnit
+import java.io.File
 import org.danilopianini.plagiarismdetector.core.analyzer.StepHandler
 import org.slf4j.LoggerFactory
-import java.io.File
 
 /**
  * A java source file parser.

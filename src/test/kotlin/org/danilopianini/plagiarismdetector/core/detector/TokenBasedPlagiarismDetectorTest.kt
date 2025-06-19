@@ -4,13 +4,13 @@ import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.doubles.shouldBeExactly
 import io.kotest.mpp.timeInMillis
+import java.io.File
 import org.danilopianini.plagiarismdetector.core.analyzer.technique.tokenization.java.JavaTokenizationAnalyzer
 import org.danilopianini.plagiarismdetector.core.detector.technique.tokenization.GreedyStringTiling
 import org.danilopianini.plagiarismdetector.core.detector.technique.tokenization.RKRGreedyStringTiling
 import org.danilopianini.plagiarismdetector.core.detector.technique.tokenization.TokenBasedPlagiarismDetector
 import org.danilopianini.plagiarismdetector.core.detector.technique.tokenization.TokenMatch
 import org.slf4j.LoggerFactory
-import java.io.File
 
 class TokenBasedPlagiarismDetectorTest : FunSpec() {
     companion object {
@@ -53,10 +53,7 @@ class TokenBasedPlagiarismDetectorTest : FunSpec() {
         }
     }
 
-    private fun runDetection(
-        files: Pair<File, File>,
-        printStats: Boolean = false,
-    ) {
+    private fun runDetection(files: Pair<File, File>, printStats: Boolean = false) {
         val (GSTElapsedTime, GSTResult) =
             detect(
                 TokenBasedPlagiarismDetector(GreedyStringTiling(DEFAULT_MIN_TOKEN_LEN)),
@@ -85,11 +82,7 @@ class TokenBasedPlagiarismDetectorTest : FunSpec() {
         return Pair(stop - start, result)
     }
 
-    private fun printStats(
-        strategyName: String,
-        elapsedTime: Long,
-        result: ComparisonResult<TokenMatch>,
-    ) {
+    private fun printStats(strategyName: String, elapsedTime: Long, result: ComparisonResult<TokenMatch>) {
         logger.info("> $strategyName")
         logger.info(">> Elapsed time: $elapsedTime ms")
         logger.info(">> Score of similarity: ${result.similarity}")

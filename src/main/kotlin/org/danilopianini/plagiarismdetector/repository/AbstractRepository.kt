@@ -1,7 +1,7 @@
 package org.danilopianini.plagiarismdetector.repository
 
-import org.danilopianini.plagiarismdetector.repository.content.RepoContentSupplierImpl
 import java.io.File
+import org.danilopianini.plagiarismdetector.repository.content.RepoContentSupplierImpl
 
 /**
  * Abstract base implementation for repositories.

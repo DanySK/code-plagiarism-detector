@@ -1,9 +1,9 @@
 package org.danilopianini.plagiarismdetector.core.detector.technique.tokenization
 
+import java.nio.charset.Charset
 import org.apache.commons.io.FileUtils
 import org.danilopianini.plagiarismdetector.core.analyzer.representation.TokenizedSource
 import org.danilopianini.plagiarismdetector.core.analyzer.representation.token.Token
-import java.nio.charset.Charset
 
 /**
  * A simple implementation for a [TokenMatch].

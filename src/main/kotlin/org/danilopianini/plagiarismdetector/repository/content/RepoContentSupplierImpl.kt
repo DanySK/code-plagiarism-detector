@@ -1,12 +1,12 @@
 package org.danilopianini.plagiarismdetector.repository.content
 
+import java.io.File
 import org.apache.commons.io.FileUtils
 import org.apache.commons.io.filefilter.DirectoryFileFilter
 import org.apache.commons.io.filefilter.RegexFileFilter
 import org.danilopianini.plagiarismdetector.caching.FileKnowledgeBaseManager
 import org.danilopianini.plagiarismdetector.caching.KnowledgeBaseManager
 import org.danilopianini.plagiarismdetector.repository.Repository
-import java.io.File
 
 /**
  * A strategy that is responsible for saving and retrieving the [repository] sources
@@ -23,11 +23,10 @@ data class RepoContentSupplierImpl(
         knowledgeBaseManager.load(repository)
     }
 
-    override fun filesMatching(pattern: Regex): Sequence<File> =
-        FileUtils
-            .listFiles(
-                contentDirectory,
-                RegexFileFilter(pattern.toPattern()),
-                DirectoryFileFilter.DIRECTORY,
-            ).asSequence()
+    override fun filesMatching(pattern: Regex): Sequence<File> = FileUtils
+        .listFiles(
+            contentDirectory,
+            RegexFileFilter(pattern.toPattern()),
+            DirectoryFileFilter.DIRECTORY,
+        ).asSequence()
 }

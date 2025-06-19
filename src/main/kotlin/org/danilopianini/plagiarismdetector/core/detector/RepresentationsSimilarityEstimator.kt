@@ -10,8 +10,5 @@ fun interface RepresentationsSimilarityEstimator<in S : SourceRepresentation<T>,
     /**
      * Estimates the similarity between [representations] accordingly to the given [matches].
      */
-    fun similarityOf(
-        representations: Pair<S, S>,
-        matches: Set<M>,
-    ): Double
+    fun similarityOf(representations: Pair<S, S>, matches: Set<M>): Double
 }

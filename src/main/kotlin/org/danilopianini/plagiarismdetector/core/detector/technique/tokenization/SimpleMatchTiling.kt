@@ -8,27 +8,16 @@ import org.danilopianini.plagiarismdetector.core.detector.ComparisonStrategy
  * Simple match tiling algorithm. Scans for the largest tile, then run recursively on the remainder of the tokens.
  * The algorithm finds matches larger than [minimumMatchLength].
  */
-class SimpleMatchTiling(
-    val minimumMatchLength: Int,
-) : ComparisonStrategy<TokenizedSource, Sequence<Token>, TokenMatch> {
-    private data class Match(
-        val patternOffset: Int,
-        val textOffset: Int,
-        val size: Int,
-    )
+class SimpleMatchTiling(val minimumMatchLength: Int) :
+    ComparisonStrategy<TokenizedSource, Sequence<Token>, TokenMatch> {
+    private data class Match(val patternOffset: Int, val textOffset: Int, val size: Int)
 
-    private fun <T> List<T>.cutSlice(
-        begin: Int,
-        sliceSize: Int,
-    ): Pair<List<T>, List<T>> = subList(0, begin) to subList(begin + sliceSize, size)
+    private fun <T> List<T>.cutSlice(begin: Int, sliceSize: Int): Pair<List<T>, List<T>> =
+        subList(0, begin) to subList(begin + sliceSize, size)
 
     private fun List<Token>.indicizedByType() = indices.groupBy { this[it].type }
 
-    private fun longestMatch(
-        pattern: List<Token>,
-        text: List<Token>,
-        minLength: Int,
-    ): Match? {
+    private fun longestMatch(pattern: List<Token>, text: List<Token>, minLength: Int): Match? {
         var bestMatch: Match? = null
         val textIndicesByMatchType = text.indicizedByType()
         val patternIndicesByMatchType =
@@ -55,11 +44,7 @@ class SimpleMatchTiling(
         return bestMatch
     }
 
-    private fun searchSplit(
-        pattern: List<Token>,
-        text: List<Token>,
-        minLength: Int,
-    ): Set<Match> {
+    private fun searchSplit(pattern: List<Token>, text: List<Token>, minLength: Int): Set<Match> {
         if (pattern.size < minLength || text.size < minLength) {
             return emptySet()
         }

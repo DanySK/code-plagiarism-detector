@@ -11,9 +11,8 @@ import org.kohsuke.github.HttpException
 /**
  * A provider of GitHub repositories.
  */
-class GitHubRestProvider private constructor(
-    private var github: GitHub,
-) : AbstractGitHubProvider<GitHub, GHRepositorySearchBuilder, GitHubRestSearchCriteria>() {
+class GitHubRestProvider private constructor(private var github: GitHub) :
+    AbstractGitHubProvider<GitHub, GHRepositorySearchBuilder, GitHubRestSearchCriteria>() {
     /**
      * A companion object to create instances of [GitHubRestProvider].
      */
@@ -47,9 +46,5 @@ class GitHubRestProvider private constructor(
     }
 
     private fun getMatchingReposByCriteria(criteria: GitHubRestSearchCriteria): Sequence<GitHubRepository> =
-        criteria(github)
-            .list()
-            .toSet()
-            .asSequence()
-            .map(::GitHubRepository)
+        criteria(github).list().toSet().asSequence().map(::GitHubRepository)
 }

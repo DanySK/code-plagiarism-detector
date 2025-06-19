@@ -9,11 +9,11 @@ import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.shouldBeTypeOf
+import java.net.URI
 import org.danilopianini.plagiarismdetector.input.cli.provider.CorpusProviderCommand
 import org.danilopianini.plagiarismdetector.input.cli.provider.ProviderCommand
 import org.danilopianini.plagiarismdetector.input.cli.provider.SubmissionProviderCommand
 import org.danilopianini.plagiarismdetector.provider.criteria.ByGitHubUserGraphQL
-import java.net.URI
 
 class ProviderCommandTest : FunSpec() {
     init {
@@ -115,10 +115,7 @@ class ProviderCommandTest : FunSpec() {
         }
     }
 
-    private fun parsedCommands(
-        args: List<String>,
-        actions: (ProviderCommand) -> Unit = { },
-    ) {
+    private fun parsedCommands(args: List<String>, actions: (ProviderCommand) -> Unit = { }) {
         with(SubmissionProviderCommand()) {
             parse(args)
             actions(this)
