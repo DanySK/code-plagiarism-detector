@@ -10,6 +10,7 @@ import org.json.JSONObject
 import java.net.URL
 import java.nio.charset.StandardCharsets
 import java.util.Base64
+import kotlin.time.Duration.Companion.minutes
 
 /**
  * A provider of Bitbucket repositories.
@@ -33,6 +34,7 @@ class BitbucketProvider private constructor(
         private const val AUTH_HEADER_PREFIX = "Basic"
         private const val UNAUTHORIZED_CODE = 401
         private const val FORBIDDEN_CODE = 403
+        private val WAIT_TIME = 1.minutes.inWholeMilliseconds
 
         /**
          * Creates a [BitbucketProvider] with anonymous authentication: this is **not** recommended due to
@@ -77,7 +79,7 @@ class BitbucketProvider private constructor(
         return responses
     }
 
-    private fun doGETRequest(url: String): JSONObject {
+    private tailrec fun doGETRequest(url: String): JSONObject {
         val request =
             Unirest
                 .get(url)
@@ -87,7 +89,16 @@ class BitbucketProvider private constructor(
         check(response.status != UNAUTHORIZED_CODE && response.status != FORBIDDEN_CODE) {
             "HTTP Response: ${response.statusText}. ${IOUtils.toString(response.body, StandardCharsets.UTF_8)}"
         }
-        return JSONObject(IOUtils.toString(response.body, StandardCharsets.UTF_8))
+        val shouldBeJSON = IOUtils.toString(response.body, StandardCharsets.UTF_8)
+        val parsedResponse = runCatching { JSONObject(shouldBeJSON) }
+        if (parsedResponse.isSuccess) {
+            return parsedResponse.getOrThrow()
+        }
+        println("Error parsing response from Bitbucket: ${parsedResponse.exceptionOrNull()?.message}")
+        println("Received non-JSON payload: $shouldBeJSON")
+        println("Assuming a server-side error, throttling requests for 60 seconds.")
+        Thread.sleep(WAIT_TIME)
+        return doGETRequest(url)
     }
 
     private fun JSONObject.hasError(): Boolean = !isNull(ERROR_FIELD)
