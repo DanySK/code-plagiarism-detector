@@ -20,7 +20,7 @@ kotest-assertions-core-jvm = { module = "io.kotest:kotest-assertions-core-jvm", 
 logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
 logback-core = { module = "ch.qos.logback:logback-core", version.ref = "logback" }
 mockk = "io.mockk:mockk:1.13.17"
-org-eclipse-jgit = "org.eclipse.jgit:org.eclipse.jgit:6.10.0.202406032230-r"
+org-eclipse-jgit = "org.eclipse.jgit:org.eclipse.jgit:6.10.1.202505221210-r"
 progressbar = "me.tongfei:progressbar:0.10.1"
 slf4j-api = "org.slf4j:slf4j-api:2.0.17"
 unirest = "com.mashape.unirest:unirest-java:1.4.9"
