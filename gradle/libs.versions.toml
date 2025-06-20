@@ -2,43 +2,40 @@
 apollo = "4.0.0-beta.7"
 kotest = "5.9.1"
 kotlin = "2.1.21"
-mockito = "5.14.2"
-logback = "1.5.12"
+logback = "1.5.18"
 
 [libraries]
 apollo-runtime = { module = "com.apollographql.apollo3:apollo-runtime", version.ref = "apollo" }
+caffeine = "com.github.ben-manes.caffeine:caffeine:3.2.1"
+clikt = "com.github.ajalt.clikt:clikt:5.0.3"
+commons-math = "org.apache.commons:commons-math3:3.6.1"
+commons-io = "commons-io:commons-io:2.19.0"
+github-api = "org.kohsuke:github-api:1.326"
+javaparser-core = "com.github.javaparser:javaparser-core:3.27.0"
+json = "org.json:json:20250107"
+kaml = "com.charleskorn.kaml:kaml:0.82.0"
 kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin" }
-kotlin-stdlib-jdk8 = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk8", version.ref = "kotlin" }
-kotlinx-coroutines-core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.9.0"
 kotest-junit5-jvm = { module = "io.kotest:kotest-runner-junit5-jvm", version.ref = "kotest" }
 kotest-assertions-core-jvm = { module = "io.kotest:kotest-assertions-core-jvm", version.ref = "kotest" }
-mockito-core = { module = "org.mockito:mockito-core", version.ref = "mockito" }
-clikt = "com.github.ajalt.clikt:clikt:5.0.2"
-github-api = "org.kohsuke:github-api:1.326"
-unirest = "com.mashape.unirest:unirest-java:1.4.9"
-json = "org.json:json:20240303"
-kaml = "com.charleskorn.kaml:kaml:0.82.0"
-org-eclipse-jgit = "org.eclipse.jgit:org.eclipse.jgit:6.10.0.202406032230-r"
-commons-io = "commons-io:commons-io:2.18.0"
-javaparser-core = "com.github.javaparser:javaparser-core:3.27.0"
-commons-math = "org.apache.commons:commons-math3:3.6.1"
-slf4j-api = "org.slf4j:slf4j-api:2.0.17"
 logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
 logback-core = { module = "ch.qos.logback:logback-core", version.ref = "logback" }
-mockk = "io.mockk:mockk:1.13.13"
+mockk = "io.mockk:mockk:1.13.17"
+org-eclipse-jgit = "org.eclipse.jgit:org.eclipse.jgit:6.10.0.202406032230-r"
 progressbar = "me.tongfei:progressbar:0.10.1"
+slf4j-api = "org.slf4j:slf4j-api:2.0.17"
+unirest = "com.mashape.unirest:unirest-java:1.4.9"
 
 [bundles]
-kotlin-testing = [ "kotest-junit5-jvm", "kotest-assertions-core-jvm", "mockito-core" ]
+kotlin-testing = [ "kotest-junit5-jvm", "kotest-assertions-core-jvm" ]
 
 [plugins]
 apollo = { id = "com.apollographql.apollo3", version.ref = "apollo" }
 dokka = "org.jetbrains.dokka:2.0.0"
-gitSemVer = "org.danilopianini.git-sensitive-semantic-versioning:3.1.7"
+gitSemVer = "org.danilopianini.git-sensitive-semantic-versioning:5.1.4"
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
-kotlin-qa = "org.danilopianini.gradle-kotlin-qa:0.78.3"
-multiJvmTesting = "org.danilopianini.multi-jvm-test-plugin:3.0.3"
+kotlin-qa = "org.danilopianini.gradle-kotlin-qa:0.89.1"
+multiJvmTesting = "org.danilopianini.multi-jvm-test-plugin:3.5.1"
 publishOnCentral = "org.danilopianini.publish-on-central:6.0.1"
-taskTree = "com.dorongold.task-tree:4.0.1"
 serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 shadowJar = "com.github.johnrengelman.shadow:8.1.1"
+taskTree = "com.dorongold.task-tree:4.0.1"
