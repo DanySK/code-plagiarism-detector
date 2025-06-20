@@ -1,16 +1,14 @@
 package org.danilopianini.plagiarismdetector.repository
 
-import org.json.JSONObject
 import java.net.URI
 import java.net.URL
+import org.json.JSONObject
 
 /**
  * A Bitbucket repository.
  * @property repositoryInfo the [JSONObject] containing all repo's infos.
  */
-data class BitbucketRepository(
-    private val repositoryInfo: JSONObject,
-) : AbstractRepository() {
+data class BitbucketRepository(private val repositoryInfo: JSONObject) : AbstractRepository() {
     private companion object {
         private const val REPOSITORY_NAME_FIELD = "name"
         private const val LINKS_FIELD = "links"

@@ -3,9 +3,9 @@ package org.danilopianini.plagiarismdetector.input
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
+import java.net.URI
 import org.danilopianini.plagiarismdetector.utils.BitBucket
 import org.danilopianini.plagiarismdetector.utils.GitHubGraphQL
-import java.net.URI
 
 class SupportedOptionsTest :
     FunSpec({

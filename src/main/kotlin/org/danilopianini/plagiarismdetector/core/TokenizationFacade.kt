@@ -1,5 +1,6 @@
 package org.danilopianini.plagiarismdetector.core
 
+import kotlin.math.max
 import org.danilopianini.plagiarismdetector.core.analyzer.representation.SourceRepresentation
 import org.danilopianini.plagiarismdetector.core.analyzer.representation.TokenizedSource
 import org.danilopianini.plagiarismdetector.core.analyzer.technique.tokenization.java.JavaTokenizationAnalyzer
@@ -12,14 +13,11 @@ import org.danilopianini.plagiarismdetector.input.configuration.TokenizationConf
 import org.danilopianini.plagiarismdetector.repository.Repository
 import org.danilopianini.plagiarismdetector.utils.Java
 import org.slf4j.LoggerFactory
-import kotlin.math.max
 
 /**
  * A concrete [TechniqueFacade] which exploits the **Tokenization** technique.
  */
-class TokenizationFacade(
-    private val configs: TokenizationConfiguration,
-) : TechniqueFacade<TokenMatch> {
+class TokenizationFacade(private val configs: TokenizationConfiguration) : TechniqueFacade<TokenMatch> {
     private val logger = LoggerFactory.getLogger(javaClass)
     private val analyzer =
         when (configs.language) {
@@ -49,15 +47,11 @@ class TokenizationFacade(
      * Performs the analysis of the [repository] sources returning a
      * [Sequence] of concrete [SourceRepresentation].
      */
-    private fun analyze(
-        repository: Repository,
-        filesToExclude: Set<String>,
-    ): Sequence<TokenizedSource> =
-        repository
-            .getSources(configs.language.fileExtensions)
-            .filter { it.name !in filesToExclude }
-            .map(analyzer)
-            .filter { it.representation.count() >= configs.minimumTokens }
+    private fun analyze(repository: Repository, filesToExclude: Set<String>): Sequence<TokenizedSource> = repository
+        .getSources(configs.language.fileExtensions)
+        .filter { it.name !in filesToExclude }
+        .map(analyzer)
+        .filter { it.representation.count() >= configs.minimumTokens }
 
     /**
      * Performs the comparison between the [analyzedSubmission] and
@@ -67,11 +61,10 @@ class TokenizationFacade(
         analyzedSubmission: Sequence<TokenizedSource>,
         analyzedCorpus: Sequence<TokenizedSource>,
         minDuplicatedPercentage: Double,
-    ): Set<ComparisonResult<TokenMatch>> =
-        analyzedSubmission
-            .flatMap { s -> filter(s, analyzedCorpus).map { c -> detector(Pair(s, c)) } }
-            .filter { it.similarity > minDuplicatedPercentage }
-            .toSet()
+    ): Set<ComparisonResult<TokenMatch>> = analyzedSubmission
+        .flatMap { s -> filter(s, analyzedCorpus).map { c -> detector(Pair(s, c)) } }
+        .filter { it.similarity > minDuplicatedPercentage }
+        .toSet()
 
     /**
      * Returns the reported ratio, i.e. the maximum ratio between the number of
@@ -97,10 +90,9 @@ class TokenizationFacade(
     private fun countReportedSourcesOf(
         results: Set<ComparisonResult<TokenMatch>>,
         representations: Sequence<TokenizedSource>,
-    ): Int =
-        results
-            .flatMap { it.matches }
-            .flatMap { sequenceOf(it.pattern.first.sourceFile, it.text.first.sourceFile) }
-            .distinctBy { it.path }
-            .count { it in representations.map { t -> t.sourceFile } }
+    ): Int = results
+        .flatMap { it.matches }
+        .flatMap { sequenceOf(it.pattern.first.sourceFile, it.text.first.sourceFile) }
+        .distinctBy { it.path }
+        .count { it in representations.map { t -> t.sourceFile } }
 }

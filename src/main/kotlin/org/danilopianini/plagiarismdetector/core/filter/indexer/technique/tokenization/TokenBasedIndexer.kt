@@ -15,8 +15,7 @@ import org.danilopianini.plagiarismdetector.core.filter.indexer.Indexer
  * `[(literal-expr, 3), (block-stmt, 1), (name-expr, 2), (if-stmt, 1)]`
  */
 class TokenBasedIndexer : Indexer<TokenizedSource, Sequence<Token>, Map<TokenType, Int>> {
-    override operator fun invoke(input: TokenizedSource): Map<TokenType, Int> =
-        input.representation
-            .groupingBy { it.type }
-            .eachCount()
+    override operator fun invoke(input: TokenizedSource): Map<TokenType, Int> = input.representation
+        .groupingBy { it.type }
+        .eachCount()
 }

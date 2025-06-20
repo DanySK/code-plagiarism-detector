@@ -5,16 +5,14 @@ import com.github.ajalt.clikt.parameters.options.convert
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.options.required
 import com.github.ajalt.clikt.parameters.types.file
+import java.nio.file.Path
 import org.danilopianini.plagiarismdetector.core.detector.Match
 import org.danilopianini.plagiarismdetector.output.exporter.ReportsExporter
-import java.nio.file.Path
 
 /**
  * An abstract class encapsulating [ReportsExporter] configuration.
  */
-sealed class ExporterConfig<in M : Match>(
-    name: String,
-) : OptionGroup(name = name) {
+sealed class ExporterConfig<in M : Match>(name: String) : OptionGroup(name = name) {
     /**
      * The path of the directory where to store the reports.
      */

@@ -1,12 +1,12 @@
 package org.danilopianini.plagiarismdetector.input
 
+import java.net.URL
 import org.danilopianini.plagiarismdetector.utils.BitBucket
 import org.danilopianini.plagiarismdetector.utils.GitHubGraphQL
 import org.danilopianini.plagiarismdetector.utils.GitHubRest
 import org.danilopianini.plagiarismdetector.utils.HostingService
 import org.danilopianini.plagiarismdetector.utils.Java
 import org.danilopianini.plagiarismdetector.utils.Language
-import java.net.URL
 
 /**
  * An object containing all supported options.

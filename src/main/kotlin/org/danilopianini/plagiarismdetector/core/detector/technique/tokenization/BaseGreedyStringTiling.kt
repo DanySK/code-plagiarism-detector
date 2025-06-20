@@ -1,9 +1,9 @@
 package org.danilopianini.plagiarismdetector.core.detector.technique.tokenization
 
+import kotlin.math.min
 import org.danilopianini.plagiarismdetector.core.analyzer.representation.TokenizedSource
 import org.danilopianini.plagiarismdetector.core.analyzer.representation.token.Token
 import org.danilopianini.plagiarismdetector.core.detector.ComparisonStrategy
-import kotlin.math.min
 
 /**
  * A [Sequence] of [Token]s.
@@ -33,9 +33,8 @@ typealias MutableMarkedTokens = Pair<MutableSet<Token>, MutableSet<Token>>
  * This is an abstract base implementation of the common code for Greedy String Tiling algorithm's family.
  * [Here](https://bit.ly/3f3qzED) you can find the paper in which were originally described.
  */
-abstract class BaseGreedyStringTiling(
-    protected val minimumMatchLength: Int,
-) : ComparisonStrategy<TokenizedSource, Sequence<Token>, TokenMatch> {
+abstract class BaseGreedyStringTiling(protected val minimumMatchLength: Int) :
+    ComparisonStrategy<TokenizedSource, Sequence<Token>, TokenMatch> {
     override operator fun invoke(input: Pair<TokenizedSource, TokenizedSource>): Set<TokenMatch> {
         val (pattern, text) = orderInput(input)
         return runAlgorithm(pattern, text)
@@ -59,10 +58,7 @@ abstract class BaseGreedyStringTiling(
      * i.e. the one-to-one association of a subsequence of [Tokens] of the pattern with a matching
      * subsequence of [Tokens] from the text.
      */
-    protected abstract fun runAlgorithm(
-        pattern: TokenizedSource,
-        text: TokenizedSource,
-    ): Set<TokenMatch>
+    protected abstract fun runAlgorithm(pattern: TokenizedSource, text: TokenizedSource): Set<TokenMatch>
 
     /**
      * Searches for maximal matches at least of length [searchLength], not already marked
@@ -103,11 +99,7 @@ abstract class BaseGreedyStringTiling(
      * @return a [Pair] in which are encapsulated the matching [Token]s: in the first
      * position those of the pattern and in the second position those of the text.
      */
-    protected fun scan(
-        pattern: Tokens,
-        text: Tokens,
-        marked: MarkedTokens,
-    ): Pair<List<Token>, List<Token>> {
+    protected fun scan(pattern: Tokens, text: Tokens, marked: MarkedTokens): Pair<List<Token>, List<Token>> {
         val (matchingPatternTokens, matchingTextTokens) =
             (0 until min(pattern.count(), text.count()))
                 .asSequence()
@@ -123,8 +115,6 @@ abstract class BaseGreedyStringTiling(
      * the pattern and the text has been marked during the creation of an earlier tile or, equivalently,
      * are not in [marked].
      */
-    private fun isNotOccluded(
-        tokenMatch: TokenMatch,
-        marked: MarkedTokens,
-    ) = tokenMatch.pattern.second.all { it !in marked.first } && tokenMatch.text.second.all { it !in marked.second }
+    private fun isNotOccluded(tokenMatch: TokenMatch, marked: MarkedTokens) =
+        tokenMatch.pattern.second.all { it !in marked.first } && tokenMatch.text.second.all { it !in marked.second }
 }

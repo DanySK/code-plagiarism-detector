@@ -1,9 +1,9 @@
 package org.danilopianini.plagiarismdetector.core.detector.technique.tokenization
 
+import kotlin.math.min
 import org.danilopianini.plagiarismdetector.core.analyzer.representation.TokenizedSource
 import org.danilopianini.plagiarismdetector.core.analyzer.representation.token.Token
 import org.danilopianini.plagiarismdetector.core.detector.RepresentationsSimilarityEstimator
-import kotlin.math.min
 
 /**
  * Strategy to estimate similarities between [TokenizedSource], accordingly to the given [TokenMatch].
@@ -20,12 +20,11 @@ class MaxSimilarityEstimator : TokenizedSourceSimilarityEstimator {
     override fun similarityOf(
         representations: Pair<TokenizedSource, TokenizedSource>,
         matches: Set<TokenMatch>,
-    ): Double =
-        matches.sumOf { it.length }.toDouble() /
-            min(
-                representations.first.representation.count(),
-                representations.second.representation.count(),
-            )
+    ): Double = matches.sumOf { it.length }.toDouble() /
+        min(
+            representations.first.representation.count(),
+            representations.second.representation.count(),
+        )
 }
 
 /**

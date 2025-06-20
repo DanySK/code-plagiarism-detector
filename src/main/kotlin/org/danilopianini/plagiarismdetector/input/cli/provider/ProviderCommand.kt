@@ -7,6 +7,8 @@ import com.github.ajalt.clikt.parameters.options.convert
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.options.split
 import com.github.ajalt.clikt.parameters.options.validate
+import java.net.URI
+import java.net.URL
 import org.danilopianini.plagiarismdetector.input.SupportedOptions
 import org.danilopianini.plagiarismdetector.provider.criteria.ByBitbucketName
 import org.danilopianini.plagiarismdetector.provider.criteria.ByBitbucketUser
@@ -18,16 +20,11 @@ import org.danilopianini.plagiarismdetector.utils.BitBucket
 import org.danilopianini.plagiarismdetector.utils.GitHubGraphQL
 import org.danilopianini.plagiarismdetector.utils.GitHubRest
 import org.danilopianini.plagiarismdetector.utils.HostingService
-import java.net.URI
-import java.net.URL
 
 /**
  * An abstract class encapsulating repository provider configuration.
  */
-sealed class ProviderCommand(
-    name: String,
-    private val help: String,
-) : CliktCommand(name = name) {
+sealed class ProviderCommand(name: String, private val help: String) : CliktCommand(name = name) {
     private val service by option(help = SERVICE_HELP_MSG)
         .split(",")
         .validate { strings ->
@@ -64,11 +61,7 @@ sealed class ProviderCommand(
         }?.toList()
     }
 
-    private fun byCriteria(
-        service: HostingService,
-        user: String,
-        repoName: String,
-    ): SearchCriteria<*, *> =
+    private fun byCriteria(service: HostingService, user: String, repoName: String): SearchCriteria<*, *> =
         when (service) {
             GitHubRest ->
                 ByGitHubUserRest(

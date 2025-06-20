@@ -1,7 +1,7 @@
 package org.danilopianini.plagiarismdetector.caching
 
-import org.danilopianini.plagiarismdetector.repository.Repository
 import java.io.File
+import org.danilopianini.plagiarismdetector.repository.Repository
 
 /**
  * An interface modeling the manager of the knowledge base,

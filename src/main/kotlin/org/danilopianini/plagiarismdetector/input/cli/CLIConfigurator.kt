@@ -2,6 +2,8 @@ package org.danilopianini.plagiarismdetector.input.cli
 
 import com.github.ajalt.clikt.core.main
 import com.github.ajalt.clikt.core.subcommands
+import java.net.URL
+import kotlin.system.exitProcess
 import org.danilopianini.plagiarismdetector.input.RunConfigurator
 import org.danilopianini.plagiarismdetector.input.SupportedOptions
 import org.danilopianini.plagiarismdetector.input.cli.provider.CorpusProviderCommand
@@ -23,15 +25,11 @@ import org.danilopianini.plagiarismdetector.utils.BitBucket
 import org.danilopianini.plagiarismdetector.utils.GitHubGraphQL
 import org.danilopianini.plagiarismdetector.utils.GitHubRest
 import org.danilopianini.plagiarismdetector.utils.HostingService
-import java.net.URL
-import kotlin.system.exitProcess
 
 /**
  * A concrete [RunConfigurator] which parses CLI arguments to create a new run configuration.
  */
-class CLIConfigurator(
-    private val output: Output,
-) : RunConfigurator {
+class CLIConfigurator(private val output: Output) : RunConfigurator {
     private val githubRest: GitHubRestProvider by lazy {
         GitHubRestProvider.connectWithToken(EnvironmentTokenSupplier(GH_AUTH_TOKEN_VAR))
     }
@@ -80,31 +78,23 @@ class CLIConfigurator(
             ?: error("Neither url nor criteria are valued!")
     }
 
-    private fun exitProcessWithMessage(
-        message: String,
-        exitStatus: Int = 1,
-    ) {
+    private fun exitProcessWithMessage(message: String, exitStatus: Int = 1) {
         output.logInfo(message)
         exitProcess(exitStatus)
     }
 
-    private fun byLink(
-        link: URL,
-        service: HostingService,
-    ): Repository =
-        when (service) {
-            GitHubRest -> githubRest.byLink(link)
-            GitHubGraphQL -> githubGraphQL.byLink(link)
-            BitBucket -> bitbucket.byLink(link)
-        }
+    private fun byLink(link: URL, service: HostingService): Repository = when (service) {
+        GitHubRest -> githubRest.byLink(link)
+        GitHubGraphQL -> githubGraphQL.byLink(link)
+        BitBucket -> bitbucket.byLink(link)
+    }
 
-    private fun byCriteria(criteria: SearchCriteria<*, *>): Sequence<Repository> =
-        when (criteria) {
-            is GitHubRestSearchCriteria -> githubRest.byCriteria(criteria)
-            is BitbucketSearchCriteria -> bitbucket.byCriteria(criteria)
-            is GitHubGraphQLSearchCriteria -> criteria(githubGraphQL.client)
-            else -> error("The extracted criteria is not valid.")
-        }
+    private fun byCriteria(criteria: SearchCriteria<*, *>): Sequence<Repository> = when (criteria) {
+        is GitHubRestSearchCriteria -> githubRest.byCriteria(criteria)
+        is BitbucketSearchCriteria -> bitbucket.byCriteria(criteria)
+        is GitHubGraphQLSearchCriteria -> criteria(githubGraphQL.client)
+        else -> error("The extracted criteria is not valid.")
+    }
 
     private companion object {
         private const val BB_AUTH_USER_VAR = "BB_USER"

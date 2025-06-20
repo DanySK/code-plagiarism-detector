@@ -19,22 +19,18 @@ typealias Repos = GetUserRepositoriesQuery.Data?
  * @property repoOwner the GitHub username.
  * @property repoFilter the filter to apply to the repository name.
  */
-data class ByGitHubUserGraphQL(
-    val repoOwner: String,
-    val repoFilter: String,
-) : GitHubGraphQLSearchCriteria {
+data class ByGitHubUserGraphQL(val repoOwner: String, val repoFilter: String) : GitHubGraphQLSearchCriteria {
     override operator fun invoke(client: ApolloClient): Sequence<Repository> {
-        fun queryFor(page: String? = null): Repos =
-            runBlocking {
-                client
-                    .query(
-                        GetUserRepositoriesQuery(
-                            repoOwner,
-                            page?.let { Optional.present(it) } ?: Optional.absent(),
-                        ),
-                    ).execute()
-                    .data
-            }
+        fun queryFor(page: String? = null): Repos = runBlocking {
+            client
+                .query(
+                    GetUserRepositoriesQuery(
+                        repoOwner,
+                        page?.let { Optional.present(it) } ?: Optional.absent(),
+                    ),
+                ).execute()
+                .data
+        }
         val emitter =
             generateSequence<Pair<String?, Repos>>(null to queryFor()) { (_, result) ->
                 checkNotNull(result) {

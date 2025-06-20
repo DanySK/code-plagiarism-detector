@@ -18,14 +18,13 @@ class LoggerConfiguratorImpl : LoggerConfigurator {
      * It returns the list of arguments given in input in which logger configuration
      * parameters have been removed.
      */
-    override fun invoke(args: List<String>): List<String> =
-        args.toMutableList().apply {
-            if (contains(VERBOSE_OPTION)) {
-                val rootLogger = LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME) as Logger
-                rootLogger.level = Level.DEBUG
-                remove(VERBOSE_OPTION)
-            }
+    override fun invoke(args: List<String>): List<String> = args.toMutableList().apply {
+        if (contains(VERBOSE_OPTION)) {
+            val rootLogger = LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME) as Logger
+            rootLogger.level = Level.DEBUG
+            remove(VERBOSE_OPTION)
         }
+    }
 
     private companion object {
         private const val VERBOSE_OPTION = "--verbose"

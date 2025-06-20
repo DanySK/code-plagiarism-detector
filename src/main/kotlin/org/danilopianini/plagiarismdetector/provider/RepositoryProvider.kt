@@ -1,9 +1,9 @@
 package org.danilopianini.plagiarismdetector.provider
 
-import org.danilopianini.plagiarismdetector.provider.criteria.SearchCriteria
-import org.danilopianini.plagiarismdetector.repository.Repository
 import java.net.URI
 import java.net.URL
+import org.danilopianini.plagiarismdetector.provider.criteria.SearchCriteria
+import org.danilopianini.plagiarismdetector.repository.Repository
 
 /**
  * An interface modeling a provider of [Repository].

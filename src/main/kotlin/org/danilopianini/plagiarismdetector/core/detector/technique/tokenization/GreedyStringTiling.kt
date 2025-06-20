@@ -6,13 +6,8 @@ import org.danilopianini.plagiarismdetector.core.analyzer.representation.Tokeniz
  * Basic thread-safe implementation of Greedy String Tiling algorithm.
  * @param minimumMatchLength the minimum matches length under which ignore them.
  */
-class GreedyStringTiling(
-    minimumMatchLength: Int,
-) : BaseGreedyStringTiling(minimumMatchLength) {
-    override fun runAlgorithm(
-        pattern: TokenizedSource,
-        text: TokenizedSource,
-    ): Set<TokenMatch> {
+class GreedyStringTiling(minimumMatchLength: Int) : BaseGreedyStringTiling(minimumMatchLength) {
+    override fun runAlgorithm(pattern: TokenizedSource, text: TokenizedSource): Set<TokenMatch> {
         val tiles = mutableSetOf<TokenMatch>()
         val marked: MutableMarkedTokens = Pair(mutableSetOf(), mutableSetOf())
         val matches: MutableMap<Int, List<TokenMatch>> = mutableMapOf()

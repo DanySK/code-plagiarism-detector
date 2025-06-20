@@ -23,10 +23,8 @@ class CLIConfiguratorTest : FunSpec() {
     init {
         val output =
             object : Output {
-                override fun startComparison(
-                    submissionName: String,
-                    totalComparisons: Int,
-                ) = println("Start comparison $submissionName ($totalComparisons)")
+                override fun startComparison(submissionName: String, totalComparisons: Int) =
+                    println("Start comparison $submissionName ($totalComparisons)")
 
                 override fun tick() = Unit
 
