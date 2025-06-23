@@ -22,7 +22,9 @@ jobs:
         with:
           # Dry-deployment
           deploy-command: >-
-            ./gradlew publishAllPublicationsToProjectLocalRepository zipMavenCentralPortalPublication validateMavenCentralPortalPublication dropMavenCentralPortalPublication
+            ./gradlew publishAllPublicationsToProjectLocalRepository zipMavenCentralPortalPublication
+          # Dry-deployment disabled to avoid overloading the Central Portal.
+          # validateMavenCentralPortalPublication dropMavenCentralPortalPublication
           should-run-codecov: ${{ runner.os == 'Linux' }}
           codecov-token: ${{ secrets.CODECOV_TOKEN }}
           should-deploy: >-
