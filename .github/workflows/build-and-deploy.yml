@@ -22,7 +22,7 @@ jobs:
         with:
           # Dry-deployment
           deploy-command: >-
-            ./gradlew uploadKotlin close drop --parallel
+            ./gradlew publishAllPublicationsToProjectLocalRepository zipMavenCentralPortalPublication validateMavenCentralPortalPublication dropMavenCentralPortalPublication
           should-run-codecov: ${{ runner.os == 'Linux' }}
           codecov-token: ${{ secrets.CODECOV_TOKEN }}
           should-deploy: >-

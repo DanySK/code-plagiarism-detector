@@ -3,7 +3,6 @@ import com.apollographql.apollo3.gradle.internal.ApolloGenerateSourcesTask
 import org.gradle.api.tasks.testing.logging.TestLogEvent
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
 
-@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     alias(libs.plugins.apollo)
     alias(libs.plugins.dokka)
@@ -136,8 +135,9 @@ signing {
 }
 
 publishOnCentral {
-    projectLongName.set("Code Plagiarism Detector")
-    projectDescription.set("A tool for scanning existing projects in search of potential signs of plagiarism")
+    projectLongName = "Code Plagiarism Detector"
+    projectDescription = "A tool for scanning existing projects in search of potential signs of plagiarism"
+    repoOwner = "DanySK"
     repository("https://maven.pkg.github.com/danysk/${rootProject.name}".lowercase()) {
         user.set("DanySK")
         password.set(System.getenv("GITHUB_TOKEN"))

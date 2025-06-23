@@ -1,6 +1,6 @@
 var publishCmd = `
 ./gradlew shadowJar || exit 2
-./gradlew uploadKotlin release || exit 3
+./gradlew publishAllPublicationsToProjectLocalRepository zipMavenCentralPortalPublication releaseMavenCentralPortalPublication || exit 3
 ./gradlew publishKotlinOSSRHPublicationToGithubRepository || true
 `
 var config = require('semantic-release-preconfigured-conventional-commits');
