@@ -1,3 +1,15 @@
+## [9.1.1](https://github.com/DanySK/code-plagiarism-detector/compare/9.1.0...9.1.1) (2025-06-23)
+
+### Dependency updates
+
+* **core-deps:** update dependency org.jetbrains.kotlin:kotlin-stdlib to v2.2.0 ([#869](https://github.com/DanySK/code-plagiarism-detector/issues/869)) ([dd4cf00](https://github.com/DanySK/code-plagiarism-detector/commit/dd4cf001710182020c2d3ca8aacab3432548ca03))
+* **deps:** update dependency io.mockk:mockk to v1.14.4 ([#868](https://github.com/DanySK/code-plagiarism-detector/issues/868)) ([27e625c](https://github.com/DanySK/code-plagiarism-detector/commit/27e625c7565cc15866fe0f5863c887275616258a))
+
+### Build and continuous integration
+
+* disable the dry-deploy ([79ab04b](https://github.com/DanySK/code-plagiarism-detector/commit/79ab04bd4ddd7764defb4aa07e9e10d367c3b1a6))
+* **release:** switch to Maven Central Portal ([115a3bc](https://github.com/DanySK/code-plagiarism-detector/commit/115a3bc443c3ebb916390dd2bd26d07c279210c6))
+
 ## [9.1.0](https://github.com/DanySK/code-plagiarism-detector/compare/9.0.7...9.1.0) (2025-06-20)
 
 ### Features
