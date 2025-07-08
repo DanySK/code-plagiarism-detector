@@ -33,7 +33,7 @@ apollo = { id = "com.apollographql.apollo3", version.ref = "apollo" }
 dokka = "org.jetbrains.dokka:2.0.0"
 gitSemVer = "org.danilopianini.git-sensitive-semantic-versioning:5.1.7"
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
-kotlin-qa = "org.danilopianini.gradle-kotlin-qa:0.90.2"
+kotlin-qa = "org.danilopianini.gradle-kotlin-qa:0.91.0"
 multiJvmTesting = "org.danilopianini.multi-jvm-test-plugin:3.5.4"
 publishOnCentral = "org.danilopianini.publish-on-central:9.0.7"
 serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
