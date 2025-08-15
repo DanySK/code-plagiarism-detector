@@ -13,7 +13,7 @@ commons-io = "commons-io:commons-io:2.20.0"
 github-api = "org.kohsuke:github-api:1.329"
 javaparser-core = "com.github.javaparser:javaparser-core:3.27.0"
 json = "org.json:json:20250517"
-kaml = "com.charleskorn.kaml:kaml:0.89.0"
+kaml = "com.charleskorn.kaml:kaml:0.90.0"
 kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin" }
 kotest-junit5-jvm = { module = "io.kotest:kotest-runner-junit5-jvm", version.ref = "kotest" }
 kotest-assertions-core-jvm = { module = "io.kotest:kotest-assertions-core-jvm", version.ref = "kotest" }
