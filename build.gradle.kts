@@ -122,10 +122,10 @@ tasks.test {
         showStandardStreams = true
         showCauses = true
         showStackTraces = true
-        events(*TestLogEvent.values())
+        events(*TestLogEvent.entries.toTypedArray())
         exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
     }
-    jvmArgs(project.property("jvmTestArgs"))
+    jvmArgs(listOfNotNull(project.property("jvmTestArgs")))
 }
 
 signing {
