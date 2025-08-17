@@ -11,11 +11,13 @@ class EnvironmentTokenSupplier(
     private val environmentVariableName: String,
     private vararg val otherEnvironmentVariableNames: String,
     private val separator: CharSequence = "",
+    private val getenv: (String) -> String? = System::getenv,
 ) : AuthenticationTokenSupplierStrategy {
-    override val token: String
-        get() =
-            listOf(environmentVariableName, *otherEnvironmentVariableNames)
-                .joinToString(separator) {
-                    requireNotNull(System.getenv(it)) { "Environment variable $it not set" }
-                }
+    override val token: String by lazy {
+        listOf(environmentVariableName, *otherEnvironmentVariableNames)
+            .joinToString(separator) {
+                val varValue: String? = getenv(it)
+                requireNotNull(varValue) { "Environment variable $it not set" }
+            }
+    }
 }
