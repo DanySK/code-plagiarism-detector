@@ -1,3 +1,28 @@
+## [9.1.3](https://github.com/DanySK/code-plagiarism-detector/compare/9.1.2...9.1.3) (2025-08-17)
+
+### Dependency updates
+
+* **deps:** update dependency com.charleskorn.kaml:kaml to v0.89.0 ([#925](https://github.com/DanySK/code-plagiarism-detector/issues/925)) ([f96ca4f](https://github.com/DanySK/code-plagiarism-detector/commit/f96ca4fe1a1ee74b948b9bb0a592b7da46b2b4f2))
+* **deps:** update dependency com.charleskorn.kaml:kaml to v0.90.0 ([#926](https://github.com/DanySK/code-plagiarism-detector/issues/926)) ([3eed2c6](https://github.com/DanySK/code-plagiarism-detector/commit/3eed2c675923d12d6e3a28bad6ed35a55c66b856))
+* **deps:** update dependency com.charleskorn.kaml:kaml to v0.91.0 ([#927](https://github.com/DanySK/code-plagiarism-detector/issues/927)) ([f29e4ea](https://github.com/DanySK/code-plagiarism-detector/commit/f29e4ea1dc9cc66ca29cdda3ab166d9958e26400))
+* **deps:** update dependency com.charleskorn.kaml:kaml to v0.92.0 ([#933](https://github.com/DanySK/code-plagiarism-detector/issues/933)) ([c021eae](https://github.com/DanySK/code-plagiarism-detector/commit/c021eae96fb87219661331f3fa5b5b7a2b8761f2))
+* **deps:** update dependency gradle to v9 ([#928](https://github.com/DanySK/code-plagiarism-detector/issues/928)) ([cb952c0](https://github.com/DanySK/code-plagiarism-detector/commit/cb952c0152c1517df9bb12caf651ccd190f17557))
+* **deps:** update dependency semantic-release-preconfigured-conventional-commits to v1.1.140 ([#931](https://github.com/DanySK/code-plagiarism-detector/issues/931)) ([591ae8a](https://github.com/DanySK/code-plagiarism-detector/commit/591ae8adeed471db77705faa668d660b60fa1344))
+* **deps:** update plugin gitsemver to v6.0.1 ([#924](https://github.com/DanySK/code-plagiarism-detector/issues/924)) ([f0b4641](https://github.com/DanySK/code-plagiarism-detector/commit/f0b4641d508276618994a23007db3bb3e2ad9fa7))
+* **deps:** update plugin kotlin-qa to v0.93.2 ([#929](https://github.com/DanySK/code-plagiarism-detector/issues/929)) ([51dc438](https://github.com/DanySK/code-plagiarism-detector/commit/51dc438ebaccd1d67ff1454fa2005263735bc5a8))
+* **deps:** update plugin kotlin-qa to v0.93.3 ([#932](https://github.com/DanySK/code-plagiarism-detector/issues/932)) ([b98c794](https://github.com/DanySK/code-plagiarism-detector/commit/b98c794c09315312a68d96aca5c2f0ce0bd0bbfd))
+* **deps:** update plugin org.danilopianini.gradle-pre-commit-git-hooks to v2.0.30 ([#930](https://github.com/DanySK/code-plagiarism-detector/issues/930)) ([5e0348e](https://github.com/DanySK/code-plagiarism-detector/commit/5e0348e630764bda1c7c6857cbf8aa38e4c3b923))
+* **deps:** update plugin publishoncentral to v9.1.3 ([#918](https://github.com/DanySK/code-plagiarism-detector/issues/918)) ([c51ee6b](https://github.com/DanySK/code-plagiarism-detector/commit/c51ee6b82f426b35a793131c81c9676ab3aa0cc1))
+
+### Bug Fixes
+
+* make EnvironmentTokenSupplier more easily testable without fiddling with the JVM internals ([#934](https://github.com/DanySK/code-plagiarism-detector/issues/934)) ([3a4a9e8](https://github.com/DanySK/code-plagiarism-detector/commit/3a4a9e8235b81d1dfdec6eedcfcc1a23340780c2))
+
+### Build and continuous integration
+
+* migrate to `com.gradleup.shadow` ([95b90d6](https://github.com/DanySK/code-plagiarism-detector/commit/95b90d6e25849b4d235474a87924f9743af81f1a))
+* run the build in parallel by default ([#935](https://github.com/DanySK/code-plagiarism-detector/issues/935)) ([1fa0671](https://github.com/DanySK/code-plagiarism-detector/commit/1fa0671fb5f02da5cffca5fc6444581450b8dbbd))
+
 ## [9.1.2](https://github.com/DanySK/code-plagiarism-detector/compare/9.1.1...9.1.2) (2025-08-14)
 
 ### Dependency updates
