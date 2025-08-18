@@ -65,6 +65,7 @@ repositories {
 }
 
 dependencies {
+    implementation(kotlin("stdlib"))
     implementation(libs.apollo.runtime)
     implementation(libs.caffeine)
     implementation(libs.clikt)
@@ -74,7 +75,6 @@ dependencies {
     implementation(libs.javaparser.core)
     implementation(libs.json)
     implementation(libs.kaml)
-    implementation(libs.kotlin.stdlib)
     implementation(libs.org.eclipse.jgit)
     implementation(libs.logback.classic)
     implementation(libs.logback.core)

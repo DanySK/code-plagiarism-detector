@@ -3,8 +3,10 @@ package org.danilopianini.plagiarismdetector.core.detector
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.doubles.shouldBeExactly
-import io.kotest.mpp.timeInMillis
 import java.io.File
+import kotlin.time.Clock.System.now
+import kotlin.time.Duration
+import kotlin.time.ExperimentalTime
 import org.danilopianini.plagiarismdetector.core.analyzer.technique.tokenization.java.JavaTokenizationAnalyzer
 import org.danilopianini.plagiarismdetector.core.detector.technique.tokenization.GreedyStringTiling
 import org.danilopianini.plagiarismdetector.core.detector.technique.tokenization.RKRGreedyStringTiling
@@ -54,35 +56,33 @@ class TokenBasedPlagiarismDetectorTest : FunSpec() {
     }
 
     private fun runDetection(files: Pair<File, File>, printStats: Boolean = false) {
-        val (GSTElapsedTime, GSTResult) =
-            detect(
-                TokenBasedPlagiarismDetector(GreedyStringTiling(DEFAULT_MIN_TOKEN_LEN)),
-                files,
-            )
-        val (RKRElapsedTime, RKRResult) =
-            detect(
-                TokenBasedPlagiarismDetector(RKRGreedyStringTiling(DEFAULT_MIN_TOKEN_LEN)),
-                files,
-            )
+        val (elapsedTimeGST, resultGST) = detect(
+            TokenBasedPlagiarismDetector(GreedyStringTiling(DEFAULT_MIN_TOKEN_LEN)),
+            files,
+        )
+        val (elapsedTimeRKR, resultRKR) = detect(
+            TokenBasedPlagiarismDetector(RKRGreedyStringTiling(DEFAULT_MIN_TOKEN_LEN)),
+            files,
+        )
         if (printStats) {
-            printStats("Greedy String Tiling", GSTElapsedTime, GSTResult)
-            printStats("Running-Karp-Rabin Greedy String Tiling", RKRElapsedTime, RKRResult)
+            printStats("Greedy String Tiling", elapsedTimeGST, resultGST)
+            printStats("Running-Karp-Rabin Greedy String Tiling", elapsedTimeRKR, resultRKR)
         }
-        GSTResult.similarity shouldBeExactly RKRResult.similarity
-        GSTResult.matches.toSet() shouldContainExactly RKRResult.matches.toSet()
+        resultGST.similarity shouldBeExactly resultRKR.similarity
+        resultGST.matches.toSet() shouldContainExactly resultRKR.matches.toSet()
     }
 
+    @OptIn(ExperimentalTime::class)
     private fun detect(
         detector: TokenBasedPlagiarismDetector,
         filesToCheck: Pair<File, File>,
-    ): Pair<Long, ComparisonResult<TokenMatch>> {
-        val start = timeInMillis()
+    ): Pair<Duration, ComparisonResult<TokenMatch>> {
+        val start = now()
         val result = detector(Pair(analyzer(filesToCheck.first), analyzer(filesToCheck.second)))
-        val stop = timeInMillis()
-        return Pair(stop - start, result)
+        return Pair(now() - start, result)
     }
 
-    private fun printStats(strategyName: String, elapsedTime: Long, result: ComparisonResult<TokenMatch>) {
+    private fun printStats(strategyName: String, elapsedTime: Duration, result: ComparisonResult<TokenMatch>) {
         logger.info("> $strategyName")
         logger.info(">> Elapsed time: $elapsedTime ms")
         logger.info(">> Score of similarity: ${result.similarity}")
