@@ -34,7 +34,7 @@ dokka = "org.jetbrains.dokka:2.0.0"
 gitSemVer = "org.danilopianini.git-sensitive-semantic-versioning:7.0.3"
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-qa = "org.danilopianini.gradle-kotlin-qa:0.94.1"
-multiJvmTesting = "org.danilopianini.multi-jvm-test-plugin:4.1.0"
+multiJvmTesting = "org.danilopianini.multi-jvm-test-plugin:4.1.1"
 publishOnCentral = "org.danilopianini.publish-on-central:9.1.4"
 serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 shadowJar = "com.gradleup.shadow:9.1.0"
