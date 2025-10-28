@@ -6,7 +6,7 @@ logback = "1.5.20"
 
 [libraries]
 apollo-runtime = { module = "com.apollographql.apollo3:apollo-runtime", version.ref = "apollo" }
-caffeine = "com.github.ben-manes.caffeine:caffeine:3.2.2"
+caffeine = "com.github.ben-manes.caffeine:caffeine:3.2.3"
 clikt = "com.github.ajalt.clikt:clikt:5.0.3"
 commons-math = "org.apache.commons:commons-math3:3.6.1"
 commons-io = "commons-io:commons-io:2.20.0"
