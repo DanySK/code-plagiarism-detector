@@ -51,8 +51,7 @@ sealed class ProviderCommand(name: String, private val help: String) : CliktComm
             val services = boundService.map { it.substringBefore(":") }.map(SupportedOptions::serviceBy)
             val owners = boundService.map { it.substringAfter(":").substringBefore("/") }
             val repoNames = boundService.map { it.substringAfter("/", "") }
-            services
-                .zip(owners)
+            services.zip(owners)
                 .zip(repoNames) { a, b -> Triple(a.first, a.second, b) }
                 .map { byCriteria(it.first, it.second, it.third) }
                 .asSequence()
@@ -67,7 +66,9 @@ sealed class ProviderCommand(name: String, private val help: String) : CliktComm
                 ByGitHubUserRest(
                     user,
                 ).let { if (repoName.isNotEmpty()) ByGitHubNameRest(repoName, it) else it }
+
             GitHubGraphQL -> ByGitHubUserGraphQL(user, repoName)
+
             BitBucket -> ByBitbucketUser(user).let { if (repoName.isNotEmpty()) ByBitbucketName(repoName, it) else it }
         }
 
