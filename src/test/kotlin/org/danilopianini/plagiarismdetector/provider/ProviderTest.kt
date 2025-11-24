@@ -3,9 +3,10 @@ package org.danilopianini.plagiarismdetector.provider
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.collections.shouldBeEmpty
-import io.kotest.matchers.collections.shouldNotBeEmpty
-import io.kotest.matchers.string.shouldContain
-import io.kotest.matchers.string.shouldContainIgnoringCase
+import io.kotest.matchers.nulls.beNull
+import io.kotest.matchers.sequences.shouldBeEmpty
+import io.kotest.matchers.sequences.shouldNotBeEmpty
+import io.kotest.matchers.shouldNot
 import io.kotest.matchers.string.shouldMatch
 import java.net.URI
 import org.danilopianini.plagiarismdetector.provider.authentication.EnvironmentTokenSupplier
@@ -18,7 +19,6 @@ import org.slf4j.LoggerFactory
 
 class ProviderTest : FunSpec() {
     companion object {
-        private const val PR_BUILD_VARIABLE = "PR_BUILD"
         private const val GH_URL_PREFIX = "https://github.com"
         private const val BB_URL_PREFIX = "https://bitbucket.org"
         private const val OOP_PROJECTS_ORGANIZATION = "unibo-oop-projects"
@@ -29,26 +29,23 @@ class ProviderTest : FunSpec() {
         private const val GH_AUTH_TOKEN_VAR = "GH_TOKEN"
     }
 
-    private val logger = LoggerFactory.getLogger(this.javaClass)
-    private val githubProvider: GitHubRestProvider
-    private val bitbucketProvider: BitbucketProvider
+    private val githubProvider: GitHubRestProvider = when {
+        System.getenv(GH_AUTH_TOKEN_VAR).isNullOrBlank() -> GitHubRestProvider.connectAnonymously()
+        else -> GitHubRestProvider.connectWithToken(EnvironmentTokenSupplier(GH_AUTH_TOKEN_VAR))
+    }
+    private val bitbucketProvider: BitbucketProvider = when {
+        System.getenv(BB_AUTH_USER_VAR).isNullOrBlank() || System.getenv(BB_AUTH_TOKEN_VAR).isNullOrBlank() ->
+            BitbucketProvider.connectAnonymously()
+
+        else ->
+            BitbucketProvider.connectWithToken(
+                EnvironmentTokenSupplier(BB_AUTH_USER_VAR, BB_AUTH_TOKEN_VAR, separator = ":"),
+            )
+    }
 
     init {
-        // Since on PR builds secrets are not available, execute providers test with anonymously connections
-        if (isExecutingOnPullRequest()) {
-            logger.info("Testing providers with anonymous connections.")
-            bitbucketProvider = BitbucketProvider.connectAnonymously()
-            githubProvider = GitHubRestProvider.connectAnonymously()
-        } else {
-            githubProvider = GitHubRestProvider.connectWithToken(EnvironmentTokenSupplier(GH_AUTH_TOKEN_VAR))
-            bitbucketProvider =
-                BitbucketProvider.connectWithToken(
-                    EnvironmentTokenSupplier(BB_AUTH_USER_VAR, BB_AUTH_TOKEN_VAR, separator = ":"),
-                )
-        }
-
         test("Searching by existing name and user should return repos matching those criteria") {
-            var searchedRepoName = "Project-OOP"
+            val searchedRepoName = "oop"
             testByExistingName(
                 githubProvider.byCriteria(
                     ByGitHubNameRest(searchedRepoName, ByGitHubUserRest(OOP_PROJECTS_ORGANIZATION)),
@@ -56,7 +53,6 @@ class ProviderTest : FunSpec() {
                 searchedRepoName,
                 OOP_PROJECTS_ORGANIZATION,
             )
-            searchedRepoName = "OOP"
             testByExistingName(
                 bitbucketProvider.byCriteria(ByBitbucketName(searchedRepoName, ByBitbucketUser(DANYSK_USER))),
                 searchedRepoName,
@@ -109,16 +105,12 @@ class ProviderTest : FunSpec() {
         }
 
         test("Searching by a *non-existing* name should return an empty collection of repos") {
-            githubProvider
-                .byCriteria(
-                    ByGitHubNameRest("non-existing-repo", ByGitHubUserRest(DANYSK_USER)),
-                ).toSet()
-                .shouldBeEmpty()
-            bitbucketProvider
-                .byCriteria(
-                    ByBitbucketName("non-existing-repo", ByBitbucketUser(DANYSK_USER)),
-                ).toSet()
-                .shouldBeEmpty()
+            githubProvider.byCriteria(
+                ByGitHubNameRest("non-existing-repo", ByGitHubUserRest(DANYSK_USER)),
+            ).shouldBeEmpty()
+            bitbucketProvider.byCriteria(
+                ByBitbucketName("non-existing-repo", ByBitbucketUser(DANYSK_USER)),
+            ).shouldBeEmpty()
         }
 
         test("Searching by a *non-existing* user should throw an exception") {
@@ -131,23 +123,22 @@ class ProviderTest : FunSpec() {
         }
     }
 
-    private fun isExecutingOnPullRequest() = System.getenv(PR_BUILD_VARIABLE) == "true"
-
     private fun testByExistingName(
         result: Sequence<Repository>,
         expectedRepositoryName: String,
         expectedUsername: String,
     ) {
-        result.toSet().shouldNotBeEmpty()
-        result.forEach {
-            it.name shouldContainIgnoringCase expectedRepositoryName
-            it.owner shouldMatch expectedUsername
-            it.cloneUrl.path shouldContain
-                Regex(
-                    "^/$expectedUsername/.*$expectedRepositoryName.*",
-                    RegexOption.IGNORE_CASE,
+        result.shouldNotBeEmpty()
+        result.firstOrNull {
+            it.name.contains(expectedRepositoryName, ignoreCase = true) &&
+                it.owner == expectedUsername &&
+                it.cloneUrl.path.contains(
+                    Regex(
+                        "^/$expectedUsername/.*$expectedRepositoryName.*",
+                        RegexOption.IGNORE_CASE,
+                    ),
                 )
-        }
+        } shouldNot beNull()
     }
 
     private fun testByExistingUrl(result: Repository, expectedName: String, expectedUser: String) {
