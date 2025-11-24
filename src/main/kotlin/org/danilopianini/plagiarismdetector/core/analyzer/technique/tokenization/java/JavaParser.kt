@@ -16,7 +16,7 @@ class JavaParser : StepHandler<File, CompilationUnit> {
         val parserConfiguration =
             ParserConfiguration()
                 .setAttributeComments(false)
-                .setLanguageLevel(ParserConfiguration.LanguageLevel.CURRENT)
+                .setLanguageLevel(ParserConfiguration.LanguageLevel.BLEEDING_EDGE)
         val parser = com.github.javaparser.JavaParser(parserConfiguration)
         return parser
             .parse(input)
