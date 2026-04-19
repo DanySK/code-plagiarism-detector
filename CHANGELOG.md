@@ -1,3 +1,37 @@
+## [9.2.4](https://github.com/DanySK/code-plagiarism-detector/compare/9.2.3...9.2.4) (2026-04-19)
+
+### Dependency updates
+
+* **deps:** update gradle to v9.4.1 ([#1130](https://github.com/DanySK/code-plagiarism-detector/issues/1130)) ([1a1c16d](https://github.com/DanySK/code-plagiarism-detector/commit/1a1c16d3c8aa2da5d6f36b058bd199b2f7ec02ef))
+* **deps:** update kotest to v6.1.10 ([#1143](https://github.com/DanySK/code-plagiarism-detector/issues/1143)) ([f3a33eb](https://github.com/DanySK/code-plagiarism-detector/commit/f3a33ebf5809686d073abbc22d2a181b7adb3056))
+* **deps:** update kotest to v6.1.11 ([#1145](https://github.com/DanySK/code-plagiarism-detector/issues/1145)) ([32df455](https://github.com/DanySK/code-plagiarism-detector/commit/32df455a6670d8855d2b58ac597e456c7e84d81f))
+* **deps:** update kotest to v6.1.8 ([#1134](https://github.com/DanySK/code-plagiarism-detector/issues/1134)) ([6b72ca4](https://github.com/DanySK/code-plagiarism-detector/commit/6b72ca4d43bc49eeca850cc1f5cebfe3fd592a87))
+* **deps:** update kotest to v6.1.9 ([#1135](https://github.com/DanySK/code-plagiarism-detector/issues/1135)) ([21d5641](https://github.com/DanySK/code-plagiarism-detector/commit/21d5641b3789c3a0a96599842dfcfc92afd258d3))
+* **deps:** update node.js to 24.15 ([#1147](https://github.com/DanySK/code-plagiarism-detector/issues/1147)) ([ee2010f](https://github.com/DanySK/code-plagiarism-detector/commit/ee2010f173a4ca2402a894fad1067d83ba0df139))
+* **deps:** update plugin com.gradle.develocity to v4.4.0 ([#1137](https://github.com/DanySK/code-plagiarism-detector/issues/1137)) ([6805356](https://github.com/DanySK/code-plagiarism-detector/commit/6805356fd94ac8e91bb42b66737affcaa1b8078b))
+* **deps:** update plugin gitsemver to v7.0.15 ([#1131](https://github.com/DanySK/code-plagiarism-detector/issues/1131)) ([bfdb7f5](https://github.com/DanySK/code-plagiarism-detector/commit/bfdb7f5daa46622e8d680bc8b8ff664ed41d5a5e))
+* **deps:** update plugin gitsemver to v7.0.16 ([#1139](https://github.com/DanySK/code-plagiarism-detector/issues/1139)) ([4c1eb4b](https://github.com/DanySK/code-plagiarism-detector/commit/4c1eb4bcd08d8d270f8c341af428ee0b993bf4ee))
+* **deps:** update plugin org.danilopianini.gradle-pre-commit-git-hooks to v2.1.11 ([#1127](https://github.com/DanySK/code-plagiarism-detector/issues/1127)) ([9553143](https://github.com/DanySK/code-plagiarism-detector/commit/9553143cdf6a59ac09d6d7d93016a56f7c741553))
+* **deps:** update plugin org.danilopianini.gradle-pre-commit-git-hooks to v2.1.12 ([#1132](https://github.com/DanySK/code-plagiarism-detector/issues/1132)) ([f6c7f53](https://github.com/DanySK/code-plagiarism-detector/commit/f6c7f53cb2147c1965f16cdacb266b74e3b97b09))
+* **deps:** update plugin org.danilopianini.gradle-pre-commit-git-hooks to v2.1.13 ([#1149](https://github.com/DanySK/code-plagiarism-detector/issues/1149)) ([4313275](https://github.com/DanySK/code-plagiarism-detector/commit/431327542edad24ed45f5a9fcb03b066e5628f3e))
+* **deps:** update plugin publishoncentral to v9.1.14 ([#1129](https://github.com/DanySK/code-plagiarism-detector/issues/1129)) ([f1abfd0](https://github.com/DanySK/code-plagiarism-detector/commit/f1abfd0392f8dbbd68e3b02ca0cd3bf8d9f87e50))
+* **deps:** update plugin publishoncentral to v9.1.15 ([#1148](https://github.com/DanySK/code-plagiarism-detector/issues/1148)) ([1b33262](https://github.com/DanySK/code-plagiarism-detector/commit/1b332629cc69edf19f85cd6338db4ce59bbb9f65))
+* **deps:** update plugin shadowjar to v9.4.1 ([#1142](https://github.com/DanySK/code-plagiarism-detector/issues/1142)) ([cae0d29](https://github.com/DanySK/code-plagiarism-detector/commit/cae0d29b10fbeb723f2c62aeedcfa2c9f865febd))
+
+### Documentation
+
+* **deps:** update plugin dokka to v2.2.0 ([#1138](https://github.com/DanySK/code-plagiarism-detector/issues/1138)) ([4652873](https://github.com/DanySK/code-plagiarism-detector/commit/4652873e6762443499cb41d0fd97eb3fdb1159e5))
+
+### Build and continuous integration
+
+* **deps:** update danysk/build-check-deploy-gradle-action action to v4.0.26 ([#1128](https://github.com/DanySK/code-plagiarism-detector/issues/1128)) ([0e7c49f](https://github.com/DanySK/code-plagiarism-detector/commit/0e7c49f409df660c4b07da149f863dbcb7dd3c6d))
+* **deps:** update danysk/build-check-deploy-gradle-action action to v4.0.27 ([#1133](https://github.com/DanySK/code-plagiarism-detector/issues/1133)) ([2152914](https://github.com/DanySK/code-plagiarism-detector/commit/2152914623252c692d7f72e33a6d37896a87aaba))
+* **deps:** update danysk/build-check-deploy-gradle-action action to v4.0.28 ([#1136](https://github.com/DanySK/code-plagiarism-detector/issues/1136)) ([e932de2](https://github.com/DanySK/code-plagiarism-detector/commit/e932de2acdd5130d4049b3647c3428267e4cac61))
+* **deps:** update danysk/build-check-deploy-gradle-action action to v4.0.29 ([#1140](https://github.com/DanySK/code-plagiarism-detector/issues/1140)) ([37fd5cf](https://github.com/DanySK/code-plagiarism-detector/commit/37fd5cf50fdac4c5222601d18f68de864d90da03))
+* **deps:** update danysk/build-check-deploy-gradle-action action to v4.0.30 ([#1141](https://github.com/DanySK/code-plagiarism-detector/issues/1141)) ([8711dd1](https://github.com/DanySK/code-plagiarism-detector/commit/8711dd14ce20221d9c3df980e8ed1e7888aebd5f))
+* **deps:** update danysk/build-check-deploy-gradle-action action to v4.0.31 ([#1144](https://github.com/DanySK/code-plagiarism-detector/issues/1144)) ([35a99e1](https://github.com/DanySK/code-plagiarism-detector/commit/35a99e1b20a4869b6efae269fcc13727b70050bc))
+* **deps:** update danysk/build-check-deploy-gradle-action action to v4.0.32 ([#1146](https://github.com/DanySK/code-plagiarism-detector/issues/1146)) ([0edd5ea](https://github.com/DanySK/code-plagiarism-detector/commit/0edd5eafa79154feaed2dda4626f697eab2de381))
+
 ## [9.2.3](https://github.com/DanySK/code-plagiarism-detector/compare/9.2.2...9.2.3) (2026-03-16)
 
 ### Dependency updates
