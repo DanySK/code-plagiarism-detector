@@ -1,5 +1,7 @@
 import com.apollographql.apollo3.gradle.internal.ApolloDownloadSchemaTask
 import com.apollographql.apollo3.gradle.internal.ApolloGenerateSourcesTask
+import dev.detekt.gradle.Detekt
+import java.io.File
 import org.gradle.api.tasks.testing.logging.TestLogEvent
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
 
@@ -112,6 +114,14 @@ ktlint {
     filter {
         exclude {
             it.file.absolutePath.contains("generated")
+        }
+    }
+}
+
+afterEvaluate {
+    tasks.withType<Detekt>().configureEach {
+        exclude {
+            "generated" in it.file.absolutePath
         }
     }
 }
