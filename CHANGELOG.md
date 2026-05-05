@@ -1,3 +1,13 @@
+## [11.0.0](https://github.com/DanySK/code-plagiarism-detector/compare/10.0.0...11.0.0) (2026-05-05)
+
+### ⚠ BREAKING CHANGES
+
+* **deps:** update dependency org.eclipse.jgit:org.eclipse.jgit to v7 (requires Java 17) (#708)
+
+### Dependency updates
+
+* **deps:** update dependency org.eclipse.jgit:org.eclipse.jgit to v7 (requires Java 17) ([#708](https://github.com/DanySK/code-plagiarism-detector/issues/708)) ([fe7c627](https://github.com/DanySK/code-plagiarism-detector/commit/fe7c627cd4a3735c9c0ef0371dfdac07c1577903))
+
 ## [10.0.0](https://github.com/DanySK/code-plagiarism-detector/compare/9.2.5...10.0.0) (2026-05-05)
 
 ### ⚠ BREAKING CHANGES
