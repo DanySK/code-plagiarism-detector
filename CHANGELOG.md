@@ -1,3 +1,34 @@
+## [10.0.0](https://github.com/DanySK/code-plagiarism-detector/compare/9.2.5...10.0.0) (2026-05-05)
+
+### ⚠ BREAKING CHANGES
+
+* require Java 17+ (#1169)
+
+### Features
+
+* require Java 17+ ([#1169](https://github.com/DanySK/code-plagiarism-detector/issues/1169)) ([64624fd](https://github.com/DanySK/code-plagiarism-detector/commit/64624fdcdfb17fce2d5a83d02d5573b81395c252))
+
+### Dependency updates
+
+* **deps:** update dependency com.github.ben-manes.caffeine:caffeine to v3.2.4 ([#1165](https://github.com/DanySK/code-plagiarism-detector/issues/1165)) ([d58ce25](https://github.com/DanySK/code-plagiarism-detector/commit/d58ce25f6754b475cc877f10f5f4fc59ee191685))
+* **deps:** update dependency com.github.javaparser:javaparser-core to v3.28.1 ([#1167](https://github.com/DanySK/code-plagiarism-detector/issues/1167)) ([6e0c0e8](https://github.com/DanySK/code-plagiarism-detector/commit/6e0c0e8a171be8801efd93433cbe110eec54494d))
+* **deps:** update gradle to v9.5.0 ([#1160](https://github.com/DanySK/code-plagiarism-detector/issues/1160)) ([9610597](https://github.com/DanySK/code-plagiarism-detector/commit/96105973e90ba3a245ec4c570a103982addb52f3))
+* **deps:** update gradle-kotln-qa to 1.6.1 ([#1168](https://github.com/DanySK/code-plagiarism-detector/issues/1168)) ([8f35c74](https://github.com/DanySK/code-plagiarism-detector/commit/8f35c74e48dead8ae72a074b01cf6f6bc595856b))
+* **deps:** update plugin gitsemver to v7.0.18 ([#1159](https://github.com/DanySK/code-plagiarism-detector/issues/1159)) ([4961ceb](https://github.com/DanySK/code-plagiarism-detector/commit/4961cebb06efae96140f0d435c8fc1f6a59b6c93))
+* **deps:** update plugin multijvmtesting to v4.3.3 ([#1163](https://github.com/DanySK/code-plagiarism-detector/issues/1163)) ([c582752](https://github.com/DanySK/code-plagiarism-detector/commit/c58275215f6610341d4c1717a01026bd75bf54b4))
+* **deps:** update plugin multijvmtesting to v4.3.4 ([#1164](https://github.com/DanySK/code-plagiarism-detector/issues/1164)) ([86ed3aa](https://github.com/DanySK/code-plagiarism-detector/commit/86ed3aa011ba87e77091c2c6ee10049c639406da))
+* **deps:** update plugin multijvmtesting to v4.3.5 ([#1166](https://github.com/DanySK/code-plagiarism-detector/issues/1166)) ([3f57451](https://github.com/DanySK/code-plagiarism-detector/commit/3f57451e0b1eb91365e5637af1f548fa6a47d5bf))
+* **deps:** update plugin org.danilopianini.gradle-pre-commit-git-hooks to v2.1.16 ([#1161](https://github.com/DanySK/code-plagiarism-detector/issues/1161)) ([7735538](https://github.com/DanySK/code-plagiarism-detector/commit/7735538cb5b80190452af9a5f4134830ae200ad1))
+* **deps:** update plugin publishoncentral to v9.2.2 ([#1162](https://github.com/DanySK/code-plagiarism-detector/issues/1162)) ([8b7c484](https://github.com/DanySK/code-plagiarism-detector/commit/8b7c484ce2be174b2ab3a85b71fdddbe69b11557))
+
+### Build and continuous integration
+
+* **agents:** add agent instructions ([abdd581](https://github.com/DanySK/code-plagiarism-detector/commit/abdd581945818dcf8e1144cd6f5e1c1b6e5dd1c8))
+
+### Style improvements
+
+* import `.editorconfig` from AlchemistSimulator/Alchemist ([ebcdc1a](https://github.com/DanySK/code-plagiarism-detector/commit/ebcdc1aa0b439775058cd866cd950f9204fad867))
+
 ## [9.2.5](https://github.com/DanySK/code-plagiarism-detector/compare/9.2.4...9.2.5) (2026-04-23)
 
 ### Dependency updates
