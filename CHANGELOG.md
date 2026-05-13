@@ -1,3 +1,25 @@
+## [11.0.1](https://github.com/DanySK/code-plagiarism-detector/compare/11.0.0...11.0.1) (2026-05-13)
+
+### Dependency updates
+
+* **deps:** update dependency org.slf4j:slf4j-api to v2.0.18 ([#1174](https://github.com/DanySK/code-plagiarism-detector/issues/1174)) ([df77cc7](https://github.com/DanySK/code-plagiarism-detector/commit/df77cc7f5ee77c6b8f84e59c1d434d5d059e0b80))
+* **deps:** update gradle to v9.5.1 ([#1171](https://github.com/DanySK/code-plagiarism-detector/issues/1171)) ([601f30c](https://github.com/DanySK/code-plagiarism-detector/commit/601f30ca800381fc602170339df2fd3fb600bb3f))
+* **deps:** update plugin gitsemver to v7.0.19 ([#1172](https://github.com/DanySK/code-plagiarism-detector/issues/1172)) ([1d17ebd](https://github.com/DanySK/code-plagiarism-detector/commit/1d17ebd241f689572651631a6c747bb0776781d1))
+* **deps:** update plugin kotlin-qa to v1.6.2 ([#1175](https://github.com/DanySK/code-plagiarism-detector/issues/1175)) ([c95c14b](https://github.com/DanySK/code-plagiarism-detector/commit/c95c14b8a6113c446c9f0e619ad6b72d98092f48))
+* **deps:** update plugin multijvmtesting to v4.3.6 ([#1176](https://github.com/DanySK/code-plagiarism-detector/issues/1176)) ([7c25613](https://github.com/DanySK/code-plagiarism-detector/commit/7c256130372c28bde9900abe226b911f55124395))
+* **deps:** update plugin org.danilopianini.gradle-pre-commit-git-hooks to v2.1.17 ([#1173](https://github.com/DanySK/code-plagiarism-detector/issues/1173)) ([bbf4757](https://github.com/DanySK/code-plagiarism-detector/commit/bbf4757b5f8231cf9a73461b9877f84abfa16521))
+* **deps:** update plugin publishoncentral to v9.2.3 ([#1170](https://github.com/DanySK/code-plagiarism-detector/issues/1170)) ([eacf95a](https://github.com/DanySK/code-plagiarism-detector/commit/eacf95ac9c3cb916948e8ea705e775c129c04028))
+* **deps:** update plugin publishoncentral to v9.2.4 ([#1177](https://github.com/DanySK/code-plagiarism-detector/issues/1177)) ([779a647](https://github.com/DanySK/code-plagiarism-detector/commit/779a6479873c71b78e4c62f681ec4f7023d0e9f0))
+
+### Bug Fixes
+
+* discard private projects from user repositories query ([#1178](https://github.com/DanySK/code-plagiarism-detector/issues/1178)) ([3889cd8](https://github.com/DanySK/code-plagiarism-detector/commit/3889cd828bb015b1814a0196bdeb7ba501510bfd))
+
+### Style improvements
+
+* reformat `CLIConfigurator` ([d36a196](https://github.com/DanySK/code-plagiarism-detector/commit/d36a1967cd658317b311e545d31f835efa0d5a9b))
+* reformat `FileKnowledgeBaseManager` ([208f078](https://github.com/DanySK/code-plagiarism-detector/commit/208f0787e1f7f81c01c50a0997558727c55f1f1e))
+
 ## [11.0.0](https://github.com/DanySK/code-plagiarism-detector/compare/10.0.0...11.0.0) (2026-05-05)
 
 ### ⚠ BREAKING CHANGES
