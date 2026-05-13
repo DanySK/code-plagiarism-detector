@@ -63,14 +63,12 @@ class CLIConfigurator(private val output: Output) : RunConfigurator {
     }
 
     private fun repositoriesFrom(configs: ProviderCommand): Set<Repository> {
-        val url =
-            runCatching { configs.url }
-                .onFailure { exitProcessWithMessage(it.message ?: ERROR_MSG_MISSING_SUBCOMMANDS) }
-                .getOrThrow()
-        val criteria =
-            runCatching { configs.criteria }
-                .onFailure { exitProcessWithMessage(it.message ?: ERROR_MSG_MISSING_SUBCOMMANDS) }
-                .getOrThrow()
+        val url = runCatching { configs.url }
+            .onFailure { exitProcessWithMessage(it.message ?: ERROR_MSG_MISSING_SUBCOMMANDS) }
+            .getOrThrow()
+        val criteria = runCatching { configs.criteria }
+            .onFailure { exitProcessWithMessage(it.message ?: ERROR_MSG_MISSING_SUBCOMMANDS) }
+            .getOrThrow()
         return url
             ?.map { byLink(it, SupportedOptions.serviceBy(it)) }
             ?.toSet()
