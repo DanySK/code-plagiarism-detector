@@ -32,7 +32,7 @@ class AntiPlagiarismSessionImpl<out C : RunConfiguration<M>, M : Match>(
         val corpusToProcess = corpus
             .filter { it.name != submission.name && submission hasNotYetComparedAgainst it }
             .toSet()
-        output.startComparison(submission.name, corpusToProcess.count())
+        output.startComparison(submission.name, corpusToProcess.size)
         corpusToProcess
             .parallelStream()
             .map {
