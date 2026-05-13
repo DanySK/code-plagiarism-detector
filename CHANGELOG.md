@@ -1,3 +1,9 @@
+## [11.1.0](https://github.com/DanySK/code-plagiarism-detector/compare/11.0.1...11.1.0) (2026-05-13)
+
+### Features
+
+* enhance UI feedback for corpus comparison progress ([#1180](https://github.com/DanySK/code-plagiarism-detector/issues/1180)) ([d83c229](https://github.com/DanySK/code-plagiarism-detector/commit/d83c2295433c6c84b3ca2568608b2244a40bd080))
+
 ## [11.0.1](https://github.com/DanySK/code-plagiarism-detector/compare/11.0.0...11.0.1) (2026-05-13)
 
 ### Dependency updates
