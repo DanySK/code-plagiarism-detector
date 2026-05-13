@@ -26,21 +26,21 @@ class FileKnowledgeBaseManager : KnowledgeBaseManager {
         clean(this)
     }
 
-    private fun clone(project: Repository, out: File) = Git
-        .cloneRepository()
-        .setURI("${project.cloneUrl}")
-        .setDepth(1)
-        .setDirectory(out)
-        .call()
-        .close()
+    private fun clone(project: Repository, out: File) = runCatching {
+        Git.cloneRepository()
+            .setURI("${project.cloneUrl}")
+            .setDepth(1)
+            .setDirectory(out)
+            .call()
+            .close()
+    }
 
     private fun clean(out: File) {
-        val matching =
-            FileUtils.listFiles(
-                out,
-                TrueFileFilter.INSTANCE,
-                NotFileFilter(NameFileFilter(SOURCE_FOLDER)),
-            )
+        val matching = FileUtils.listFiles(
+            out,
+            TrueFileFilter.INSTANCE,
+            NotFileFilter(NameFileFilter(SOURCE_FOLDER)),
+        )
         matching.forEach { FileUtils.deleteQuietly(it) }
     }
 
