@@ -28,6 +28,5 @@ data class ByGitHubUserRest(val username: String) : GitHubRestSearchCriteria {
 data class ByGitHubNameRest(private val repositoryName: String, val userCriteria: ByGitHubUserRest) :
     GitHubRestSearchCriteria {
     override operator fun invoke(subject: GitHub): GHRepositorySearchBuilder = userCriteria.invoke(subject)
-        .visibility(GHRepository.Visibility.PUBLIC)
         .q(repositoryName).`in`("name")
 }
