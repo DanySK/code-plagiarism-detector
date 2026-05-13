@@ -1,6 +1,6 @@
 query GetUserRepositories($username: String!, $after: String) {
   repositoryOwner(login: $username) {
-    repositories(first: 100, after: $after) {
+    repositories(first: 100, after: $after, privacy: PUBLIC) {
       nodes {
         name
       }
