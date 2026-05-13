@@ -22,43 +22,36 @@ typealias Repos = GetUserRepositoriesQuery.Data?
 data class ByGitHubUserGraphQL(val repoOwner: String, val repoFilter: String) : GitHubGraphQLSearchCriteria {
     override operator fun invoke(client: ApolloClient): Sequence<Repository> {
         fun queryFor(page: String? = null): Repos = runBlocking {
-            client
-                .query(
-                    GetUserRepositoriesQuery(
-                        repoOwner,
-                        page?.let { Optional.present(it) } ?: Optional.absent(),
-                    ),
-                ).execute()
+            client.query(
+                GetUserRepositoriesQuery(
+                    repoOwner,
+                    page?.let { Optional.present(it) } ?: Optional.absent(),
+                ),
+            ).execute()
                 .data
         }
-        val emitter =
-            generateSequence<Pair<String?, Repos>>(null to queryFor()) { (_, result) ->
-                checkNotNull(result) {
-                    "No result from GitHub GraphQL API for repository owner '$repoOwner'"
-                }
-                checkNotNull(result.repositoryOwner) {
-                    "No repository owner named '$repoOwner'"
-                }
-                if (result.repositoryOwner.repositories.pageInfo.hasNextPage) {
-                    val cursor = result.repositoryOwner.repositories.pageInfo.endCursor
-                    cursor to queryFor(cursor)
-                } else {
-                    null
-                }
+        val emitter = generateSequence<Pair<String?, Repos>>(null to queryFor()) { (_, result) ->
+            checkNotNull(result) {
+                "No result from GitHub GraphQL API for repository owner '$repoOwner'"
             }
-        val repoList =
-            emitter.flatMap { (_, repoList) ->
-                repoList
-                    ?.repositoryOwner
-                    ?.repositories
-                    ?.nodes
-                    ?.asSequence()
-                    ?.filterNotNull()
-                    .orEmpty()
+            checkNotNull(result.repositoryOwner) {
+                "No repository owner named '$repoOwner'"
             }
-        return repoList
-            .filter {
-                it.name.contains(repoFilter)
-            }.map { GitHubRepository(owner = repoOwner, name = it.name) }
+            if (result.repositoryOwner.repositories.pageInfo.hasNextPage) {
+                val cursor = result.repositoryOwner.repositories.pageInfo.endCursor
+                cursor to queryFor(cursor)
+            } else {
+                null
+            }
+        }
+        val repoList = emitter.flatMap { (_, repoList) ->
+            repoList?.repositoryOwner
+                ?.repositories
+                ?.nodes
+                ?.asSequence()
+                ?.filterNotNull().orEmpty()
+        }
+        return repoList.filter { it.name.contains(repoFilter) }
+            .map { GitHubRepository(owner = repoOwner, name = it.name) }
     }
 }

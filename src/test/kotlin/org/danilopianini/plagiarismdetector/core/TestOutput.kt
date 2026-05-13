@@ -9,7 +9,9 @@ object TestOutput : Output {
     override fun startComparison(submissionName: String, totalComparisons: Int) =
         println("Start comparison $submissionName ($totalComparisons)")
 
-    override fun tick() = Unit
+    override fun startCorpusComparison(corpusName: String) = Unit
+
+    override fun endCorpusComparison(corpusName: String) = Unit
 
     override fun endComparison() = println("Ended")
 
