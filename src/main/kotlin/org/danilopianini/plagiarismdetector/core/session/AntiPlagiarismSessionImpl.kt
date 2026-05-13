@@ -29,13 +29,20 @@ class AntiPlagiarismSessionImpl<out C : RunConfiguration<M>, M : Match>(
     }
 
     private fun processNotYetProcessed(submission: Repository): Set<Report<M>> = with(configuration) {
-        output.startComparison(submission.name, configuration.corpus.count())
-        corpus
+        val corpusToProcess = corpus
             .filter { it.name != submission.name && submission hasNotYetComparedAgainst it }
             .toSet()
+        output.startComparison(submission.name, corpusToProcess.count())
+        corpusToProcess
             .parallelStream()
-            .peek { output.tick() }
-            .map { technique.execute(submission, it, filesToExclude, minDuplicationPercentage) }
+            .map {
+                output.startCorpusComparison(it.name)
+                try {
+                    technique.execute(submission, it, filesToExclude, minDuplicationPercentage)
+                } finally {
+                    output.endCorpusComparison(it.name)
+                }
+            }
             .collect(Collectors.toSet())
     }.also { output.endComparison() }
 

@@ -12,10 +12,16 @@ interface Output {
     fun startComparison(submissionName: String, totalComparisons: Int)
 
     /**
-     * Notifies the UI a new comparison has been completed since the
-     * comparison process started.
+     * Notifies the UI that [corpusName] is being compared against the
+     * current submission.
      */
-    fun tick()
+    fun startCorpusComparison(corpusName: String)
+
+    /**
+     * Notifies the UI that [corpusName] has been compared against the
+     * current submission.
+     */
+    fun endCorpusComparison(corpusName: String)
 
     /**
      * Notifies the UI the comparison process is ended.
