@@ -1,6 +1,7 @@
 package org.danilopianini.plagiarismdetector.provider.criteria
 
 import org.kohsuke.github.GHFork
+import org.kohsuke.github.GHRepository
 import org.kohsuke.github.GHRepositorySearchBuilder
 import org.kohsuke.github.GitHub
 
@@ -15,7 +16,9 @@ interface GitHubRestSearchCriteria : SearchCriteria<GitHub, GHRepositorySearchBu
  */
 data class ByGitHubUserRest(val username: String) : GitHubRestSearchCriteria {
     override operator fun invoke(subject: GitHub): GHRepositorySearchBuilder =
-        subject.searchRepositories().user(username).fork(GHFork.PARENT_AND_FORKS)
+        subject.searchRepositories().user(username)
+            .visibility(GHRepository.Visibility.PUBLIC)
+            .fork(GHFork.PARENT_AND_FORKS)
 }
 
 /**
@@ -24,6 +27,6 @@ data class ByGitHubUserRest(val username: String) : GitHubRestSearchCriteria {
  */
 data class ByGitHubNameRest(private val repositoryName: String, val userCriteria: ByGitHubUserRest) :
     GitHubRestSearchCriteria {
-    override operator fun invoke(subject: GitHub): GHRepositorySearchBuilder =
-        userCriteria.invoke(subject).q(repositoryName).`in`("name")
+    override operator fun invoke(subject: GitHub): GHRepositorySearchBuilder = userCriteria.invoke(subject)
+        .q(repositoryName).`in`("name")
 }
