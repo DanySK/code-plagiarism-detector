@@ -1,3 +1,9 @@
+## [11.1.1](https://github.com/DanySK/code-plagiarism-detector/compare/11.1.0...11.1.1) (2026-05-13)
+
+### Bug Fixes
+
+* require public visibility for repos searched through GH REST ([#1179](https://github.com/DanySK/code-plagiarism-detector/issues/1179)) ([ae4c65b](https://github.com/DanySK/code-plagiarism-detector/commit/ae4c65be0a72136c6268fd7d95bc981ad75f0e88))
+
 ## [11.1.0](https://github.com/DanySK/code-plagiarism-detector/compare/11.0.1...11.1.0) (2026-05-13)
 
 ### Features
