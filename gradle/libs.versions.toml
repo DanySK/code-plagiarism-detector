@@ -1,6 +1,6 @@
 [versions]
 apollo = "4.0.0-beta.7"
-kotest = "6.2.0"
+kotest = "6.2.1"
 kotlin = "2.4.0"
 logback = "1.5.34"
 
