@@ -6,8 +6,8 @@ import io.kotest.matchers.file.shouldContainFile
 import io.kotest.matchers.file.shouldNotBeEmpty
 import io.kotest.matchers.shouldBe
 import io.mockk.every
+import io.mockk.justRun
 import io.mockk.mockk
-import io.mockk.spyk
 import java.io.File
 import java.net.URL
 import java.nio.file.Files
@@ -28,8 +28,11 @@ class FileKnowledgeBaseManagerTest : FunSpec() {
 
     init {
         val cacheDir = Files.createTempDirectory("cache-dir").toFile()
-        val knowledgeBaseManager = spyk<FileKnowledgeBaseManager>(recordPrivateCalls = true)
-        every { knowledgeBaseManager getProperty "repositoryFolder" } propertyType File::class answers { cacheDir }
+        val sharedKnowledgeBase = mockk<SharedKnowledgeBase> {
+            every { restore(any(), any()) } returns false
+            justRun { store(any(), any()) }
+        }
+        val knowledgeBaseManager = FileKnowledgeBaseManager(cacheDir, sharedKnowledgeBase)
 
         test("Testing caching sources") {
             knowledgeBaseManager.isCached(sampleBitbucketRepo) shouldBe false

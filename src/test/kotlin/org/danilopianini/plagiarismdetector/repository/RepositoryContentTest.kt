@@ -21,6 +21,9 @@ class RepositoryContentTest : FunSpec() {
                 every {
                     this@mockk.get(any()).toString()
                 } returns "test-bitbucket-repo-content"
+                every {
+                    this@mockk.getJSONObject("owner").get("nickname").toString()
+                } returns "tassiLuca"
             },
         )
 
