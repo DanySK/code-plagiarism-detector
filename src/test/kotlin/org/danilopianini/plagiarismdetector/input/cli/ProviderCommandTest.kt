@@ -78,24 +78,16 @@ class ProviderCommandTest : FunSpec() {
 
         test("Testing provider commands with more than one criteria") {
             val users = listOf("user1", "user2")
-            val services = listOf("github", "bitbucket")
             val repoNames = listOf("repo1", "repo2", "repo3")
-            val argsList =
-                services.flatMap { s ->
-                    users.flatMap { u ->
-                        repoNames.map {
-                            s
-                                .plus(":")
-                                .plus(u)
-                                .plus("/")
-                                .plus(it)
-                        }
-                    }
+            val argsList = users.flatMap { u ->
+                repoNames.map {
+                    "github:$u/$it"
                 }
+            }
             val args = listOf("--service", argsList.joinToString(separator = ","))
             parsedCommands(args) {
                 it.url.shouldBeNull()
-                it.criteria.shouldNotBeNull().count() shouldBe (users.count() * repoNames.count() * services.count())
+                it.criteria.shouldNotBeNull().count() shouldBe (users.count() * repoNames.count())
             }
         }
 

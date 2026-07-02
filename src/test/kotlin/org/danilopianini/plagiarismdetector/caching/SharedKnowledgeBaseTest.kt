@@ -12,6 +12,7 @@ import java.net.URI
 import java.net.URL
 import java.nio.file.Files
 import org.apache.commons.io.FileUtils
+import org.danilopianini.plagiarismdetector.gitRepositoryWith
 import org.danilopianini.plagiarismdetector.repository.Repository
 import org.eclipse.jgit.api.Git
 
@@ -58,7 +59,7 @@ class SharedKnowledgeBaseTest : FunSpec() {
 
         test("stores a cleaned clone in an empty shared cache repository") {
             val remoteCache = bareRepository()
-            val original = repositoryWith("src/Main.java" to "class Main {}", "README.md" to "# ignored")
+            val original = gitRepositoryWith("src/Main.java" to "class Main {}", "README.md" to "# ignored")
             val project = repository("student", "submission", original.toURI().toURL())
             val localCache = Files.createTempDirectory("local-cache").toFile()
 
@@ -84,7 +85,7 @@ class SharedKnowledgeBaseTest : FunSpec() {
 
         test("does not fail when the shared cache cannot be uploaded") {
             val unavailableCache = Files.createTempDirectory("missing-remote").toFile().also(FileUtils::deleteDirectory)
-            val original = repositoryWith("src/Main.java" to "class Main {}")
+            val original = gitRepositoryWith("src/Main.java" to "class Main {}")
             val project = repository("student", "submission", original.toURI().toURL())
             val localCache = Files.createTempDirectory("local-cache").toFile()
 
@@ -106,13 +107,13 @@ class SharedKnowledgeBaseTest : FunSpec() {
             val cacheRoot = Files.createTempDirectory("cache").toFile()
             val sharedCache = SharedKnowledgeBase(cacheRoot, remoteCache.toURI().toString(), getenv = fakeToken)
             val first = repository("owner", "same-name", URI("https://github.com/owner/same-name.git").toURL())
-            val second = repository("owner", "same-name", URI("https://bitbucket.org/owner/same-name.git").toURL())
+            val second = repository("owner", "same-name", URI("https://example.org/owner/same-name.git").toURL())
             val firstSource = Files.createTempDirectory("first").toFile()
             val secondSource = Files.createTempDirectory("second").toFile()
             File(firstSource, "src").mkdirs()
             File(firstSource, "src/GitHub.java").writeText("class GitHub {}")
             File(secondSource, "src").mkdirs()
-            File(secondSource, "src/Bitbucket.java").writeText("class Bitbucket {}")
+            File(secondSource, "src/Example.java").writeText("class Example {}")
 
             sharedCache.store(first, firstSource)
             sharedCache.store(second, secondSource)
@@ -122,34 +123,14 @@ class SharedKnowledgeBaseTest : FunSpec() {
             sharedCache.restore(first, firstRestored) shouldBe true
             sharedCache.restore(second, secondRestored) shouldBe true
             File(firstRestored, "src").shouldContainFile("GitHub.java")
-            File(firstRestored, "src").shouldNotContainFile("Bitbucket.java")
-            File(secondRestored, "src").shouldContainFile("Bitbucket.java")
+            File(firstRestored, "src").shouldNotContainFile("Example.java")
+            File(secondRestored, "src").shouldContainFile("Example.java")
             File(secondRestored, "src").shouldNotContainFile("GitHub.java")
         }
     }
 
     private fun bareRepository(): File = Files.createTempDirectory("remote-cache").toFile()
         .also { Git.init().setBare(true).setDirectory(it).call().close() }
-
-    private fun repositoryWith(vararg files: Pair<String, String>): File {
-        val directory = Files.createTempDirectory("repository").toFile()
-        Git.init().setDirectory(directory).setInitialBranch("main").call().use { git ->
-            files.forEach { (path, content) ->
-                File(directory, path).apply {
-                    parentFile.mkdirs()
-                    writeText(content)
-                }
-            }
-            git.add().addFilepattern(".").call()
-            git.commit()
-                .setAuthor("test", "test@example.org")
-                .setCommitter("test", "test@example.org")
-                .setMessage("Initial commit")
-                .setSign(false)
-                .call()
-        }
-        return directory
-    }
 
     private fun repository(owner: String, name: String, cloneUrl: URL): Repository = mockk {
         every { this@mockk.owner } returns owner

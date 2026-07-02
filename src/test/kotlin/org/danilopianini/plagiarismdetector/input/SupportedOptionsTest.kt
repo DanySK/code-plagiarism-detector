@@ -4,7 +4,6 @@ import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
 import java.net.URI
-import org.danilopianini.plagiarismdetector.utils.BitBucket
 import org.danilopianini.plagiarismdetector.utils.GitHubGraphQL
 
 class SupportedOptionsTest :
@@ -19,11 +18,9 @@ class SupportedOptionsTest :
 
         test("Test get service by its name") {
             SupportedOptions.serviceBy("github") shouldBe GitHubGraphQL
-            SupportedOptions.serviceBy("bitbucket") shouldBe BitBucket
         }
 
         test("Test get service by url") {
             SupportedOptions.serviceBy(URI("https://github.com/orgs/unibo-oop-projects").toURL()) shouldBe GitHubGraphQL
-            SupportedOptions.serviceBy(URI("https://bitbucket.org/danysk/").toURL()) shouldBe BitBucket
         }
     })

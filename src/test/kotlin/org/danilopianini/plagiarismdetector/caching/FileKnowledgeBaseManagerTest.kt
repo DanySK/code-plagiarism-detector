@@ -12,18 +12,19 @@ import java.io.File
 import java.net.URL
 import java.nio.file.Files
 import org.apache.commons.io.FileUtils
+import org.danilopianini.plagiarismdetector.gitRepositoryWith
 import org.danilopianini.plagiarismdetector.repository.Repository
 
 class FileKnowledgeBaseManagerTest : FunSpec() {
-    private val sampleBitbucketRepo =
+    private val sampleRepoWithRootSources =
         mockk<Repository> {
             every { name } returns "test-repo-cache-simple"
-            every { cloneUrl } returns URL(BB_SAMPLE_REPO_URL)
+            every { cloneUrl } returns URL(rootSourcesRepo.toURI().toString())
         }
-    private val sampleGitHubRepo =
+    private val sampleRepoWithoutRootSources =
         mockk<Repository> {
             every { name } returns "test-repo-cache-without-src-root-folder"
-            every { cloneUrl } returns URL(GH_SAMPLE_REPO_URL)
+            every { cloneUrl } returns URL(nestedSourcesRepo.toURI().toString())
         }
 
     init {
@@ -35,28 +36,30 @@ class FileKnowledgeBaseManagerTest : FunSpec() {
         val knowledgeBaseManager = FileKnowledgeBaseManager(cacheDir, sharedKnowledgeBase)
 
         test("Testing caching sources") {
-            knowledgeBaseManager.isCached(sampleBitbucketRepo) shouldBe false
+            knowledgeBaseManager.isCached(sampleRepoWithRootSources) shouldBe false
             shouldThrow<IllegalArgumentException> {
-                knowledgeBaseManager.load(sampleBitbucketRepo)
+                knowledgeBaseManager.load(sampleRepoWithRootSources)
             }
-            knowledgeBaseManager.save(sampleBitbucketRepo)
-            knowledgeBaseManager.isCached(sampleBitbucketRepo) shouldBe true
-            val repoDir = knowledgeBaseManager.load(sampleBitbucketRepo)
+            knowledgeBaseManager.save(sampleRepoWithRootSources)
+            knowledgeBaseManager.isCached(sampleRepoWithRootSources) shouldBe true
+            val repoDir = knowledgeBaseManager.load(sampleRepoWithRootSources)
             repoDir.shouldNotBeEmpty()
-            repoDir.path.substringAfterLast(System.getProperty("file.separator")) shouldBe sampleBitbucketRepo.name
+            repoDir.path.substringAfterLast(System.getProperty("file.separator")) shouldBe
+                sampleRepoWithRootSources.name
             repoDir.shouldContainFile("src")
         }
 
         test("Testing caching project sources with `src` not in the root directory") {
-            knowledgeBaseManager.isCached(sampleGitHubRepo) shouldBe false
+            knowledgeBaseManager.isCached(sampleRepoWithoutRootSources) shouldBe false
             shouldThrow<IllegalArgumentException> {
-                knowledgeBaseManager.load(sampleGitHubRepo)
+                knowledgeBaseManager.load(sampleRepoWithoutRootSources)
             }
-            knowledgeBaseManager.save(sampleGitHubRepo)
-            knowledgeBaseManager.isCached(sampleGitHubRepo) shouldBe true
-            val repoDir = knowledgeBaseManager.load(sampleGitHubRepo)
+            knowledgeBaseManager.save(sampleRepoWithoutRootSources)
+            knowledgeBaseManager.isCached(sampleRepoWithoutRootSources) shouldBe true
+            val repoDir = knowledgeBaseManager.load(sampleRepoWithoutRootSources)
             repoDir.shouldNotBeEmpty()
-            repoDir.path.substringAfterLast(System.getProperty("file.separator")) shouldBe sampleGitHubRepo.name
+            repoDir.path.substringAfterLast(System.getProperty("file.separator")) shouldBe
+                sampleRepoWithoutRootSources.name
             repoDir.shouldContainFile("app")
         }
 
@@ -66,7 +69,10 @@ class FileKnowledgeBaseManagerTest : FunSpec() {
     }
 
     companion object {
-        private const val GH_SAMPLE_REPO_URL = "https://github.com/tassiLuca/test-app-for-code-plagiarism-detector"
-        private const val BB_SAMPLE_REPO_URL = "https://bitbucket.org/tassiLuca/test-app-for-code-plagiarism-detector"
+        private val rootSourcesRepo = gitRepositoryWith("src/Main.java" to "class Main {}")
+        private val nestedSourcesRepo = gitRepositoryWith(
+            "app/src/Main.java" to "class Main {}",
+            "README.md" to "# ignored",
+        )
     }
 }

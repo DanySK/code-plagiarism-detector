@@ -12,16 +12,13 @@ import org.danilopianini.plagiarismdetector.input.cli.provider.SubmissionProvide
 import org.danilopianini.plagiarismdetector.input.configuration.RunConfiguration
 import org.danilopianini.plagiarismdetector.input.configuration.RunConfigurationImpl
 import org.danilopianini.plagiarismdetector.output.Output
-import org.danilopianini.plagiarismdetector.provider.BitbucketProvider
 import org.danilopianini.plagiarismdetector.provider.GitHubGraphQLProvider
 import org.danilopianini.plagiarismdetector.provider.GitHubRestProvider
 import org.danilopianini.plagiarismdetector.provider.authentication.EnvironmentTokenSupplier
-import org.danilopianini.plagiarismdetector.provider.criteria.BitbucketSearchCriteria
 import org.danilopianini.plagiarismdetector.provider.criteria.GitHubGraphQLSearchCriteria
 import org.danilopianini.plagiarismdetector.provider.criteria.GitHubRestSearchCriteria
 import org.danilopianini.plagiarismdetector.provider.criteria.SearchCriteria
 import org.danilopianini.plagiarismdetector.repository.Repository
-import org.danilopianini.plagiarismdetector.utils.BitBucket
 import org.danilopianini.plagiarismdetector.utils.GitHubGraphQL
 import org.danilopianini.plagiarismdetector.utils.GitHubRest
 import org.danilopianini.plagiarismdetector.utils.HostingService
@@ -36,12 +33,6 @@ class CLIConfigurator(private val output: Output) : RunConfigurator {
 
     private val githubGraphQL: GitHubGraphQLProvider by lazy {
         GitHubGraphQLProvider(EnvironmentTokenSupplier(GH_AUTH_TOKEN_VAR).token)
-    }
-
-    private val bitbucket: BitbucketProvider by lazy {
-        BitbucketProvider.connectWithToken(
-            EnvironmentTokenSupplier(BB_AUTH_USER_VAR, BB_AUTH_TOKEN_VAR, separator = ":"),
-        )
     }
 
     override fun invoke(arguments: List<String>): RunConfiguration<*> {
@@ -84,19 +75,15 @@ class CLIConfigurator(private val output: Output) : RunConfigurator {
     private fun byLink(link: URL, service: HostingService): Repository = when (service) {
         GitHubRest -> githubRest.byLink(link)
         GitHubGraphQL -> githubGraphQL.byLink(link)
-        BitBucket -> bitbucket.byLink(link)
     }
 
     private fun byCriteria(criteria: SearchCriteria<*, *>): Sequence<Repository> = when (criteria) {
         is GitHubRestSearchCriteria -> githubRest.byCriteria(criteria)
-        is BitbucketSearchCriteria -> bitbucket.byCriteria(criteria)
         is GitHubGraphQLSearchCriteria -> criteria(githubGraphQL.client)
         else -> error("The extracted criteria is not valid.")
     }
 
     private companion object {
-        private const val BB_AUTH_USER_VAR = "BB_USER"
-        private const val BB_AUTH_TOKEN_VAR = "BB_TOKEN"
         private const val GH_AUTH_TOKEN_VAR = "GH_TOKEN"
         private const val ERROR_MSG_MISSING_SUBCOMMANDS =
             "ERROR: `corpus` and `submission` subcommands are both required"
