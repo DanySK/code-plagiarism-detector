@@ -102,6 +102,24 @@ class SharedKnowledgeBaseTest : FunSpec() {
             File(localCache, project.name).shouldContainFile("src")
         }
 
+        test("does not fail when shared cache credentials are missing") {
+            val remoteCache = bareRepository()
+            val original = gitRepositoryWith("src/Main.java" to "class Main {}")
+            val project = repository("student", "submission", original.toURI().toURL())
+            val localCache = Files.createTempDirectory("local-cache").toFile()
+
+            FileKnowledgeBaseManager(
+                repositoryFolder = localCache,
+                sharedKnowledgeBase = SharedKnowledgeBase(
+                    localCache,
+                    remoteCache.toURI().toString(),
+                ),
+            ).save(project)
+
+            File(localCache, project.name).shouldNotBeEmpty()
+            File(localCache, project.name).shouldContainFile("src")
+        }
+
         test("keys cache entries by host owner and repository name") {
             val remoteCache = bareRepository()
             val cacheRoot = Files.createTempDirectory("cache").toFile()

@@ -14,6 +14,7 @@ import java.nio.file.Files
 import org.apache.commons.io.FileUtils
 import org.danilopianini.plagiarismdetector.gitRepositoryWith
 import org.danilopianini.plagiarismdetector.repository.Repository
+import org.eclipse.jgit.api.errors.InvalidRemoteException
 
 class FileKnowledgeBaseManagerTest : FunSpec() {
     private val sampleRepoWithRootSources =
@@ -61,6 +62,21 @@ class FileKnowledgeBaseManagerTest : FunSpec() {
             repoDir.path.substringAfterLast(System.getProperty("file.separator")) shouldBe
                 sampleRepoWithoutRootSources.name
             repoDir.shouldContainFile("app")
+        }
+
+        test("Clone failures are reported") {
+            val missingRepository = Files.createTempDirectory(
+                "missing-repository",
+            ).toFile().also(FileUtils::deleteDirectory)
+            val project = mockk<Repository> {
+                every { name } returns "missing-repository"
+                every { cloneUrl } returns missingRepository.toURI().toURL()
+            }
+
+            shouldThrow<InvalidRemoteException> {
+                knowledgeBaseManager.save(project)
+            }
+            knowledgeBaseManager.isCached(project) shouldBe false
         }
 
         afterSpec {

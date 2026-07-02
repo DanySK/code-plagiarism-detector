@@ -44,7 +44,7 @@ class FileKnowledgeBaseManager internal constructor(
         }
     }
 
-    private fun clone(project: Repository, out: File) = runCatching {
+    private fun clone(project: Repository, out: File) {
         Git.cloneRepository()
             .setURI("${project.cloneUrl}")
             .setDepth(1)
@@ -102,7 +102,8 @@ internal class SharedKnowledgeBase(
             }
         }
     }.getOrElse {
-        logger.warn("Unable to restore ${project.owner}/${project.name} from the shared cache.", it)
+        logger.warn("Unable to restore ${project.owner}/${project.name} from the shared cache: ${it.message}")
+        logger.debug("Unable to restore ${project.owner}/${project.name} from the shared cache.", it)
         false
     }
 
@@ -133,7 +134,8 @@ internal class SharedKnowledgeBase(
                 }
             }
         }.onFailure {
-            logger.warn("Unable to store ${project.owner}/${project.name} in the shared cache.", it)
+            logger.warn("Unable to store ${project.owner}/${project.name} in the shared cache: ${it.message}")
+            logger.debug("Unable to store ${project.owner}/${project.name} in the shared cache.", it)
         }
     }
 
