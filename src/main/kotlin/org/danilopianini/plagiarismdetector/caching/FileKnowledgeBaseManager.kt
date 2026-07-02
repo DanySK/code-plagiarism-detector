@@ -24,7 +24,7 @@ class FileKnowledgeBaseManager internal constructor(
     private val repositoryFolder: File = File(
         System.getProperty("user.home") + File.separator + REPOSITORY_FOLDER_NAME,
     ),
-    private val sharedKnowledgeBase: SharedKnowledgeBase = SharedKnowledgeBase(repositoryFolder),
+    private val sharedKnowledgeBase: SharedKnowledgeBase? = null,
 ) : KnowledgeBaseManager {
     constructor() : this(
         File(System.getProperty("user.home") + File.separator + REPOSITORY_FOLDER_NAME),
@@ -34,11 +34,13 @@ class FileKnowledgeBaseManager internal constructor(
     private val separator = File.separator
 
     override fun save(project: Repository) = with(File(repositoryFolder.path + separator + project.name)) {
-        if (!sharedKnowledgeBase.restore(project, this)) {
+        val restoredFromShared = sharedKnowledgeBase?.restore(project, this) ?: false
+        if (!restoredFromShared) {
             logger.debug("Cloning ${project.name}")
+            FileUtils.deleteQuietly(this)
             clone(project, this)
             clean(this)
-            sharedKnowledgeBase.store(project, this)
+            sharedKnowledgeBase?.store(project, this)
         }
     }
 
