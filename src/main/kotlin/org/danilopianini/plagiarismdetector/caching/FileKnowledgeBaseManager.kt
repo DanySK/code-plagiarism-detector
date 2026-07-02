@@ -2,6 +2,7 @@ package org.danilopianini.plagiarismdetector.caching
 
 import java.io.File
 import java.util.concurrent.ConcurrentHashMap
+import kotlin.io.path.relativeTo
 import org.apache.commons.io.FileUtils
 import org.apache.commons.io.filefilter.DirectoryFileFilter
 import org.apache.commons.io.filefilter.FileFileFilter
@@ -53,14 +54,16 @@ class FileKnowledgeBaseManager internal constructor(
     }
 
     private fun clean(out: File) {
-        val matching = FileUtils.listFiles(
-            out,
-            TrueFileFilter.INSTANCE,
-            NotFileFilter(NameFileFilter(SOURCE_FOLDER)),
-        )
-        matching.forEach { FileUtils.deleteQuietly(it) }
+        out.walkBottomUp()
+            .filter { it.isFile }
+            .filterNot { file ->
+                file.toPath().relativeTo(out.toPath()).any { it.toString() == SOURCE_FOLDER }
+            }
+            .forEach(FileUtils::deleteQuietly)
+        out.walkBottomUp()
+            .filter { it.isDirectory && it != out && FileUtils.isEmptyDirectory(it) }
+            .forEach(FileUtils::deleteQuietly)
     }
-
     override fun isCached(project: Repository): Boolean = with(File(repositoryFolder.path + separator + project.name)) {
         isDirectory && !FileUtils.isEmptyDirectory(this)
     }
