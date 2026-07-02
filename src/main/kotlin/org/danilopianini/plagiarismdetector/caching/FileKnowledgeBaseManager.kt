@@ -59,10 +59,7 @@ class FileKnowledgeBaseManager internal constructor(
     }
 
     private fun File.isCacheableSourceFile(root: File): Boolean =
-        extension.lowercase() in setOf("java", "kt", "groovy", "scala", "json", "yml", "yaml", "toml") &&
-            with(toPath().relativeTo(root.toPath())) {
-                any { it.toString() == SOURCE_FOLDER }
-            }
+        extension.lowercase() in setOf("groovy", "java", "kt", "kts", "json", "scala", "toml", "yml", "yaml")
 
     private fun File.isAvailableLocalCache(): Boolean = isDirectory && !FileUtils.isEmptyDirectory(this)
 
@@ -76,7 +73,6 @@ class FileKnowledgeBaseManager internal constructor(
     }
 
     private companion object {
-        private const val SOURCE_FOLDER = "src"
         private const val REPOSITORY_FOLDER_NAME = ".code-plagiarism-detector"
         private const val GITHUB_HOST = "github.com"
 
