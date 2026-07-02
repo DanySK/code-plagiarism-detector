@@ -1,8 +1,6 @@
 package org.danilopianini.plagiarismdetector.core.session
 
 import java.util.concurrent.Executors
-import java.util.concurrent.ThreadFactory
-import java.util.stream.Collectors
 import kotlin.concurrent.atomics.AtomicInt
 import kotlin.concurrent.atomics.ExperimentalAtomicApi
 import kotlin.concurrent.atomics.fetchAndIncrement
