@@ -47,7 +47,6 @@ class FileKnowledgeBaseManager internal constructor(
     private fun clone(project: Repository, out: File) {
         Git.cloneRepository()
             .setURI("${project.cloneUrl}")
-            .setDepth(1)
             .setDirectory(out)
             .call()
             .close()
