@@ -1,7 +1,6 @@
 package org.danilopianini.plagiarismdetector.caching
 
 import java.io.File
-import kotlin.io.path.relativeTo
 import org.apache.commons.io.FileUtils
 import org.danilopianini.plagiarismdetector.repository.Repository
 import org.eclipse.jgit.api.Git
@@ -51,15 +50,12 @@ class FileKnowledgeBaseManager internal constructor(
     private fun clean(out: File) {
         out.walkBottomUp()
             .filter { it.isFile }
-            .filterNot { file -> file.isCacheableSourceFile(out) }
+            .filterNot { file -> file.isCacheableSourceFile() }
             .forEach(FileUtils::deleteQuietly)
         out.walkBottomUp()
             .filter { it.isDirectory && it != out && FileUtils.isEmptyDirectory(it) }
             .forEach(FileUtils::deleteQuietly)
     }
-
-    private fun File.isCacheableSourceFile(root: File): Boolean =
-        extension.lowercase() in setOf("groovy", "java", "kt", "kts", "json", "scala", "toml", "yml", "yaml")
 
     private fun File.isAvailableLocalCache(): Boolean = isDirectory && !FileUtils.isEmptyDirectory(this)
 
@@ -86,5 +82,20 @@ class FileKnowledgeBaseManager internal constructor(
 
         private fun isSharedCacheEligible(project: Repository): Boolean =
             project.cloneUrl.host.equals(GITHUB_HOST, ignoreCase = true)
+
+        private fun File.isCacheableSourceFile(): Boolean = extension.lowercase() in setOf(
+            "css",
+            "fxml",
+            "groovy",
+            "java",
+            "kt",
+            "kts",
+            "json",
+            "scala",
+            "tex",
+            "toml",
+            "yml",
+            "yaml",
+        )
     }
 }
