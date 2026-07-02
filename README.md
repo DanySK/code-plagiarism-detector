@@ -66,7 +66,7 @@ Usage: cli submission [OPTIONS]
 
 Options:
   --service TEXT  A (list of) triple, possibly separated by commas, containing
-                  a supported hosting service (github), the owner of
+                  a supported hosting service (github or github-rest), the owner of
                   the repo and an optional repository name to search,
                   formatted: like this: `service-name:owner[/repo-name]`.
   --url VALUE     The URL addresses of the repositories to be retrieved,

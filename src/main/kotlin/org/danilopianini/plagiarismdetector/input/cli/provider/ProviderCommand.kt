@@ -84,7 +84,7 @@ sealed class ProviderCommand(name: String, private val help: String) : CliktComm
         private const val URL_HELP_MSG = "The URL addresses of the repositories to be retrieved, $MORE_ARGS_HELP."
         private const val SERVICE_HELP_MSG =
             "A (list of) triple, $MORE_ARGS_HELP, containing a supported hosting " +
-                "service (github), the owner of the repo and an optional repository name to search," +
+                "service (github or github-rest), the owner of the repo and an optional repository name to search," +
                 "formatted like this: `service-name:owner[/repo-name]`."
     }
 }
