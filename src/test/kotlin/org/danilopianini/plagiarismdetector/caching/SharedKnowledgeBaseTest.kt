@@ -19,10 +19,7 @@ class SharedKnowledgeBaseTest : FunSpec() {
     init {
         test("restores a project from the shared cache") {
             val remoteCache = bareRepository()
-            val project = repository("student", "submission", URI("https://example.org/student/submission.git").toURL())
-            val source = Files.createTempDirectory("source").toFile()
-            File(source, "src").mkdirs()
-            File(source, "src/Main.java").writeText("class Main {}")
+            val (project, source) = projectWithSource()
             SharedKnowledgeBase(
                 Files.createTempDirectory("producer").toFile(),
                 remoteCache.toURI().toString(),
@@ -36,6 +33,25 @@ class SharedKnowledgeBaseTest : FunSpec() {
             ).restore(project, destination)
 
             restored shouldBe true
+            destination.shouldContainFile("src")
+            File(destination, "src").shouldContainFile("Main.java")
+        }
+
+        test("restores locally once the shared cache has been imported") {
+            val remoteCache = bareRepository()
+            val (project, source) = projectWithSource()
+            val sharedCache = SharedKnowledgeBase(
+                Files.createTempDirectory("producer").toFile(),
+                remoteCache.toURI().toString(),
+                getenv = fakeToken,
+            )
+
+            sharedCache.store(project, source)
+            FileUtils.deleteDirectory(remoteCache)
+
+            val destination = Files.createTempDirectory("destination").toFile()
+            sharedCache.restore(project, destination) shouldBe true
+
             destination.shouldContainFile("src")
             File(destination, "src").shouldContainFile("Main.java")
         }
@@ -139,6 +155,14 @@ class SharedKnowledgeBaseTest : FunSpec() {
         every { this@mockk.owner } returns owner
         every { this@mockk.name } returns name
         every { this@mockk.cloneUrl } returns cloneUrl
+    }
+
+    private fun projectWithSource(): Pair<Repository, File> {
+        val project = repository("student", "submission", URI("https://example.org/student/submission.git").toURL())
+        val source = Files.createTempDirectory("source").toFile()
+        File(source, "src").mkdirs()
+        File(source, "src/Main.java").writeText("class Main {}")
+        return project to source
     }
 
     private companion object {

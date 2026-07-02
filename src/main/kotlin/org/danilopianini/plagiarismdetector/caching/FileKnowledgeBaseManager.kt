@@ -1,6 +1,7 @@
 package org.danilopianini.plagiarismdetector.caching
 
 import java.io.File
+import java.util.concurrent.ConcurrentHashMap
 import org.apache.commons.io.FileUtils
 import org.apache.commons.io.filefilter.DirectoryFileFilter
 import org.apache.commons.io.filefilter.FileFileFilter
@@ -82,11 +83,14 @@ internal class SharedKnowledgeBase(
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
     private val workingTree = File(localCacheRoot, REMOTE_CACHE_FOLDER_NAME)
+    private val projectLocks = ConcurrentHashMap<String, Any>()
+
+    @Volatile
+    private var mirrorInitialized = false
 
     fun restore(project: Repository, destination: File): Boolean = runCatching {
-        synchronized(SHARED_CACHE_LOCK) {
-            val git = open()
-            pull(git)
+        synchronized(projectLock(project)) {
+            ensureMirrorInitialized()
             val cachedProject = cachedProject(project)
             if (cachedProject.isDirectory && !FileUtils.isEmptyDirectory(cachedProject)) {
                 FileUtils.copyDirectory(cachedProject, destination)
@@ -102,28 +106,43 @@ internal class SharedKnowledgeBase(
 
     fun store(project: Repository, source: File) {
         runCatching {
-            synchronized(SHARED_CACHE_LOCK) {
-                if (source.isDirectory && !FileUtils.isEmptyDirectory(source)) {
-                    val git = open()
-                    pull(git)
-                    val cachedProject = cachedProject(project)
-                    FileUtils.deleteQuietly(cachedProject)
-                    copyCacheableFiles(source, cachedProject)
-                    git.add().addFilepattern(REPOSITORIES_FOLDER).call()
-                    git.add().setUpdate(true).addFilepattern(REPOSITORIES_FOLDER).call()
-                    if (git.repository.resolve(HEAD) == null || git.status().call().hasUncommittedChanges()) {
-                        git.commit()
-                            .setAuthor(COMMITTER_NAME, COMMITTER_EMAIL)
-                            .setCommitter(COMMITTER_NAME, COMMITTER_EMAIL)
-                            .setMessage("Cache ${project.owner}/${project.name}")
-                            .setSign(false)
-                            .call()
-                        push(git)
+            synchronized(projectLock(project)) {
+                ensureMirrorInitialized()
+                synchronized(SHARED_CACHE_LOCK) {
+                    if (source.isDirectory && !FileUtils.isEmptyDirectory(source)) {
+                        open().use { git ->
+                            pull(git)
+                            val cachedProject = cachedProject(project)
+                            FileUtils.deleteQuietly(cachedProject)
+                            copyCacheableFiles(source, cachedProject)
+                            git.add().addFilepattern(REPOSITORIES_FOLDER).call()
+                            git.add().setUpdate(true).addFilepattern(REPOSITORIES_FOLDER).call()
+                            if (git.repository.resolve(HEAD) == null || git.status().call().hasUncommittedChanges()) {
+                                git.commit()
+                                    .setAuthor(COMMITTER_NAME, COMMITTER_EMAIL)
+                                    .setCommitter(COMMITTER_NAME, COMMITTER_EMAIL)
+                                    .setMessage("Cache ${project.owner}/${project.name}")
+                                    .setSign(false)
+                                    .call()
+                                push(git)
+                            }
+                        }
                     }
                 }
             }
         }.onFailure {
             logger.warn("Unable to store ${project.owner}/${project.name} in the shared cache.", it)
+        }
+    }
+
+    private fun ensureMirrorInitialized() {
+        if (!mirrorInitialized) {
+            synchronized(SHARED_CACHE_LOCK) {
+                if (!mirrorInitialized) {
+                    open().use { }
+                    mirrorInitialized = true
+                }
+            }
         }
     }
 
@@ -202,6 +221,14 @@ internal class SharedKnowledgeBase(
     private fun String.sanitizePathSegment(): String = replace(Regex("""[^A-Za-z0-9._-]"""), "_")
 
     private fun java.net.URL.cacheHost(): String = host.ifBlank { protocol }
+
+    private fun projectLock(project: Repository): Any = projectLocks.computeIfAbsent(project.cacheKey()) { Any() }
+
+    private fun Repository.cacheKey(): String = listOf(
+        cloneUrl.cacheHost(),
+        owner,
+        name,
+    ).joinToString("/")
 
     private companion object {
         private const val DEFAULT_REMOTE_URI = "https://github.com/unibo-oop/plagiarism-cache.git"
