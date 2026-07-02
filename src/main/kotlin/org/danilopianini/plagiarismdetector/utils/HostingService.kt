@@ -30,11 +30,3 @@ data object GitHubGraphQL : HostingService {
     override val name: String = "github"
     override val host: String = "$name.com"
 }
-
-/**
- * Bitbucket hosting service.
- */
-data object BitBucket : HostingService {
-    override val name: String = "bitbucket"
-    override val host: String = "$name.org"
-}

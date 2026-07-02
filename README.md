@@ -11,8 +11,6 @@ A tool for scanning existing projects in search of potential signs of plagiarism
 
 ### Prerequisites
 In order to work, the following environment variables must be set:
-- `BB_USER` which contains the Bitbucket username;
-- `BB_TOKEN` which contains the Bitbucket **app password** (see [Bitbucket documentation](https://support.atlassian.com/bitbucket-cloud/docs/app-passwords/));
 - `GH_TOKEN` which contains the GitHub **PAT** (see [GitHub documentation](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token)).
 
 ## Usage
@@ -68,7 +66,7 @@ Usage: cli submission [OPTIONS]
 
 Options:
   --service TEXT  A (list of) triple, possibly separated by commas, containing
-                  a supported hosting service (github|bitbucket), the owner of
+                  a supported hosting service (github or github-rest), the owner of
                   the repo and an optional repository name to search,
                   formatted: like this: `service-name:owner[/repo-name]`.
   --url VALUE     The URL addresses of the repositories to be retrieved,
@@ -81,7 +79,7 @@ For example (equivalent for `corpus` subcommand):
   ```bash
   submission --url https://github.com/unibo-oop-projects/Student-Project-OOP-21-Bragari-Mennuti-Violani-Volfgit,https://github.com/unibo-oop-projects/Student-Project-OOP21-Bianchi-Ciccioni-stubborn
   ```
-- to search according to the following criteria: all GitHub repos owned by `unibo-oop-projects` and the Bitbucket repos named `oop` owned by `danysk`:
+- to search according to the following criteria: all GitHub repos owned by `unibo-oop-projects`:
   ```bash
-  submission --service github:unibo-oop-projects,bitbucket:danysk/oop
+  submission --service github:unibo-oop-projects
   ```

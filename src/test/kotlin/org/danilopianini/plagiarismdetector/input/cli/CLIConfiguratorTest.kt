@@ -10,7 +10,6 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.spyk
 import org.danilopianini.plagiarismdetector.core.TestOutput
-import org.danilopianini.plagiarismdetector.provider.BitbucketProvider
 import org.danilopianini.plagiarismdetector.provider.GitHubGraphQLProvider
 import org.danilopianini.plagiarismdetector.provider.GitHubRestProvider
 
@@ -23,9 +22,6 @@ class CLIConfiguratorTest : FunSpec() {
         }
         every { configurator getProperty "githubGraphQL" } propertyType GitHubGraphQLProvider::class answers {
             GitHubGraphQLProvider(null)
-        }
-        every { configurator getProperty "bitbucket" } propertyType BitbucketProvider::class answers {
-            BitbucketProvider.connectAnonymously()
         }
 
         test("Launching CLI configuration user do not exists should throw exception") {

@@ -1,7 +1,6 @@
 package org.danilopianini.plagiarismdetector.input
 
 import java.net.URL
-import org.danilopianini.plagiarismdetector.utils.BitBucket
 import org.danilopianini.plagiarismdetector.utils.GitHubGraphQL
 import org.danilopianini.plagiarismdetector.utils.GitHubRest
 import org.danilopianini.plagiarismdetector.utils.HostingService
@@ -20,7 +19,7 @@ internal object SupportedOptions {
     /**
      * Supported [HostingService]s.
      */
-    val services: List<HostingService> = listOf(GitHubGraphQL, GitHubRest, BitBucket)
+    val services: List<HostingService> = listOf(GitHubGraphQL, GitHubRest)
 
     /**
      * Returns the [HostingService] with the given [name].

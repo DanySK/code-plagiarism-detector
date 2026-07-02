@@ -8,8 +8,7 @@ import org.danilopianini.plagiarismdetector.provider.authentication.EnvironmentT
 
 class EnvironmentTokenSupplierTest : FunSpec() {
     companion object {
-        private const val BB_AUTH_USER_VAR = "BB_USER"
-        private const val BB_AUTH_TOKEN_VAR = "BB_TOKEN"
+        private const val GH_AUTH_TOKEN_VAR = "GH_TOKEN"
         private const val NON_EXISTING_TOKEN_VAR = "WRONG_TOKEN"
     }
 
@@ -22,11 +21,10 @@ class EnvironmentTokenSupplierTest : FunSpec() {
         }
 
         test("The content of an existing environment variable should meet the formatting requirements") {
-            val fakeEnv = mapOf(BB_AUTH_USER_VAR to "BB_USER", BB_AUTH_TOKEN_VAR to "BB_TOKEN")
-            val supplier =
-                EnvironmentTokenSupplier(BB_AUTH_USER_VAR, BB_AUTH_TOKEN_VAR, separator = ":", getenv = fakeEnv::get)
+            val fakeEnv = mapOf(GH_AUTH_TOKEN_VAR to "GH_TOKEN")
+            val supplier = EnvironmentTokenSupplier(GH_AUTH_TOKEN_VAR, getenv = fakeEnv::get)
             supplier.token.shouldNotBeEmpty()
-            supplier.token.shouldContain(Regex(".+:.+"))
+            supplier.token.shouldContain("GH_TOKEN")
         }
     }
 }

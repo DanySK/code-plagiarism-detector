@@ -10,13 +10,10 @@ import com.github.ajalt.clikt.parameters.options.validate
 import java.net.URI
 import java.net.URL
 import org.danilopianini.plagiarismdetector.input.SupportedOptions
-import org.danilopianini.plagiarismdetector.provider.criteria.ByBitbucketName
-import org.danilopianini.plagiarismdetector.provider.criteria.ByBitbucketUser
 import org.danilopianini.plagiarismdetector.provider.criteria.ByGitHubNameRest
 import org.danilopianini.plagiarismdetector.provider.criteria.ByGitHubUserGraphQL
 import org.danilopianini.plagiarismdetector.provider.criteria.ByGitHubUserRest
 import org.danilopianini.plagiarismdetector.provider.criteria.SearchCriteria
-import org.danilopianini.plagiarismdetector.utils.BitBucket
 import org.danilopianini.plagiarismdetector.utils.GitHubGraphQL
 import org.danilopianini.plagiarismdetector.utils.GitHubRest
 import org.danilopianini.plagiarismdetector.utils.HostingService
@@ -68,8 +65,6 @@ sealed class ProviderCommand(name: String, private val help: String) : CliktComm
                 ).let { if (repoName.isNotEmpty()) ByGitHubNameRest(repoName, it) else it }
 
             GitHubGraphQL -> ByGitHubUserGraphQL(user, repoName)
-
-            BitBucket -> ByBitbucketUser(user).let { if (repoName.isNotEmpty()) ByBitbucketName(repoName, it) else it }
         }
 
     override fun help(context: Context) = help
@@ -89,7 +84,7 @@ sealed class ProviderCommand(name: String, private val help: String) : CliktComm
         private const val URL_HELP_MSG = "The URL addresses of the repositories to be retrieved, $MORE_ARGS_HELP."
         private const val SERVICE_HELP_MSG =
             "A (list of) triple, $MORE_ARGS_HELP, containing a supported hosting " +
-                "service (github|bitbucket), the owner of the repo and an optional repository name to search," +
+                "service (github or github-rest), the owner of the repo and an optional repository name to search," +
                 "formatted like this: `service-name:owner[/repo-name]`."
     }
 }
