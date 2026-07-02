@@ -1,3 +1,14 @@
+## [12.1.0](https://github.com/DanySK/code-plagiarism-detector/compare/12.0.0...12.1.0) (2026-07-02)
+
+### Features
+
+* improve the cache management and parallelism ([#1231](https://github.com/DanySK/code-plagiarism-detector/issues/1231)) ([1039531](https://github.com/DanySK/code-plagiarism-detector/commit/1039531515168376f31a1712c433cbe160242e02))
+
+### Dependency updates
+
+* **deps:** update gradle to v9.6.1 ([#1222](https://github.com/DanySK/code-plagiarism-detector/issues/1222)) ([05052f1](https://github.com/DanySK/code-plagiarism-detector/commit/05052f12bb43fe1bcd40efe709139fedeb51bbb7))
+* **deps:** update plugin org.danilopianini.gradle-pre-commit-git-hooks to v2.1.20 ([#1226](https://github.com/DanySK/code-plagiarism-detector/issues/1226)) ([3fd833d](https://github.com/DanySK/code-plagiarism-detector/commit/3fd833db6ed4205f5d28894a9983880c294ddb6c))
+
 ## [12.0.0](https://github.com/DanySK/code-plagiarism-detector/compare/11.1.2...12.0.0) (2026-07-02)
 
 ### ⚠ BREAKING CHANGES
