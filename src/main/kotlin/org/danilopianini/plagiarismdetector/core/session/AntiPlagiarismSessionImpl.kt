@@ -1,6 +1,12 @@
 package org.danilopianini.plagiarismdetector.core.session
 
-import java.util.stream.Collectors
+import kotlin.concurrent.atomics.ExperimentalAtomicApi
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.runBlocking
 import org.danilopianini.plagiarismdetector.core.Report
 import org.danilopianini.plagiarismdetector.core.ReportImpl
 import org.danilopianini.plagiarismdetector.core.detector.Match
@@ -11,9 +17,13 @@ import org.danilopianini.plagiarismdetector.repository.Repository
 /**
  * A **parallel** implementation of an [AntiPlagiarismSession].
  */
+@OptIn(ExperimentalCoroutinesApi::class)
 class AntiPlagiarismSessionImpl<out C : RunConfiguration<M>, M : Match>(
     private val configuration: C,
     private val output: Output,
+    private val dispatcher: CoroutineDispatcher = Dispatchers.Default.limitedParallelism(
+        Runtime.getRuntime().availableProcessors(),
+    ),
 ) : AntiPlagiarismSession {
     private val processedResult = mutableSetOf<Report<M>>()
 
@@ -28,23 +38,27 @@ class AntiPlagiarismSessionImpl<out C : RunConfiguration<M>, M : Match>(
         }
     }
 
+    @OptIn(ExperimentalAtomicApi::class, ExperimentalCoroutinesApi::class)
     private fun processNotYetProcessed(submission: Repository): Set<Report<M>> = with(configuration) {
         val corpusToProcess = corpus
             .filter { it.name != submission.name && submission hasNotYetComparedAgainst it }
             .toSet()
         output.startComparison(submission.name, corpusToProcess.size)
-        corpusToProcess
-            .parallelStream()
-            .map {
-                output.startCorpusComparison(it.name)
-                try {
-                    technique.execute(submission, it, filesToExclude, minDuplicationPercentage)
-                } finally {
-                    output.endCorpusComparison(it.name)
+        runBlocking {
+            corpusToProcess.map { compared ->
+                async(dispatcher) {
+                    output.startCorpusComparison(compared.name)
+                    try {
+                        technique.execute(submission, compared, filesToExclude, minDuplicationPercentage)
+                    } finally {
+                        output.endCorpusComparison(compared.name)
+                    }
                 }
-            }
-            .collect(Collectors.toSet())
-    }.also { output.endComparison() }
+            }.awaitAll().toSet()
+        }
+    }.also {
+        output.endComparison()
+    }
 
     private fun retrieveAlreadyProcessed(submission: Repository): Set<Report<M>> = with(configuration) {
         corpus
