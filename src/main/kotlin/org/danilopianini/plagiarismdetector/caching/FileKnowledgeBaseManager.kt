@@ -77,7 +77,6 @@ class FileKnowledgeBaseManager internal constructor(
 
     private companion object {
         private const val SOURCE_FOLDER = "src"
-        private const val RESOURCES_FOLDER = "resources"
         private const val REPOSITORY_FOLDER_NAME = ".code-plagiarism-detector"
         private const val GITHUB_HOST = "github.com"
 
