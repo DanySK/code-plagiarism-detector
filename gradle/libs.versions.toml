@@ -2,7 +2,7 @@
 apollo = "4.0.0-beta.7"
 kotest = "6.2.3"
 kotlin = "2.4.10"
-logback = "1.5.38"
+logback = "1.6.0"
 
 [libraries]
 apollo-runtime = { module = "com.apollographql.apollo3:apollo-runtime", version.ref = "apollo" }
