@@ -22,7 +22,7 @@ logback-core = { module = "ch.qos.logback:logback-core", version.ref = "logback"
 mockk = "io.mockk:mockk:1.14.11"
 org-eclipse-jgit = "org.eclipse.jgit:org.eclipse.jgit:7.7.1.202607240634-r"
 progressbar = "me.tongfei:progressbar:0.10.2"
-slf4j-api = "org.slf4j:slf4j-api:2.0.18"
+slf4j-api = "org.slf4j:slf4j-api:2.0.19"
 unirest = "com.mashape.unirest:unirest-java:1.4.9"
 
 [bundles]
