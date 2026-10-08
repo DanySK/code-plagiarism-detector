@@ -1,3 +1,12 @@
+## [12.1.3](https://github.com/DanySK/code-plagiarism-detector/compare/12.1.2...12.1.3) (2026-10-08)
+
+### Dependency updates
+
+* **core-deps:** update dependency org.jetbrains.kotlin.jvm to v2.4.21 ([245c45a](https://github.com/DanySK/code-plagiarism-detector/commit/245c45a46b6cb7d3ff5f3362b5e89deab90f1172))
+* **deps:** update gradle to v9.8.1 ([#1295](https://github.com/DanySK/code-plagiarism-detector/issues/1295)) ([2d23b78](https://github.com/DanySK/code-plagiarism-detector/commit/2d23b78359723c4868f528a235fbe894399c61cd))
+* **deps:** update plugin org.danilopianini.gradle-pre-commit-git-hooks to v2.1.26 ([#1296](https://github.com/DanySK/code-plagiarism-detector/issues/1296)) ([26befb2](https://github.com/DanySK/code-plagiarism-detector/commit/26befb212a6459c1c33d1f7430747d2a166787d1))
+* **deps:** update plugin publishoncentral to v9.2.13 ([#1297](https://github.com/DanySK/code-plagiarism-detector/issues/1297)) ([ae9aadd](https://github.com/DanySK/code-plagiarism-detector/commit/ae9aaddef234cd5b3b28293457e9c6a3a9001e49))
+
 ## [12.1.2](https://github.com/DanySK/code-plagiarism-detector/compare/12.1.1...12.1.2) (2026-10-05)
 
 ### Dependency updates
